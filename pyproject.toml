@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "hastalavistamoney"
+version = "0.1.0"
+description = "Home Accounting Project"
+authors = ["Alexander <dev@pavlovteam.ru>"]
+packages = [
+    { include = "hasta_la_vista_money" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Django = "^4.0.4"
+python-dotenv = "^0.20.0"
+dj-database-url = "^0.5.0"
+django-bootstrap5 = "^21.3"
+psycopg2 = "^2.9.3"
+psycopg2-binary = "^2.9.3"
+whitenoise = "^6.0.0"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^4.0.1"
+Faker = "^13.7.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
