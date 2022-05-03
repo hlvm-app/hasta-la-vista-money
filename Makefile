@@ -1,5 +1,5 @@
 lint:
-	poetry run flake8 hastaLaVistaMoney
+	poetry run flake8 hasta_la_vista_money
 
 heroku:
 		git push heroku main
