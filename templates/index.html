@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+    <title>{% translate 'Главная страница сайта' %}</title>
+    <form method="post">
+        {% csrf_token %}
+        <p class="my-4">
+            {% bootstrap_form form  %}
+        </p>
+        {% bootstrap_button button_text button_type="submit" button_class="btn btn-primary" %}
+    </form>
+    <a href="{% url 'register' %}">Registration</a>
+{% endblock %}

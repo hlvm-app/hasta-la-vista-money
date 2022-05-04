@@ -1,0 +1,14 @@
+{{ '<' }}{{'!doctype html>'}}
+{# Load the tag library #}
+{% load django_bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% load i18n %}
+
+
+{% block content %}
+    <title>{{ title }}</title>
+{% endblock %}
