@@ -4,4 +4,4 @@ psycopg2-binary
 Django~=4.0.4
 dj-database-url
 django-bootstrap5
-gunicorn
+gunicorn~=20.1.0
