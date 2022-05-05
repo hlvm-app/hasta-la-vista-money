@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     'users',
 ]
 
-AUTH_USER_MODEL = 'users.Admin'
+AUTH_USER_MODEL = 'users.UserAdmin'
 
 LOGIN_REDIRECT_URL = '/'
 

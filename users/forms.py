@@ -1,12 +1,12 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.views.generic import FormView
 
-from users.models import Admin
+from users.models import UserAdmin
 
 
 class UserLogin(FormView):
     class Meta:
-        model = Admin
+        model = UserAdmin
         fields = [
             'username',
             'password',
@@ -15,6 +15,6 @@ class UserLogin(FormView):
 
 class RegisterUserForm(UserCreationForm):
     class Meta:
-        model = Admin
+        model = UserAdmin
         fields = ['first_name', 'last_name', 'username', 'password1',
                   'password2']

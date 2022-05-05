@@ -5,11 +5,11 @@ from django.utils.translation import gettext
 from django.views.generic import CreateView
 
 from users.forms import RegisterUserForm
-from users.models import Admin
+from users.models import UserAdmin
 
 
 class CreateUser(CreateView, SuccessMessageMixin):
-    model = Admin
+    model = UserAdmin
     template_name = 'users/register.html'
     form_class = RegisterUserForm
     success_url = reverse_lazy('index')

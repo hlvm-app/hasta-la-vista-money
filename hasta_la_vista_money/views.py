@@ -3,7 +3,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import TemplateView
 from django.utils.translation import gettext, gettext_lazy
 
-from users.forms import Admin
+from users.forms import UserAdmin
 
 
 class Index(SuccessMessageMixin, LoginView):
