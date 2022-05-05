@@ -1,15 +1,14 @@
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.translation import gettext
 from django.views.generic import CreateView
 
 from users.forms import RegisterUserForm
-from users.models import UserAdmin
+from users.models import User
 
 
 class CreateUser(CreateView, SuccessMessageMixin):
-    model = UserAdmin
+    model = User
     template_name = 'users/register.html'
     form_class = RegisterUserForm
     success_url = reverse_lazy('index')

@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from django.utils.translation import gettext, gettext_lazy
 
-from users.forms import UserAdmin
+from users.forms import User
 
 
 class Index(SuccessMessageMixin, LoginView):
