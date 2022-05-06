@@ -36,7 +36,6 @@ ALLOWED_HOSTS = [
     'hastalavistamoney.herokuapp.com',
     'localhost',
     '127.0.0.1',
-    'webserver',
 ]
 
 
@@ -73,6 +72,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'hasta_la_vista_money.urls'
 
@@ -147,6 +147,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
