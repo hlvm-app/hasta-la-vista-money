@@ -1,32 +1,37 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import AccessMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.utils.translation import gettext, gettext_lazy
 
-from users.forms import User
+from users.forms import User, UserLoginForm
 
 
-class Index(SuccessMessageMixin, LoginView):
-    template_name = 'index.html'
+class LoginUser(SuccessMessageMixin, LoginView):
+    model = User
+    template_name = 'users/login.html'
+    form_class = UserLoginForm
+    success_message = gettext_lazy('Вход успешно выполнен')
+    next_page = reverse_lazy('applications')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['button_text'] = gettext('Войти')
-        context['button_register'] = gettext('Регистрация')
         return context
 
 
-class IndexHastaLaVista(TemplateView):
-    template_name = 'hasta_la_vista_money/index.html'
+class PageApplication(TemplateView, SuccessMessageMixin, AccessMixin):
+    template_name = 'hasta_la_vista_money/page_application.html'
     error_message = gettext('У вас нет прав на просмотр данной страницы! '
                             'Авторизуйтесь!')
-    no_permission_url = 'index'
+    no_permission_url = 'login'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Hasta La Vista, Money :D'
+        context['title'] = gettext('Страница приложений')
         return context
 
     def handle_no_permission(self):
