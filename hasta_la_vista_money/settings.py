@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'bot',
     'hasta_la_vista_money',
     'users',
+    'receipts',
 ]
 
 AUTH_USER_MODEL = 'users.User'
