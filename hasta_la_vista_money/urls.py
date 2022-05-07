@@ -24,7 +24,8 @@ urlpatterns = [
     re_path(r'users/',
             include('users.urls', namespace='users'), name='list'),
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
-    path('login/', LoginUser.as_view(), name='login'),
+    path('login/', LoginUser.as_view(redirect_authenticated_user=True),
+         name='login'),
     path('applications/', PageApplication.as_view(), name='applications'),
     path('adminushka/', admin.site.urls),
 ]
