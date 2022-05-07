@@ -1,11 +1,13 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import AccessMixin
+from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import TemplateView
 from django.utils.translation import gettext, gettext_lazy
+
 
 from users.forms import User, UserLoginForm
 
@@ -23,17 +25,19 @@ class LoginUser(SuccessMessageMixin, LoginView):
         return context
 
 
-class PageApplication(TemplateView, SuccessMessageMixin, AccessMixin):
+class PageApplication(LoginRequiredMixin, TemplateView, View, SuccessMessageMixin,
+                      AccessMixin):
     template_name = 'hasta_la_vista_money/page_application.html'
     error_message = gettext('У вас нет прав на просмотр данной страницы! '
                             'Авторизуйтесь!')
-    no_permission_url = 'login'
+    login_url = 'login'
+    redirect_field_name = 'login'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = gettext('Страница приложений')
         return context
 
-    def handle_no_permission(self):
-        messages.error(self.request, self.error_message)
-        return redirect(self.no_permission_url)
+    # def handle_no_permission(self):
+    #     messages.error(self.request, self.error_message)
+    #     return redirect(self.no_permission_url)
