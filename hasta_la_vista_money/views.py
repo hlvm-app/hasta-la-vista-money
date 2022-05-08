@@ -6,7 +6,7 @@ from django.views import View
 from django.views.generic import TemplateView, ListView
 from django.utils.translation import gettext, gettext_lazy
 
-from receipts.models import Receipts
+from bot.models import Receipts
 from users.forms import User, UserLoginForm
 
 
