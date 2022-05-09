@@ -19,27 +19,13 @@ bot = Bot(API_TOKEN)
 dp = Dispatcher(bot, loop=loop)
 
 
-# HEROKU_APP_NAME = os.getenv('HEROKU_APP_NAME')
-#
-# # webhook settings
-# WEBHOOK_HOST = f'https://{HEROKU_APP_NAME}.herokuapp.com'
-# WEBHOOK_PATH = f'/api-telegram-hook/{API_TOKEN}'
-# WEBHOOK_URL = f'{WEBHOOK_HOST}{WEBHOOK_PATH}'
-#
-# # webserver settings
-# WEBAPP_HOST = '0.0.0.0'
-# WEBAPP_PORT = os.getenv('PORT', default=8000)
-
-
 # Сообщение для администратора, что бот запущен
 async def on_startup(dispatcher):
     await bot.send_message(chat_id=admin_id, text='Бот запущен!\n')
-    # await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
 
 
 async def on_shutdown(dispatcher):
     await bot.send_message(chat_id=admin_id, text='Бот остановлен!\n')
-    # await bot.delete_webhook()
 
 
 @dp.message_handler()
