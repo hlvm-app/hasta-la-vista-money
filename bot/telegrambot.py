@@ -31,10 +31,12 @@ WEBAPP_PORT = os.getenv('PORT', default=8000)
 
 # Сообщение для администратора, что бот запущен
 async def on_startup(dispatcher):
+    await bot.send_message(chat_id=admin_id, text='Бот запущен!\n')
     await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
 
 
 async def on_shutdown(dispatcher):
+    await bot.send_message(chat_id=admin_id, text='Бот остановлен!\n')
     await bot.delete_webhook()
 
 
