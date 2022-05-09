@@ -25,7 +25,7 @@ WEBHOOK_PATH = f'/api-telegram-hook/{API_TOKEN}'
 WEBHOOK_URL = f'{WEBHOOK_HOST}{WEBHOOK_PATH}'
 
 # webserver settings
-WEBAPP_HOST = '127.0.0.1'
+WEBAPP_HOST = '0.0.0.0'
 WEBAPP_PORT = os.getenv('PORT', default=8000)
 
 
