@@ -34,7 +34,7 @@ DEBUG = os.getenv('DEBUG', 'true').lower() in {'yes', '1', 'true'}
 
 ALLOWED_HOSTS = [
     'hastalavistamoney.herokuapp.com',
-    'pavlovs.pavlovteam.ru',
+    'pavlovteam.ru',
     'localhost',
     '127.0.0.1',
 ]
