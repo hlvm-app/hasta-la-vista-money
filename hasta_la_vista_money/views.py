@@ -6,7 +6,6 @@ from django.views import View
 from django.views.generic import TemplateView, ListView
 from django.utils.translation import gettext, gettext_lazy
 
-from bot.models import Receipt
 from users.forms import User, UserLoginForm
 
 
@@ -28,6 +27,7 @@ class PageApplication(LoginRequiredMixin,
                       View,
                       SuccessMessageMixin,
                       AccessMixin):
+
     template_name = 'hasta_la_vista_money/page_application.html'
     error_message = gettext('У вас нет прав на просмотр данной страницы! '
                             'Авторизуйтесь!')
