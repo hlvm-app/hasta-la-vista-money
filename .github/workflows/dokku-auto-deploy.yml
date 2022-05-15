@@ -1,25 +1,22 @@
-name: dokku-auto-deploy
+---
+name: 'deploy-dokku'
 
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
-  build:
-
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-      with:
+      - name: Cloning repo
+        uses: actions/checkout@v2
+        with:
           fetch-depth: 0
 
-    - id: deploy
-      name: Deploy to dokku
-      uses: idoberko2/dokku-deploy-github-action@v1
-      with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          dokku-host: 'pavlovteam.ru'
-          app-name: 'hastalavistamoney'
-          git-push-flags: '--force'
+      - name: Push to dokku
+        uses: dokku/github-action@master
+        with:
+          git_remote_url: 'ssh://git@github.com:TurtleOld/hastalavistamoney.git'
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
