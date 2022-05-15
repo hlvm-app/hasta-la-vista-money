@@ -19,6 +19,7 @@ from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 
 from hasta_la_vista_money.views import LoginUser, PageApplication
+from receipts.views import ReceiptView
 
 urlpatterns = [
     re_path(r'users/',
@@ -27,5 +28,6 @@ urlpatterns = [
     path('login/', LoginUser.as_view(redirect_authenticated_user=True),
          name='login'),
     path('applications/', PageApplication.as_view(), name='applications'),
+    path('receipts/', ReceiptView.as_view(), name='receipts'),
     path('adminushka/', admin.site.urls),
 ]
