@@ -17,5 +17,5 @@ jobs:
       - name: Push to dokku
         uses: dokku/github-action@master
         with:
-          git_remote_url: 'ssh://git@github.com:TurtleOld/hastalavistamoney.git'
+          git_remote_url: 'ssh://git@github.com:22/hastalavistamoney'
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
