@@ -164,9 +164,6 @@ coverage.xml
 *,cover
 .hypothesis/
 
-# Translations
-*.mo
-
 # Django stuff:
 
 # Flask stuff:
