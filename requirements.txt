@@ -1,8 +1,8 @@
 python-dotenv~=0.20.0
-whitenoise~=6.0.0
+whitenoise==6.1.0
 psycopg2-binary
 Django~=4.0.4
 dj-database-url
 django-bootstrap5
 gunicorn~=20.1.0
-aiogram
+python-telegram-bot~=13.11
