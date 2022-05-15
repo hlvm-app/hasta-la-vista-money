@@ -1,8 +1,8 @@
 lint:
 	    poetry run flake8 hasta_la_vista_money
 
-heroku:
-		git push heroku main
+dokku:
+		git push dokku main
 
 github:
 		git push origin main
