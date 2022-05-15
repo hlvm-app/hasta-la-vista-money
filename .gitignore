@@ -212,4 +212,6 @@ ENV/
 # mkdocs documentation
 /site
 
+bot/receipts/
+
 # End of https://www.gitignore.io/api/macos,linux,django,python,pycharm
