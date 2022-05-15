@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load django_bootstrap5 %}
+
+
+{% block content %}
+    <title>{% translate 'Hasta La Vista, Money :D' %}</title>
+    <div class="container">
+
+                <p>
+                    <select name="seller" id="seller">
+                        <option value=""></option>
+                        {% for receipt in receipts %}
+                            <option value="{{ receipt.name_seller }}">{{ receipt.name_seller }}</option>
+                        {% endfor %}
+                    </select>
+                    {% for receipt in receipts %}
+                        {{ receipt.product_information }}
+                    {% endfor %}
+                </p>
+
+    </div>
+{% endblock %}
