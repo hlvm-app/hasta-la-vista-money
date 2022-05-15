@@ -1,67 +1,44 @@
-import os
-import logging
-
-from aiogram import Bot, types
-from aiogram.dispatcher import Dispatcher
-from aiogram.utils import executor
-
-import asyncio
 import json
+from telegram import Update
+from telegram.ext import CallbackContext
 
-from dotenv import load_dotenv
-
-from services import convert_date, convert_time, get_result_price
-
-load_dotenv()
-API_TOKEN = os.getenv('TOKEN_TELEGRAM_BOT')
-admin_id = os.getenv('ADMIN_ID')
-loop = asyncio.get_event_loop()
-bot = Bot(API_TOKEN)
-dp = Dispatcher(bot, loop=loop)
+import bot.views
+from bot import helpers
+from receipts.models import Receipt
+from bot.services import convert_date_time, get_result_price
 
 
-# Сообщение для администратора, что бот запущен
-async def on_startup(dispatcher):
-    await bot.send_message(chat_id=admin_id, text='Бот запущен!\n')
+def get_receipt(update: Update, context: CallbackContext):
+    data = update.message.document.get_file().download(
+        custom_path='bot/receipts/receipt.json'
+    )
+    with open(data, 'r', encoding='UTF-8') as file_data:
+        json_data = json.load(file_data)
+
+        date_time = convert_date_time(json_data["dateTime"])
+        seller = json_data['user']
+        total_sum = str(get_result_price(json_data["totalSum"]))
+        information_products = []
+
+        for item in json_data["items"]:
+            name_product = item["name"]
+            price = str(get_result_price(item["price"]))
+            quantity = str(item["quantity"])
+            amount = str(get_result_price(item["sum"]))
+            list_product_information = [name_product, price, quantity, amount]
+            information_products.append(list_product_information)
+
+        Receipt.objects.get_or_create(
+            receipt_date=date_time,
+            name_seller=seller,
+            product_information=information_products,
+            total_sum=total_sum
+        )
+
+        for result in Receipt.objects.all().filter():
+            print(result.product_information)
+
+    helpers.respond(context.bot, update.effective_chat.id,
+                    bot.views.welcome_message())
 
 
-async def on_shutdown(dispatcher):
-    await bot.send_message(chat_id=admin_id, text='Бот остановлен!\n')
-
-
-@dp.message_handler(content_types=['document'])
-async def get_receipt(message: types.Message):
-    json_file = await bot.get_file(message.document['file_id'])
-    if json_file.file_path[-4:] == "json":
-        downloaded_file = await bot.download_file(json_file.file_path,
-                                                  'receipt/receipt.json')
-        try:
-            with open(f'{downloaded_file.name}', 'r') as read:
-                r = json.load(read)
-
-                if 'items' in r:
-                    await message.answer(
-                        "Спасибо, файл добавлен в базу данных!")
-
-                    print(r)
-                else:
-                    await message.answer(
-                        "Файл не соответствует формату, пришлите корректный "
-                        "файл!")
-        except json.JSONDecodeError:
-            await message.answer(
-                "Файл не соответствует формату, пришлите корректный "
-                "файл!")
-
-    else:
-        await message.answer(
-            "Файл не соответствует формату, пришлите корректный файл!")
-
-
-if __name__ == '__main__':
-    # logging.basicConfig(level=logging.INFO)
-    executor.start_polling(dispatcher=dp,
-                           skip_updates=False,
-                           on_startup=on_startup,
-                           on_shutdown=on_shutdown,
-                           )
