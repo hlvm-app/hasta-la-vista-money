@@ -24,16 +24,16 @@
         </form>
         <div class="row mt-5">
             <div class="col-12">
-                <div class="d-flex flex-row text-break justify-content-around">
+                <div class="d-flex flex-row text-break justify-content-around ">
                     {% for receipt in receipts %}
-                        <p>
-                            <span class="strong text-wrap d-block">
+                        <p class="m-2 bg-light rounded-2">
+                            <span class="text-wrap d-block p-4">
                                 {{ receipt.name_seller }}
                                 {{ receipt.receipt_date }}
                                 {{ receipt.total_sum }}
                             </span>
                             {% for item in receipt.product_information %}
-                                <span class="wa  d-block">
+                                <span class="d-block px-4 py-2">
 
                                     {{ item.0 }}
                                     {{ item.1 }}
