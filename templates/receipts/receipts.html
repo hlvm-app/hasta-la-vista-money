@@ -1,23 +1,51 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load django_bootstrap5 %}
+{% load static %}
 
 
 {% block content %}
     <title>{% translate 'Hasta La Vista, Money :D' %}</title>
     <div class="container">
-
-                <p>
-                    <select name="seller" id="seller">
-                        <option value=""></option>
-                        {% for receipt in receipts %}
-                            <option value="{{ receipt.name_seller }}">{{ receipt.name_seller }}</option>
-                        {% endfor %}
-                    </select>
+        <form method="post">
+            {% csrf_token %}
+             <label class="seller_label">
+                Выбери продавца:
+                <select name="seller" class="seller" id="elem">
+                    <option value=""></option>
                     {% for receipt in receipts %}
-                        {{ receipt.product_information }}
+                        <option id="id_name" value="{{ receipt.id }}">{{ receipt.name_seller }}</option>
                     {% endfor %}
-                </p>
+                </select>
+             </label>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">ОК</button>
+            </div>
+        </form>
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="d-flex flex-row text-break justify-content-around">
+                    {% for receipt in receipts %}
+                        <p>
+                            <span class="strong text-wrap d-block">
+                                {{ receipt.name_seller }}
+                                {{ receipt.receipt_date }}
+                                {{ receipt.total_sum }}
+                            </span>
+                            {% for item in receipt.product_information %}
+                                <span class="wa  d-block">
 
+                                    {{ item.0 }}
+                                    {{ item.1 }}
+                                    {{ item.2 }}
+                                    {{ item.3 }}
+
+                                </span>
+                            {% endfor %}
+                        </p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
