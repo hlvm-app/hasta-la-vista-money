@@ -5,43 +5,33 @@
 
 
 {% block content %}
-    <title>{% translate 'Hasta La Vista, Money :D' %}</title>
+    <title>Hasta La Vista, Money :D</title>
     <div class="container">
-        <form method="post">
-            {% csrf_token %}
-             <label class="seller_label">
-                Выбери продавца:
-                <select name="seller" class="seller" id="elem">
-                    <option value=""></option>
-                    {% for receipt in receipts %}
-                        <option id="id_name" value="{{ receipt.id }}">{{ receipt.name_seller }}</option>
-                    {% endfor %}
-                </select>
-             </label>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">ОК</button>
-            </div>
-        </form>
+        <div class="display-2 text-center pt-3 text-light">
+            Hasta La Vista, Money :D
+        </div>
         <div class="row mt-5">
             <div class="col-12">
-                <div class="d-flex flex-row text-break justify-content-around ">
+                <div class="d-flex flex-row text-break justify-content-around h-25">
                     {% for receipt in receipts %}
-                        <p class="m-2 bg-light rounded-2">
+                        <p class="m-2 bg-light rounded-3 p-1  overflow-scroll">
                             <span class="text-wrap d-block p-4">
-                                {{ receipt.name_seller }}
-                                {{ receipt.receipt_date }}
-                                {{ receipt.total_sum }}
+                                Продавец: {{ receipt.name_seller }}<br><br>
+                                Дата и время покупки: <br> {{ receipt.receipt_date }}<br>
                             </span>
                             {% for item in receipt.product_information %}
                                 <span class="d-block px-4 py-2">
 
-                                    {{ item.0 }}
-                                    {{ item.1 }}
-                                    {{ item.2 }}
-                                    {{ item.3 }}
+                                    Наименование: <br> {{ item.0 }}<br>
+                                    Цена товара: {{ item.1 }}<br>
+                                    Количество: {{ item.2 }}<br>
+                                    Сумма: {{ item.3 }}<br>
 
                                 </span>
                             {% endfor %}
+                            <span class="d-block result px-4 pt-3">
+                                Итог по чеку: {{ receipt.total_sum }}<br>
+                            </span>
                         </p>
                     {% endfor %}
                 </div>
