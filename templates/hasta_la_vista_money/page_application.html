@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load django_bootstrap5 %}
 {% block content %}
-<title>{{ title }}</title>
+    <title>{{ title }}</title>
+    <a href="{% url 'receipts' %}">Просмотр чеков</a>
 {% endblock %}
