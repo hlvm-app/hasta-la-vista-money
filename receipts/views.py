@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.utils.translation import gettext
 from django.views.generic import ListView
 
