@@ -11,31 +11,25 @@
             Hasta La Vista, Money :D
         </div>
         <div class="row mt-5">
-            <div class="col-12">
-                <div class="d-flex flex-row text-break justify-content-around h-25">
-                    {% for receipt in receipts %}
-                        <p class="m-2 bg-light rounded-3 p-1 w-50 overflow-scroll">
-                            <span class="text-wrap d-block p-4">
-                                <strong>Продавец:</strong> {{ receipt.name_seller }}<br><br>
-                                <strong>Дата и время покупки:</strong> <br> {{ receipt.receipt_date }}<br>
-                            </span>
-                            {% for item in receipt.product_information %}
-                                <span class="d-block px-4 py-2">
+            {% for receipt in receipts %}
+            <div class="col-xs-6 overflow-scroll m-1 rounded-3 bg-light p-3" style="width: 300px; height: 500px;">
 
-                                    <strong>Наименование:</strong> <br> {{ item.0 }}<br>
-                                    <strong>Цена товара:</strong> {{ item.1 }}<br>
-                                    <strong>Количество:</strong> {{ item.2 }}<br>
-                                    <strong>Сумма:</strong> {{ item.3 }}<br>
+                    <strong>Продавец:</strong> {{ receipt.name_seller }}<br><br>
+                    <strong>Дата и время покупки:</strong> <br> {{ receipt.receipt_date }}<br><br>
+                {% for item in receipt.product_information %}
 
-                                </span>
-                            {% endfor %}
-                            <span class="d-block result px-4 pt-3">
-                                <strong>Итог по чеку:</strong> {{ receipt.total_sum }}<br>
-                            </span>
-                        </p>
-                    {% endfor %}
-                </div>
+                        <strong>Наименование:</strong> <br> {{ item.0 }}<br>
+                        <strong>Цена товара:</strong> {{ item.1 }}<br>
+                        <strong>Количество:</strong> {{ item.2 }}<br>
+                        <strong>Сумма:</strong> {{ item.3 }}<br><br>
+
+                {% endfor %}
+                <span class="d-block result px-4 pt-3">
+                    <strong>Итог по чеку:</strong> {{ receipt.total_sum }}<br>
+                </span>
+
             </div>
+{% endfor %}
         </div>
     </div>
 {% endblock %}
