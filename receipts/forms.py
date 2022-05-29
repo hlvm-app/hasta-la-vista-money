@@ -6,8 +6,10 @@ from receipts.models import Receipt
 
 
 class ReceiptsFilter(django_filters.FilterSet):
-    names_seller = Receipt.objects.values_list('name_seller', 'name_seller').distinct()
-    name_seller = filters.ChoiceFilter(label='Seller', choices=names_seller)
+    names_seller = Receipt.objects.values_list('name_seller',
+                                               'name_seller').distinct()
+    name_seller = filters.ChoiceFilter(label=gettext_lazy('Продавец'),
+                                       choices=names_seller)
 
     class Meta:
         model = Receipt
