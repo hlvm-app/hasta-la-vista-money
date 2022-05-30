@@ -10,12 +10,12 @@
         <div class="display-2 text-center pt-3 text-light">
             Hasta La Vista, Money :D
         </div>
-        <div class="row">
+        <div class="row ">
             <div class="col">
-                <form method="get">
+                <form class="text-light" method="get" >
                     {% csrf_token %}
-                    {% bootstrap_form filter.form %}
-                    {% bootstrap_button 'Search' button_type='submit' button_class='btn btn-outline-primary' %}
+                    {% bootstrap_form filter.form class='col' %}
+                    {% bootstrap_button 'Search' button_type='submit' button_class='btn btn-primary' %}
                 </form>
             </div>
         </div>
