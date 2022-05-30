@@ -14,7 +14,7 @@
             <div class="col">
                 <form class="text-light" method="get" >
                     {% csrf_token %}
-                    {% bootstrap_form filter.form class='col' %}
+                    {% bootstrap_form filter.form %}
                     {% bootstrap_button 'Search' button_type='submit' button_class='btn btn-primary' %}
                 </form>
             </div>
