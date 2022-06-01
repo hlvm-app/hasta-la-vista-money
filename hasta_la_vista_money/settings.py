@@ -112,14 +112,6 @@ DATABASES = {
     },
 }
 
-SQLITE_SETTINGS = {
-    'ENGINE': 'django.db.backends.sqlite3',
-    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-}
-
-if os.getenv('DB_ENGINE') == 'SQLite' or 'test' in sys.argv:
-    DATABASES['default'] = SQLITE_SETTINGS
-
 CONN_MAX_AGE = 500
 
 if os.getenv('DATABASE_URL'):
