@@ -15,3 +15,6 @@ test:
 
 test-coverage:
 		@poetry run coverage run manage.py test
+
+install:
+		@poetry install
