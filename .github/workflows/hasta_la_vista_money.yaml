@@ -18,7 +18,7 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_HOST: localhost
+          POSTGRES_HOST: 127.0.0.1
           POSTGRES_DB: test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
