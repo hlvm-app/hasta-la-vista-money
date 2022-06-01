@@ -28,6 +28,7 @@ urlpatterns = [
     path('login/', LoginUser.as_view(redirect_authenticated_user=True),
          name='login'),
     path('applications/', PageApplication.as_view(), name='applications'),
-    path('receipts/', ReceiptView.as_view(), name='receipts'),
+    path('receipts/', include('receipts.urls', namespace='receipts'),
+         name='receipts'),
     path('adminushka/', admin.site.urls),
 ]
