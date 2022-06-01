@@ -49,6 +49,11 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.COVERAGE_ID_APPLICATION }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          POSTGRES_HOST: ${{ secrets.DATABASE_HOST }}
+          POSTGRES_DB: ${{ secrets.DATABASE_NAME }}
+          POSTGRES_USER: ${{ secrets.DATABASE_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          POSTGRES_PORT: ${{ secrets.DATABASE_PORT }}
         with:
           coverageCommand: make coverage
           debug: true
