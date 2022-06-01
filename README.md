@@ -1,2 +1,4 @@
+[![Actions Status](https://github.com/TurtleOld/hasta-la-vista-money/workflows/hexlet-check/badge.svg)](https://github.com/TurtleOld/hasta-la-vista-money/actions)
+[![Maintainability](https://api.codeclimate.com/v1/badges/cbd04aad36a00366e9ca/maintainability)](https://codeclimate.com/github/TurtleOld/hasta-la-vista-money/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/cbd04aad36a00366e9ca/test_coverage)](https://codeclimate.com/github/TurtleOld/hasta-la-vista-money/test_coverage)
 # Проект домашней бухгалтерии - _Hasta La Vista, Money :D_
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/fa499b100eb548debf23c5b58dd7a47d)](https://www.codacy.com/gh/TurtleOld/hastalavistamoney/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=TurtleOld/hastalavistamoney&amp;utm_campaign=Badge_Grade)
