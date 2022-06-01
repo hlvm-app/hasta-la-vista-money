@@ -1,5 +1,5 @@
 lint:
-	    poetry run flake8 hasta_la_vista_money
+	    @poetry run flake8 hasta_la_vista_money users receipts bot --exclude=migrations
 
 dokku:
 		git push dokku main
@@ -12,3 +12,6 @@ start:
 
 test:
 		@poetry run python manage.py test
+
+test-coverage:
+		@poetry run coverage run manage.py test

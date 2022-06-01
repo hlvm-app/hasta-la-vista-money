@@ -25,5 +25,3 @@ class CreateUser(SuccessMessageMixin, CreateView):
         context['title'] = gettext('Форма регистрации')
         context['button_text'] = gettext('Регистрация')
         return context
-
-

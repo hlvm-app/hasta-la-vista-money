@@ -23,6 +23,7 @@ PyYAML = "^6.0"
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"
 Faker = "^13.7.0"
+coverage = "^6.4"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -1,8 +1,7 @@
-from django.shortcuts import render
 
 
 # Create your views here.
 def welcome_message() -> dict:
     return {
-        'text': f"Чек принят"
+        'text': 'Чек принят'
     }

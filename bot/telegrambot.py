@@ -40,5 +40,3 @@ def get_receipt(update: Update, context: CallbackContext):
 
     helpers.respond(context.bot, update.effective_chat.id,
                     bot.views.welcome_message())
-
-
