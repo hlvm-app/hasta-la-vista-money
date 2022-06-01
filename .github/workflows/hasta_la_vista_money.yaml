@@ -42,9 +42,9 @@ jobs:
           pip install poetry
           make install
 
-      - uses: harmon758/postgresql-action@v1
-        with:
-          postgresql version: '11'
+#      - uses: harmon758/postgresql-action@v1
+#        with:
+#          postgresql version: '11'
       - name: Run migrations
         run: python manage.py migrate
 
