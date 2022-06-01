@@ -1,0 +1,51 @@
+# This is a basic workflow to help you get started with Actions
+
+name: hasta-la-vista-money
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  - push
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.9.12'
+
+
+      # Runs a single command using the runners shell
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          make install
+
+      # Install falke8
+      - name: Install flake8
+        run: python -m pip install flake8
+
+      # Run the flake lint
+      - name: Flake8 action
+        uses: suo/flake8-github-action@v1
+
+      - name: Start linter
+        run: make lint
+
+      - name: Test & publish code coverage
+        uses: paambaati/codeclimate-action@v3.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.COVERAGE_ID_APPLICATION }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        with:
+          coverageCommand: make coverage
+          debug: true
