@@ -28,6 +28,6 @@ urlpatterns = [
          name='login'),
     path('applications/', PageApplication.as_view(), name='applications'),
     path('receipts/', include('receipts.urls', namespace='receipts'),
-         name='receipts'),
+         name='receipt'),
     path('adminushka/', admin.site.urls),
 ]
