@@ -1,7 +1,10 @@
 lint:
 	    @poetry run flake8 hasta_la_vista_money users receipts bot --exclude=migrations
 
-dokku:
+export-requirements:
+		@poetry export -f requirements.txt --output requirements.txt
+
+dokku: export-requirements
 		git push dokku main
 
 github:
