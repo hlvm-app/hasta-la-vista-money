@@ -35,8 +35,5 @@ def get_receipt(update: Update, context: CallbackContext):
             total_sum=total_sum
         )
 
-        for result in Receipt.objects.all().filter():
-            print(result.product_information)
-
     helpers.respond(context.bot, update.effective_chat.id,
-                    bot.views.welcome_message())
+                    bot.views.receipt_accepted())
