@@ -4,7 +4,7 @@ lint:
 export-requirements:
 		@poetry export -f requirements.txt --output requirements.txt --without-hashes
 
-dokku: export-requirements
+dokku:
 		git push dokku main
 
 github:
