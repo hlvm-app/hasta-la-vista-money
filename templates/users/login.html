@@ -17,7 +17,9 @@
                 </div>
             </div>
         </form>
-    <a href="{% url 'users:registration' %}">{% translate 'Регистрация' %}</a>
+        {% if is_authenticated %}
+            <a href="{% url 'users:registration' %}">{% translate 'Регистрация' %}</a>
+        {% endif %}
     </div>
 
 {% endblock %}
