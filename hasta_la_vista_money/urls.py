@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 
-from hasta_la_vista_money.views import LoginUser
+from users.views import LoginUser
+
 
 urlpatterns = [
     re_path(r'users/',
@@ -25,9 +26,9 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('login/', LoginUser.as_view(redirect_authenticated_user=True),
          name='login'),
-    path('applications/', TemplateView.as_view(
-        template_name='hasta_la_vista_money/page_application.html'),
-        name='applications'),
+    path('applications/', include('applications.urls',
+                                  namespace='applications'),
+         name='applications'),
     path('receipts/', include('receipts.urls', namespace='receipts'),
          name='receipt'),
     path('adminushka/', admin.site.urls),
