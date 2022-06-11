@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'hasta_la_vista_money',
     'users',
     'receipts',
+    'applications',
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -198,6 +199,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ROLLBAR = {
     'access_token': os.environ.get('ACCESS_TOKEN'),
     'environment': 'development' if DEBUG else 'production',
+    'patch_debugview': False,
     'root': BASE_DIR,
 }
 import rollbar # noqa 402
