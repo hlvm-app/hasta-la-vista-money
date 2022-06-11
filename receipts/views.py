@@ -15,6 +15,7 @@ class ReceiptView(LoginRequiredMixin, SuccessMessageMixin, FilterView):
     model = Receipt
     template_name = 'receipts/receipts.html'
     context_object_name = 'receipts'
+    ordering = ['-receipt_date']
     filterset_class = ReceiptsFilter
     filter_backends = (filters.DjangoFilterBackend,)
 
