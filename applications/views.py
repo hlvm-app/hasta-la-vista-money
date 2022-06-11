@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
 from django.utils.translation import gettext_lazy
-from django.views.generic import ListView, TemplateView
+from django.views.generic import TemplateView
 
 
 class PageApplication(LoginRequiredMixin,
