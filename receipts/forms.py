@@ -15,10 +15,3 @@ class ReceiptsFilter(django_filters.FilterSet):
     class Meta:
         model = Receipt
         fields = ('name_seller', 'receipt_date')
-
-
-class AddReceiptForm(ModelForm):
-    class Meta:
-        model = Receipt
-        fields = ('receipt_date', 'name_seller', 'product_information',
-                  'total_sum')

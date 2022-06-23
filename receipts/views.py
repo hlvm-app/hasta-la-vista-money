@@ -2,13 +2,11 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy
-from django.views.generic import FormView
 from django_filters.views import FilterView
 from django_filters import rest_framework as filters
 
-from receipts.forms import ReceiptsFilter, AddReceiptForm
+from receipts.forms import ReceiptsFilter
 from receipts.models import Receipt
 
 
@@ -27,10 +25,3 @@ class ReceiptView(LoginRequiredMixin, SuccessMessageMixin, FilterView):
     def handle_no_permission(self):
         messages.error(self.request, self.error_message)
         return redirect(self.no_permission_url)
-
-
-class AddReceiptView(LoginRequiredMixin, FormView):
-    model = Receipt
-    form_class = AddReceiptForm
-    template_name = 'receipts/add_receipt.html'
-    success_url = reverse_lazy('receipts:list')
