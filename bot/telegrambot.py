@@ -17,7 +17,8 @@ bot_admin = telebot.TeleBot(token, parse_mode='html')
 def get_receipt(message):
     try:
         file_info = bot_admin.get_file(message.document.file_id)
-        file_downloaded = bot_admin.download_file(file_path=file_info.file_path)
+        file_downloaded = bot_admin.download_file(
+            file_path=file_info.file_path)
         src = f'bot/receipts/{message.document.file_name}'
         with open(src, 'wb') as file:
             file.write(file_downloaded)
