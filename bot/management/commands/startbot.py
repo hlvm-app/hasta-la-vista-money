@@ -1,8 +1,6 @@
 from django.core.management import BaseCommand
 import os
-from telegram.ext import Updater, MessageHandler, Filters
-
-from bot.telegrambot import get_receipt
+from bot.telegrambot import bot_admin
 
 TOKEN = os.environ.get('TOKEN_TELEGRAM_BOT')
 
@@ -10,14 +8,5 @@ TOKEN = os.environ.get('TOKEN_TELEGRAM_BOT')
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        updater = Updater(token=TOKEN, use_context=True)
-        dispatcher = updater.dispatcher
+        bot_admin.polling(none_stop=True)
 
-        dispatcher.add_handler(
-            MessageHandler(
-                Filters.document.mime_type('application/json'), get_receipt
-            )
-        )
-
-        updater.start_polling()
-        updater.idle()
