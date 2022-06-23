@@ -1,5 +1,4 @@
 import django_filters
-from django.forms import ModelForm
 from django.utils.translation import gettext_lazy
 
 from receipts.models import Receipt

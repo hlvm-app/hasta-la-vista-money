@@ -34,7 +34,8 @@ def get_receipt(message):
                 price = str(get_result_price(item["price"]))
                 quantity = str(item["quantity"])
                 amount = str(get_result_price(item["sum"]))
-                list_product_information = [name_product, price, quantity, amount]
+                list_product_information = [name_product, price, quantity,
+                                            amount]
                 information_products.append(list_product_information)
 
             Receipt.objects.get_or_create(

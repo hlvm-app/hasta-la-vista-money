@@ -9,4 +9,3 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         bot_admin.polling(none_stop=True)
-
