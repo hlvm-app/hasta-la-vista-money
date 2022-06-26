@@ -1,6 +1,6 @@
 from django.core.management import BaseCommand
 import os
-from bot.telegrambot import bot_admin
+from bot.settings_bot import bot_admin
 
 TOKEN = os.environ.get('TOKEN_TELEGRAM_BOT')
 
