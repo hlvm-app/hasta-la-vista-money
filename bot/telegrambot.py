@@ -1,18 +1,19 @@
 import json
 
-from bot.services import convert_date_time, get_result_price, remove_json_file
-from receipts.models import Receipt
+from services import convert_date_time, get_result_price, remove_json_file
 from settings_bot import bot_admin
+from receipts.models import Receipt
 
 
 @bot_admin.message_handler(func=lambda message: message.document.mime_type ==
-                                                'application/json',
+                           'application/json',
                            content_types=['document'])
 def get_receipt(message):
     try:
         file_info = bot_admin.get_file(message.document.file_id)
         file_downloaded = bot_admin.download_file(
-            file_path=file_info.file_path)
+            file_path=file_info.file_path
+        )
         src = f'bot/receipts/{message.document.file_name}'
         with open(src, 'wb') as file:
             file.write(file_downloaded)
@@ -45,5 +46,3 @@ def get_receipt(message):
         bot_admin.send_message(message.chat.id, f'Чек не был добавлен!\n'
                                                 f'Произошла ошибка!\n'
                                                 f'{error}')
-
-
