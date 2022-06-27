@@ -1,39 +1,13 @@
-from settings_bot import bot_admin
-from markup import markup
+import os
+
+import telebot
 from receipts.models import Receipt
 
-
-@bot_admin.message_handler(commands=['add'])
-def add_receipt(message):
-    text = message.text
-    if text == '/add':
-        bot_admin.send_message(message.chat.id, 'Выберите действие:',
-                               reply_markup=markup())
+token = os.environ.get('TOKEN_TELEGRAM_BOT')
+bot_admin = telebot.TeleBot(token, parse_mode='html')
 
 
 result = []
-
-
-@bot_admin.callback_query_handler(func=lambda call: True)
-def callback(call):
-    data = call.data
-    message = call.message
-    if data == 'date':
-        bot_admin.send_message(message.chat.id, 'Введи дату')
-        bot_admin.register_next_step_handler(message, get_receipt_date)
-    if data == 'seller':
-        bot_admin.send_message(message.chat.id, 'Введи имя продавца')
-        bot_admin.register_next_step_handler(message, get_receipt_seller)
-    if data == 'total':
-        bot_admin.send_message(message.chat.id, 'Введи итоговую сумму чека')
-        bot_admin.register_next_step_handler(message, get_receipt_total)
-    if data == 'products':
-        bot_admin.send_message(message.chat.id, 'Введи информацию о продуктах')
-        bot_admin.register_next_step_handler(message, get_receipt_products)
-    if data == 'result':
-        bot_admin.send_message(message.chat.id,
-                               'Чек будет добавлен в базу данных!')
-        add_result_db(message)
 
 
 def get_receipt_date(message):

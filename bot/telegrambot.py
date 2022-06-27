@@ -1,8 +1,14 @@
 import json
-
-from services import convert_date_time, get_result_price, remove_json_file
-from settings_bot import bot_admin
+from bot.add_receipt import get_receipt_date, get_receipt_total, \
+    get_receipt_products, get_receipt_seller, add_result_db
+from bot.markup import markup
+from bot.services import convert_date_time, get_result_price, remove_json_file
 from receipts.models import Receipt
+import os
+import telebot
+
+token = os.environ.get('TOKEN_TELEGRAM_BOT')
+bot_admin = telebot.TeleBot(token, parse_mode='html')
 
 
 @bot_admin.message_handler(func=lambda message: message.document.mime_type ==
@@ -46,3 +52,33 @@ def get_receipt(message):
         bot_admin.send_message(message.chat.id, f'Чек не был добавлен!\n'
                                                 f'Произошла ошибка!\n'
                                                 f'{error}')
+
+
+@bot_admin.message_handler(commands=['add'])
+def add_receipt(message):
+    text = message.text
+    if text == '/add':
+        bot_admin.send_message(message.chat.id, 'Выберите действие:',
+                               reply_markup=markup())
+
+
+@bot_admin.callback_query_handler(func=lambda call: True)
+def callback_add_receipt(call):
+    data = call.data
+    message = call.message
+    if data == 'date':
+        bot_admin.send_message(message.chat.id, 'Введи дату')
+        bot_admin.register_next_step_handler(message, get_receipt_date)
+    if data == 'seller':
+        bot_admin.send_message(message.chat.id, 'Введи имя продавца')
+        bot_admin.register_next_step_handler(message, get_receipt_seller)
+    if data == 'total':
+        bot_admin.send_message(message.chat.id, 'Введи итоговую сумму чека')
+        bot_admin.register_next_step_handler(message, get_receipt_total)
+    if data == 'products':
+        bot_admin.send_message(message.chat.id, 'Введи информацию о продуктах')
+        bot_admin.register_next_step_handler(message, get_receipt_products)
+    if data == 'result':
+        bot_admin.send_message(message.chat.id,
+                               'Чек будет добавлен в базу данных!')
+        add_result_db(message)

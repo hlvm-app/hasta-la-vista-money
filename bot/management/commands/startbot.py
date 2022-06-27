@@ -1,5 +1,5 @@
 from django.core.management import BaseCommand
-from bot.settings_bot import bot_admin
+from bot.telegrambot import bot_admin
 
 
 class Command(BaseCommand):
