@@ -20,7 +20,7 @@ def get_receipt(message):
         file_downloaded = bot_admin.download_file(
             file_path=file_info.file_path
         )
-        src = f'bot/receipts/{message.document.file_name}'
+        src = f'bot/receipt/{message.document.file_name}'
         with open(src, 'wb') as file:
             file.write(file_downloaded)
 
@@ -47,7 +47,7 @@ def get_receipt(message):
                 total_sum=total_sum
             )
             bot_admin.send_message(message.chat.id, 'Чек принят!')
-        remove_json_file(src)
+        remove_json_file('bot/receipt/')
     except Exception as error:
         bot_admin.send_message(message.chat.id, f'Чек не был добавлен!\n'
                                                 f'Произошла ошибка!\n'
