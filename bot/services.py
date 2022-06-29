@@ -15,4 +15,4 @@ def get_result_price(price):
 def remove_json_file(path):
     list_dir = os.listdir(path)
     for file in list_dir:
-        return os.remove(f'bot/receipt/{file}')
+        return os.remove(os.path.join(path, file))
