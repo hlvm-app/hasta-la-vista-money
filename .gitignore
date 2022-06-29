@@ -210,7 +210,4 @@ ENV/
 /site
 
 
-# custom ignore
-bot/receipt/*
-
 # End of https://www.gitignore.io/api/macos,linux,django,python,pycharm
