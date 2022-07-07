@@ -1,4 +1,7 @@
 import json
+import logging
+import datetime
+
 from bot.add_receipt import get_receipt_date, get_receipt_total, \
     get_receipt_products, get_receipt_seller, add_result_db
 from bot.markup import markup
@@ -9,6 +12,25 @@ import telebot
 
 token = os.environ.get('TOKEN_TELEGRAM_BOT')
 bot_admin = telebot.TeleBot(token, parse_mode='html')
+id_group_user = os.environ.get('ID_GROUP_USER')
+
+
+logger = logging.getLogger(__name__)
+
+
+class TelegramLogsHandler(logging.Handler):
+
+    def __init__(self, tg_bot, chat_id):
+        super().__init__()
+        self.chat_id = chat_id
+        self.tg_bot = tg_bot
+
+    def emit(self, record):
+        log_entry = self.format(record)
+        self.tg_bot.send_message(chat_id=self.chat_id, text=log_entry)
+
+
+logger.addHandler(TelegramLogsHandler(bot_admin, id_group_user))
 
 
 @bot_admin.message_handler(func=lambda message: message.document.mime_type ==
@@ -48,10 +70,24 @@ def get_receipt(message):
             )
             bot_admin.send_message(message.chat.id, 'Чек принят!')
         remove_json_file('bot/receipt/')
+    except FileNotFoundError as error:
+        logger.error(f'{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+                     f'произошла ошибка: {error}. Файл json не удалился')
+    except json.decoder.JSONDecodeError as error:
+        logger.error(f'{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+                     f'произошла ошибка JSON файла: {error}')
     except Exception as error:
-        bot_admin.send_message(message.chat.id, f'Чек не был добавлен!\n'
-                                                f'Произошла ошибка!\n'
-                                                f'{error}')
+        logger.error(f'{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+                     f'произошла ошибка: {error}')
+
+
+@bot_admin.message_handler(func=lambda message: message.document.mime_type !=
+                           'application/json',
+                           content_types=['document'])
+def not_json_file(message):
+    if message.document.mime_type != 'application/json':
+        bot_admin.send_message(message.chat.id,
+                               'Файл должен быть только в формате JSON!')
 
 
 @bot_admin.message_handler(commands=['add'])
