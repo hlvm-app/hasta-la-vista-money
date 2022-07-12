@@ -5,7 +5,7 @@ import datetime
 from bot.add_receipt import get_receipt_date, get_receipt_total, \
     get_receipt_products, get_receipt_seller, add_result_db
 from bot.markup import markup
-from bot.services import convert_date_time, get_result_price, remove_json_file
+from bot.services import remove_json_file, parse_json_file
 from receipts.models import Receipt
 import os
 import telebot
@@ -48,27 +48,15 @@ def get_receipt(message):
 
         with open(file.name, 'r') as json_file:
             json_data = json.load(json_file)
-            date_time = convert_date_time(json_data["dateTime"])
-            seller = json_data['user']
-            total_sum = str(get_result_price(json_data["totalSum"]))
-            information_products = []
-
-            for item in json_data["items"]:
-                name_product = item["name"]
-                price = str(get_result_price(item["price"]))
-                quantity = str(item["quantity"])
-                amount = str(get_result_price(item["sum"]))
-                list_product_information = [name_product, price, quantity,
-                                            amount]
-                information_products.append(list_product_information)
 
             Receipt.objects.get_or_create(
-                receipt_date=date_time,
-                name_seller=seller,
-                product_information=information_products,
-                total_sum=total_sum
+                receipt_date=parse_json_file(json_data)[0],
+                name_seller=parse_json_file(json_data)[1],
+                product_information=parse_json_file(json_data)[3],
+                total_sum=parse_json_file(json_data)[2]
             )
             bot_admin.send_message(message.chat.id, 'Чек принят!')
+
         remove_json_file('bot/receipt/')
     except FileNotFoundError as error:
         logger.error(f'{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
