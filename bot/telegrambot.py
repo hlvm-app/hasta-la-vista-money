@@ -14,7 +14,6 @@ token = os.environ.get('TOKEN_TELEGRAM_BOT')
 bot_admin = telebot.TeleBot(token, parse_mode='html')
 id_group_user = os.environ.get('ID_GROUP_USER')
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -34,7 +33,7 @@ logger.addHandler(TelegramLogsHandler(bot_admin, id_group_user))
 
 
 @bot_admin.message_handler(func=lambda message: message.document.mime_type ==
-                           'application/json',
+                                                'application/json',
                            content_types=['document'])
 def get_receipt(message):
     try:
@@ -59,18 +58,24 @@ def get_receipt(message):
 
         remove_json_file('bot/receipt/')
     except FileNotFoundError as error:
-        logger.error(f'{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-                     f'произошла ошибка: {error}. Файл json не удалился')
+        logger.error(
+            f'{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+            f'произошла ошибка: {error}. Файл json не удалился'
+        )
     except json.decoder.JSONDecodeError as error:
-        logger.error(f'{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-                     f'произошла ошибка JSON файла: {error}')
+        logger.error(
+            f'{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+            f'произошла ошибка JSON файла: {error}'
+        )
     except Exception as error:
-        logger.error(f'{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
-                     f'произошла ошибка: {error}')
+        logger.error(
+            f'{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")} '
+            f'произошла ошибка: {error}'
+        )
 
 
 @bot_admin.message_handler(func=lambda message: message.document.mime_type !=
-                           'application/json',
+                                                'application/json',
                            content_types=['document'])
 def not_json_file(message):
     if message.document.mime_type != 'application/json':
