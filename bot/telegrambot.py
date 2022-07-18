@@ -33,7 +33,7 @@ logger.addHandler(TelegramLogsHandler(bot_admin, id_group_user))
 
 
 @bot_admin.message_handler(func=lambda message: message.document.mime_type ==
-                                                'application/json',
+                           'application/json',
                            content_types=['document'])
 def get_receipt(message):
     try:
@@ -75,7 +75,7 @@ def get_receipt(message):
 
 
 @bot_admin.message_handler(func=lambda message: message.document.mime_type !=
-                                                'application/json',
+                           'application/json',
                            content_types=['document'])
 def not_json_file(message):
     if message.document.mime_type != 'application/json':
