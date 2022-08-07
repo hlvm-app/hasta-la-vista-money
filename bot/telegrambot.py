@@ -51,7 +51,10 @@ def get_receipt(message):
             Receipt.objects.get_or_create(
                 receipt_date=parse_json_file(json_data)[0],
                 name_seller=parse_json_file(json_data)[1],
-                product_information=parse_json_file(json_data)[3],
+                retail_place_address=parse_json_file(json_data)[3],
+                operation_type=parse_json_file(json_data)[4],
+                retail_place=parse_json_file(json_data)[5],
+                product_information=parse_json_file(json_data)[6],
                 total_sum=parse_json_file(json_data)[2]
             )
             bot_admin.send_message(message.chat.id, 'Чек принят!')
