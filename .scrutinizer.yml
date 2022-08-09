@@ -4,8 +4,8 @@ checks:
         duplicate_code: true
 build:
     dependencies:
-      override:
-        - 'true'
+        override:
+            - 'true'
     nodes:
         analysis:
             project_setup:
