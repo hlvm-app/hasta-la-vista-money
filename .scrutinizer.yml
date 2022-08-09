@@ -3,6 +3,9 @@ checks:
         code_rating: true
         duplicate_code: true
 build:
+    dependencies:
+      override:
+        - 'true'
     nodes:
         analysis:
             project_setup:
