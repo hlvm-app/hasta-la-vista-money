@@ -8,7 +8,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.9"
+python = ">=3.9,<4"
 python-dotenv = ">=0.20.0"
 dj-database-url = ">=1.0.0"
 django-bootstrap5 = ">=22.1"
@@ -20,6 +20,7 @@ PyYAML = ">=6.0"
 rollbar = ">=0.16.2"
 pyTelegramBotAPI = ">=4.6.0"
 django = ">=4.1"
+urllib3 = "^1.26.11"
 
 [tool.poetry.dev-dependencies]
 flake8 = ">=4.0.1"
