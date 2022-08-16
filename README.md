@@ -2,7 +2,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/cbd04aad36a00366e9ca/maintainability)](https://codeclimate.com/github/TurtleOld/hasta-la-vista-money/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/cbd04aad36a00366e9ca/test_coverage)](https://codeclimate.com/github/TurtleOld/hasta-la-vista-money/test_coverage)  
 
-English version is available by link 
+English version is available by [link](README_ENG.md)
 
 # Проект домашней бухгалтерии "_Hasta La Vista, Money"_.
 
