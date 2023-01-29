@@ -98,19 +98,18 @@ def add_receipt(message):
 def callback_add_receipt(call):
     data = call.data
     message = call.message
-    if data == 'date':
-        bot_admin.send_message(message.chat.id, 'Введи дату')
-        bot_admin.register_next_step_handler(message, get_receipt_date)
-    if data == 'seller':
-        bot_admin.send_message(message.chat.id, 'Введи имя продавца')
-        bot_admin.register_next_step_handler(message, get_receipt_seller)
-    if data == 'total':
-        bot_admin.send_message(message.chat.id, 'Введи итоговую сумму чека')
-        bot_admin.register_next_step_handler(message, get_receipt_total)
-    if data == 'products':
-        bot_admin.send_message(message.chat.id, 'Введи информацию о продуктах')
-        bot_admin.register_next_step_handler(message, get_receipt_products)
-    if data == 'result':
-        bot_admin.send_message(message.chat.id,
-                               'Чек будет добавлен в базу данных!')
+    handlers = {
+        'date': ('Введи дату', get_receipt_date),
+        'seller': ('Введи имя продавца', get_receipt_seller),
+        'total': ('Введи итоговую сумму чека', get_receipt_total),
+        'products': ('Введи информацию о продуктах', get_receipt_products),
+    }
+    result = {
+        'result': 'Чек будет добавлен в базу данных!',
+    }
+    if data in handlers:
+        bot_admin.send_message(message.chat.id, handlers[data][0])
+        bot_admin.register_next_step_handler(message, handlers[data][1])
+    if data in result:
+        bot_admin.send_message(message.chat.id, result[data])
         add_result_db(message)
