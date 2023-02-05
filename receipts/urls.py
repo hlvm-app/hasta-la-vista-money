@@ -1,8 +1,8 @@
 from django.urls import path
 
-from receipts.views import ReceiptView
+from receipts.views import receipt_view
 
-app_name = 'receipts'
+app_name = 'customers'
 urlpatterns = [
-    path('', ReceiptView.as_view(), name='list'),
+    path('', receipt_view, name='list'),
 ]
