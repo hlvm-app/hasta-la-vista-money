@@ -1,0 +1,20 @@
+.receipt {
+    overflow: scroll;
+    border: 1px solid black;
+    padding: 10px;
+    border-radius: 50%;
+    height: 16rem
+
+}
+
+table th:first-child {
+     width: 50rem;
+}
+
+table th:nth-child(2) {
+    width: 10rem;
+}
+
+table th:nth-child(3) {
+    width: 10rem;
+}

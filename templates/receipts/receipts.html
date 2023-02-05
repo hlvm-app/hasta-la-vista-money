@@ -4,6 +4,7 @@
 {% load static %}
 
 
+
 {% block content %}
     <title>Hasta La Vista, Money :D</title>
     <div class="container">
@@ -14,38 +15,38 @@
         <div class="row mt-5 justify-content-center">
 
         {% for receipt in receipts %}
-            <div class="overflow-scroll bg-light rounded-3 m-1" style="border: 1px solid black; padding: 10px; border-radius: 50%; height: 230px">
-                <form action="" method="post">
+            <div class="receipt bg-light rounded-3 m-1">
+                <form class="remove-button"  action="" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="receipt_id" value="{{ receipt.id }}">
-                    <button type="submit" name="delete_button">Удалить</button>
+                    <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить этот чек?');" name="delete_button">Удалить</button>
                 </form>
-            <table>
-              <thead>
-                  <tr style="height: 5rem">
-                      <th style="width: 50rem"><h4>Продавец: {{ receipt.customer.name_seller }}</h4></th>
-                      <th style="width: 10rem">Дата и время: {{ receipt.receipt_date | date:"d.m.Y H:i" }}</th>
-                      <th style="width: 10rem">Итоговая сумма: {{ receipt.total_sum }}</th>
-                  </tr>
-                <tr>
-                  <th style="width: 50rem">Наименование товара</th>
-                  <th style="width: 10rem">Цена</th>
-                  <th style="width: 10rem">Количество</th>
-                  <th>Сумма</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for product in receipt.product.all %}
-                <tr>
-                  <td>{{ product.product_name }}</td>
-                  <td>{{ product.price }}</td>
-                  <td>{{ product.quantity }}</td>
-                  <td>{{ product.amount }}</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-        </div>
+                <table>
+                  <thead>
+                      <tr>
+                          <th><h4>Продавец: {{ receipt.customer.name_seller }}</h4></th>
+                          <th>Дата и время: {{ receipt.receipt_date | date:"d.m.Y H:i" }}</th>
+                          <th>Итоговая сумма: {{ receipt.total_sum }}</th>
+                      </tr>
+                      <tr>
+                          <th>Наименование товара</th>
+                          <th>Цена</th>
+                          <th>Количество</th>
+                          <th>Сумма</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    {% for product in receipt.product.all %}
+                    <tr>
+                      <td>{{ product.product_name }}</td>
+                      <td>{{ product.price }}</td>
+                      <td>{{ product.quantity }}</td>
+                      <td>{{ product.amount }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+            </div>
 
         {% endfor %}
         </div>
