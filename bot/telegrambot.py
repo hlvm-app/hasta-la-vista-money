@@ -172,7 +172,8 @@ def add_receipt(message):
 #             print(values)
 #
 #
-# @bot_admin.callback_query_handler(func=lambda call: call.data == 'fill_values')
+# @bot_admin.callback_query_handler(func=lambda call:
+# call.data == 'fill_values')
 # def callback_fill_values(call):
 #     # Ask the user to fill in the values
 #     bot_admin.send_message(chat_id=call.message.chat.id,
