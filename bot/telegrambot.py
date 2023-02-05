@@ -63,13 +63,19 @@ def get_receipt(message):
 
             products = []
             for item in json_data['items']:
+                product_name = item.get('name', 'Нет данных')
+                price = convert_price(item.get('price', 0))
+                quantity = item.get('quantity', 0)
+                amount = convert_price(item.get('sum', 0))
+                nds_type = item.get('nds', -1)
+                nds_sum = item.get('ndsSum', 0)
                 goods = Product.objects.create(
-                    product_name=item['name'],
-                    price=convert_price(item['price']),
-                    quantity=item['quantity'],
-                    amount=convert_price(item['sum']),
-                    nds_type=item['nds'],
-                    nds_sum=item['ndsSum']
+                    product_name=product_name,
+                    price=price,
+                    quantity=quantity,
+                    amount=amount,
+                    nds_type=nds_type,
+                    nds_sum=nds_sum
                 )
                 products.append(goods)
             receipt.product.set(products)
