@@ -82,7 +82,7 @@ def get_receipt(message):
 
             bot_admin.send_message(message.chat.id, 'Чек принят!')
 
-        remove_json_file('bot/receipt/')
+        remove_json_file(src)
 
     except FileNotFoundError as error:
         logger.error(

@@ -1,8 +1,6 @@
 import datetime
 import os
 
-from bot.telegrambot import logger
-
 
 # Выделяем дату из json
 def convert_date_time(date_time):
@@ -14,11 +12,8 @@ def convert_price(price):
     return round(price / 100, 2)
 
 
-def remove_json_file(path):
-    list_dir = os.listdir(path)
-    logger.error(list_dir)
-    for file in list_dir:
-        return os.remove(os.path.join(path, file))
+def remove_json_file(file):
+    return os.remove(file)
 
 
 def parse_json_file(json_data):
