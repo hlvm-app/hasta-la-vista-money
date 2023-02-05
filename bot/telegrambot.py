@@ -68,6 +68,8 @@ def get_receipt(message):
                     price=convert_price(item['price']),
                     quantity=item['quantity'],
                     amount=convert_price(item['sum']),
+                    nds_type=item['nds'],
+                    nds_sum=item['ndsSum']
                 )
                 products.append(goods)
             receipt.product.set(products)
@@ -94,7 +96,7 @@ def get_receipt(message):
 
 
 @bot_admin.message_handler(func=lambda message: message.document.mime_type !=
-                                                'application/json',
+                           'application/json',
                            content_types=['document'])
 def not_json_file(message):
     if message.document.mime_type != 'application/json':
