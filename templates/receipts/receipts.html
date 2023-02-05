@@ -15,7 +15,11 @@
 
         {% for receipt in receipts %}
             <div class="overflow-scroll bg-light rounded-3 m-1" style="border: 1px solid black; padding: 10px; border-radius: 50%; height: 230px">
-
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="receipt_id" value="{{ receipt.id }}">
+                    <button type="submit" name="delete_button">Delete</button>
+                </form>
             <table>
               <thead>
                   <tr style="height: 5rem">
