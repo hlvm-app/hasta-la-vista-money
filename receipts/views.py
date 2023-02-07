@@ -14,11 +14,11 @@ class ReceiptView(ListView, LoginRequiredMixin, SuccessMessageMixin):
     error_message = gettext_lazy('У вас нет прав на просмотр данной страницы! '
                                  'Авторизуйтесь!')
     no_permission_url = reverse_lazy('login')
-    
+
     def get(self, request):
         receipts = Receipt.objects.all()
         return render(request, self.template_name, {'receipts': receipts})
-    
+
     def post(self, request):
         if 'delete_button' in request.POST:
             receipt_id = request.POST.get('receipt_id')
@@ -28,8 +28,7 @@ class ReceiptView(ListView, LoginRequiredMixin, SuccessMessageMixin):
             receipt.customer.delete()
             receipt.delete()
         return self.get(request)
-    
-    
+
 # def receipt_view(request):
 #     receipts = Receipt.objects.all()
 #     if request.method == "POST" and 'delete_button' in request.POST:
