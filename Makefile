@@ -1,8 +1,27 @@
 lint:
-	    @poetry run flake8 hasta_la_vista_money users receipts bot --exclude=migrations
+	    	@poetry run flake8 hasta_la_vista_money users receipts bot --exclude=migrations
 
 export-requirements:
 		@poetry export -f requirements.txt --output requirements.txt --without-hashes
+
+transprepare:
+		@poetry run django-admin makemessages
+
+transcompile:
+		@poetry run django-admin compilemessages
+
+.env:
+		@test ! -f .env && cp .env.example .env
+
+migrate:
+		@poetry run python manage.py migrate
+		
+install: .env
+		@poetry install
+		
+setup: migrate transcompile
+		@echo Create a super user
+		@poetry run python manage.py createsuperuser
 
 dokku:
 		git push dokku main
@@ -10,8 +29,11 @@ dokku:
 github:
 		git push origin main
 
-start:
+start: setup 
 		@poetry run python manage.py runserver
+		
+secretkey:
+		@poetry run python -c 'from django.utils.crypto import get_random_string; print(get_random_string(40))'
 
 test:
 		@poetry run python manage.py test
@@ -21,5 +43,3 @@ coverage:
 		@poetry run coverage xml
 		@poetry run coverage report
 
-install:
-		@poetry install
