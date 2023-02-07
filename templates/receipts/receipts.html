@@ -16,11 +16,19 @@
 
         {% for receipt in receipts %}
             <div class="receipt bg-light rounded-3 m-1">
-                <form class="remove-button"  action="" method="post">
+                <form  action="" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="receipt_id" value="{{ receipt.id }}">
-                    <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить этот чек?');" name="delete_button">Удалить</button>
+
+                        <button class="remove-button" type="submit" onclick="return confirm('Вы уверены, что хотите удалить этот чек?');" name="delete_button">
+                            <span class="top"></span>
+                            <span class="bot"></span>
+                        </button>
+                        <span class="top"></span>
+                        <span class="bot"></span>
+
                 </form>
+
                 <table>
                   <thead>
                       <tr>
