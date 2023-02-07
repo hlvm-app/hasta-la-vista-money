@@ -16,7 +16,7 @@ class ReceiptView(ListView, LoginRequiredMixin, SuccessMessageMixin):
     
     def get(self, request):
         receipts = Receipt.objects.all()
-        return render(request, self.template_name, {'receipts': receipts}).
+        return render(request, self.template_name, {'receipts': receipts})
     
     def post(self, request):
         if 'delete_button' in request.POST:
