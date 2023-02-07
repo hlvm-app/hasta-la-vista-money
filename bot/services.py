@@ -11,10 +11,6 @@ def convert_price(price):
     return round(price / 100, 2)
 
 
-def remove_json_file(file):
-    return os.remove(file)
-
-
 def parse_json_file(json_data):
     date_time = convert_date_time(json_data.get('dateTime', 'Нет данных'))
     seller = json_data.get('user', 'Нет данных')
