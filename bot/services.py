@@ -1,5 +1,4 @@
 import datetime
-import os
 
 
 # Выделяем дату из json
