@@ -5,7 +5,7 @@ import datetime
 # from bot.add_receipt import get_receipt_date, get_receipt_total, \
 #     get_receipt_products, get_receipt_seller, add_result_db
 from bot.markup import markup
-from bot.services import remove_json_file, parse_json_file, convert_price
+from bot.services import parse_json_file, convert_price
 from receipts.models import Customer, Receipt, Product
 import os
 import telebot
