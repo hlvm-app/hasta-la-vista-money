@@ -86,17 +86,17 @@ def get_receipt(message):
 
     except FileNotFoundError as error:
         logger.error(
-            f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S} произошла ошибка: 
+            f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S} произошла ошибка: '
             f'{error}. Файл json не удалился'
         )
     except json.decoder.JSONDecodeError as error:
         logger.error(
-            f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S} произошла ошибка 
+            f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S} произошла ошибка '
             f'JSON файла: {error}'
         )
     except Exception as error:
         logger.error(
-            f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S} произошла ошибка: 
+            f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S} произошла ошибка: '
             f'{error}'
         )
 
