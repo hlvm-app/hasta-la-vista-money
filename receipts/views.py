@@ -1,16 +1,17 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic import ListView
+from django.views import View
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy
 
 from .models import Receipt
 
 
-class ReceiptView(ListView, LoginRequiredMixin, SuccessMessageMixin):
+class ReceiptView(LoginRequiredMixin, View, SuccessMessageMixin):
     template_name = 'receipts/receipts.html'
     model = Receipt
+    context_object_name = 'receipts'
     error_message = gettext_lazy('У вас нет прав на просмотр данной страницы! '
                                  'Авторизуйтесь!')
     no_permission_url = reverse_lazy('login')
