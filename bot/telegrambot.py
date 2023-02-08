@@ -6,7 +6,7 @@ import datetime
 #     get_receipt_products, get_receipt_seller, add_result_db
 from bot.markup import markup
 from bot.services import parse_json_file, convert_price
-from receipts.models import Customer, Receipt, Product
+from hasta_la_vista_money.receipts.models import Customer, Receipt, Product
 import os
 import telebot
 
