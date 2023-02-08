@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class ApplicationsConfig(AppConfig):
+class UsersConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'applications'
+    name = 'hasta_la_vista_money.users'

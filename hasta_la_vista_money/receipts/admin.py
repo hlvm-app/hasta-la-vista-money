@@ -1,5 +1,5 @@
 from django.contrib import admin
-from receipts.models import Customer, Receipt, Product
+from hasta_la_vista_money.receipts.models import Customer, Receipt, Product
 
 
 admin.site.register(Customer)

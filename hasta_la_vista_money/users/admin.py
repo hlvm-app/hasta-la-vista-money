@@ -1,5 +1,5 @@
 from django.contrib import admin
-from users.models import User
+from hasta_la_vista_money.users.models import User
 
 
 admin.site.register(User)

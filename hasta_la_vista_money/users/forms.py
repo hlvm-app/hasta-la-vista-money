@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from users.models import User
+from hasta_la_vista_money.users.models import User
 
 
 class UserLoginForm(AuthenticationForm):

@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse_lazy
 
-from receipts.models import Receipt
-from users.models import User
+from hasta_la_vista_money.receipts.models import Receipt
+from hasta_la_vista_money.users.models import User
 
 
 class TestReceipt(TestCase):

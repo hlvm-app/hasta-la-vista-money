@@ -51,9 +51,10 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'bot',
     'hasta_la_vista_money',
-    'users',
-    'receipts',
-    'applications',
+    'hasta_la_vista_money.users',
+    'hasta_la_vista_money.receipts',
+    'hasta_la_vista_money.applications',
+    'hasta_la_vista_money.income',
 ]
 
 AUTH_USER_MODEL = 'users.User'

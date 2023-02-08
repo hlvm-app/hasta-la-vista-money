@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load django_bootstrap5 %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <form method='post'>
+                    {% csrf_token %}
+                    {{ form }}
+                    <button name='income' type="submit">Добавить</button>
+                </form>
+                {% for income in incomes %}
+                    <span>{{ income }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
