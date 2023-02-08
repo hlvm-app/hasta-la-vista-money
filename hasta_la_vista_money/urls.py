@@ -17,19 +17,22 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 
-from users.views import LoginUser
+from hasta_la_vista_money.users.views import LoginUser
 
 
 urlpatterns = [
     re_path(r'users/',
-            include('users.urls', namespace='users'), name='list'),
+            include('hasta_la_vista_money.users.urls', namespace='users'),
+            name='list'),
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('login/', LoginUser.as_view(redirect_authenticated_user=True),
          name='login'),
-    path('applications/', include('applications.urls',
+    path('applications/', include('hasta_la_vista_money.applications.urls',
                                   namespace='applications'),
          name='applications'),
-    path('receipts/', include('receipts.urls', namespace='receipts'),
-         name='receipt'),
+    path('receipts/', include('hasta_la_vista_money.receipts.urls',
+                              namespace='receipts'), name='receipt'),
+    path('income/', include('hasta_la_vista_money.income.urls',
+                            namespace='income'), name='income'),
     path('adminushka/', admin.site.urls),
 ]
