@@ -7,6 +7,7 @@
 
 {% block content %}
     <title>Hasta La Vista, Money :D</title>
+    <a class="link_back" href="{% url 'applications:list' %}">Назад</a>
     <div class="container">
         <div class="display-2 text-center pt-3 text-light">
             Hasta La Vista, Money :D
@@ -19,14 +20,10 @@
                 <form  action="" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="receipt_id" value="{{ receipt.id }}">
-
-                        <button class="remove-button" type="submit" onclick="return confirm('Вы уверены, что хотите удалить этот чек?');" name="delete_button">
-                            <span class="top"></span>
-                            <span class="bot"></span>
-                        </button>
+                    <button class="remove-button" type="submit" onclick="return confirm('Вы уверены, что хотите удалить этот чек?');" name="delete_button">
                         <span class="top"></span>
                         <span class="bot"></span>
-
+                    </button>
                 </form>
 
                 <table>
