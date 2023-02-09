@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load django_bootstrap5 %}
+{% load static %}
+
+{% block content %}
+    <title>Добавить доход</title>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <form method="post">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    {% bootstrap_button button_text_create button_type="submit" button_class="btn btn-primary"  %}
+                </form>
+                <button id="close-button" class="btn btn-danger" type="button">Закрыть окно</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
