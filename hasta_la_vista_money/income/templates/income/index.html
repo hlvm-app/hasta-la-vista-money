@@ -5,17 +5,29 @@
 
 {% block content %}
     <div class="container">
+        <div class="display-3 text-center pt-3 text-light">
+            Доход
+        </div>
         <div class="row">
-            <div class="col">
-                <form method='post'>
-                    {% csrf_token %}
-                    {{ form }}
-                    <button name='income' type="submit">Добавить</button>
-                </form>
-                {% for income in incomes %}
-                    <span>{{ income }}</span>
-                {% endfor %}
+            <div class="col-4 mt-5">
+                <table class="table table-hover table-bordered border-warning align-middle mb-0 text-light">
+
+                    <tr>
+                        <th>Тип дохода</th>
+                        <th>Период</th>
+                        <th>Сумма</th>
+                    </tr>
+                    {% for income in incomes %}
+                    <tr>
+                        <td>{{ income.type_income }}</td>
+                        <td>{{ income.month }}</td>
+                        <td>{{ income.amount }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+
             </div>
+            <a href="{% url 'income:create_income' %}" target="_blank">Добавить</a>
         </div>
     </div>
 {% endblock %}
