@@ -6,6 +6,9 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {% load static %}
+{% load i18n %}
+
+{% translate 'Добавить' as button_text_create %}
 
 <html lang="`ru`">
 <head>
@@ -21,6 +24,7 @@
         {% block content %}
         {% endblock %}
     </div>
+    <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>
 
