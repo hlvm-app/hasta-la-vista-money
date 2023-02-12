@@ -4,7 +4,10 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views import View
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy
+from django.views.generic import CreateView
+from django.views.generic.edit import FormMixin
 
+from .forms import ReceiptForm
 from .models import Receipt
 
 
@@ -30,13 +33,12 @@ class ReceiptView(LoginRequiredMixin, View, SuccessMessageMixin):
             receipt.delete()
         return self.get(request)
 
-# def receipt_view(request):
-#     receipts = Receipt.objects.all()
-#     if request.method == "POST" and 'delete_button' in request.POST:
-#         receipt_id = request.POST.get('receipt_id')
-#         receipt = get_object_or_404(Receipt, pk=receipt_id)
-#         for product in receipt.product.all():
-#             product.delete()
-#         receipt.customer.delete()
-#         receipt.delete()
-#     return render(request, 'receipts/receipts.html', {'receipts': receipts})
+
+class CreateReceiptView(LoginRequiredMixin, CreateView, FormMixin):
+    model = Receipt
+    template_name = 'receipts/create_customer.html'
+    form_class = ReceiptForm
+    success_url = reverse_lazy('receipts:list')
+    error_message = gettext_lazy('У вас нет прав на просмотр данной страницы! '
+                                 'Авторизуйтесь!')
+    no_permission_url = reverse_lazy('login')
