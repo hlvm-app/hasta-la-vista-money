@@ -1,4 +1,12 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
+
+OPERATION_TYPES = (
+    (1, _('Приход')),
+    (2, _('Возврат прихода')),
+    (3, _('Расход')),
+    (4, _('Возврат расхода'))
+)
 
 
 class Customer(models.Model):
@@ -12,7 +20,8 @@ class Customer(models.Model):
 
 class Receipt(models.Model):
     receipt_date = models.DateTimeField()
-    operation_type = models.IntegerField(null=True, blank=True)
+    operation_type = models.IntegerField(null=True, blank=True,
+                                         choices=OPERATION_TYPES)
     total_sum = models.DecimalField(max_digits=10, decimal_places=2)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE,
                                  verbose_name='customer',
@@ -29,7 +38,7 @@ class Product(models.Model):
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     nds_type = models.IntegerField(null=True, blank=True)
-    nds_sum = models.DecimalField(max_digits=10, decimal_places=2)
+    nds_sum = models.DecimalField(null=True, max_digits=10, decimal_places=2)
 
     def __str__(self):
         return self.product_name
