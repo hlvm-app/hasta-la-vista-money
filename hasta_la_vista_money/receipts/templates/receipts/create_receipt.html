@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load django_bootstrap5 %}
+{% load static %}
+{% bootstrap_css %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col mt-5">
+            <a class="return-receipts-list btn btn-outline-dark" href="{% url 'receipts:list' %}">Вернуться к списку чеков</a>
+            <form id='form-create-receipt' method="post">
+            {% csrf_token %}
+            <div class="p-3 text-light border">
+                {% bootstrap_form seller_form layout="horizontal" %}
+                {% bootstrap_form receipt_form layout="horizontal" %}
+            </div>
+                {{ product_formset.management_form }}
+                {% for product_form in product_formset %}
+                <div class="form-product text-light p-3 border">
+                    {% bootstrap_form product_form layout="horizontal" %}
+                </div>
+            {% endfor %}
+<!--            <button class="btn btn-warning" id="add-form" type="button">Добавить ещё один товар</button>-->
+            {% bootstrap_button button_text_add_receipt id="add-form" button_type="button" button_class="add-product-btn btn btn-outline-warning"  %}
+            {% bootstrap_button button_text_create button_type="submit" button_class="add-receipt-btn btn btn-outline-primary"  %}
+            </form>
+
+
+        </div>
+    </div>
+</div>
+{% endblock %}
