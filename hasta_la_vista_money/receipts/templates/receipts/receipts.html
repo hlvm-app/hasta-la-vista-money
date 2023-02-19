@@ -7,15 +7,18 @@
 
 {% block content %}
     <title>Hasta La Vista, Money :D</title>
-    <a class="link_back" href="{% url 'applications:list' %}">Назад</a>
+
     <div class="container">
         <div class="display-2 text-center pt-3 text-light">
             Hasta La Vista, Money :D
         </div>
 
         <div class="row mt-5 justify-content-center">
-
-        {% for receipt in receipts %}
+            <div class="link-wrapper p-0">
+                <a class="link-application btn btn-outline-warning" href="{% url 'applications:list' %}">Вернуться на страницу с приложениями</a>
+                <a class="add-receipt-button btn btn-outline-danger" href="{% url 'receipts:create' %}">Добавить чек вручную</a>
+            </div>
+            {% for receipt in receipts %}
             <div class="receipt bg-light rounded-3 m-1">
                 <form  action="" method="post">
                     {% csrf_token %}
@@ -52,8 +55,7 @@
                   </tbody>
                 </table>
             </div>
-
-        {% endfor %}
+            {% endfor %}
         </div>
     </div>
 {% endblock %}
