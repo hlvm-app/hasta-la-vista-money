@@ -19,6 +19,36 @@ table th:nth-child(3) {
     width: 10rem;
 }
 
+.add-receipt-button {
+    width: 20%;
+    margin-left: 80%;
+}
+
+.add-receipt-btn {
+    position: absolute;
+    top: .5rem;
+    right: 19.5rem;
+}
+
+.add-product-btn {
+    position: absolute;
+    top: .5rem;
+    right: 28rem;
+}
+
+.link-wrapper {
+    position: relative;
+}
+
+.link-application {
+    position: absolute;
+}
+
+.return-receipts-list {
+    position: absolute;
+    top: .5rem;
+}
+
 .remove-button {
     background: none;
     border: 0;
