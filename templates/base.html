@@ -8,7 +8,8 @@
 {% load static %}
 {% load i18n %}
 
-{% translate 'Добавить' as button_text_create %}
+{% translate 'Добавить чек' as button_text_create %}
+{% translate 'Добавить ещё один товар' as button_text_add_receipt %}
 
 <html lang="`ru`">
 <head>
@@ -17,14 +18,18 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0,
           maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css?t=<?= time(); ?>' %}">
 </head>
 <body>
     <div class="min-vh-100 bg-success bg-gradient">
         {% block content %}
         {% endblock %}
     </div>
-    <script src="{% static 'js/script.js' %}"></script>
+    <script
+			  src="https://code.jquery.com/jquery-3.6.3.min.js?t=<?= time(); ?>"
+			  integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+			  crossorigin="anonymous"></script>
+    <script src="{% static 'js/script.js?t=<?= time(); ?>' %}"></script>
 </body>
 </html>
 
