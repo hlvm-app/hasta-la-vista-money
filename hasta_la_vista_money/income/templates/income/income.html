@@ -2,16 +2,22 @@
 {% load i18n %}
 {% load django_bootstrap5 %}
 {% load static %}
+{% load humanize %}
 
 {% block content %}
+    <title>Информация о доходе</title>
     <div class="container">
         <div class="display-3 text-center pt-3 text-light">
             Доход
         </div>
         <div class="row">
-            <div class="col-4 mt-5">
-                <table class="table table-hover table-bordered border-warning align-middle mb-0 text-light">
+            <div class="link-wrapper mt-5">
+                <a class="link-application btn btn-outline-info" href="{% url 'applications:list' %}">Вернуться на страницу с приложениями</a>
+                <a class="button-add-form-income btn btn-outline-primary" href="{% url 'income:create' %}">Добавить новый доход</a>
+            </div>
+            <div class="col mt-2">
 
+                <table class="table table-hover table-bordered border-warning align-middle mb-0 text-light">
                     <tr>
                         <th>Тип дохода</th>
                         <th>Период</th>
@@ -21,13 +27,12 @@
                     <tr>
                         <td>{{ income.type_income }}</td>
                         <td>{{ income.month }}</td>
-                        <td>{{ income.amount }}</td>
+                        <td>{{ income.amount | intcomma }}</td>
                     </tr>
                     {% endfor %}
                 </table>
-
             </div>
-            <a href="{% url 'income:create_income' %}" target="_blank">Добавить</a>
+
         </div>
     </div>
 {% endblock %}
