@@ -49,6 +49,25 @@ table th:nth-child(3) {
     top: .5rem;
 }
 
+.return-incomes-list {
+    position: absolute;
+    top: 3rem;
+}
+
+.add-income {
+    position: absolute;
+    right: 16.2%;
+}
+
+.button-add-form-income {
+    width: 20%;
+    margin-left: 80%;
+}
+
+
+
+
+/* Style for button "Delete receipt" */
 .remove-button {
     background: none;
     border: 0;
