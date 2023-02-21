@@ -24,7 +24,7 @@ urlpatterns = [
     re_path(r'users/',
             include('hasta_la_vista_money.users.urls', namespace='users'),
             name='list'),
-    path('', TemplateView.as_view(template_name='income.html'), name='index'),
+    path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('login/', LoginUser.as_view(redirect_authenticated_user=True),
          name='login'),
     path('applications/', include('hasta_la_vista_money.applications.urls',
