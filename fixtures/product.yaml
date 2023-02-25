@@ -1,0 +1,45 @@
+-   model: receipts.product
+    pk: 40
+    fields:
+        product_name: Кастрюля
+        price: '1000.00'
+        quantity: '1.00'
+        amount: '1000.00'
+        nds_type: null
+        nds_sum: null
+-   model: receipts.product
+    pk: 41
+    fields:
+        product_name: Кашевара
+        price: '500.00'
+        quantity: '1.00'
+        amount: '500.00'
+        nds_type: null
+        nds_sum: null
+-   model: receipts.product
+    pk: 42
+    fields:
+        product_name: Вино Молоко Люб. Женщины
+        price: '369.99'
+        quantity: '1.00'
+        amount: '369.99'
+        nds_type: null
+        nds_sum: null
+-   model: receipts.product
+    pk: 43
+    fields:
+        product_name: Котлеты Традиционные 400г
+        price: '99.89'
+        quantity: '2.00'
+        amount: '199.78'
+        nds_type: null
+        nds_sum: null
+-   model: receipts.product
+    pk: 44
+    fields:
+        product_name: Сыр Король Сыров 200г
+        price: '159.89'
+        quantity: '1.00'
+        amount: '159.89'
+        nds_type: null
+        nds_sum: null

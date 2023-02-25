@@ -1,0 +1,12 @@
+-   model: receipts.customer
+    pk: 66
+    fields:
+        name_seller: ООО "Перекрёсток"
+        retail_place_address: null
+        retail_place: null
+-   model: receipts.customer
+    pk: 67
+    fields:
+        name_seller: ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ "АЛЬФА ВЛАДИМИР"
+        retail_place_address: null
+        retail_place: null

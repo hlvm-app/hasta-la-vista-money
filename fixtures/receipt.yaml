@@ -1,0 +1,21 @@
+-   model: receipts.receipt
+    pk: 57
+    fields:
+        receipt_date: 2023-02-25 16:33:00+00:00
+        operation_type: 1
+        total_sum: '1500.00'
+        customer: 66
+        product:
+        - 40
+        - 41
+-   model: receipts.receipt
+    pk: 58
+    fields:
+        receipt_date: 2023-02-23 17:41:00+00:00
+        operation_type: 1
+        total_sum: '729.66'
+        customer: 67
+        product:
+        - 42
+        - 43
+        - 44
