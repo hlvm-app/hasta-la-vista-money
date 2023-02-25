@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'hasta_la_vista_money.receipts',
     'hasta_la_vista_money.applications',
     'hasta_la_vista_money.income',
+    'hasta_la_vista_money.expense',
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -187,7 +188,7 @@ FIXTURE_DIRS = (os.path.join(BASE_DIR, 'fixtures'), )
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATIC_URL = 'static/'
+STATIC_URL = os.path.join(BASE_DIR, 'static/')
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
