@@ -11,10 +11,10 @@ class TestReceipt(TestCase):
 
     def setUp(self) -> None:
         self.user = User.objects.get(pk=1)
-        self.receipt = Receipt.objects.get(pk=57)
-        self.customer = Customer.objects.get(pk=66)
-        self.product1 = Product.objects.get(pk=40)
-        self.product2 = Product.objects.get(pk=41)
+        self.receipt = Receipt.objects.get(pk=1)
+        self.customer = Customer.objects.get(pk=1)
+        self.product1 = Product.objects.get(pk=1)
+        self.product2 = Product.objects.get(pk=2)
 
     def test_receipt_list(self):
         self.client.force_login(self.user)
@@ -34,10 +34,10 @@ class TestReceipt(TestCase):
             retail_place_address='Test Address',
             retail_place='Test place'
         )
-        self.assertEqual(self.customer.pk, 68)
+        self.assertEqual(self.customer.pk, 2)
 
     def test_delete_customer(self):
-        customer = Customer.objects.get(pk=67)
+        customer = Customer.objects.get(pk=1)
         customer.delete()
         with self.assertRaises(Customer.DoesNotExist):
-            Customer.objects.get(pk=67)
+            Customer.objects.get(pk=1)
