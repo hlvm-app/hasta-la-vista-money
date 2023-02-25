@@ -5,10 +5,14 @@
 {% block content %}
     <title>{% translate 'Страница приложений' %}</title>
     <div class="container">
+        <div class="display-4 text-center pt-3 text-light">
+            Список приложений
+        </div>
         <div class="row">
             <div class="col mt-5">
                 <a class="text-light btn btn-outline-primary btn-lg text-decoration-none display-6" href="{% url 'receipts:list' %}">Просмотр чеков</a>
                 <a class="text-light btn btn-outline-warning btn-lg text-decoration-none display-6" href="{% url 'income:list' %}">Информация о доходе</a>
+                <a class="text-light btn btn-outline-dark btn-lg text-decoration-none display-6" href="{% url 'expense:list' %}">Информация о расходах</a>
             </div>
         </div>
     </div>
