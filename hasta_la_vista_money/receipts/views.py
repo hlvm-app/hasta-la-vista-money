@@ -65,4 +65,5 @@ class ReceiptCreateView(CreateView):
             return self.render_to_response({
                 'seller_form': seller_form,
                 'receipt_form': receipt_form,
-                'product_formset': product_formset})
+                'product_formset': product_formset
+            })
