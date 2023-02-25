@@ -34,4 +34,3 @@ class AddIncome(LoginRequiredMixin, CreateView, FormView):
             return redirect(reverse_lazy('income:list'))
         else:
             return self.render_to_response({'income_form': income_form})
-

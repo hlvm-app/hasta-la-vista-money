@@ -1,5 +1,5 @@
 # import django_filters
-from django.forms import ModelForm, formset_factory, DateTimeInput, DateInput
+from django.forms import ModelForm, formset_factory
 from django.utils.translation import gettext_lazy as _
 
 from hasta_la_vista_money.receipts.models import Customer, Receipt, Product
