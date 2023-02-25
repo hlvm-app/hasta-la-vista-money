@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% load django_bootstrap5 %}
+{% load static %}
+
+
+{% block content %}
+    <title>Информация о расходах</title>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="display-4 text-center pt-3 text-light">
+                    Страница расходов
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5 justify-content-center">
+            <div class="link-wrapper">
+                <a class="link-application btn btn-outline-warning" href="{% url 'applications:list' %}">Вернуться на страницу с приложениями</a>
+            </div>
+            <div class="col-6 pt-5">
+                {% for month in months %}
+                    {% language 'ru' %}
+                    <table class="table text-light">
+                        <tr>
+                            <th>
+                                Период
+                            </th>
+
+                            <th>
+                                Сумма
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{ month.month | date:"F Y" }}{% translate " г." %}
+                            </td>
+                            <td>
+                                {{ month.total_amount }}
+                            </td>
+                        </tr>
+                    </table>
+                    {% endlanguage %}
+                    <p> </p>
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
