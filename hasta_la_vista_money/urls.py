@@ -34,5 +34,7 @@ urlpatterns = [
                               namespace='receipts'), name='receipt'),
     path('income/', include('hasta_la_vista_money.income.urls',
                             namespace='income'), name='income'),
+    path('expense/', include('hasta_la_vista_money.expense.urls',
+                            namespace='expense'), name='expense'),
     path('adminushka/', admin.site.urls),
 ]
