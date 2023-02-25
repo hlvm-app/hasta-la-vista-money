@@ -21,7 +21,6 @@ rollbar = ">=0.16.2"
 pyTelegramBotAPI = ">=4.6.0"
 django = ">=4.1.6"
 urllib3 = "^1.26.11"
-setuptools = "^67.3.2"
 
 [tool.poetry.dev-dependencies]
 flake8 = ">=4.0.1"
