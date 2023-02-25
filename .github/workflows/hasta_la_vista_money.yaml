@@ -43,6 +43,10 @@ jobs:
           pip install poetry
           make install
 
+      # run makemigrations and migrate
+      - name: Run makemigrations
+        run: python manage.py makemigrations
+
       - name: Run migrations
         run: python manage.py migrate
 
