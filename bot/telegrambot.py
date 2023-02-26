@@ -1,30 +1,17 @@
 import json
-import logging
+import os
 import datetime
+
+import telebot
 
 from bot.services import parse_json_file, convert_price
 from hasta_la_vista_money.receipts.models import Customer, Receipt, Product
-import os
-import telebot
+from .log_config import logger, TelegramLogsHandler
+
 
 token = os.environ.get('TOKEN_TELEGRAM_BOT')
 bot_admin = telebot.TeleBot(token, parse_mode='html')
 id_group_user = os.environ.get('ID_GROUP_USER')
-
-logger = logging.getLogger(__name__)
-
-
-class TelegramLogsHandler(logging.Handler):
-
-    def __init__(self, tg_bot, chat_id):
-        super().__init__()
-        self.chat_id = chat_id
-        self.tg_bot = tg_bot
-
-    def emit(self, record):
-        log_entry = self.format(record)
-        self.tg_bot.send_message(chat_id=self.chat_id, text=log_entry)
-
 
 logger.addHandler(TelegramLogsHandler(bot_admin, id_group_user))
 
