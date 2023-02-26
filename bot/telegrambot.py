@@ -29,7 +29,6 @@ def get_receipt(message):
         )
 
         with tempfile.NamedTemporaryFile(suffix='.json') as temp_json_file:
-            print(temp_json_file)
             temp_json_file.write(file_downloaded)
             temp_json_file.seek(0)
             json_data = json.load(temp_json_file)
