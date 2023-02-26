@@ -27,5 +27,5 @@ class ExpenseView(LoginRequiredMixin, View, SuccessMessageMixin):
         ).annotate(
             c=Count('id'),
             total_amount=Sum('total_sum')
-        )
+        ).order_by('-month')
         return render(request, self.template_name, {'months': group_by_months})
