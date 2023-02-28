@@ -1,11 +1,13 @@
 import json
 import os
 import datetime
+import re
 import tempfile
 
 import telebot
 
-from bot.services import parse_json_file, convert_price
+from bot.services import convert_price, convert_date_time, ReceiptApiReceiver, \
+    get_value
 from hasta_la_vista_money.receipts.models import Customer, Receipt, Product
 from .log_config import logger, TelegramLogsHandler
 
@@ -14,6 +16,22 @@ bot_admin = telebot.TeleBot(token, parse_mode='html')
 id_group_user = os.environ.get('ID_GROUP_USER')
 
 logger.addHandler(TelegramLogsHandler(bot_admin, id_group_user))
+
+
+CONSTANT_RECEIPT = {
+    'seller': 'user',
+    'retail_place_address': 'retailPlaceAddress',
+    'retail_place': 'retailPlace',
+    'date_time': 'dateTime',
+    'operation_type': 'operationType',
+    'total_sum': 'totalSum',
+    'product_name': 'name',
+    'price': 'price',
+    'quantity': 'quantity',
+    'amount': 'sum',
+    'nds_type': 'nds',
+    'nds_sum': 'ndsSum'
+}
 
 
 @bot_admin.message_handler(content_types=['document'])
@@ -34,26 +52,32 @@ def get_receipt(message):
             json_data = json.load(temp_json_file)
 
             customer = Customer.objects.create(
-                name_seller=parse_json_file(json_data)[1],
-                retail_place_address=parse_json_file(json_data)[3],
-                retail_place=parse_json_file(json_data)[5],
+                name_seller=json_data.get(CONSTANT_RECEIPT['seller']),
+                retail_place_address=json_data.get(
+                    CONSTANT_RECEIPT['retail_place_address']
+                ),
+                retail_place=json_data.get(CONSTANT_RECEIPT['retail_place']),
             )
 
             receipt = Receipt.objects.create(
-                receipt_date=parse_json_file(json_data)[0],
-                operation_type=parse_json_file(json_data)[4],
-                total_sum=parse_json_file(json_data)[2],
+                receipt_date=json_data.get(CONSTANT_RECEIPT['date_time']),
+                operation_type=json_data.get(
+                    CONSTANT_RECEIPT['operation_type']
+                ),
+                total_sum=json_data.get(CONSTANT_RECEIPT['total_sum']),
                 customer=customer,
             )
 
             products = []
             for item in json_data['items']:
-                product_name = item.get('name', 'Нет данных')
-                price = convert_price(item.get('price', 0))
-                quantity = item.get('quantity', 0)
-                amount = convert_price(item.get('sum', 0))
-                nds_type = item.get('nds', -1)
-                nds_sum = item.get('ndsSum', 0)
+                product_name = item.get(
+                    CONSTANT_RECEIPT['product_name'], 'Нет данных'
+                )
+                price = convert_price(item.get(CONSTANT_RECEIPT['price'], 0))
+                quantity = item.get(CONSTANT_RECEIPT['quantity'], 0)
+                amount = convert_price(item.get(CONSTANT_RECEIPT['amount'], 0))
+                nds_type = item.get(CONSTANT_RECEIPT['nds_type'], -1)
+                nds_sum = item.get(CONSTANT_RECEIPT['nds_sum'], 0)
                 goods = Product.objects.create(
                     product_name=product_name,
                     price=price,
@@ -77,3 +101,28 @@ def get_receipt(message):
             f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S} произошла ошибка: '
             f'{error}'
         )
+
+
+@bot_admin.message_handler(content_types=['text'])
+def get_receipt_text(message):
+    input_user = message.text
+    pattern = r't=[0-9]{8}T[0-9]{4}' \
+              r'&s=[0-9]+.[0-9]+&fn=[0-9]{16}&i=[0-9]+&fp=[0-9]{9}&n=[0-9]'
+    text_pattern = re.match(pattern, input_user)
+    if text_pattern:
+        try:
+            client = ReceiptApiReceiver()
+            qr_code = input_user
+            receipt = client.get_receipt(qr_code)
+            json_data_dumps = json.dumps(receipt, ensure_ascii=False)
+            json_data_load = json.loads(json_data_dumps)
+
+            date_time = convert_date_time(
+                get_value(json_data_load, CONSTANT_RECEIPT['date_time'])
+            )
+            print(date_time, 'date_time')
+
+        except ValueError as value_error:
+            bot_admin.send_message(message.chat.id, str(value_error))
+    else:
+        bot_admin.send_message(message.chat.id, 'Недопустимый текст')
