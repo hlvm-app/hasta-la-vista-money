@@ -14,16 +14,25 @@ def convert_price(price):
     return round(price / 100, 2)
 
 
-def get_value(dictionary, key):
-    if isinstance(dictionary, dict):
-        for k, v in dictionary.items():
-            if k == key:
-                return v
-            elif isinstance(v, dict):
-                result = get_value(v, key)
-                if result is not None:
-                    return result
-    return None
+class ParseJson:
+    def __init__(self, json_data):
+        self.json_data = json_data
+
+    def _get_value(self, dictionary, key):
+        if isinstance(dictionary, dict):
+            for k, v in dictionary.items():
+                if k == key:
+                    return v
+                elif isinstance(v, dict):
+                    result = ParseJson._get_value(self, v, key)
+                    if result is not None:
+                        return result
+
+        return None
+
+    def parse_json(self, json_data: dict, key: str):
+        result = ParseJson._get_value(self, json_data, key)
+        return result
 
 
 class ReceiptApiReceiver:
