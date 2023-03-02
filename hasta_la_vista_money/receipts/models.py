@@ -33,7 +33,7 @@ class Receipt(models.Model):
 
 
 class Product(models.Model):
-    product_name = models.CharField(max_length=100)
+    product_name = models.CharField(max_length=1000)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
