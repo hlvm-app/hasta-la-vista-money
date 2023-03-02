@@ -44,7 +44,7 @@ class ReceiptApiReceiver:
         self.client_version = '2.9.0'
         self.device_id = 'a5e1e72bf5b9966690e10f5ce03cd8e99e0b23dc4'
         self.accept = '*/*'
-        self.user_agent = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) ' \
+        self.user_agent = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) '\
                           'Gecko/20100101 Firefox/110.0'
         self.accept_language = 'ru-RU;q=1, en-US;q=0.9'
         self.set_session_id()
