@@ -19,14 +19,17 @@ class ParseJson:
         self.json_data = json_data
 
     def _get_value(self, dictionary, key):
-        if isinstance(dictionary, dict):
-            for k, v in dictionary.items():
-                if k == key:
-                    return v
-                elif isinstance(v, dict):
-                    result = ParseJson._get_value(self, v, key)
-                    if result is not None:
-                        return result
+        if not isinstance(dictionary, key):
+            return None
+
+        value = dictionary.get(key)
+        if value is not None:
+            return value
+
+        for nested_dict in dictionary.values():
+            value = self._get_value(nested_dict, key)
+            if value is not None:
+                return value
 
         return None
 
