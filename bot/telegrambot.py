@@ -142,8 +142,8 @@ def get_receipt(message):
 @bot_admin.message_handler(content_types=['text'])
 def get_receipt_text(message):
     input_user = message.text
-    pattern = r't=[0-9]{8}T[0-9]{4}& ' \ 
-              r's=[0-9]{1,100}.[0-9]{1,2}&fn=[0-9]{14,17}& ' \ 
+    pattern = r't=[0-9]{8}T[0-9]{4}&' \ 
+              r's=[0-9]{1,100}.[0-9]{1,2}&fn=[0-9]{14,17}&' \ 
               r'i=[0-9]{5,10}&fp=[0-9]{5,12}&n=[0-5]{1}'
     text_pattern = re.match(pattern, input_user)
     if text_pattern:
