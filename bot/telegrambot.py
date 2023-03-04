@@ -2,7 +2,6 @@ import json
 import os
 import datetime
 import re
-import tempfile
 
 import telebot
 
