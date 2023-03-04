@@ -124,18 +124,15 @@ def get_receipt(message):
         file_downloaded = bot_admin.download_file(
             file_path=file_info.file_path
         )
+        json_data = json.loads(file_downloaded)
 
-        with tempfile.NamedTemporaryFile(suffix='.json') as temp_json_file:
-            temp_json_file.write(file_downloaded)
-            temp_json_file.seek(0)
-            json_data = json.load(temp_json_file)
+        parse_receipt(json_data, message.chat.id)
 
-            parse_receipt(json_data, message.chat.id)
-
-    except (FileNotFoundError, json.decoder.JSONDecodeError) as error:
+    except json.decoder.JSONDecodeError as error:
         logger.error(
-            f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S} произошла ошибка: '
-            f'{error}.'
+            f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S}\n'
+            f'Некорректный JSON файл: {error}.\n'
+            f'Проверьте тот ли файл загружаете...'
         )
     except Exception as error:
         logger.error(
@@ -162,8 +159,8 @@ def get_receipt_text(message):
 
         except Exception as error:
             logger.error(
-                f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S} произошла ошибка:'
-                f' {error}.'
-            )
+                    f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S}\n'
+                    f'произошла ошибка: {error}.'
+                )
     else:
         bot_admin.send_message(message.chat.id, 'Недопустимый текст')
