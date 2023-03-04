@@ -144,8 +144,8 @@ def get_receipt(message):
 def get_receipt_text(message):
     input_user = message.text
     pattern = r't=[0-9]{8}T[0-9]{4}' \
-              r'&s=[0-9]{1,10}.[0-9]{2}&fn=[0-9]' \
-              r'&i=[0-9]&fp=[0-9]&n=[0-5]{1}'
+              r'&s=[0-9]{1,10}.[0-9]{2}&fn=[0-9]+' \
+              r'&i=[0-9]+&fp=[0-9]+&n=[0-5]{1}'
 
     text_pattern = re.match(pattern, input_user)
     if text_pattern:
