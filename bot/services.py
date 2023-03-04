@@ -19,7 +19,7 @@ class ParseJson:
         self.json_data = json_data
 
     def _get_value(self, dictionary, key):
-        if not isinstance(dictionary, key):
+        if not isinstance(dictionary, dict):
             return None
 
         value = dictionary.get(key)
