@@ -137,14 +137,20 @@ def get_receipt(message):
             f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S} произошла ошибка: '
             f'{error}.'
         )
+    except Exception as error:
+        logger.error(
+            f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S} произошла ошибка:'
+            f' {error}.'
+        )
 
 
 @bot_admin.message_handler(content_types=['text'])
 def get_receipt_text(message):
     input_user = message.text
     pattern = r't=[0-9]{8}T[0-9]{4}' \
-              r'&s=[0-9]{1,100}.[0-9]{1,2}&fn=[0-9]{14,17}' \
-              r'&i=[0-9]{5,10}&fp=[0-9]{5,12}&n=[0-5]{1}'
+              r'&s=[0-9]{1,10}.[0-9]{2}&fn=[0-9]' \
+              r'&i=[0-9]&fp=[0-9]&n=[0-5]{1}'
+
     text_pattern = re.match(pattern, input_user)
     if text_pattern:
         try:
@@ -154,7 +160,10 @@ def get_receipt_text(message):
 
             parse_receipt(json_data, message.chat.id)
 
-        except ValueError as value_error:
-            bot_admin.send_message(message.chat.id, str(value_error))
+        except Exception as error:
+            logger.error(
+                f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S} произошла ошибка:'
+                f' {error}.'
+            )
     else:
         bot_admin.send_message(message.chat.id, 'Недопустимый текст')
