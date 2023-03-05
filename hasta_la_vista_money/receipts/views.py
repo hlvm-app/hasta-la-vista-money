@@ -5,22 +5,22 @@ from django.views import View
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy
 from django.views.generic import CreateView
+from django_filters import rest_framework as filters
+from django_filters.views import FilterView
 
-from .forms import CustomerForm, ReceiptForm, ProductFormSet
+from .forms import CustomerForm, ReceiptForm, ProductFormSet, ReceiptFilter
 from .models import Receipt
 
 
-class ReceiptView(LoginRequiredMixin, View, SuccessMessageMixin):
+class ReceiptView(LoginRequiredMixin, SuccessMessageMixin, FilterView):
     template_name = 'receipts/receipts.html'
     model = Receipt
     context_object_name = 'receipts'
+    filterset_class = ReceiptFilter
+    filter_backends = (filters.DjangoFilterBackend,)
     error_message = gettext_lazy('У вас нет прав на просмотр данной страницы! '
                                  'Авторизуйтесь!')
     no_permission_url = reverse_lazy('login')
-
-    def get(self, request):
-        receipts = Receipt.objects.all()
-        return render(request, self.template_name, {'receipts': receipts})
 
     def post(self, request):
         if 'delete_button' in request.POST:
