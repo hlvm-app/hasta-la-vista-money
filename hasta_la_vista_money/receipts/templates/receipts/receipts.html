@@ -12,7 +12,16 @@
         <div class="display-4 text-center pt-3 text-light">
             Список чеков
         </div>
-
+        <div class="row ">
+            <div class="col">
+                <form class="text-light" method="get" id="filter-form">
+                    {% csrf_token %}
+                    {% bootstrap_field filter.form.name_seller %}
+                    {% bootstrap_field filter.form.receipt_date %}
+                    {% bootstrap_button 'Search' button_type='submit' button_class='btn btn-primary' %}
+                </form>
+            </div>
+        </div>
         <div class="row mt-5 justify-content-center">
             <div class="link-wrapper p-0">
                 <a class="link-application btn btn-outline-warning" href="{% url 'applications:list' %}">Вернуться на страницу с приложениями</a>
