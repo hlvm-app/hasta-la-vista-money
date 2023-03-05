@@ -1,23 +1,39 @@
-# import django_filters
+import django_filters
 from django.forms import ModelForm, formset_factory
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _, gettext_lazy
 
 from hasta_la_vista_money.receipts.models import Customer, Receipt, Product
 
 
-#
-# from receipts.models import Customers
+class ReceiptFilter(django_filters.FilterSet):
+    name_seller = django_filters.ModelChoiceFilter(
+        queryset=Customer.objects
+        .distinct('name_seller')
+        .order_by('name_seller'),
+
+        field_name='customer__name_seller',
+        label=gettext_lazy('Продавец'),
+    )
+    receipt_date = django_filters.DateFromToRangeFilter(
+        label=gettext_lazy('Период'),
+        widget=django_filters.widgets.RangeWidget(
+            attrs={
+                'placeholder': gettext_lazy('YYYY-DD-MM'),
+                'class': 'form-control'
+            }
+        )
+    )
+
+    @property
+    def qs(self):
+        queryset = super().qs
+        return queryset.distinct()
+
+    class Meta:
+        model = Receipt
+        fields = ['name_seller', 'receipt_date']
 
 
-# class ReceiptsFilter(Form):
-#     names_seller = Customers.objects.values_list('name_seller',
-#                                                  'name_seller').distinct()
-#     name_seller = django_filters.ChoiceFilter(label=gettext_lazy('Продавец'),
-#                                               choices=names_seller)
-#
-#     class Meta:
-#         model = Customers
-#         fields = ('name_seller',)
 class CustomerForm(ModelForm):
     class Meta:
         model = Customer
