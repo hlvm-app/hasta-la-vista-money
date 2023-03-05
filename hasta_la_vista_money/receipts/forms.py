@@ -2,6 +2,7 @@ import django_filters
 from django.forms import ModelForm, formset_factory
 from django.utils.translation import gettext_lazy as _, gettext_lazy
 
+from hasta_la_vista_money.forms import BaseForm
 from hasta_la_vista_money.receipts.models import Customer, Receipt, Product
 
 
@@ -34,38 +35,41 @@ class ReceiptFilter(django_filters.FilterSet):
         fields = ['name_seller', 'receipt_date']
 
 
-class CustomerForm(ModelForm):
+class CustomerForm(BaseForm):
+    labels = {
+        'name_seller': _('Продавец')
+    }
+
     class Meta:
         model = Customer
         fields = ['name_seller']
-        labels = {
-            'name_seller': _('Продавец')
-        }
 
 
-class ProductForm(ModelForm):
+class ProductForm(BaseForm):
+    labels = {
+        'product_name': _('Наименование продукта'),
+        'price': _('Цена'),
+        'quantity': _('Количество'),
+        'amount': _('Сумма')
+    }
+
     class Meta:
         model = Product
         fields = ['product_name', 'price', 'quantity', 'amount']
-        labels = {
-            'product_name': _('Наименование продукта'),
-            'price': _('Цена'),
-            'quantity': _('Количество'),
-            'amount': _('Сумма')
-        }
 
 
 ProductFormSet = formset_factory(ProductForm, extra=1)
 
 
-class ReceiptForm(ModelForm):
+class ReceiptForm(BaseForm):
+    labels = {
+        'receipt_date': _('Дата и время чека'),
+        'operation_type': _('Тип операции'),
+        'total_sum': _('Итоговая сумма по чеку')
+    }
+
     class Meta:
         model = Receipt
         fields = ['receipt_date', 'operation_type', 'total_sum']
-        labels = {
-            'receipt_date': _('Дата и время чека'),
-            'operation_type': _('Тип операции'),
-            'total_sum': _('Итоговая сумма по чеку')
-        }
 
     products = ProductFormSet()
