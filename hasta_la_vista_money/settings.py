@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
     'django_bootstrap5',
     'bot',
     'hasta_la_vista_money',
@@ -103,6 +104,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hasta_la_vista_money.wsgi.application'
 
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ),
+}
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
