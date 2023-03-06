@@ -7,6 +7,10 @@
 
 }
 
+.seller_form_input {
+  display: none;
+}
+
 table th:first-child {
      width: 50rem;
 }
