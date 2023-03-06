@@ -42,27 +42,27 @@ class ReceiptCreateView(CreateView):
 
     def get(self, request, *args, **kwargs):
         seller_form = CustomerForm()
-        seller_input_form = CustomerInputForm()
+        customer_input_form = CustomerInputForm()
         receipt_form = ReceiptForm()
         product_formset = ProductFormSet()
 
         return self.render_to_response({
             'seller_form': seller_form,
-            'seller_input_form': seller_input_form,
+            'customer_input_form': customer_input_form,
             'receipt_form': receipt_form,
             'product_formset': product_formset})
 
     def post(self, request, *args, **kwargs):
 
         seller_form = CustomerForm(request.POST)
-        seller_input_form = CustomerInputForm(request.POST)
+        customer_input_form = CustomerInputForm(request.POST)
         receipt_form = ReceiptForm(request.POST)
         product_formset = ProductFormSet(request.POST)
 
-        if seller_form.is_valid() and seller_input_form.is_valid() \
+        if seller_form.is_valid() and customer_input_form.is_valid() \
                 and receipt_form.is_valid() and product_formset.is_valid():
             seller = seller_form.save()
-            seller_input = seller_input_form.save()
+            seller_input = customer_input_form.save()
             receipt = receipt_form.save(commit=False)
 
             if seller is None:
@@ -77,7 +77,7 @@ class ReceiptCreateView(CreateView):
         else:
             return self.render_to_response({
                 'seller_form': seller_form,
-                'seller_input_form': seller_input_form,
+                'customer_input_form': customer_input_form,
                 'receipt_form': receipt_form,
                 'product_formset': product_formset
             })
