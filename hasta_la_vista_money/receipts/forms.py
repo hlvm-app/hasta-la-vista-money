@@ -1,5 +1,6 @@
 import django_filters
 from django.forms import ModelForm, formset_factory
+from django import forms
 from django.utils.translation import gettext_lazy as _, gettext_lazy
 
 from hasta_la_vista_money.forms import BaseForm
@@ -39,6 +40,36 @@ class CustomerForm(BaseForm):
     labels = {
         'name_seller': _('Продавец')
     }
+
+    @staticmethod
+    def get_name_seller_choices():
+        choices = [('', '--------'), ('other', _('Другой продавец'))]
+        for seller in Customer.objects.order_by() \
+                .values_list('name_seller', flat=True) \
+                .distinct():
+            choices.append((seller, seller))
+        return choices
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name_seller'].widget = forms.Select(
+            choices=self.get_name_seller_choices()
+        )
+
+    class Meta:
+        model = Customer
+        fields = ['name_seller']
+
+
+class CustomerInputForm(ModelForm):
+    name_seller = forms.CharField(
+        required=False,
+        empty_value='',
+        label=_('Продавец'),
+        widget=forms.TextInput(attrs={
+            'class': 'name_seller_input'
+        })
+    )
 
     class Meta:
         model = Customer
