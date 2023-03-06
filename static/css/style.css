@@ -30,13 +30,13 @@ table th:nth-child(3) {
 
 .add-receipt-btn {
     position: absolute;
-    top: .5rem;
+    top: 5.7rem;
     right: 19.5rem;
 }
 
 .add-product-btn {
     position: absolute;
-    top: .5rem;
+    top: 5.7rem;
     right: 28rem;
 }
 
@@ -50,7 +50,7 @@ table th:nth-child(3) {
 
 .return-receipts-list {
     position: absolute;
-    top: .5rem;
+    top: 5.7rem;
 }
 
 .return-incomes-list {
