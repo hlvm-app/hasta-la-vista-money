@@ -44,7 +44,7 @@ class CustomerForm(BaseForm):
     @staticmethod
     def get_name_seller_choices():
         choices = [('', '--------'), ('other', _('Другой продавец'))]
-        for seller in Customer.objects.order_by() \
+        for seller in Customer.objects.order_by('name_seller') \
                 .values_list('name_seller', flat=True) \
                 .distinct():
             choices.append((seller, seller))
