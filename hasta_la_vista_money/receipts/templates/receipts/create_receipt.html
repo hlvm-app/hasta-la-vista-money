@@ -5,9 +5,13 @@
 {% bootstrap_css %}
 
 {% block content %}
+<title>{% translate 'Страница добавления чека' %}</title>
 <div class="container">
+    <div class="display-4 text-center pt-3 text-light">
+        Добавить чек
+    </div>
     <div class="row">
-        <div class="col mt-5">
+        <div class="col col-xs-5 mt-5">
             <a class="return-receipts-list btn btn-outline-dark" href="{% url 'receipts:list' %}">Вернуться к списку чеков</a>
             <form id='form-create-receipt' method="post">
             {% csrf_token %}
