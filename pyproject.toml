@@ -23,9 +23,9 @@ django = ">=4.1.6"
 urllib3 = "^1.26.11"
 
 [tool.poetry.dev-dependencies]
-flake8 = ">=4.0.1"
 Faker = ">=13.7.0"
 coverage = ">=6.4"
+wemake-python-styleguide = "^0.17.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
