@@ -9,12 +9,12 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+import os
 from pathlib import Path
 
 import dj_database_url
+import rollbar
 from dotenv import load_dotenv
-import os
-
 
 load_dotenv()
 
@@ -71,7 +71,7 @@ LOGOUT_REDIRECT_URL = '/'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -128,13 +128,13 @@ DATABASES = {
 if os.environ.get('GITHUB_WORKFLOW'):
     DATABASES = {
         'default': {
-           'ENGINE': 'django.db.backends.postgresql',
-           'NAME': 'github_actions',
-           'USER': 'postgres',
-           'PASSWORD': 'postgres',
-           'HOST': '127.0.0.1',
-           'PORT': '5432',
-        }
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'github_actions',
+            'USER': 'postgres',
+            'PASSWORD': 'postgres',
+            'HOST': '127.0.0.1',
+            'PORT': '5432',
+        },
     }
 
 CONN_MAX_AGE = 500
@@ -181,8 +181,8 @@ USE_I18N = True
 USE_TZ = True
 
 LANGUAGES = (
-    ("en", "English"),
-    ("ru", "Russian"),
+    ('en', 'English'),
+    ('ru', 'Russian'),
 )
 
 LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
@@ -213,5 +213,5 @@ ROLLBAR = {
     'patch_debugview': False,
     'root': BASE_DIR,
 }
-import rollbar # noqa 402
+
 rollbar.init(**ROLLBAR)

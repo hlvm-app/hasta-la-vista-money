@@ -1,14 +1,19 @@
-from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy
 from django.views.generic import CreateView
 from django_filters import rest_framework as filters
 from django_filters.views import FilterView
 
-from .forms import CustomerForm, ReceiptForm, ProductFormSet, ReceiptFilter, \
-    CustomerInputForm
+from .forms import (
+    CustomerForm,
+    CustomerInputForm,
+    ProductFormSet,
+    ReceiptFilter,
+    ReceiptForm,
+)
 from .models import Receipt
 
 
