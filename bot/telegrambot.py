@@ -2,7 +2,7 @@ import datetime
 import json
 import os
 import re
-import typing
+import types
 
 import telebot
 
@@ -18,7 +18,8 @@ id_group_user = os.environ.get('ID_GROUP_USER')
 logger.addHandler(TelegramLogsHandler(bot_admin, id_group_user))
 
 
-CONSTANT_RECEIPT: typing.Dict[str, str] = {
+CONSTANT_RECEIPT = types.MappingProxyType (
+  {
     'name_seller': 'user',
     'retail_place_address': 'retailPlaceAddress',
     'retail_place': 'retailPlace',
@@ -32,7 +33,8 @@ CONSTANT_RECEIPT: typing.Dict[str, str] = {
     'nds_type': 'nds',
     'nds_sum': 'ndsSum',
     'items': 'items'
-}
+  }
+)
 
 
 def parse_receipt(json_data, chat_id):
