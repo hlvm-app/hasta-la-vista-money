@@ -1,14 +1,13 @@
+import datetime
 import json
 import os
-import datetime
 import re
+import typing
 
 import telebot
 
-from bot.services import convert_price, \
-    convert_date_time, \
-    ReceiptApiReceiver, \
-    ParseJson
+from bot.services import (convert_price, convert_date_time, ReceiptApiReceiver, 
+                          ParseJson)
 from hasta_la_vista_money.receipts.models import Customer, Receipt, Product
 from .log_config import logger, TelegramLogsHandler
 
@@ -19,7 +18,7 @@ id_group_user = os.environ.get('ID_GROUP_USER')
 logger.addHandler(TelegramLogsHandler(bot_admin, id_group_user))
 
 
-CONSTANT_RECEIPT = {
+CONSTANT_RECEIPT: typing.Dict[str, str] = {
     'name_seller': 'user',
     'retail_place_address': 'retailPlaceAddress',
     'retail_place': 'retailPlace',
