@@ -10,7 +10,7 @@ OPERATION_TYPES = (
 
 
 class Customer(models.Model):
-    name_seller = models.CharField(max_length=100)
+    name_seller = models.CharField(max_length=255)
     retail_place_address = models.CharField(null=True, max_length=100)
     retail_place = models.CharField(null=True, blank=True, max_length=100)
 
