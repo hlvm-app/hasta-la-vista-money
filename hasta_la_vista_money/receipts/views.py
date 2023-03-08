@@ -21,6 +21,7 @@ class ReceiptView(LoginRequiredMixin, SuccessMessageMixin, FilterView):
     model = Receipt
     context_object_name = 'receipts'
     filterset_class = ReceiptFilter
+    ordering = ['-receipt_date']
     filter_backends = (filters.DjangoFilterBackend,)
     error_message = gettext_lazy(
         'У вас нет прав на просмотр данной страницы! Авторизуйтесь!',
