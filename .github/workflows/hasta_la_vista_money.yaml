@@ -48,7 +48,7 @@ jobs:
         with:
           reporter: 'github-pr-review'
           env:
-            GH_TOKEN: ${{ secrets.GH_TOKEN }}
+            gh_secret: ${{ secrets.GhSecret }}
 
       # run makemigrations and migrate
       - name: Run makemigrations
