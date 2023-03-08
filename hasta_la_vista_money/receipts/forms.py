@@ -1,9 +1,10 @@
 import django_filters
 from django.forms import (
     CharField,
-    ModelForm,
+    ModelChoiceField,
     Select,
     TextInput,
+    ValidationError,
     formset_factory,
 )
 from django.utils.translation import gettext_lazy as _
@@ -43,45 +44,56 @@ class ReceiptFilter(django_filters.FilterSet):
 
 class CustomerForm(BaseForm):
     labels = {
-        'name_seller': _('Продавец'),
+        'existing_seller': _('Продавец'),
+        'new_seller': _('Новый продавец'),
     }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['name_seller'].widget = Select(
-            choices=self.get_name_seller_choices(),
-        )
-
-    @classmethod
-    def get_name_seller_choices(cls):
-        choices = [('', '--------'), ('other', _('Другой продавец'))]
-        for seller in Customer.objects.order_by(  # noqa: WPS352
-            'name_seller',
-        ).values_list(
-            'name_seller',
-            flat=True,
-        ).distinct():
-            choices.append((seller, seller))
-        return choices
-
-    class Meta:
-        model = Customer
-        fields = ['name_seller']
-
-
-class CustomerInputForm(ModelForm):
-    name_seller = CharField(
+    existing_seller = ModelChoiceField(
+        queryset=Customer.objects.all(),
         required=False,
-        empty_value='',
-        label=_('Продавец'),
+        widget=Select(attrs={
+            'id': 'id_existing_seller',
+            'onchange': 'toggleNewSellerField()',
+        }),
+    )
+    new_seller = CharField(
+        required=False,
         widget=TextInput(attrs={
-            'class': 'name_seller_input',
+            'id': 'id_new_seller',
+            'style': 'display:none;',
         }),
     )
 
     class Meta:
         model = Customer
-        fields = ['name_seller']
+        fields = ['existing_seller', 'new_seller']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['existing_seller'].initial = None
+        self.fields[
+            'existing_seller'
+        ].choices = [('--', '-------'), ('other', 'Other seller')] + list(
+            self.fields['existing_seller'].choices,
+        )[1:]
+
+    def clean(self):
+        cleaned_data = super().clean()
+        existing_seller = cleaned_data.get('existing_seller')
+        new_seller = cleaned_data.get('new_seller')
+        if not existing_seller and not new_seller:
+            raise ValidationError(
+                _(
+                    'Please select an existing seller or add a new one.',
+                ),
+            )
+        if existing_seller and new_seller:
+            raise ValidationError(
+                _(
+                    'Please select only one option: '
+                    'an existing seller or a new one.',  # noqa: WPS326
+                ),
+            )
+        return cleaned_data
 
 
 class ProductForm(BaseForm):
