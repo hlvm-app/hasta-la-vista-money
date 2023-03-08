@@ -19,13 +19,12 @@ function addForm(e){
     totalForms.setAttribute('value', `${formNum+1}`)
 }
 
-var input_form = document.getElementById('id_name_seller')
-var form_input = document.querySelector('.customer_form_input')
-
-input_form.addEventListener("change", function() {
-  if (input_form.value === "other") {
-    form_input.style.display = "block";
-  } else {
-    form_input.style.display = "none";
-  }
-});
+function toggleNewSellerField() {
+    var existingSeller = document.getElementById("id_existing_seller");
+    var newSeller = document.getElementById("id_new_seller");
+    if (existingSeller.value === "other") {
+        newSeller.style.display = 'block';
+    } else {
+        newSeller.style.display = 'none';
+    }
+}
