@@ -8,12 +8,11 @@ from django_filters import rest_framework as filters
 from django_filters.views import FilterView
 from hasta_la_vista_money.receipts.forms import (
     CustomerForm,
-    CustomerInputForm,
     ProductFormSet,
     ReceiptFilter,
     ReceiptForm,
 )
-from hasta_la_vista_money.receipts.models import Receipt
+from hasta_la_vista_money.receipts.models import Customer, Receipt
 
 
 class ReceiptView(LoginRequiredMixin, SuccessMessageMixin, FilterView):
@@ -47,63 +46,45 @@ class ReceiptCreateView(CreateView):
     success_url = 'receipts:list'
 
     def get(self, request, *args, **kwargs):
+        existing_sellers = Customer.objects.all()
         seller_form = CustomerForm()
-        customer_input_form = CustomerInputForm()
+        seller_form.fields['existing_seller'].queryset = existing_sellers
         receipt_form = ReceiptForm()
         product_formset = ProductFormSet()
-
         return self.render_to_response({
             'seller_form': seller_form,
-            'customer_input_form': customer_input_form,
             'receipt_form': receipt_form,
-            'product_formset': product_formset  # noqa: C812
+            'product_formset': product_formset,
         })
 
-    def post(self, request, *args, **kwargs):  # noqa: WPS210
+    def post(self, request, *args, **kwargs):
         seller_form = CustomerForm(request.POST)
-        customer_input_form = CustomerInputForm(request.POST)
         receipt_form = ReceiptForm(request.POST)
         product_formset = ProductFormSet(request.POST)
-
-        if (  # noqa: WPS337
-            seller_form.is_valid() and  # noqa: W504
-            customer_input_form.is_valid() and  # noqa: W504
-            receipt_form.is_valid() and  # noqa: W504
+        if (
+            seller_form.is_valid() and receipt_form.is_valid() and
             product_formset.is_valid()
         ):
-            return self.create_receipt(
-                seller_form,
-                customer_input_form,
-                receipt_form,
-                product_formset,
-            )
-
-        else:
-            return self.render_to_response({  # noqa: WPS503
+            existing_seller = seller_form.cleaned_data.get('existing_seller')
+            new_seller = seller_form.cleaned_data.get('new_seller')
+            if existing_seller:
+                seller = existing_seller
+            elif new_seller:
+                seller = Customer.objects.create(name_seller=new_seller)
+            else:
+                seller = None
+            if seller:
+                receipt = receipt_form.save(commit=False)
+                receipt.customer = seller
+                receipt.save()
+                for product_form in product_formset:
+                    product = product_form.save()
+                    receipt.product.add(product)
+                return redirect(reverse_lazy('receipts:list'))
+        return self.render_to_response(
+            {
                 'seller_form': seller_form,
-                'customer_input_form': customer_input_form,
                 'receipt_form': receipt_form,
                 'product_formset': product_formset,
-            })
-
-    @classmethod
-    def create_receipt(
-        cls,
-        seller_form,
-        customer_input_form,
-        receipt_form,
-        product_formset,
-    ):
-        seller = seller_form.save()
-        seller_input = customer_input_form.save()
-        receipt = receipt_form.save(commit=False)
-
-        if seller is None:
-            receipt.customer = seller_input
-        receipt.customer = seller
-        receipt.save()
-
-        for product_form in product_formset:
-            product = product_form.save()
-            receipt.product.add(product)
-        return redirect(reverse_lazy('receipts:list'))
+            },
+        )
