@@ -47,6 +47,7 @@ jobs:
         uses: wemake-services/wemake-python-styleguide@0.17.0
         with:
           reporter: 'github-pr-review'
+        env:
           gh_secret: ${{ secrets.GhSecret }}
 
       # run makemigrations and migrate
