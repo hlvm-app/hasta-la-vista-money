@@ -70,20 +70,13 @@ class ReceiptCreateView(CreateView):
             receipt_form.is_valid() and  # noqa: W504
             product_formset.is_valid()
         ):
+            return self.create_receipt(
+                seller_form,
+                customer_input_form,
+                receipt_form,
+                product_formset,
+            )
 
-            seller = seller_form.save()
-            seller_input = customer_input_form.save()
-            receipt = receipt_form.save(commit=False)
-
-            if seller is None:
-                receipt.customer = seller_input
-            receipt.customer = seller
-            receipt.save()
-
-            for product_form in product_formset:
-                product = product_form.save()
-                receipt.product.add(product)
-            return redirect(reverse_lazy('receipts:list'))
         else:
             return self.render_to_response({  # noqa: WPS503
                 'seller_form': seller_form,
@@ -91,3 +84,25 @@ class ReceiptCreateView(CreateView):
                 'receipt_form': receipt_form,
                 'product_formset': product_formset,
             })
+
+    @classmethod
+    def create_receipt(
+        cls,
+        seller_form,
+        customer_input_form,
+        receipt_form,
+        product_formset,
+    ):
+        seller = seller_form.save()
+        seller_input = customer_input_form.save()
+        receipt = receipt_form.save(commit=False)
+
+        if seller is None:
+            receipt.customer = seller_input
+        receipt.customer = seller
+        receipt.save()
+
+        for product_form in product_formset:
+            product = product_form.save()
+            receipt.product.add(product)
+        return redirect(reverse_lazy('receipts:list'))
