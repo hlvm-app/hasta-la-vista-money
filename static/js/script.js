@@ -20,11 +20,12 @@ function addForm(e){
 }
 
 function toggleNewSellerField() {
-    var existingSeller = document.getElementById("id_existing_seller");
-    var newSeller = document.getElementById("id_new_seller");
-    if (existingSeller.value === "other") {
+    var existingSeller = document.getElementById('id_existing_seller');
+    var newSeller = document.getElementById('id_new_seller');
+    if (existingSeller.value === 'other') {
         newSeller.style.display = 'block';
     } else {
         newSeller.style.display = 'none';
+        newSeller.value = '';
     }
 }
