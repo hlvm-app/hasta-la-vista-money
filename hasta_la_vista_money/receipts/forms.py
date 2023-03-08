@@ -72,7 +72,7 @@ class CustomerForm(BaseForm):
         self.fields['existing_seller'].initial = None
         self.fields[
             'existing_seller'
-        ].choices = [('--', '-------'), ('other', 'Other seller')] + list(
+        ].choices = [('--', '-------'), ('other', 'Другой продавец')] + list(
             self.fields['existing_seller'].choices,
         )[1:]
 
@@ -83,14 +83,15 @@ class CustomerForm(BaseForm):
         if not existing_seller and not new_seller:
             raise ValidationError(
                 _(
-                    'Please select an existing seller or add a new one.',
+                    'Пожалуйста, выберите существующего продавца или добавьте '
+                    'нового.',  # noqa: WPS326
                 ),
             )
         if existing_seller and new_seller:
             raise ValidationError(
                 _(
-                    'Please select only one option: '
-                    'an existing seller or a new one.',  # noqa: WPS326
+                    'Пожалуйста, выберите только один вариант: '
+                    'существующего продавца или ввод нового.',  # noqa: WPS326
                 ),
             )
         return cleaned_data
