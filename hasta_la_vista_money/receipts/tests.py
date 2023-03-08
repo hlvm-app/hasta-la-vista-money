@@ -1,13 +1,13 @@
 from django.test import TestCase
 from django.urls import reverse_lazy
-
-from hasta_la_vista_money.receipts.models import Receipt, Product, Customer
+from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
 from hasta_la_vista_money.users.models import User
 
 
 class TestReceipt(TestCase):
 
     fixtures = ['receipt.yaml', 'users.yaml', 'customer.yaml', 'product.yaml']
+    status_code_ok = 200
 
     def setUp(self) -> None:
         self.user = User.objects.get(pk=1)
@@ -19,7 +19,7 @@ class TestReceipt(TestCase):
     def test_receipt_list(self):
         self.client.force_login(self.user)
         response = self.client.get(reverse_lazy('receipts:list'))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, self.status_code_ok)
 
     def test_product(self):
         self.client.force_login(self.user)
@@ -32,7 +32,7 @@ class TestReceipt(TestCase):
         self.customer = Customer.objects.create(
             name_seller='ООО "Пятерочка"',
             retail_place_address='Test Address',
-            retail_place='Test place'
+            retail_place='Test place',
         )
         self.assertEqual(self.customer.pk, 2)
 

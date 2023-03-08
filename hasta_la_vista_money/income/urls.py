@@ -1,9 +1,8 @@
 from django.urls import path
-
-from hasta_la_vista_money.income.views import IncomeView, AddIncome
+from hasta_la_vista_money.income.views import AddIncome, IncomeView
 
 app_name = 'income'
 urlpatterns = [
     path('', IncomeView.as_view(), name='list'),
-    path('create/', AddIncome.as_view(), name='create')
+    path('create/', AddIncome.as_view(), name='create'),
 ]

@@ -5,7 +5,7 @@ OPERATION_TYPES = (
     (1, _('Приход')),
     (2, _('Возврат прихода')),
     (3, _('Расход')),
-    (4, _('Возврат расхода'))
+    (4, _('Возврат расхода')),
 )
 
 
@@ -20,12 +20,16 @@ class Customer(models.Model):
 
 class Receipt(models.Model):
     receipt_date = models.DateTimeField()
-    operation_type = models.IntegerField(null=True, blank=True,
-                                         choices=OPERATION_TYPES)
+    operation_type = models.IntegerField(
+        null=True, blank=True, choices=OPERATION_TYPES,
+    )
     total_sum = models.DecimalField(max_digits=10, decimal_places=2)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE,
-                                 verbose_name='customer',
-                                 related_name='customer')
+    customer = models.ForeignKey(
+        Customer,
+        on_delete=models.CASCADE,
+        verbose_name='customer',
+        related_name='customer',
+    )
     product = models.ManyToManyField('Product', related_name='product')
 
     def __str__(self):

@@ -6,15 +6,14 @@ from django.utils.translation import gettext_lazy
 from django.views.generic import CreateView
 from django_filters import rest_framework as filters
 from django_filters.views import FilterView
-
-from .forms import (
+from hasta_la_vista_money.receipts.forms import (
     CustomerForm,
     CustomerInputForm,
     ProductFormSet,
     ReceiptFilter,
     ReceiptForm,
 )
-from .models import Receipt
+from hasta_la_vista_money.receipts.models import Receipt
 
 
 class ReceiptView(LoginRequiredMixin, SuccessMessageMixin, FilterView):
@@ -23,8 +22,9 @@ class ReceiptView(LoginRequiredMixin, SuccessMessageMixin, FilterView):
     context_object_name = 'receipts'
     filterset_class = ReceiptFilter
     filter_backends = (filters.DjangoFilterBackend,)
-    error_message = gettext_lazy('У вас нет прав на просмотр данной страницы! '
-                                 'Авторизуйтесь!')
+    error_message = gettext_lazy(
+        'У вас нет прав на просмотр данной страницы! Авторизуйтесь!',
+    )
     no_permission_url = reverse_lazy('login')
 
     def post(self, request):
@@ -55,17 +55,22 @@ class ReceiptCreateView(CreateView):
             'seller_form': seller_form,
             'customer_input_form': customer_input_form,
             'receipt_form': receipt_form,
-            'product_formset': product_formset})
+            'product_formset': product_formset  # noqa: C812
+        })
 
-    def post(self, request, *args, **kwargs):
-
+    def post(self, request, *args, **kwargs):  # noqa: WPS210
         seller_form = CustomerForm(request.POST)
         customer_input_form = CustomerInputForm(request.POST)
         receipt_form = ReceiptForm(request.POST)
         product_formset = ProductFormSet(request.POST)
 
-        if seller_form.is_valid() and customer_input_form.is_valid() \
-                and receipt_form.is_valid() and product_formset.is_valid():
+        if (  # noqa: WPS337
+            seller_form.is_valid() and  # noqa: W504
+            customer_input_form.is_valid() and  # noqa: W504
+            receipt_form.is_valid() and  # noqa: W504
+            product_formset.is_valid()
+        ):
+
             seller = seller_form.save()
             seller_input = customer_input_form.save()
             receipt = receipt_form.save(commit=False)
@@ -78,11 +83,11 @@ class ReceiptCreateView(CreateView):
             for product_form in product_formset:
                 product = product_form.save()
                 receipt.product.add(product)
-            return redirect(reverse_lazy("receipts:list"))
+            return redirect(reverse_lazy('receipts:list'))
         else:
-            return self.render_to_response({
+            return self.render_to_response({  # noqa: WPS503
                 'seller_form': seller_form,
                 'customer_input_form': customer_input_form,
                 'receipt_form': receipt_form,
-                'product_formset': product_formset
+                'product_formset': product_formset,
             })

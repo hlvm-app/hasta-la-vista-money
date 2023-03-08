@@ -1,29 +1,34 @@
 import django_filters
-from django.forms import ModelForm, formset_factory
-from django import forms
-from django.utils.translation import gettext_lazy as _, gettext_lazy
-
+from django.forms import (
+    CharField,
+    ModelForm,
+    Select,
+    TextInput,
+    formset_factory,
+)
+from django.utils.translation import gettext_lazy as _
 from hasta_la_vista_money.forms import BaseForm
-from hasta_la_vista_money.receipts.models import Customer, Receipt, Product
+from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
 
 
 class ReceiptFilter(django_filters.FilterSet):
     name_seller = django_filters.ModelChoiceFilter(
-        queryset=Customer.objects
-        .distinct('name_seller')
-        .order_by('name_seller'),
-
+        queryset=Customer.objects.distinct(
+            'name_seller',
+        ).order_by(
+            'name_seller',
+        ),
         field_name='customer__name_seller',
-        label=gettext_lazy('Продавец'),
+        label=_('Продавец'),
     )
     receipt_date = django_filters.DateFromToRangeFilter(
-        label=gettext_lazy('Период'),
+        label=_('Период'),
         widget=django_filters.widgets.RangeWidget(
             attrs={
-                'placeholder': gettext_lazy('YYYY-DD-MM'),
-                'class': 'form-control'
-            }
-        )
+                'placeholder': _('YYYY-DD-MM'),
+                'class': 'form-control',
+            },
+        ),
     )
 
     @property
@@ -38,23 +43,26 @@ class ReceiptFilter(django_filters.FilterSet):
 
 class CustomerForm(BaseForm):
     labels = {
-        'name_seller': _('Продавец')
+        'name_seller': _('Продавец'),
     }
-
-    @staticmethod
-    def get_name_seller_choices():
-        choices = [('', '--------'), ('other', _('Другой продавец'))]
-        for seller in Customer.objects.order_by('name_seller') \
-                .values_list('name_seller', flat=True) \
-                .distinct():
-            choices.append((seller, seller))
-        return choices
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['name_seller'].widget = forms.Select(
-            choices=self.get_name_seller_choices()
+        self.fields['name_seller'].widget = Select(
+            choices=self.get_name_seller_choices(),
         )
+
+    @classmethod
+    def get_name_seller_choices(cls):
+        choices = [('', '--------'), ('other', _('Другой продавец'))]
+        for seller in Customer.objects.order_by(  # noqa: WPS352
+            'name_seller',
+        ).values_list(
+            'name_seller',
+            flat=True,
+        ).distinct():
+            choices.append((seller, seller))
+        return choices
 
     class Meta:
         model = Customer
@@ -62,13 +70,13 @@ class CustomerForm(BaseForm):
 
 
 class CustomerInputForm(ModelForm):
-    name_seller = forms.CharField(
+    name_seller = CharField(
         required=False,
         empty_value='',
         label=_('Продавец'),
-        widget=forms.TextInput(attrs={
-            'class': 'name_seller_input'
-        })
+        widget=TextInput(attrs={
+            'class': 'name_seller_input',
+        }),
     )
 
     class Meta:
@@ -81,7 +89,7 @@ class ProductForm(BaseForm):
         'product_name': _('Наименование продукта'),
         'price': _('Цена'),
         'quantity': _('Количество'),
-        'amount': _('Сумма')
+        'amount': _('Сумма'),
     }
 
     class Meta:
@@ -96,7 +104,7 @@ class ReceiptForm(BaseForm):
     labels = {
         'receipt_date': _('Дата и время чека'),
         'operation_type': _('Тип операции'),
-        'total_sum': _('Итоговая сумма по чеку')
+        'total_sum': _('Итоговая сумма по чеку'),
     }
 
     class Meta:
