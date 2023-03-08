@@ -5,11 +5,14 @@ import re
 import types
 
 import telebot
-
-from bot.services import (convert_price, convert_date_time, ReceiptApiReceiver, 
-                          ParseJson)
-from hasta_la_vista_money.receipts.models import Customer, Receipt, Product
-from .log_config import logger, TelegramLogsHandler
+from bot.log_config import TelegramLogsHandler, logger
+from bot.services import (
+    ParseJson,
+    ReceiptApiReceiver,
+    convert_date_time,
+    convert_price,
+)
+from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
 
 token = os.environ.get('TOKEN_TELEGRAM_BOT')
 bot_admin = telebot.TeleBot(token, parse_mode='html')
@@ -19,21 +22,21 @@ logger.addHandler(TelegramLogsHandler(bot_admin, id_group_user))
 
 
 CONSTANT_RECEIPT = types.MappingProxyType(
-  {
-    'name_seller': 'user',
-    'retail_place_address': 'retailPlaceAddress',
-    'retail_place': 'retailPlace',
-    'receipt_date': 'dateTime',
-    'operation_type': 'operationType',
-    'total_sum': 'totalSum',
-    'product_name': 'name',
-    'price': 'price',
-    'quantity': 'quantity',
-    'amount': 'sum',
-    'nds_type': 'nds',
-    'nds_sum': 'ndsSum',
-    'items': 'items'
-  }
+    {
+        'name_seller': 'user',
+        'retail_place_address': 'retailPlaceAddress',
+        'retail_place': 'retailPlace',
+        'receipt_date': 'dateTime',
+        'operation_type': 'operationType',
+        'total_sum': 'totalSum',
+        'product_name': 'name',
+        'price': 'price',
+        'quantity': 'quantity',
+        'amount': 'sum',
+        'nds_type': 'nds',
+        'nds_sum': 'ndsSum',
+        'items': 'items',
+    },
 )
 
 
@@ -42,62 +45,61 @@ def parse_receipt(json_data, chat_id):
 
     # Getting of receipt items without products
     name_seller = parser.parse_json(
-        json_data, CONSTANT_RECEIPT.get('name_seller')
+        json_data, CONSTANT_RECEIPT.get('name_seller'),
     )
     retail_place_address = parser.parse_json(
-        json_data, CONSTANT_RECEIPT.get('retail_place_address')
+        json_data, CONSTANT_RECEIPT.get('retail_place_address'),
     )
     retail_place = parser.parse_json(
-        json_data, CONSTANT_RECEIPT.get('retail_place')
+        json_data, CONSTANT_RECEIPT.get('retail_place'),
     )
     customer = Customer.objects.create(
         name_seller=name_seller,
         retail_place_address=retail_place_address,
-        retail_place=retail_place
+        retail_place=retail_place,
     )
 
     receipt_date = convert_date_time(parser.parse_json(
-        json_data, CONSTANT_RECEIPT.get('receipt_date')
+        json_data, CONSTANT_RECEIPT.get('receipt_date'),
     ))
     operation_type = parser.parse_json(
-        json_data, CONSTANT_RECEIPT.get('operation_type')
+        json_data, CONSTANT_RECEIPT.get('operation_type'),
     )
     total_sum = convert_price(parser.parse_json(
-        json_data, CONSTANT_RECEIPT.get('total_sum')
+        json_data, CONSTANT_RECEIPT.get('total_sum'),
     ))
     receipt = Receipt.objects.create(
         receipt_date=receipt_date,
         operation_type=operation_type,
         total_sum=total_sum,
-        customer=customer
+        customer=customer,
     )
 
     # Getting a list of products
     products_list = parser.parse_json(
-        json_data, CONSTANT_RECEIPT.get('items')
+        json_data, CONSTANT_RECEIPT.get('items'),
     )
 
     # Getting an information of products
     result_products_list = []
     for product in products_list:
-        print(product, type(product))
         product_name = parser.parse_json(
-            product, CONSTANT_RECEIPT.get('product_name')
+            product, CONSTANT_RECEIPT.get('product_name'),
         )
         price = convert_price(parser.parse_json(
-            product, CONSTANT_RECEIPT.get('price')
+            product, CONSTANT_RECEIPT.get('price'),
         ))
         quantity = parser.parse_json(
-            product, CONSTANT_RECEIPT.get('quantity')
+            product, CONSTANT_RECEIPT.get('quantity'),
         )
         amount = convert_price(parser.parse_json(
-            product, CONSTANT_RECEIPT.get('amount')
+            product, CONSTANT_RECEIPT.get('amount'),
         ))
         nds_type = parser.parse_json(
-            product, CONSTANT_RECEIPT.get('nds_type')
+            product, CONSTANT_RECEIPT.get('nds_type'),
         )
         nds_sum = parser.parse_json(
-            product, CONSTANT_RECEIPT.get('nds_sum')
+            product, CONSTANT_RECEIPT.get('nds_sum'),
         )
         products = Product.objects.create(
             product_name=product_name,
@@ -105,7 +107,7 @@ def parse_receipt(json_data, chat_id):
             quantity=quantity,
             amount=amount,
             nds_type=nds_type,
-            nds_sum=nds_sum
+            nds_sum=nds_sum,
         )
         result_products_list.append(products)
     receipt.product.set(result_products_list)
@@ -116,13 +118,14 @@ def parse_receipt(json_data, chat_id):
 @bot_admin.message_handler(content_types=['document'])
 def get_receipt(message):
     if message.document.mime_type != 'application/json':
-        bot_admin.send_message(message.chat.id,
-                               'Файл должен быть только в формате JSON!')
+        bot_admin.send_message(
+            message.chat.id, 'Файл должен быть только в формате JSON!',
+        )
         return
     try:
         file_info = bot_admin.get_file(message.document.file_id)
         file_downloaded = bot_admin.download_file(
-            file_path=file_info.file_path
+            file_path=file_info.file_path,
         )
         json_data = json.loads(file_downloaded)
 
@@ -132,21 +135,23 @@ def get_receipt(message):
         logger.error(
             f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S}\n'
             f'Некорректный JSON файл: {error}.\n'
-            f'Проверьте тот ли файл загружаете...'
+            f'Проверьте тот ли файл загружаете...',
         )
     except Exception as error:
         logger.error(
             f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S} произошла ошибка:'
-            f' {error}.'
+            f' {error}.',
         )
 
 
 @bot_admin.message_handler(content_types=['text'])
 def get_receipt_text(message):
     input_user = message.text
-    pattern = r't=[0-9]{8}T[0-9]{4}' \
-              r'&s=[0-9]{1,10}.[0-9]{2}&fn=[0-9]+' \
-              r'&i=[0-9]+&fp=[0-9]+&n=[0-5]{1}'
+    pattern = (
+        r't=[0-9]{8}T[0-9]{6}'
+        r'&s=[0-9]{1,10}.[0-9]{2}&fn=[0-9]+'
+        r'&i=[0-9]+&fp=[0-9]+&n=[0-5]{1}'
+    )
 
     text_pattern = re.match(pattern, input_user)
     if text_pattern:
@@ -159,8 +164,8 @@ def get_receipt_text(message):
 
         except Exception as error:
             logger.error(
-                    f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S}\n'
-                    f'произошла ошибка: {error}.'
-                )
+                f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S}\n'
+                f'произошла ошибка: {error}.',
+            )
     else:
         bot_admin.send_message(message.chat.id, 'Недопустимый текст')
