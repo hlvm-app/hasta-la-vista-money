@@ -17,9 +17,6 @@
             {% csrf_token %}
             <div class="p-3 text-light border">
                 {% bootstrap_form seller_form layout="horizontal" %}
-                <div class="customer_form_input">
-                    {% bootstrap_form customer_input_form layout="horizontal" %}
-                </div>
                 {% bootstrap_form receipt_form layout="horizontal" %}
             </div>
                 {{ product_formset.management_form }}
