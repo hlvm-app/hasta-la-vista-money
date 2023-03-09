@@ -7,12 +7,8 @@
 
 }
 
-#form-create-receipt .row:nth-child(2) {
-    display: none;
-}
-
 table th:first-child {
-    width: 50rem;
+     width: 50rem;
 }
 
 table th:nth-child(2) {
