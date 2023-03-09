@@ -31,12 +31,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'true').lower() in {'yes', '1', 'true'}
 
-ALLOWED_HOSTS = [
-    'pavlovteam.ru',
-    'money.pavlovteam.ru',
-    'localhost',
-    '127.0.0.1',
-]
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(",") \
+    if os.environ.get('ALLOWED_HOSTS') else ['localhost', '127.0.0.1']
 
 # Application definition
 
