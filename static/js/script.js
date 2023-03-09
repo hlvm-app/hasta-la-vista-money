@@ -20,14 +20,13 @@ function addForm(e){
 }
 
 function toggleNewSellerField() {
-    
+
     var existingSeller = document.getElementById('id_existing_seller');
-    var newSeller = document.getElementById('form-create-receipt').getElementsByClassName('row')[1];
-    
+    var newSeller = document.getElementById('form-create-receipt').getElementsByTagName('div')[3]
+
     if (existingSeller.value === 'other') {
-        newSeller.style.display = 'block';
+        newSeller.style.display = 'flex';
     } else {
         newSeller.style.display = 'none';
-        newSeller.value = '';
-    }
+    };
 }
