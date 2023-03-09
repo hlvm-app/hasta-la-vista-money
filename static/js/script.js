@@ -22,7 +22,7 @@ function addForm(e){
 function toggleNewSellerField() {
 
     var existingSeller = document.getElementById('id_existing_seller');
-    var newSeller = document.getElementById('form-create-receipt').getElementsByTagName('div')[3]
+    var newSeller = document.getElementById('form-create-receipt').getElementsByClassName('row')[1]
 
     if (existingSeller.value === 'other') {
         newSeller.style.display = 'flex';
@@ -30,3 +30,8 @@ function toggleNewSellerField() {
         newSeller.style.display = 'none';
     };
 }
+
+$(function () {
+    toggleNewSellerField();
+    $('select#existingSeller').change(toggleNewSellerField)
+})
