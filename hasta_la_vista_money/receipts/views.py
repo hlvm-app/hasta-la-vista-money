@@ -40,10 +40,14 @@ class ReceiptView(LoginRequiredMixin, SuccessMessageMixin, FilterView):
         return self.get(request)
 
 
-class ReceiptCreateView(CreateView):
+class ReceiptCreateView(LoginRequiredMixin, CreateView):
     model = Receipt
     template_name = 'receipts/create_receipt.html'
     success_url = 'receipts:list'
+    error_message = gettext_lazy(
+        'У вас нет прав на просмотр данной страницы! Авторизуйтесь!',
+    )
+    no_permission_url = reverse_lazy('login')
 
     def get(self, request, *args, **kwargs):
         existing_sellers = Customer.objects.all()
