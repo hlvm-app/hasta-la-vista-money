@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:latest
+    env_file:
+      - .env
+    ports:
+      - "5433:5432"
+  django:
+    build:
+      context: .
+    environment:
+      - DEBUG=True
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
