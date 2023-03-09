@@ -48,7 +48,11 @@ class CustomerForm(BaseForm):
         'new_seller': _('Новый продавец'),
     }
     existing_seller = ModelChoiceField(
-        queryset=Customer.objects.all(),
+        queryset=Customer.objects.distinct(
+            'name_seller'
+        ).order_by(
+            'name_seller'
+        ),
         required=False,
         widget=Select(attrs={
             'id': 'id_existing_seller',
