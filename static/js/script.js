@@ -20,8 +20,10 @@ function addForm(e){
 }
 
 function toggleNewSellerField() {
+    
     var existingSeller = document.getElementById('id_existing_seller');
-    var newSeller = document.getElementById('id_new_seller');
+    var newSeller = document.getElementById('form-create-receipt').getElementsByClassName('row')[1];
+    
     if (existingSeller.value === 'other') {
         newSeller.style.display = 'block';
     } else {
