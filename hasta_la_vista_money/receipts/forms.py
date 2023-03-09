@@ -3,7 +3,6 @@ from django.forms import (
     CharField,
     ModelChoiceField,
     Select,
-    TextInput,
     ValidationError,
     formset_factory,
 )
