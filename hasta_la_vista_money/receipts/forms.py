@@ -61,10 +61,6 @@ class CustomerForm(BaseForm):
     )
     new_seller = CharField(
         required=False,
-        widget=TextInput(attrs={
-            'id': 'id_new_seller',
-            'style': 'display:none;',
-        }),
     )
 
     class Meta:
