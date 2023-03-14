@@ -19,7 +19,7 @@ django-filter = ">=22.1"
 PyYAML = ">=6.0"
 rollbar = ">=0.16.2"
 pyTelegramBotAPI = ">=4.6.0"
-django = ">=4.1.6"
+Django = ">=4.1.7"
 urllib3 = "^1.26.15"
 
 [tool.poetry.dev-dependencies]
