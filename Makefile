@@ -30,7 +30,7 @@ docker-install: .env
 
 docker-setup: migrate
 		@echo Create a super user
-		@poetry run python manage.py createsuperuser
+		python manage.py createsuperuser
 
 docker-start:
 		docker compose up
