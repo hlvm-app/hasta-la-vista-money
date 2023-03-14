@@ -66,7 +66,9 @@ make setup
 ```
 #### Если используете **Docker**:
 ```bash
-docker-compose run --rm django make setup
+docker compose run django python manage.py migrate
+docker compose run django python manage.py createsuperuser
+docker compose run django python manage.py collectstatic
 ```
 ___
 
