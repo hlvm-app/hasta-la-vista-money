@@ -32,9 +32,9 @@ docker-start:
 		docker-compose up
 
 gettext:
-		sudo apt install gettext
+		sudo apt install gettext -y
 		
-setup: migrations migrate gettext transcompile
+setup: migrations migrate staticfiles gettext transcompile
 		@echo Create a super user
 		@poetry run python manage.py createsuperuser
 
@@ -44,7 +44,10 @@ dokku:
 github:
 		git push origin main
 
-start: setup 
+staticfiles:
+		@poetry run python manage.py collectstatic
+
+start:
 		@poetry run python manage.py runserver
 		
 secretkey:
