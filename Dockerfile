@@ -9,11 +9,8 @@ ENV PYTHONUNBUFFERED=1 \
 # set work directory
 WORKDIR /app
 
+COPY requirements.txt /app/
+
 COPY . /app/
 
-RUN pip install --upgrade pip && pip install -r requirements.txt && pip install "poetry==$POETRY_VERSION"
-RUN apk update && apk add make gettext git --no-cache
-
-EXPOSE 8000
-
-CMD ["python", "manage.py", "runserver"]
+RUN pip install --upgrade pip && pip install -r requirements.txt
