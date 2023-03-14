@@ -10,10 +10,8 @@ services:
   django:
     build:
       context: .
-    environment:
-      - DEBUG=True
     volumes:
-      - .:/code
+      - .:/app
     ports:
       - "8000:8000"
     env_file:
