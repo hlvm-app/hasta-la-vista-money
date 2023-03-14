@@ -10,16 +10,28 @@ transprepare:
 transcompile:
 		@poetry run django-admin compilemessages
 
+shell:
+		@poetry shell
+
 .env:
 		@test ! -f .env && cp .env.example .env
 
 migrate:
 		@poetry run python manage.py migrate
+
+migrations:
+		@poetry run python manage.py makemigrations
 		
 install: .env
 		@poetry install
+
+docker-install: .env
+		docker-compose build
+
+docker-start:
+		docker-compose up
 		
-setup: migrate transcompile
+setup: migrations migrate transcompile
 		@echo Create a super user
 		@poetry run python manage.py createsuperuser
 
