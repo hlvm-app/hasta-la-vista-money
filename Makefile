@@ -30,8 +30,11 @@ docker-install: .env
 
 docker-start:
 		docker-compose up
+
+gettext:
+		sudo apt install gettext
 		
-setup: migrations migrate transcompile
+setup: migrations migrate gettext transcompile
 		@echo Create a super user
 		@poetry run python manage.py createsuperuser
 

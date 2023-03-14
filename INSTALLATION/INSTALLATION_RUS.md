@@ -55,10 +55,6 @@ ___
 ___
 
 ### 1.3 Завершение установки
-#### Если используете **Poetry**:
-```bash
-make setup
-```
 #### Если используете **Docker**:
 ```bash
 docker-compose run --rm django make setup
