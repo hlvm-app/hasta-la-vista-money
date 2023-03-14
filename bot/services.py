@@ -80,7 +80,7 @@ class ReceiptApiReceiver:
             'User-Agent': self.user_agent,
         }
 
-        response = requests.post(url, json=payload, headers=headers)
+        response = requests.post(url, json=payload, headers=headers, timeout=10)
         self._session_id = response.json()['sessionId']
 
     def get_receipt(self, qr: str) -> dict:
@@ -96,7 +96,7 @@ class ReceiptApiReceiver:
             'User-Agent': self.user_agent,
             'Accept-Language': self.accept_language,
         }
-        resp = requests.get(url, headers=headers)
+        resp = requests.get(url, headers=headers, timeout=10)
         return resp.json()
 
     def _get_receipt_id(self, qr: str) -> str:
@@ -112,5 +112,5 @@ class ReceiptApiReceiver:
             'sessionId': self._session_id,
             'User-Agent': self.user_agent,
         }
-        resp = requests.post(url, json=payload, headers=headers)
+        resp = requests.post(url, json=payload, headers=headers, timeout=10)
         return resp.json()['id']
