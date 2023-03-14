@@ -26,10 +26,10 @@ install: .env
 		@poetry install
 
 docker-install: .env
-		docker-compose build
+		docker compose build
 
 docker-start:
-		docker-compose up
+		docker compose up
 
 gettext:
 		sudo apt install gettext -y
