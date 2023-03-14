@@ -7,9 +7,13 @@ ___
 
 Установить **Poetry** командой:   
 
-**Linux, macOS, Windows (WSL):**
+**Linux**
 ```bash
-sudo apt install python3-poetry
+sudo apt install python3-poetry -y
+```
+**macOS, Windows (WSL):**   
+```bash
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
 ```
 
 Подробная инструкция по установке **Poetry** доступна в [официальной документации](https://python-poetry.org/docs/).
