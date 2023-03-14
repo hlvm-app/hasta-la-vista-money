@@ -206,11 +206,12 @@ STATICFILES_DIRS = (
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ROLLBAR = {
-    'access_token': os.environ.get('ACCESS_TOKEN'),
-    'environment': 'development' if DEBUG else 'production',
-    'patch_debugview': False,
-    'root': BASE_DIR,
-}
+if os.environ.get('ACCESS_TOKEN') is not None:
+    ROLLBAR = {
+        'access_token': os.environ.get('ACCESS_TOKEN'),
+        'environment': 'development' if DEBUG else 'production',
+        'patch_debugview': False,
+        'root': BASE_DIR,
+    }
 
-rollbar.init(**ROLLBAR)
+    rollbar.init(**ROLLBAR)
