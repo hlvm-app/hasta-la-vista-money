@@ -13,5 +13,5 @@ COPY requirements.txt /app/
 
 COPY . /app/
 
-RUN pip install --upgrade pip && pip install -r requirements.txt
+RUN pip install --upgrade pip && pip install -r requirements.txt && pip install "poetry==$POETRY_VERSION"
 RUN apk update && apk add make
