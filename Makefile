@@ -28,6 +28,10 @@ install: .env
 docker-install: .env
 		docker compose build
 
+docker-setup: migrate
+		@echo Create a super user
+		@poetry run python manage.py createsuperuser
+
 docker-start:
 		docker compose up
 
