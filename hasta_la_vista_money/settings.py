@@ -80,7 +80,6 @@ MIDDLEWARE = [
     'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 ]
 
-
 ROOT_URLCONF = 'hasta_la_vista_money.urls'
 
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
@@ -102,7 +101,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'hasta_la_vista_money.wsgi.application'
-
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
@@ -177,7 +175,7 @@ TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 LANGUAGES = (
     ('en', 'English'),
