@@ -148,8 +148,8 @@ def get_receipt(message):
 def get_receipt_text(message):
     input_user = message.text
     pattern = (
-        r't=[0-9]{8}T[0-9]{6}'
-        r'&s=[0-9]{1,10}.[0-9]{2}&fn=[0-9]+'
+        r't=[0-9]+T[0-9]+'
+        r'&s=[0-9]+.[0-9]+&fn=[0-9]+'
         r'&i=[0-9]+&fp=[0-9]+&n=[0-5]{1}'
     )
 
