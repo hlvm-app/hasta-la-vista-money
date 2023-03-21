@@ -23,12 +23,12 @@ CONSTANT_RECEIPT = types.MappingProxyType(
 )
 
 
-class ParserJson:
+class JsonParser:
     def __init__(self, json_data):
         self.json_data = json_data
 
     def parse_json(self, json_data: dict, key: str):
-        return ParserJson.get_value(self, json_data, key)
+        return JsonParser.get_value(self, json_data, key)
 
     def get_value(self, dictionary, key):
         if not isinstance(dictionary, dict):
@@ -46,23 +46,23 @@ class ParserJson:
         return None
 
 
-class ParseReceipt:
+class ReceiptParser:
     def __init__(self, json_data, chat_id):
         self.json_data = json_data
-        self.parser = ParserJson(self.json_data)
+        self.parser = JsonParser(self.json_data)
         self.customer = None
         self.receipt = None
         self.product_list = []
 
     def parse_customer(self):
         name_seller = self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('name_seller')
+            self.json_data, CONSTANT_RECEIPT.get('name_seller'),
         )
         retail_place_address = self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('retailPlaceAddress')
+            self.json_data, CONSTANT_RECEIPT.get('retailPlaceAddress'),
         )
         retail_place = self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('retailPlace')
+            self.json_data, CONSTANT_RECEIPT.get('retailPlace'),
         )
         self.customer = Customer.objects.create(
             name_seller=name_seller,
@@ -72,13 +72,13 @@ class ParseReceipt:
 
     def parse_receipt(self):
         receipt_date = convert_date_time(self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('receipt_date')
+            self.json_data, CONSTANT_RECEIPT.get('receipt_date'),
         ))
         operation_type = self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('operation_type')
+            self.json_data, CONSTANT_RECEIPT.get('operation_type'),
         )
         total_sum = convert_price(self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('total_sum')
+            self.json_data, CONSTANT_RECEIPT.get('total_sum'),
         ))
         customer = self.customer
         self.receipt = Receipt.objects.create(
@@ -88,30 +88,30 @@ class ParseReceipt:
             customer=customer,
         )
 
-    def parse_products(self):
+    def parse_products(self):  # noqa: WPS210
         products_list = self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('items')
+            self.json_data, CONSTANT_RECEIPT.get('items'),
         )
         for product in products_list:
             product_name = self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('product_name')
+                product, CONSTANT_RECEIPT.get('product_name'),
             )
             price = convert_price(
                 self.parser.parse_json(
-                    product, CONSTANT_RECEIPT.get('price')
-                )
+                    product, CONSTANT_RECEIPT.get('price'),
+                ),
             )
             quantity = self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('quantity')
+                product, CONSTANT_RECEIPT.get('quantity'),
             )
             amount = convert_price(self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('amount')
+                product, CONSTANT_RECEIPT.get('amount'),
             ))
             nds_type = self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('nds_type')
+                product, CONSTANT_RECEIPT.get('nds_type'),
             )
             nds_sum = convert_price(self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('nds_sum')
+                product, CONSTANT_RECEIPT.get('nds_sum'),
             ))
             products = Product.objects.create(
                 product_name=product_name,
