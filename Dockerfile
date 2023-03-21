@@ -13,5 +13,5 @@ COPY requirements.txt /app/
 
 COPY . /app/
 
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt && pip install --no-cache-dir "poetry==$POETRY_VERSION"
+RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt && pip install --no-cache-dir "poetry==$POETRY_VERSION"
 RUN apk --no-cache add make
