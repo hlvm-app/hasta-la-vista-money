@@ -1,4 +1,7 @@
 import logging
+import os
+
+from bot.config_bot import bot_admin
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
@@ -14,3 +17,8 @@ class TelegramLogsHandler(logging.Handler):
     def emit(self, record):
         log_entry = self.format(record)
         self.tg_bot.send_message(chat_id=self.chat_id, text=log_entry)
+
+
+id_group_user = os.environ.get('ID_GROUP_USER')
+
+logger.addHandler(TelegramLogsHandler(bot_admin, id_group_user))
