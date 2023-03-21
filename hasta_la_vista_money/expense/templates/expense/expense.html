@@ -19,32 +19,33 @@
             <div class="link-wrapper">
                 <a class="link-application btn btn-outline-warning" href="{% url 'applications:list' %}">Вернуться на страницу с приложениями</a>
             </div>
-            <div class="col-6 pt-5">
-                {% for month in months %}
+            <div class="col pt-5">
+                <table class="table table-hover table-bordered text-light">
+                    <tr>
+                        <th>
+                            Период
+                        </th>
+
+                        <th>
+                            Сумма
+                        </th>
+                    </tr>
+                    {% for month in months %}
                     {% language 'ru' %}
-                    <table class="table text-light">
-                        <tr>
-                            <th>
-                                Период
-                            </th>
-
-                            <th>
-                                Сумма
-                            </th>
-                        </tr>
-                        <tr>
-                            <td>
-                                {{ month.month | date:"F Y" }}{% translate " г." %}
-                            </td>
-                            <td>
-                                {{ month.total_amount }}
-                            </td>
-                        </tr>
-                    </table>
+                    <tr>
+                        <td>
+                            {{ month.month | date:"F Y" }}{% translate " г." %}
+                        </td>
+                        <td>
+                            {{ month.total_amount }}
+                        </td>
+                    </tr>
                     {% endlanguage %}
-                    <p> </p>
+                    {% endfor %}
+                </table>
 
-                {% endfor %}
+
+
             </div>
         </div>
     </div>
