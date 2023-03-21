@@ -28,7 +28,7 @@ function toggleNewSellerField() {
         newSeller.style.display = 'flex';
     } else {
         newSeller.style.display = 'none';
-    };
+    }
 }
 
 $(function () {
