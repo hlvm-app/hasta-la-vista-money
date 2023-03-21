@@ -1,6 +1,7 @@
 import logging
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.ERROR)
 
 
 class TelegramLogsHandler(logging.Handler):
