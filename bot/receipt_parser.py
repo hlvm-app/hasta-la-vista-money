@@ -1,18 +1,11 @@
 import datetime
 import json
-import os
 import re
 
-import telebot
-from bot.json_parse import ParseReceipt
-from bot.log_config import TelegramLogsHandler, logger
+from bot.config_bot import bot_admin
+from bot.json_parse import ReceiptParser
+from bot.log_config import logger
 from bot.services import ReceiptApiReceiver
-
-token = os.environ.get('TOKEN_TELEGRAM_BOT')
-bot_admin = telebot.TeleBot(token, parse_mode='html')
-id_group_user = os.environ.get('ID_GROUP_USER')
-
-logger.addHandler(TelegramLogsHandler(bot_admin, id_group_user))
 
 
 @bot_admin.message_handler(content_types=['document'])
@@ -29,7 +22,7 @@ def get_receipt(message):
         )
         json_data = json.loads(file_downloaded)
 
-        parse = ParseReceipt(json_data, message.chat.id)
+        parse = ReceiptParser(json_data, message.chat.id)
         parse.parse(message.chat.id)
 
     except json.decoder.JSONDecodeError as error:
@@ -61,7 +54,7 @@ def get_receipt_text(message):
             qr_code = input_user
             json_data = client.get_receipt(qr_code)
 
-            parse = ParseReceipt(json_data, message.chat.id)
+            parse = ReceiptParser(json_data, message.chat.id)
             parse.parse(message.chat.id)
 
         except Exception as error:
