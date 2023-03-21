@@ -1,4 +1,4 @@
-from bot.telegrambot import bot_admin
+from bot.receipt_parser import bot_admin
 from django.core.management import BaseCommand
 
 
