@@ -29,7 +29,7 @@ def handle_receipt_text(message):
         except Exception as error:
             logger.error(
                 f'{error}\nВремя возникновения исключения: '
-                f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S}'
+                f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S}',
             )
     else:
         bot_admin.send_message(message.chat.id, 'Недопустимый текст')

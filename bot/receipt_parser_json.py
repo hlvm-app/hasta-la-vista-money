@@ -31,5 +31,5 @@ def handle_receipt_json(message):
         )
         logger.error(
             f'{error}\nВремя возникновения исключения: '
-            f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S}'
+            f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S}',
         )
