@@ -11,6 +11,8 @@ def convert_date_time(date_time):
 
 
 def convert_price(price):
+    if price is None:
+        return None
     return round(price / 100, 2)
 
 
