@@ -83,29 +83,32 @@ class ReceiptCreateView(LoginRequiredMixin, CreateView):
             product = product_form.save()
             receipt.product.add(product)
         return receipt
-    
+
     @classmethod
     def check_exist_receipt(cls, receipt_form):
         number_receipt = receipt_form.cleaned_data.get('number_receipt')
-        return Receipt.objects.filter(number_receipt=number_receipt).exist()
+        return Receipt.objects.filter(number_receipt=number_receipt)
 
     def post(self, request, *args, **kwargs):
         seller_form = CustomerForm(request.POST)
         receipt_form = ReceiptForm(request.POST)
         product_formset = ProductFormSet(request.POST)
-        
+
         if (
             seller_form.is_valid() and receipt_form.is_valid() and
             product_formset.is_valid()
         ):
             seller = self.get_or_create_seller(seller_form)
+
             number_receipt = self.check_exist_receipt(receipt_form)
-            if seller and number_receipt is False:
+            if number_receipt:
+                messages.error(
+                    request, gettext_lazy('Такой чек уже существует'),
+                )
+            elif seller:
                 self.create_receipt(receipt_form, product_formset, seller)
                 return redirect(reverse_lazy('receipts:list'))
-            elif number_receipt is True:
-                return messages.add_message(request, messages.ERROR, gettext("Такой чек уже существует"))
-            
+
         return self.render_to_response(
             {
                 'seller_form': seller_form,
