@@ -122,6 +122,8 @@ class ReceiptForm(BaseForm):
 
     class Meta:
         model = Receipt
-        fields = ['receipt_date', 'number_receipt', 'operation_type', 'total_sum']
+        fields = [
+            'receipt_date', 'number_receipt', 'operation_type', 'total_sum',
+        ]
 
     products = ProductFormSet()
