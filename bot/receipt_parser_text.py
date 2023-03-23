@@ -23,7 +23,7 @@ def handle_receipt_text(message):
             qr_code = input_user
             json_data = client.get_receipt(qr_code)
 
-            parse = ReceiptParser(json_data, message.chat.id)
+            parse = ReceiptParser(json_data)
             parse.parse(message.chat.id)
 
         except Exception as error:

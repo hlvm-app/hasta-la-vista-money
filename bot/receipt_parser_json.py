@@ -20,7 +20,7 @@ def handle_receipt_json(message):
         )
         json_data = json.loads(file_downloaded)
 
-        parse = ReceiptParser(json_data, message.chat.id)
+        parse = ReceiptParser(json_data)
         parse.parse(message.chat.id)
 
     except json.decoder.JSONDecodeError as error:
