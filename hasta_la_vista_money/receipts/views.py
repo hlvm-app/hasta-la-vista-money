@@ -61,7 +61,8 @@ class ReceiptCreateView(LoginRequiredMixin, CreateView):
             'product_formset': product_formset,
         })
 
-    def get_or_create_seller(self, seller_form):
+    @staticmethod
+    def get_or_create_seller(seller_form):
         existing_seller = seller_form.cleaned_data.get('existing_seller')
         new_seller = seller_form.cleaned_data.get('new_seller')
         if existing_seller:
