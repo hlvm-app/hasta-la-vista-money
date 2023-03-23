@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import get_object_or_404, redirect
@@ -92,6 +93,7 @@ class ReceiptCreateView(LoginRequiredMixin, CreateView):
         seller_form = CustomerForm(request.POST)
         receipt_form = ReceiptForm(request.POST)
         product_formset = ProductFormSet(request.POST)
+        
         if (
             seller_form.is_valid() and receipt_form.is_valid() and
             product_formset.is_valid()
@@ -102,7 +104,8 @@ class ReceiptCreateView(LoginRequiredMixin, CreateView):
                 self.create_receipt(receipt_form, product_formset, seller)
                 return redirect(reverse_lazy('receipts:list'))
             elif number_receipt is True:
-                return gettext_lazy('Такой чек уже существует')
+                return messages.add_message(request, messages.ERROR, gettext("Такой чек уже существует"))
+            
         return self.render_to_response(
             {
                 'seller_form': seller_form,
