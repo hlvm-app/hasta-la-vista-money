@@ -20,7 +20,7 @@ class Customer(models.Model):
 
 class Receipt(models.Model):
     receipt_date = models.DateTimeField()
-    number_receipt = models.IntegerField()
+    number_receipt = models.IntegerField(null=True)
     operation_type = models.IntegerField(
         null=True, blank=True, choices=OPERATION_TYPES,
     )
@@ -33,7 +33,7 @@ class Receipt(models.Model):
     )
     product = models.ManyToManyField('Product', related_name='product')
 
-    def __str__(self):
+    def datetime(self):
         return self.receipt_date
 
 
