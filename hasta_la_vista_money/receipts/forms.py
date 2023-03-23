@@ -115,12 +115,13 @@ ProductFormSet = formset_factory(ProductForm, extra=1)
 class ReceiptForm(BaseForm):
     labels = {
         'receipt_date': _('Дата и время чека'),
+        'number_receipt': _('Номер документа'),
         'operation_type': _('Тип операции'),
         'total_sum': _('Итоговая сумма по чеку'),
     }
 
     class Meta:
         model = Receipt
-        fields = ['receipt_date', 'operation_type', 'total_sum']
+        fields = ['receipt_date', 'number_receipt', 'operation_type', 'total_sum']
 
     products = ProductFormSet()
