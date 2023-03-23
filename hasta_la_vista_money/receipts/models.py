@@ -20,6 +20,7 @@ class Customer(models.Model):
 
 class Receipt(models.Model):
     receipt_date = models.DateTimeField()
+    number_receipt = models.IntegerField()
     operation_type = models.IntegerField(
         null=True, blank=True, choices=OPERATION_TYPES,
     )
