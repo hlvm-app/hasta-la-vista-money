@@ -86,9 +86,7 @@ class ReceiptCreateView(LoginRequiredMixin, CreateView):
     @classmethod
     def check_exist_receipt(cls, request):
         number_receipt = request.number_receipt
-        if Receipt.objects.filter(number_receipt=number_receipt).exist():
-            return True
-        return False
+        return Receipt.objects.filter(number_receipt=number_receipt).exist()
 
     def post(self, request, *args, **kwargs):
         seller_form = CustomerForm(request.POST)
