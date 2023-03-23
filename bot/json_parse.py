@@ -10,6 +10,7 @@ CONSTANT_RECEIPT = types.MappingProxyType(
         'retail_place_address': 'retailPlaceAddress',
         'retail_place': 'retailPlace',
         'receipt_date': 'dateTime',
+        'number_receipt': 'fiscalDocumentNumber',
         'operation_type': 'operationType',
         'total_sum': 'totalSum',
         'product_name': 'name',
@@ -74,6 +75,9 @@ class ReceiptParser:
         receipt_date = convert_date_time(self.parser.parse_json(
             self.json_data, CONSTANT_RECEIPT.get('receipt_date'),
         ))
+        number_receipt = self.parser.parse_json(
+            self.json_data, CONSTANT_RECEIPT.get('number_receipt'),
+        )
         operation_type = self.parser.parse_json(
             self.json_data, CONSTANT_RECEIPT.get('operation_type'),
         )
@@ -83,6 +87,7 @@ class ReceiptParser:
         customer = self.customer
         self.receipt = Receipt.objects.create(
             receipt_date=receipt_date,
+            number_receipt=number_receipt,
             operation_type=operation_type,
             total_sum=total_sum,
             customer=customer,
