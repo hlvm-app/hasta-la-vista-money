@@ -86,7 +86,7 @@ class ReceiptParser:
         ))
 
         check_number_receipt = Receipt.objects.filter(
-            number_receipt=number_receipt
+            number_receipt=number_receipt,
         )
         if check_number_receipt:
             bot_admin.send_message(chat_id, 'Чек существует')
