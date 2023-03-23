@@ -82,6 +82,14 @@ class ReceiptCreateView(LoginRequiredMixin, CreateView):
             product = product_form.save()
             receipt.product.add(product)
         return receipt
+    
+    @classmethod
+    def check_exist_receipt(cls, request):
+        number_receipt = request.number_receipt
+        if Receipt.objects.filter(number_receipt=number_receipt).exist():
+            return True
+        else:
+            return False
 
     def post(self, request, *args, **kwargs):
         seller_form = CustomerForm(request.POST)
@@ -92,7 +100,8 @@ class ReceiptCreateView(LoginRequiredMixin, CreateView):
             product_formset.is_valid()
         ):
             seller = self.get_or_create_seller(seller_form)
-            if seller:
+            number_receipt = self.check_exist_receipt(request)
+            if seller and number_receipt is False:
                 self.create_receipt(receipt_form, product_formset, seller)
                 return redirect(reverse_lazy('receipts:list'))
         return self.render_to_response(
