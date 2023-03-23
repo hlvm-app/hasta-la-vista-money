@@ -61,8 +61,8 @@ class ReceiptCreateView(LoginRequiredMixin, CreateView):
             'product_formset': product_formset,
         })
 
-    @staticmethod
-    def get_or_create_seller(seller_form):
+    @classmethod
+    def get_or_create_seller(cls, seller_form):
         existing_seller = seller_form.cleaned_data.get('existing_seller')
         new_seller = seller_form.cleaned_data.get('new_seller')
         if existing_seller:
@@ -72,6 +72,16 @@ class ReceiptCreateView(LoginRequiredMixin, CreateView):
         else:
             seller = None
         return seller
+
+    @classmethod
+    def create_receipt(cls, receipt_form, product_formset, seller):
+        receipt = receipt_form.save(commit=False)
+        receipt.customer = seller
+        receipt.save()
+        for product_form in product_formset:
+            product = product_form.save()
+            receipt.product.add(product)
+        return receipt
 
     def post(self, request, *args, **kwargs):
         seller_form = CustomerForm(request.POST)
@@ -83,12 +93,7 @@ class ReceiptCreateView(LoginRequiredMixin, CreateView):
         ):
             seller = self.get_or_create_seller(seller_form)
             if seller:
-                receipt = receipt_form.save(commit=False)
-                receipt.customer = seller
-                receipt.save()
-                for product_form in product_formset:
-                    product = product_form.save()
-                    receipt.product.add(product)
+                self.create_receipt(receipt_form, product_formset, seller)
                 return redirect(reverse_lazy('receipts:list'))
         return self.render_to_response(
             {
