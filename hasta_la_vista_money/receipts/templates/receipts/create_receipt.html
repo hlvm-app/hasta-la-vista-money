@@ -7,6 +7,9 @@
 {% block content %}
 <title>{% translate 'Страница добавления чека' %}</title>
 <div class="container">
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
     <div class="display-4 text-center pt-3 text-light">
         Добавить чек
     </div>
