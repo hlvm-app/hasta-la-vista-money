@@ -61,6 +61,17 @@ class ReceiptCreateView(LoginRequiredMixin, CreateView):
             'product_formset': product_formset,
         })
 
+    def get_or_create_seller(self, seller_form):
+        existing_seller = seller_form.cleaned_data.get('existing_seller')
+        new_seller = seller_form.cleaned_data.get('new_seller')
+        if existing_seller:
+            seller = existing_seller
+        elif new_seller:
+            seller = Customer.objects.create(name_seller=new_seller)
+        else:
+            seller = None
+        return seller
+
     def post(self, request, *args, **kwargs):
         seller_form = CustomerForm(request.POST)
         receipt_form = ReceiptForm(request.POST)
@@ -69,14 +80,7 @@ class ReceiptCreateView(LoginRequiredMixin, CreateView):
             seller_form.is_valid() and receipt_form.is_valid() and
             product_formset.is_valid()
         ):
-            existing_seller = seller_form.cleaned_data.get('existing_seller')
-            new_seller = seller_form.cleaned_data.get('new_seller')
-            if existing_seller:
-                seller = existing_seller
-            elif new_seller:
-                seller = Customer.objects.create(name_seller=new_seller)
-            else:
-                seller = None
+            seller = self.get_or_create_seller(seller_form)
             if seller:
                 receipt = receipt_form.save(commit=False)
                 receipt.customer = seller
