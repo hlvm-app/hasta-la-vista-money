@@ -60,10 +60,10 @@ class ReceiptParser:
             self.json_data, CONSTANT_RECEIPT.get('name_seller'),
         )
         retail_place_address = self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('retailPlaceAddress', None),
+            self.json_data, CONSTANT_RECEIPT.get('retail_place_address'),
         )
         retail_place = self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('retailPlace', None),
+            self.json_data, CONSTANT_RECEIPT.get('retail_place'),
         )
         self.customer = Customer.objects.create(
             name_seller=name_seller,
@@ -92,6 +92,7 @@ class ReceiptParser:
             bot_admin.send_message(chat_id, 'Чек существует')
             return
 
+        self.parse_customer()
         customer = self.customer
         self.receipt = Receipt.objects.create(
             receipt_date=receipt_date,
@@ -121,10 +122,10 @@ class ReceiptParser:
                 product, CONSTANT_RECEIPT.get('amount'),
             ))
             nds_type = self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('nds_type', None),
+                product, CONSTANT_RECEIPT.get('nds_type'),
             )
             nds_sum = convert_price(self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('nds_sum', None),
+                product, CONSTANT_RECEIPT.get('nds_sum'),
             ))
             products = Product.objects.create(
                 product_name=product_name,
@@ -140,6 +141,6 @@ class ReceiptParser:
     def parse(self, chat_id):
         if self.parse_receipt(chat_id):
             self.parse_customer()
-            self.parse_receipt(chat_id)
             self.parse_products()
+            self.parse_receipt(chat_id)
             bot_admin.send_message(chat_id, 'Чек принят!')
