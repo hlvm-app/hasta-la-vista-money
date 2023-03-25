@@ -92,12 +92,13 @@ class ReceiptParser:
             bot_admin.send_message(chat_id, 'Чек существует')
             return
 
+        customer = self.customer
         self.receipt = Receipt.objects.create(
             receipt_date=receipt_date,
             number_receipt=number_receipt,
             operation_type=operation_type,
             total_sum=total_sum,
-            customer=self.customer,
+            customer=customer,
         )
 
     def parse_products(self):  # noqa: WPS210
