@@ -71,7 +71,7 @@ class ReceiptParser:
             retail_place=retail_place,
         )
 
-    def parse_receipt(self, chat_id):
+    def parse_receipt(self, chat_id):  # noqa: WPS210
         receipt_date = convert_date_time(self.parser.parse_json(
             self.json_data, CONSTANT_RECEIPT.get('receipt_date'),
         ))
