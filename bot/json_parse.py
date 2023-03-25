@@ -55,6 +55,43 @@ class ReceiptParser:
         self.receipt = None
         self.product_list = []
 
+    def parse_products(self):  # noqa: WPS210
+        products_list = self.parser.parse_json(
+            self.json_data, CONSTANT_RECEIPT.get('items'),
+        )
+        for product in products_list:
+            product_name = self.parser.parse_json(
+                product, CONSTANT_RECEIPT.get('product_name'),
+            )
+            price = convert_price(
+                self.parser.parse_json(
+                    product, CONSTANT_RECEIPT.get('price'),
+                ),
+            )
+            quantity = self.parser.parse_json(
+                product, CONSTANT_RECEIPT.get('quantity'),
+            )
+            amount = convert_price(self.parser.parse_json(
+                product, CONSTANT_RECEIPT.get('amount'),
+            ))
+            nds_type = self.parser.parse_json(
+                product, CONSTANT_RECEIPT.get('nds_type'),
+            )
+            nds_sum = convert_price(self.parser.parse_json(
+                product, CONSTANT_RECEIPT.get('nds_sum'),
+            ))
+
+            products = Product.objects.create(
+                product_name=product_name,
+                price=price,
+                quantity=quantity,
+                amount=amount,
+                nds_type=nds_type,
+                nds_sum=nds_sum,
+            )
+            self.product_list.append(products)
+        self.receipt.product.set(self.product_list)
+
     def parse_customer(self):
         name_seller = self.parser.parse_json(
             self.json_data, CONSTANT_RECEIPT.get('name_seller'),
@@ -87,60 +124,22 @@ class ReceiptParser:
 
         check_number_receipt = Receipt.objects.filter(
             number_receipt=number_receipt,
-        )
+        ).first()
+
         if check_number_receipt:
             bot_admin.send_message(chat_id, 'Чек существует')
             return
-
-        self.parse_customer()
-        customer = self.customer
-        self.receipt = Receipt.objects.create(
-            receipt_date=receipt_date,
-            number_receipt=number_receipt,
-            operation_type=operation_type,
-            total_sum=total_sum,
-            customer=customer,
-        )
-
-    def parse_products(self):  # noqa: WPS210
-        products_list = self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('items'),
-        )
-        for product in products_list:
-            product_name = self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('product_name'),
+        else:
+            self.parse_customer()
+            self.receipt = Receipt.objects.create(
+                receipt_date=receipt_date,
+                number_receipt=number_receipt,
+                operation_type=operation_type,
+                total_sum=total_sum,
+                customer=self.customer,
             )
-            price = convert_price(
-                self.parser.parse_json(
-                    product, CONSTANT_RECEIPT.get('price'),
-                ),
-            )
-            quantity = self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('quantity'),
-            )
-            amount = convert_price(self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('amount'),
-            ))
-            nds_type = self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('nds_type'),
-            )
-            nds_sum = convert_price(self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('nds_sum'),
-            ))
-            products = Product.objects.create(
-                product_name=product_name,
-                price=price,
-                quantity=quantity,
-                amount=amount,
-                nds_type=nds_type,
-                nds_sum=nds_sum,
-            )
-            self.product_list.append(products)
-        self.receipt.product.set(self.product_list)
+            self.parse_products()
+            bot_admin.send_message(chat_id, 'Чек принят!')
 
     def parse(self, chat_id):
-        if self.parse_receipt(chat_id):
-            self.parse_customer()
-            self.parse_products()
-            self.parse_receipt(chat_id)
-            bot_admin.send_message(chat_id, 'Чек принят!')
+        self.parse_receipt(chat_id)
