@@ -21,16 +21,11 @@ class ReceiptParserTestCase(TestCase):
         self.assertEqual(parser.receipt.number_receipt, 6887)
         self.assertEqual(parser.receipt.total_sum, 217.60)
         self.assertEqual(len(parser.product_list), 2)
-        self.assertEqual(
-            parser.product_list[0].product_name,
-            'Product One'
-        )
+        self.assertEqual(parser.product_list[0].product_name, 'Product One')
         self.assertEqual(parser.product_list[0].price, 131.32)
         self.assertEqual(parser.product_list[0].quantity, 1)
         self.assertEqual(parser.product_list[0].amount, 131.32)
-        self.assertEqual(
-            parser.product_list[1].product_name, 'Product Two'
-        )
+        self.assertEqual(parser.product_list[1].product_name, 'Product Two')
         self.assertEqual(parser.product_list[1].price, 86.28)
         self.assertEqual(parser.product_list[1].quantity, 1)
         self.assertEqual(parser.product_list[1].amount, 86.28)
