@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-NUMBER_RECEIPT = 6887
+NUMBER_RECEIPT = 6888
 TOTAL_SUM = 217.6
 PRODUCT_LIST_LEN = 2
 PRICE_PRODUCT1 = 131.32
