@@ -17,6 +17,8 @@ function addForm(e){
     container.insertBefore(newForm, addButton)
 
     totalForms.setAttribute('value', `${formNum+1}`)
+    newForm.querySelector('.price').addEventListener('input', amountUpdate);
+    newForm.querySelector('.quantity').addEventListener('input', amountUpdate);
 }
 
 function toggleNewSellerField() {
@@ -35,3 +37,22 @@ $(function () {
     toggleNewSellerField();
     $('select#existingSeller').change(toggleNewSellerField)
 })
+
+
+function amountUpdate() {
+    let formInputs = container.querySelectorAll('.form-product');
+    formInputs.forEach( formInput => {
+        let priceInput = formInput.querySelector('.price');
+        let quantityInput = formInput.querySelector('.quantity');
+        let amountInput = formInput.querySelector('.amount');
+        if (priceInput && quantityInput && amountInput) {
+            amountInput.value = priceInput.value * quantityInput.value;
+        }
+    });
+}
+
+// Attach event listeners to existing inputs
+birdForm.forEach(form => {
+    form.querySelector('.price').addEventListener('input', amountUpdate);
+    form.querySelector('.quantity').addEventListener('input', amountUpdate);
+});
