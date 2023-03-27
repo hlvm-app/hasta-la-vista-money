@@ -25,32 +25,24 @@ class ReceiptParserTestCase(TestCase):
         self.parser = ReceiptParser(json_data)
         self.parser.parse(environ.get('ID_GROUP_USER'))
 
-    def test_parse_receipt(self):
+    def test_parse_receipt(self):  # noqa: WPS213
         self.assertIsNotNone(self.parser.receipt)
         self.assertEqual(self.parser.receipt.number_receipt, NUMBER_RECEIPT)
         self.assertEqual(self.parser.receipt.total_sum, TOTAL_SUM)
         self.assertEqual(len(self.parser.product_list), PRODUCT_LIST_LEN)
-
-    def test_product_name(self):
         self.assertEqual(
             self.parser.product_list[0].product_name, 'Product One',
         )
         self.assertEqual(
             self.parser.product_list[1].product_name, 'Product Two',
         )
-
-    def test_price(self):
         self.assertEqual(self.parser.product_list[0].price, PRICE_PRODUCT1)
         self.assertEqual(self.parser.product_list[1].price, PRICE_PRODUCT2)
-
-    def test_quantity(self):
         self.assertEqual(
             self.parser.product_list[0].quantity, QUANTITY_PRODUCT1,
         )
         self.assertEqual(
             self.parser.product_list[1].quantity, QUANTITY_PRODUCT2,
         )
-
-    def test_amount(self):
         self.assertEqual(self.parser.product_list[0].amount, AMOUNT_PRODUCT1)
         self.assertEqual(self.parser.product_list[1].amount, AMOUNT_PRODUCT2)
