@@ -111,7 +111,7 @@ class ProductForm(BaseForm):
         widgets = {
             'price': NumberInput(attrs={'class': 'price'}),
             'quantity': NumberInput(attrs={'class': 'quantity'}),
-            'amount': NumberInput(attrs={'class': 'amount', 'disabled': True}),
+            'amount': NumberInput(attrs={'class': 'amount', 'readonly': True}),
         }
 
 
