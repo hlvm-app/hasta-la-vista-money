@@ -59,6 +59,7 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.COVERAGE_ID_APPLICATION }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           TOKEN_TELEGRAM_BOT: ${{ secrets.TOKEN_TELEGRAM_BOT }}
+          ID_GROUP_USER: ${{ secrets.ID_GROUP_USER }}
         with:
           coverageCommand: make coverage
           debug: true

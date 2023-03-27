@@ -24,7 +24,6 @@ class ReceiptParserTestCase(TestCase):
             json_data = json.load(receipt_json)
         self.parser = ReceiptParser(json_data)
         self.parser.parse(environ.get('ID_GROUP_USER'))
-        self.token = environ.get('TOKEN_TELEGRAM_BOT')
 
     def test_parse_receipt(self):
         self.assertIsNotNone(self.parser.receipt)
