@@ -1,6 +1,7 @@
 import django_filters
 from django.forms import (
     CharField,
+    NumberInput,
     ModelChoiceField,
     Select,
     ValidationError,
@@ -107,6 +108,11 @@ class ProductForm(BaseForm):
     class Meta:
         model = Product
         fields = ['product_name', 'price', 'quantity', 'amount']
+        widgets = {
+            'price': NumberInput(attrs={'class': 'price'}),
+            'quantity': NumberInput(attrs={'class': 'quantity'}),
+            'amount': NumberInput(attrs={'class': 'amount'}),
+        }
 
 
 ProductFormSet = formset_factory(ProductForm, extra=1)
