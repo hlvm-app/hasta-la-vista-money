@@ -10,10 +10,8 @@ def convert_date_time(date_time):
     return f'{datetime.datetime.fromtimestamp(date_time):%Y-%m-%d %H:%M}'
 
 
-def convert_price(price):
-    if price is None:
-        return None
-    return round(price / 100, 2)
+def convert_price(price: int | float) -> float | None:
+    return round(price / 100, 2) if price else None
 
 
 class ReceiptApiReceiver:
