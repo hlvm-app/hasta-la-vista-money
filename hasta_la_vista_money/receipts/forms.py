@@ -1,8 +1,8 @@
 import django_filters
 from django.forms import (
     CharField,
-    NumberInput,
     ModelChoiceField,
+    NumberInput,
     Select,
     ValidationError,
     formset_factory,
