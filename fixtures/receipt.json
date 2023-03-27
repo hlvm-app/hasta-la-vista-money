@@ -24,7 +24,7 @@
   "query": {
     "operationType": 1,
     "sum": 21760,
-    "documentId": 6888,
+    "documentId": 6887,
     "fsId": "9960440302169202",
     "fiscalSign": "339460828",
     "date": "2023-03-17T18:30"
@@ -39,7 +39,7 @@
         "creditSum": 0,
         "ecashTotalSum": 21760,
         "fiscalDocumentFormatVer": 4,
-        "fiscalDocumentNumber": 6887,
+        "fiscalDocumentNumber": 6888,
         "fiscalDriveNumber": "9960440302169202",
         "fiscalSign": 339460828,
         "fnsUrl": "www.nalog.gov.ru",
