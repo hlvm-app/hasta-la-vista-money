@@ -14,7 +14,7 @@
         Добавить чек
     </div>
     <div class="row">
-        <div class="col col-xs-5 mt-5">
+        <div class="col col-xs-5 mt-5 add-receipt-form">
             <a class="return-receipts-list btn btn-outline-dark" href="{% url 'receipts:list' %}">Вернуться к списку чеков</a>
             <form id='form-create-receipt' method="post">
             {% csrf_token %}
@@ -29,9 +29,8 @@
                 </div>
             {% endfor %}
             {% bootstrap_button button_text_add_product id="add-form" button_type="button" button_class="add-product-btn btn btn-outline-warning"  %}
-
             {% bootstrap_button button_text_create_receipt button_type="submit" button_class="add-receipt-btn btn btn-outline-primary"  %}
-            {% bootstrap_button button_text_remove_receipt id="remove-form" button_type="button" button_class="remove-product-btn btn btn-outline-danger"  %}
+            {% bootstrap_button button_text_remove_receipt id="remove-form" button_type="button" button_class="remove-product-btn mt-1 btn btn-outline-danger"  %}
             </form>
 
 
