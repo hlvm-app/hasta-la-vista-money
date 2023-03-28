@@ -7,6 +7,10 @@
 
 }
 
+.add-receipt-form {
+    margin-bottom: 10%;
+}
+
 table th:first-child {
      width: 50rem;
 }
@@ -34,6 +38,10 @@ table th:nth-child(3) {
     position: absolute;
     top: 5.7rem;
     right: 28rem;
+}
+
+.remove-product-btn {
+    float: right;
 }
 
 .link-wrapper {
