@@ -46,7 +46,10 @@ function amountUpdate() {
         let quantityInput = formInput.querySelector('.quantity');
         let amountInput = formInput.querySelector('.amount');
         if (priceInput && quantityInput && amountInput) {
-            amountInput.value = priceInput.value * quantityInput.value;
+            let price = parseFloat(priceInput.value);
+            let quantity = parseFloat(quantityInput.value);
+            let amount = price * quantity;
+            amountInput.value = amount.toFixed(2);
         }
     });
 }
