@@ -26,17 +26,18 @@ function addForm(e) {
 function removeForm(e) {
     e.preventDefault()
 
+    productForm = document.querySelectorAll(".form-product")
     let oldForm = productForm[productForm.length - 1]
+
     let formRegex = RegExp(`form-(\\d){1}-`,'g')
-    oldForm.innerHTML = oldForm.innerHTML.replace(formRegex, `form-${formNum}-`);
+    oldForm.innerHTML = oldForm.innerHTML.replace(formRegex, `form-${productForm.length - 1}-`);
 
     if (productForm.length > 1) {
         oldForm.remove();
     }
 
     totalForms.setAttribute('value', `${productForm.length}`)
-    formNum--
-    productForm = document.querySelectorAll(".form-product")
+
 }
 
 
