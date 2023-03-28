@@ -1,12 +1,14 @@
 let productForm = document.querySelectorAll(".form-product")
 let container = document.querySelector("#form-create-receipt")
 let addButton = document.querySelector("#add-form")
+let removeButton = document.querySelector("#remove-form")
 let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
 
 let formNum = productForm.length-1
 addButton.addEventListener('click', addForm)
+removeButton.addEventListener('click', removeForm)
 
-function addForm(e){
+function addForm(e) {
     e.preventDefault()
 
     let newForm = productForm[0].cloneNode(true)
@@ -20,6 +22,24 @@ function addForm(e){
     newForm.querySelector('.price').addEventListener('input', amountUpdate);
     newForm.querySelector('.quantity').addEventListener('input', amountUpdate);
 }
+
+function removeForm(e) {
+    e.preventDefault()
+
+    let oldForm = productForm[productForm.length - 1]
+    let formRegex = RegExp(`form-(\\d){1}-`,'g')
+    oldForm.innerHTML = oldForm.innerHTML.replace(formRegex, `form-${formNum}-`);
+
+    if (productForm.length > 1) {
+        oldForm.remove();
+    }
+
+    totalForms.setAttribute('value', `${productForm.length}`)
+    formNum--
+    productForm = document.querySelectorAll(".form-product")
+}
+
+
 
 function toggleNewSellerField() {
 
