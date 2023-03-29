@@ -29,15 +29,16 @@ table th:nth-child(3) {
 }
 
 .add-receipt-btn {
-    position: absolute;
-    top: 5.7rem;
-    right: 19.5rem;
+    position: fixed;
+    top: 44%;
+    right: 2%;
+    padding: .3rem 3.7rem;
 }
 
 .add-product-btn {
-    position: absolute;
-    top: 5.7rem;
-    right: 28rem;
+    position: fixed;
+    top: 50%;
+    right: 2%;
 }
 
 .remove-product-btn {
