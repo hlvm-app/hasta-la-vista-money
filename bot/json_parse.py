@@ -122,7 +122,7 @@ class ReceiptParser:
             self.json_data, CONSTANT_RECEIPT.get('total_sum'),
         ))
 
-        if operation_type == 2 or operation_type == 3:
+        if operation_type in {2, 3}:
             total_sum = -total_sum
 
         check_number_receipt = Receipt.objects.filter(
