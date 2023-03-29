@@ -23,10 +23,10 @@ def handle_receipt_json(message):
         parse = ReceiptParser(json_data)
         parse.parse(message.chat.id)
 
-    except json.decoder.JSONDecodeError as error:
+    except json.decoder.JSONDecodeError as json_error:
         logger.error(
             f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S}\n'
-            f'Некорректный JSON файл: {error}.\n'
+            f'Некорректный JSON файл: {json_error}.\n'
             f'Проверьте тот ли файл загружаете...',
         )
     except Exception as error:

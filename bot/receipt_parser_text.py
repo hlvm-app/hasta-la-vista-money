@@ -1,6 +1,8 @@
 import datetime
 import re
 
+import requests
+
 from bot.config_bot import bot_admin
 from bot.json_parse import ReceiptParser
 from bot.log_config import logger
@@ -26,9 +28,16 @@ def handle_receipt_text(message):
             parse = ReceiptParser(json_data)
             parse.parse(message.chat.id)
 
+        except requests.exceptions.JSONDecodeError as json_error:
+            logger.error(
+                f'Ошибка обработки json: {json_error}\n'
+                f'Время возникновения исключения: '
+                f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S}'
+            )
+
         except Exception as error:
             logger.error(
-                f'{error}\nВремя возникновения исключения: '
+                f'{error}Время возникновения исключения: '
                 f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S}',
             )
     else:
