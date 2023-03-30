@@ -41,7 +41,6 @@ function removeForm(e) {
 }
 
 
-
 function toggleNewSellerField() {
 
     var existingSeller = document.getElementById('id_existing_seller');
@@ -81,28 +80,23 @@ productForm.forEach(form => {
 });
 
 
-function totalSum() {  
-    let total_sum = 0; 
+function totalSum() {
+    let total_sum = 0;
     let formInputs = container.querySelectorAll('.form-product');  
-    let totalSumInput = document.querySelector('.total-sum');  
-    console.log(totalSumInput) 
+    let totalSumInput = document.querySelector('.total-sum');
     formInputs.forEach(formInput => {  
-        let amountInputs = formInput.querySelectorAll('.amount');  
+        let amountInputs = formInput.querySelectorAll('.amount');
         amountInputs.forEach(amountInput => { 
             if (amountInput) {  
                 total_sum += parseFloat(amountInput.value);  
             }  
         }); 
     });  
-    totalSumInput.value = parseFloat(total_sum.toFixed(2));  
+    totalSumInput.value = total_sum.toFixed(2);
 } 
- 
- 
-let amountInputs = document.querySelectorAll('.amount[readonly]');  
-let totalSumInputs = document.querySelectorAll('.total-sum[readonly]');  
-amountInputs.forEach(amountInput => { 
-    amountInput.addEventListener('click', totalSum)  
-})
-totalSumInputs.forEach(totalSumInput => { 
-    totalSumInput.addEventListener('click', totalSum) 
-})
+
+container.addEventListener('click', function(event) {
+  if (event.target.matches('.amount[readonly]') || event.target.matches('.total-sum[readonly]')) {
+    totalSum();
+  }
+});
