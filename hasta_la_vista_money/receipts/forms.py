@@ -131,5 +131,10 @@ class ReceiptForm(BaseForm):
         fields = [
             'receipt_date', 'number_receipt', 'operation_type', 'total_sum',
         ]
+        widgets = {
+            'total_sum': NumberInput(
+                attrs={'class': 'total-sum', 'readonly': True}
+            )
+        }
 
     products = ProductFormSet()
