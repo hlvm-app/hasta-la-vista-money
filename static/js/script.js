@@ -75,8 +75,34 @@ function amountUpdate() {
     });
 }
 
-// Attach event listeners to existing inputs
 productForm.forEach(form => {
     form.querySelector('.price').addEventListener('input', amountUpdate);
     form.querySelector('.quantity').addEventListener('input', amountUpdate);
 });
+
+
+function totalSum() {  
+    let total_sum = 0; 
+    let formInputs = container.querySelectorAll('.form-product');  
+    let totalSumInput = document.querySelector('.total-sum');  
+    console.log(totalSumInput) 
+    formInputs.forEach(formInput => {  
+        let amountInputs = formInput.querySelectorAll('.amount');  
+        amountInputs.forEach(amountInput => { 
+            if (amountInput) {  
+                total_sum += parseFloat(amountInput.value);  
+            }  
+        }); 
+    });  
+    totalSumInput.value = parseFloat(total_sum.toFixed(2));  
+} 
+ 
+ 
+let amountInputs = document.querySelectorAll('.amount[readonly]');  
+let totalSumInputs = document.querySelectorAll('.total-sum[readonly]');  
+amountInputs.forEach(amountInput => { 
+    amountInput.addEventListener('click', totalSum)  
+})
+totalSumInputs.forEach(totalSumInput => { 
+    totalSumInput.addEventListener('click', totalSum) 
+})
