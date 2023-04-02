@@ -78,10 +78,10 @@ class ReceiptParser:
                 product, CONSTANT_RECEIPT.get('amount'),
             ))
             nds_type = self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('nds_type'),
+                product, CONSTANT_RECEIPT.get('nds_type', None),
             )
             nds_sum = convert_price(self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('nds_sum'),
+                product, CONSTANT_RECEIPT.get('nds_sum', None),
             ))
 
             products = Product.objects.create(
@@ -100,10 +100,10 @@ class ReceiptParser:
             self.json_data, CONSTANT_RECEIPT.get('name_seller'),
         )
         retail_place_address = self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('retail_place_address'),
+            self.json_data, CONSTANT_RECEIPT.get('retail_place_address', None),
         )
         retail_place = self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('retail_place'),
+            self.json_data, CONSTANT_RECEIPT.get('retail_place', None),
         )
         self.customer = Customer.objects.create(
             name_seller=name_seller,
