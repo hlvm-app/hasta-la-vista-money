@@ -1,5 +1,6 @@
 import django_filters
 from django.forms import (
+    BooleanField,
     CharField,
     ModelChoiceField,
     NumberInput,
@@ -62,10 +63,14 @@ class CustomerForm(BaseForm):
     new_seller = CharField(
         required=False,
     )
+    add_new_seller = BooleanField(
+        required=False,
+        initial=False,
+    )
 
     class Meta:
         model = Customer
-        fields = ['existing_seller', 'new_seller']
+        fields = ['existing_seller', 'new_seller', 'add_new_seller']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -80,20 +85,31 @@ class CustomerForm(BaseForm):
         cleaned_data = super().clean()
         existing_seller = cleaned_data.get('existing_seller')
         new_seller = cleaned_data.get('new_seller')
-        if not existing_seller and not new_seller:
+        add_new_seller = cleaned_data.get('add_new_seller')
+        if not existing_seller and not new_seller and not add_new_seller:
             raise ValidationError(
                 _(
-                    'Пожалуйста, выберите существующего продавца или добавьте '
+                    'Пожалуйста, выберите существующего продавца или добавьте ' 
                     'нового.',  # noqa: WPS326
                 ),
             )
         if existing_seller and new_seller:
             raise ValidationError(
                 _(
-                    'Пожалуйста, выберите только один вариант: '
+                    'Пожалуйста, выберите только один вариант: ' 
                     'существующего продавца или ввод нового.',  # noqa: WPS326
                 ),
             )
+        if add_new_seller and not new_seller:
+            raise ValidationError(
+                _(
+                    'Пожалуйста, введите название нового продавца.',
+                ),
+            )
+        if add_new_seller and new_seller:
+            new_customer = Customer(name_seller=new_seller)
+            new_customer.save()
+            new_customer.delete()
         return cleaned_data
 
 
