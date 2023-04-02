@@ -89,14 +89,14 @@ class CustomerForm(BaseForm):
         if not existing_seller and not new_seller and not add_new_seller:
             raise ValidationError(
                 _(
-                    'Пожалуйста, выберите существующего продавца или добавьте ' 
+                    'Пожалуйста, выберите существующего продавца или добавьте '
                     'нового.',  # noqa: WPS326
                 ),
             )
         if existing_seller and new_seller:
             raise ValidationError(
                 _(
-                    'Пожалуйста, выберите только один вариант: ' 
+                    'Пожалуйста, выберите только один вариант: '
                     'существующего продавца или ввод нового.',  # noqa: WPS326
                 ),
             )
@@ -149,8 +149,8 @@ class ReceiptForm(BaseForm):
         ]
         widgets = {
             'total_sum': NumberInput(
-                attrs={'class': 'total-sum', 'readonly': True}
-            )
+                attrs={'class': 'total-sum', 'readonly': True},
+            ),
         }
 
     products = ProductFormSet()

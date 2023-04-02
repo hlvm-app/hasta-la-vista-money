@@ -1,8 +1,10 @@
 import datetime
+import json
 import os
 from typing import Union
 
 import requests
+from bot.log_config import logger
 from dotenv import load_dotenv
 
 
@@ -74,8 +76,15 @@ class ReceiptApiReceiver:
             'User-Agent': self.user_agent,
             'Accept-Language': self.accept_language,
         }
-        resp = requests.get(url, headers=headers, timeout=10)
-        return resp.json()
+        try:
+            resp = requests.get(url, headers=headers, timeout=10)
+            return resp.json()
+        except json.decoder.JSONDecodeError as json_error:
+            logger.error(
+                f'Ошибка обработки json: {json_error}\n'
+                f'Время возникновения исключения: '
+                f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S}',
+            )
 
     def _get_receipt_id(self, qr: str) -> str:
         url = f'https://{self.host}/v2/ticket'

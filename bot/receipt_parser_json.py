@@ -29,8 +29,3 @@ def handle_receipt_json(message):
             f'Некорректный JSON файл: {json_error}.\n'
             f'Проверьте тот ли файл загружаете...',
         )
-    except Exception as error:
-        logger.error(
-            f'{error}\nВремя возникновения исключения: '
-            f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S}',
-        )

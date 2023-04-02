@@ -1,7 +1,10 @@
+import datetime
 import types
 
 from bot.config_bot import bot_admin
+from bot.log_config import logger
 from bot.services import convert_date_time, convert_price
+from django.db import IntegrityError
 from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
 
 CONSTANT_RECEIPT = types.MappingProxyType(
@@ -145,4 +148,14 @@ class ReceiptParser:
             bot_admin.send_message(chat_id, 'Чек принят!')
 
     def parse(self, chat_id):
-        self.parse_receipt(chat_id)
+        try:
+            self.parse_receipt(chat_id)
+        except (ValueError, KeyError) as value_key_error:
+            logger.error(value_key_error)
+        except (AttributeError, TypeError, IntegrityError) as complex_error:
+            logger.error(complex_error)
+        except Exception as error:
+            logger.error(
+                f'{error}Время возникновения исключения: '
+                f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S}',
+            )
