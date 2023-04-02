@@ -41,6 +41,13 @@ table th:nth-child(3) {
     right: 2%;
 }
 
+#add-new-seller-btn {
+    position: fixed;
+    top: 15%;
+    right: 2%;
+    padding: .3rem .6rem;
+}
+
 .remove-product-btn {
     float: right;
 }

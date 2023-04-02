@@ -45,11 +45,17 @@ function toggleNewSellerField() {
 
     var existingSeller = document.getElementById('id_existing_seller');
     var newSeller = document.getElementById('form-create-receipt').getElementsByClassName('row')[1]
+    var addNewSellerBtn = document.getElementById('add-new-seller-btn');
+    var addNewSellerCheckBox = document.getElementById('id_add_new_seller');
 
     if (existingSeller.value === 'other') {
         newSeller.style.display = 'flex';
+        addNewSellerBtn.style.display = 'block';
+        addNewSellerCheckBox.checked = true;
     } else {
         newSeller.style.display = 'none';
+        addNewSellerBtn.style.display = 'none'
+        addNewSellerCheckBox.checked = false;
     }
 }
 
@@ -100,3 +106,19 @@ container.addEventListener('click', function(event) {
     totalSum();
   }
 });
+
+const addNewSellerBtn = document.getElementById('add-new-seller-btn');
+addNewSellerBtn.addEventListener('click', () => {
+    const existingSellerField = document.querySelector('#id_existing_seller');
+    existingSellerField.value = '--';
+    existingSellerField.disabled = true;
+
+    const newSellerField = document.querySelector('#id_new_seller');
+    newSellerField.required = true;
+    newSellerField.disabled = false;
+
+    addNewSellerBtn.style.display = 'none';
+});
+
+const formCheck = document.querySelector('.form-check');
+formCheck.closest('.row').style.display = 'none';
