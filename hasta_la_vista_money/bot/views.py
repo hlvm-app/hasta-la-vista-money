@@ -13,15 +13,12 @@ from .receipt_parser_text import handle_receipt_text
 @csrf_exempt
 def webhooks(request):
     if request.method == 'POST':
-        try:
-            json_request = request.body.decode('utf8')
-            json_data = json.loads(json_request)
+        json_request = request.body.decode('utf8')
+        json_data = json.loads(json_request)
 
-            update = bot_type.Update.de_json(json_data)
-            bot_admin.process_new_updates([update])
-            logger.error(update.message)
-            # handle_receipt_text(update.message)
-            # handle_receipt_json(update.message)
-        except Exception as error:
-            logger.error(error, 'Эта ошибка?')
+        update = bot_type.Update.de_json(json_data)
+        bot_admin.process_new_updates([update])
+        logger.error(update.message)
+        # handle_receipt_text(update.message)
+        # handle_receipt_json(update.message)
         return HttpResponse('')
