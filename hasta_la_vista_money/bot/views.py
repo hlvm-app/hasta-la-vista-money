@@ -21,7 +21,6 @@ def webhooks(request):
             bot_admin.process_new_updates([update])
             if update.message and update.message.text:
                 handle_receipt_text(update.message.text)
-                handle_receipt_json(update.message.text)
         except Exception as error:
             logger.error(error)
         return HttpResponse('')
