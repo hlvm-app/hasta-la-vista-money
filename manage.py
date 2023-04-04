@@ -3,6 +3,9 @@
 import os
 import sys
 
+from hasta_la_vista_money import settings
+from hasta_la_vista_money.bot.config_bot import bot_admin
+
 
 def main():
     """Run administrative tasks."""
@@ -20,4 +23,5 @@ def main():
 
 
 if __name__ == '__main__':
+    bot_admin.set_webhook(url=settings.WEBHOOK_URL)
     main()
