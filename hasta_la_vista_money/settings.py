@@ -37,6 +37,10 @@ ALLOWED_HOSTS = os.environ.get(
     'ALLOWED_HOSTS',
 ) else ['localhost', '127.0.0.1']
 
+
+WEBHOOK_URL = f"https://{os.environ.get('ALLOWED_HOSTS')}/bot/webhook/"
+
+
 # Application definition
 
 INSTALLED_APPS = [
