@@ -1,3 +1,4 @@
+from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 
 from .config_bot import bot_admin
@@ -5,6 +6,7 @@ from .config_bot import bot_type
 from .log_config import logger
 
 
+@csrf_exempt
 def webhooks(request):
     if request.method == 'POST':
         json_data = request.body.decode('utf-8')
