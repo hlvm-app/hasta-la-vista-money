@@ -1,10 +1,10 @@
 import datetime
 import types
 
-from bot.config_bot import bot_admin
-from bot.log_config import logger
-from bot.services import convert_date_time, convert_price
 from django.db import IntegrityError
+from hasta_la_vista_money.bot.config_bot import bot_admin
+from hasta_la_vista_money.bot.log_config import logger
+from hasta_la_vista_money.bot.services import convert_date_time, convert_price
 from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
 
 CONSTANT_RECEIPT = types.MappingProxyType(
@@ -59,6 +59,7 @@ class ReceiptParser:
         self.product_list = []
 
     def parse_products(self):  # noqa: WPS210
+        """My Code parse_products."""
         products_list = self.parser.parse_json(
             self.json_data, CONSTANT_RECEIPT.get('items'),
         )

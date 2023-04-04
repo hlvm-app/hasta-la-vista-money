@@ -1,8 +1,8 @@
 import re
 
-from bot.config_bot import bot_admin
-from bot.json_parse import ReceiptParser
-from bot.services import ReceiptApiReceiver
+from hasta_la_vista_money.bot.config_bot import bot_admin
+from hasta_la_vista_money.bot.json_parse import ReceiptParser
+from hasta_la_vista_money.bot.services import ReceiptApiReceiver
 
 
 @bot_admin.message_handler(content_types=['text'])

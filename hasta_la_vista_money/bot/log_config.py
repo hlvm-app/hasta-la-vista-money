@@ -1,7 +1,7 @@
 import logging
 import os
 
-from bot.config_bot import bot_admin
+from hasta_la_vista_money.bot.config_bot import bot_admin
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
@@ -15,8 +15,7 @@ class TelegramLogsHandler(logging.Handler):
         self.tg_bot = tg_bot
 
     def format(self, record: logging.LogRecord) -> str:
-        return f'Появилось исключение!\n' \
-               f'{record.getMessage()}'
+        return f'Появилось исключение!\n {record.getMessage()}'
 
     def emit(self, record):
         log_entry = self.format(record)

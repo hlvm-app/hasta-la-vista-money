@@ -4,8 +4,8 @@ import os
 from typing import Union
 
 import requests
-from bot.log_config import logger
 from dotenv import load_dotenv
+from hasta_la_vista_money.bot.log_config import logger
 
 
 # Выделяем дату из json

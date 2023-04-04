@@ -1,6 +1,6 @@
-from bot.receipt_parser_json import bot_admin as bot_json
-from bot.receipt_parser_text import bot_admin as bot_text
 from django.core.management import BaseCommand
+from hasta_la_vista_money.bot.receipt_parser_json import bot_admin as bot_json
+from hasta_la_vista_money.bot.receipt_parser_text import bot_admin as bot_text
 
 
 class Command(BaseCommand):

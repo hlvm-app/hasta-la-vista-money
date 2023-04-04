@@ -1,9 +1,9 @@
 import json
 from os import environ
 
-from bot.json_parse import ReceiptParser
 from django.test import TestCase
 from dotenv import load_dotenv
+from hasta_la_vista_money.bot.json_parse import ReceiptParser
 
 load_dotenv()
 

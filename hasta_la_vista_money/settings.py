@@ -50,13 +50,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'django_bootstrap5',
-    'bot',
+    'hasta_la_vista_money.bot',
     'hasta_la_vista_money',
-    'hasta_la_vista_money.users',
-    'hasta_la_vista_money.receipts',
     'hasta_la_vista_money.applications',
-    'hasta_la_vista_money.income',
     'hasta_la_vista_money.expense',
+    'hasta_la_vista_money.income',
+    'hasta_la_vista_money.receipts',
+    'hasta_la_vista_money.users',
 ]
 
 AUTH_USER_MODEL = 'users.User'
