@@ -24,5 +24,4 @@ def main():
 
 if __name__ == '__main__':
     bot_admin.set_webhook(url=settings.WEBHOOK_URL)
-    bot_admin.run_webhooks()
     main()
