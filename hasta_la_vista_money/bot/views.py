@@ -19,7 +19,8 @@ def webhooks(request):
 
             update = bot_type.Update.de_json(json_data)
             bot_admin.process_new_updates([update])
-            handle_receipt_text(update.message.text)
+            handle_receipt_text(update.message)
+            handle_receipt_json(update.message)
         except Exception as error:
             logger.error(error, 'Эта ошибка?')
         return HttpResponse('')
