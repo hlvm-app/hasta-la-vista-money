@@ -9,7 +9,7 @@ from .log_config import logger
 @csrf_exempt
 def webhooks(request):
     if request.method == 'POST':
-        json_data = request.body.decode('utf-8')
+        json_data = request.body.decode('ascii')
         logger.error(json_data)
         update = bot_type.Update.de_json(json_data)
         bot_admin.process_new_updates([update])
