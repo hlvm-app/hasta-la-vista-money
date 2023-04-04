@@ -21,6 +21,7 @@ def handle_receipt_text(message):
         client = ReceiptApiReceiver()
         qr_code = input_user
         json_data = client.get_receipt(qr_code)
+        logger.error(json_data)
 
         parse = ReceiptParser(json_data)
         parse.parse(message.chat.id)
