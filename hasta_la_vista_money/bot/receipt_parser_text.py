@@ -8,6 +8,7 @@ from hasta_la_vista_money.bot.services import ReceiptApiReceiver
 @bot_admin.message_handler(content_types=['text'])
 def handle_receipt_text(message):
     input_user = message.text
+    print(input_user)
     pattern = (
         r't=[0-9]+T[0-9]+'
         r'&s=[0-9]+.[0-9]+&fn=[0-9]+'
