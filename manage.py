@@ -26,6 +26,5 @@ if __name__ == '__main__':
     bot_admin.set_webhook(url=settings.WEBHOOK_URL)
     bot_admin.run_webhooks(
         'money.pavlovteam.ru',
-        webhook_url='https://money.pavlovteam.ru/bot/webhooks/',
     )
     main()
