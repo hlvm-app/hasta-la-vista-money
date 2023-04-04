@@ -18,7 +18,7 @@ def webhooks(request):
 
         update = bot_type.Update.de_json(json_data)
         bot_admin.process_new_updates([update])
-        logger.error(update.message)
+        print(update.message)
         # handle_receipt_text(update.message)
         # handle_receipt_json(update.message)
         return HttpResponse('')
