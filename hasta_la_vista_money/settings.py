@@ -38,7 +38,7 @@ ALLOWED_HOSTS = os.environ.get(
 ) else ['localhost', '127.0.0.1']
 
 
-WEBHOOK_URL = "https://money.pavlovteam.ru/bot/webhooks/"
+WEBHOOK_URL = f"https://money.pavlovteam.ru/bot/webhooks/{os.environ.get('TOKEN_TELEGRAM_BOT')}"
 
 
 # Application definition
