@@ -38,9 +38,6 @@ ALLOWED_HOSTS = os.environ.get(
 ) else ['localhost', '127.0.0.1']
 
 
-WEBHOOK_URL = f"https://money.pavlovteam.ru/bot/webhooks/"
-
-
 # Application definition
 
 INSTALLED_APPS = [

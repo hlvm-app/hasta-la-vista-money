@@ -15,8 +15,8 @@ def handle_receipt_text(message):
         r'&s=[0-9]+.[0-9]+&fn=[0-9]+'
         r'&i=[0-9]+&fp=[0-9]+&n=[0-5]{1}'
     )
-
     text_pattern = re.match(pattern, input_user)
+
     if text_pattern:
         client = ReceiptApiReceiver()
         qr_code = input_user
