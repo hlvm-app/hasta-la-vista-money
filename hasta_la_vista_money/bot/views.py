@@ -16,7 +16,8 @@ def webhooks(request):
         json_data = request.body.decode('utf8')
         update = bot_type.Update.de_json(json_data)
         bot_admin.process_new_updates([update])
+        logger.error('Проверка 1')
 
         handle_receipt_text(update.message)
-
+        logger.error('Проверка 2')
         return HttpResponse('')
