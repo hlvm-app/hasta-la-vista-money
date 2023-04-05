@@ -9,7 +9,7 @@ from hasta_la_vista_money.bot.services import ReceiptApiReceiver
 @bot_admin.message_handler(content_types=['text'])
 def handle_receipt_text(message):
     input_user = message.text
-    logger.error(input_user)
+
     pattern = (
         r't=[0-9]+T[0-9]+'
         r'&s=[0-9]+.[0-9]+&fn=[0-9]+'
@@ -21,7 +21,6 @@ def handle_receipt_text(message):
         client = ReceiptApiReceiver()
         qr_code = input_user
         json_data = client.get_receipt(qr_code)
-        logger.error(json_data)
 
         parse = ReceiptParser(json_data)
         parse.parse(message.chat.id)
