@@ -13,13 +13,10 @@ from .receipt_parser_text import handle_receipt_text
 @csrf_exempt
 def webhooks(request):
     if request.method == 'POST':
-        json_request = request.body.decode('utf8')
-        json_data = json.loads(json_request)
-
+        json_data = request.body.decode('utf8')
         update = bot_type.Update.de_json(json_data)
         bot_admin.process_new_updates([update])
-        print(update.message)
+
         handle_receipt_text(update.message)
-        # handle_receipt_text(update.message)
-        # handle_receipt_json(update.message)
+
         return HttpResponse('')
