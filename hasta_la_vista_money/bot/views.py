@@ -1,8 +1,6 @@
-from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-
-from .config_bot import bot_admin
-from .config_bot import bot_type
+from django.views.decorators.csrf import csrf_exempt
+from hasta_la_vista_money.bot.config_bot import bot_admin, bot_type
 
 
 @csrf_exempt

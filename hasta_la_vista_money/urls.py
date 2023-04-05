@@ -52,7 +52,10 @@ urlpatterns = [
         name='expense',
     ),
     path(
-        'bot/', include('hasta_la_vista_money.bot.urls', namespace='bot'),
+        'bot/',
+        include(
+            'hasta_la_vista_money.bot.urls', namespace='bot',
+        ),
         name='bot',
     ),
     path('adminushka/', admin.site.urls),

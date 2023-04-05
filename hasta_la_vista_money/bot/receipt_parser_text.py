@@ -2,7 +2,6 @@ import re
 
 from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.json_parse import ReceiptParser
-from hasta_la_vista_money.bot.log_config import logger
 from hasta_la_vista_money.bot.services import ReceiptApiReceiver
 
 
