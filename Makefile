@@ -1,5 +1,5 @@
 lint:
-	    @poetry run flake8 hasta_la_vista_money bot --exclude=migrations
+	    @poetry run flake8 hasta_la_vista_money --exclude=migrations
 
 export-requirements:
 		@poetry export -f requirements.txt --output requirements.txt --without-hashes
