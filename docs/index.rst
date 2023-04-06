@@ -10,7 +10,7 @@ Hasta La Vista, Money - проект домашней бухгалтерии д�
 
 Contribution
 -------------
-.. literalinclude:: ../INSTALLATION/INSTALLATION_RUS.md
+.. mdinclude:: ../INSTALLATION/INSTALLATION_RUS.md
 
 Ссылки
 ==================
