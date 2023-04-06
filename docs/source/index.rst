@@ -3,13 +3,19 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Добро пожаловать в документацию проекта Hasta La Vista Money's!
-=============================================
+Hasta La Vista, Money!
+======================
+Добро пожаловать в документацию проекта
+---------------------------------------
 
 Hasta La Vista, Money - проект домашней бухгалтерии для контроля расходов и доходов семьи.
 
 
-:ref:`install-label`
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+
+   install
 
 
 Ссылки
