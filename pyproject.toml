@@ -28,6 +28,8 @@ coverage = ">=6.4"
 wemake-python-styleguide = "^0.17.0"
 Sphinx = "^6.1.3"
 sphinx-rtd-theme = "^1.2.0"
+furo = "^2023.3.27"
+myst-parser = "^1.0.0"
 
 [build-system]
 requires = ["poetry-core>=1.4.0"]
