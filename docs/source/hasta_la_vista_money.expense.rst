@@ -1,14 +1,6 @@
 hasta\_la\_vista\_money.expense package
 =======================================
 
-Subpackages
------------
-
-.. toctree::
-   :maxdepth: 4
-
-   hasta_la_vista_money.expense.migrations
-
 Submodules
 ----------
 

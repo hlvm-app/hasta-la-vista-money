@@ -1,14 +1,6 @@
 hasta\_la\_vista\_money.income package
 ======================================
 
-Subpackages
------------
-
-.. toctree::
-   :maxdepth: 4
-
-   hasta_la_vista_money.income.migrations
-
 Submodules
 ----------
 

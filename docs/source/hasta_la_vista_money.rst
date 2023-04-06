@@ -16,14 +16,6 @@ Subpackages
 Submodules
 ----------
 
-hasta\_la\_vista\_money.asgi module
------------------------------------
-
-.. automodule:: hasta_la_vista_money.asgi
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 hasta\_la\_vista\_money.forms module
 ------------------------------------
 
@@ -32,26 +24,10 @@ hasta\_la\_vista\_money.forms module
    :undoc-members:
    :show-inheritance:
 
-hasta\_la\_vista\_money.settings module
----------------------------------------
-
-.. automodule:: hasta_la_vista_money.settings
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 hasta\_la\_vista\_money.urls module
 -----------------------------------
 
 .. automodule:: hasta_la_vista_money.urls
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-hasta\_la\_vista\_money.wsgi module
------------------------------------
-
-.. automodule:: hasta_la_vista_money.wsgi
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,14 +1,6 @@
 hasta\_la\_vista\_money.receipts package
 ========================================
 
-Subpackages
------------
-
-.. toctree::
-   :maxdepth: 4
-
-   hasta_la_vista_money.receipts.migrations
-
 Submodules
 ----------
 
