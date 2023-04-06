@@ -9,9 +9,9 @@
 Hasta La Vista, Money - проект домашней бухгалтерии для контроля расходов и доходов семьи.
 
 
-.. toctree::
-
-   install
+:ref:`install-label`
+Contributions
+~~~~~~~~~~~~~
 
 Ссылки
 ==================
