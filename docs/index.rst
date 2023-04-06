@@ -3,16 +3,14 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to HastaLaVistaMoney's documentation!
+Добро пожаловать в документацию проекта Hasta La Vista Money's!
 =============================================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+Hasta La Vista, Money - проект домашней бухгалтерии для контроля расходов и доходов семьи.
 
 
 
-Indices and tables
+Ссылки
 ==================
 
 * :ref:`genindex`
