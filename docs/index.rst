@@ -8,9 +8,10 @@
 
 Hasta La Vista, Money - проект домашней бухгалтерии для контроля расходов и доходов семьи.
 
-Contribution
+
+Вклад в развитие проекта
 -------------
-.. mdinclude:: ../INSTALLATION/INSTALLATION_RUS.md
+:ref:`install`
 
 Ссылки
 ==================

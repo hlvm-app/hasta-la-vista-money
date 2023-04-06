@@ -1,0 +1,1 @@
+.. mdinclude:: ../INSTALLATION/INSTALLATION_RUS.md
