@@ -11,8 +11,9 @@ import sys
 
 
 sys.path.insert(0, os.path.abspath('..'))
-
-os.environ.get('DJANGO_SETTINGS_MODULE', 'hasta_la_vista_money.settings')
+os.environ.setdefault(
+    'DJANGO_SETTINGS_MODULE', '../hasta_la_vista_money.settings',
+)
 
 django.setup()
 
@@ -31,6 +32,7 @@ release = '1.1.0'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
+    'sphinx.ext.viewcode',
 ]
 
 templates_path = ['_templates']
