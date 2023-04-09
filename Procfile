@@ -1,3 +1,1 @@
-web: gunicorn hasta_la_vista_money.wsgi:application
-worker: python manage.py startbot
-
+web: gunicorn hasta_la_vista_money.wsgi:application --workers=2 --threads=2
