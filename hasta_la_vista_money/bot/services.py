@@ -1,6 +1,7 @@
 import datetime
 import json
 import os
+from typing import Union
 
 import requests
 from dotenv import load_dotenv
@@ -27,8 +28,19 @@ def convert_date_time(date_time: int) -> str:
         logger.error(f'Из JSON пришло неправильное число у даты чека: {error}')
 
 
-def convert_price(price):
-    return round(price / 100, 2) if price else 0
+def convert_number(number: int) -> Union[int, float]:
+    """
+    Конвертация числа полученного из JSON в число с плавающей точкой.
+
+    Служит для того, чтобы число преобразовать в рубли и копейки.
+
+    :param number: Целое число получаемое из JSON ключей с ценой, суммой товаров
+                   и НДС + итоговая сумма чека.
+    :type number: int
+    :return: Возвращает число с плавающей точкой.
+    :rtype: float
+    """
+    return round(number / 100, 2) if number else 0
 
 
 class ReceiptApiReceiver:
