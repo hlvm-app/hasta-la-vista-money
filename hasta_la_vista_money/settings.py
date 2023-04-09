@@ -82,6 +82,13 @@ MIDDLEWARE = [
     'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 ]
 
+CSP_DEFAULT_SRC = {
+    'default-src': ['self'],
+    'script-src': ['self', 'unsafe-inline'],
+    'style-src': ['self', 'unsafe-inline'],
+}
+
+
 ROOT_URLCONF = 'hasta_la_vista_money.urls'
 
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
