@@ -73,38 +73,38 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    # 'csp.middleware.CSPMiddleware',
+    'csp.middleware.CSPMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 ]
-#
-# CSP_DEFAULT_SRC = (
-#     "'self'",
-#     'https://money.pavlovteam.ru',
-#     'https://api.telegram.org',
-# )
-# CSP_SCRIPT_SRC = (
-#     "'self'",
-#     "'unsafe-inline'",
-#     'https://cdn.jsdelivr.net',
-#     'https://code.jquery.com',
-#     'https://money.pavlovteam.ru',
-#     'https://api.telegram.org',
-# )
-# CSP_STYLE_SRC = (
-#     "'self'",
-#     "'unsafe-inline'",
-#     'https://cdn.jsdelivr.net',
-#     'https://money.pavlovteam.ru',
-# )
-# CSP_IMG_SRC = ("'self'", 'data:', 'https://money.pavlovteam.ru')
-# CSP_FONT_SRC = ("'self'", 'https://money.pavlovteam.ru')
-# CSP_CONNECT_SRC = ("'self'", 'https://api.telegram.org')
-# CSP_FRAME_SRC = ("'self'",)
-# CSP_BASE_URI = ("'none'",)
-# CSP_OBJECT_SRC = ("'none'",)
+
+CSP_DEFAULT_SRC = (
+    "'self'",
+    'https://money.pavlovteam.ru',
+    'https://api.telegram.org',
+)
+CSP_SCRIPT_SRC = (
+    "'self'",
+    "'unsafe-inline'",
+    'https://cdn.jsdelivr.net',
+    'https://code.jquery.com',
+    'https://money.pavlovteam.ru',
+    'https://api.telegram.org',
+)
+CSP_STYLE_SRC = (
+    "'self'",
+    "'unsafe-inline'",
+    'https://cdn.jsdelivr.net',
+    'https://money.pavlovteam.ru',
+)
+CSP_IMG_SRC = ("'self'", 'data:', 'https://money.pavlovteam.ru')
+CSP_FONT_SRC = ("'self'", 'https://money.pavlovteam.ru')
+CSP_CONNECT_SRC = ("'self'", 'https://api.telegram.org')
+CSP_FRAME_SRC = ("'self'",)
+CSP_BASE_URI = ("'none'",)
+CSP_OBJECT_SRC = ("'none'",)
 
 ROOT_URLCONF = 'hasta_la_vista_money.urls'
 
