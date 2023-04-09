@@ -10,9 +10,9 @@ def webhooks(request):
     if request.method == 'POST':
         json_data = request.body.decode('utf8')
         update = bot_type.Update.de_json(json_data)
-        print(update)
         if update.message.document.mime_type == 'application/json':
             handle_receipt_json(update.message)
-        handle_receipt_text(update.message)
+        else:
+            handle_receipt_text(update.message)
         bot_admin.process_new_updates([update])
         return HttpResponse('')
