@@ -13,8 +13,8 @@ def convert_date_time(date_time):
     return f'{datetime.datetime.fromtimestamp(date_time):%Y-%m-%d %H:%M}'
 
 
-def convert_price(price: Union[int, float]) -> Union[None, float]:
-    return round(price / 100, 2) if price else None
+def convert_price(price):
+    return round(price / 100, 2) if price else 0
 
 
 class ReceiptApiReceiver:
