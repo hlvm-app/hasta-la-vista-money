@@ -78,7 +78,6 @@ class ReceiptApiReceiver:
         }
         try:
             resp = requests.get(url, headers=headers, timeout=10)
-            print(resp.json())
             return resp.json()
         except json.decoder.JSONDecodeError as json_error:
             logger.error(
