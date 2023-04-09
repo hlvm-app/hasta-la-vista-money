@@ -86,17 +86,16 @@ CSP_DEFAULT_SRC = ("'self'",)
 CSP_SCRIPT_SRC = (
     "'self'",
     "'unsafe-inline'",
-    "https://cdn.jsdelivr.net",
-    "https://code.jquery.com",
+    'https://cdn.jsdelivr.net',
+    'https://code.jquery.com',
 )
-CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net",)
-CSP_IMG_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", 'https://cdn.jsdelivr.net')
+CSP_IMG_SRC = ("'self'", 'data:')
 CSP_FONT_SRC = ("'self'",)
 CSP_CONNECT_SRC = ("'self'",)
 CSP_FRAME_SRC = ("'self'",)
 CSP_BASE_URI = ("'none'",)
 CSP_OBJECT_SRC = ("'none'",)
-
 
 
 ROOT_URLCONF = 'hasta_la_vista_money.urls'
