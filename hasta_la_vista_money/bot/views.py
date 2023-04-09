@@ -13,7 +13,6 @@ def webhooks(request):
         print(json_data)
         update = bot_type.Update.de_json(json_data)
         print(update)
-        handle_receipt_json(update.message)
         handle_receipt_text(update.message)
         bot_admin.process_new_updates([update])
         return HttpResponse('')
