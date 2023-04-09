@@ -87,15 +87,11 @@ CSP_SCRIPT_SRC = (
     "'self'",
     "'unsafe-inline'",
     "https://cdn.jsdelivr.net",
-    "https://code.jquery.com"
+    "https://code.jquery.com",
 )
-CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
-CSP_IMG_SRC = "'self'"
-CSP_FONT_SRC = (
-    "'self'",
-    "https://fonts.gstatic.com",
-    "https://themes.googleusercontent.com"
-)
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net",)
+CSP_IMG_SRC = ("'self'",)
+CSP_FONT_SRC = ("'self'",)
 CSP_CONNECT_SRC = ("'self'",)
 CSP_FRAME_SRC = ("'self'",)
 CSP_BASE_URI = ("'none'",)
