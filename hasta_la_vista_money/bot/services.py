@@ -1,7 +1,6 @@
 import datetime
 import json
 import os
-from typing import Union
 
 import requests
 from dotenv import load_dotenv
@@ -9,8 +8,23 @@ from hasta_la_vista_money.bot.log_config import logger
 
 
 # Выделяем дату из json
-def convert_date_time(date_time):
-    return f'{datetime.datetime.fromtimestamp(date_time):%Y-%m-%d %H:%M}'
+def convert_date_time(date_time: int) -> str:
+    """
+    Конвертация unix time числа в читабельное представление даты и времени.
+
+    :param date_time: Unix timestamp (Количество секунд от
+                    1970-01-01 00:00:00 UTC)
+    :type date_time: int
+    :return: Строка с читабельным представлением даты и времени
+    :rtype: str
+    :raise: TypeError: Если аргумент не является целым числом
+
+    """
+    try:
+        dt = datetime.datetime.fromtimestamp(int(date_time))
+        return f'{dt:%Y-%m-%d %H:%M}'
+    except TypeError as error:
+        logger.error(f'Из JSON пришло неправильное число у даты чека: {error}')
 
 
 def convert_price(price):
