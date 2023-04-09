@@ -82,16 +82,22 @@ MIDDLEWARE = [
     'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 ]
 
-CSP_DEFAULT_SRC = ("'self'",)
+CSP_DEFAULT_SRC = ("'self'", 'https://money.pavlovteam.ru')
 CSP_SCRIPT_SRC = (
     "'self'",
     "'unsafe-inline'",
     'https://cdn.jsdelivr.net',
     'https://code.jquery.com',
+    'https://money.pavlovteam.ru',
 )
-CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", 'https://cdn.jsdelivr.net')
-CSP_IMG_SRC = ("'self'", 'data:')
-CSP_FONT_SRC = ("'self'",)
+CSP_STYLE_SRC = (
+    "'self'",
+    "'unsafe-inline'",
+    'https://cdn.jsdelivr.net',
+    'https://money.pavlovteam.ru',
+)
+CSP_IMG_SRC = ("'self'", 'data:', 'https://money.pavlovteam.ru')
+CSP_FONT_SRC = ("'self'", 'https://money.pavlovteam.ru')
 CSP_CONNECT_SRC = ("'self'",)
 CSP_FRAME_SRC = ("'self'",)
 CSP_BASE_URI = ("'none'",)
