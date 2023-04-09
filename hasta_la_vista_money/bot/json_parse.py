@@ -65,24 +65,24 @@ class ReceiptParser:
         )
         for product in products_list:
             product_name = self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('product_name'),
+                product, CONSTANT_RECEIPT.get('product_name', None),
             )
             price = convert_price(
                 self.parser.parse_json(
-                    product, CONSTANT_RECEIPT.get('price'),
+                    product, CONSTANT_RECEIPT.get('price', 0),
                 ),
             )
             quantity = self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('quantity'),
+                product, CONSTANT_RECEIPT.get('quantity', 0),
             )
             amount = convert_price(self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('amount'),
+                product, CONSTANT_RECEIPT.get('amount', 0),
             ))
             nds_type = self.parser.parse_json(
                 product, CONSTANT_RECEIPT.get('nds_type', None),
             )
             nds_sum = convert_price(self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('nds_sum', None),
+                product, CONSTANT_RECEIPT.get('nds_sum', 0),
             ))
 
             products = Product.objects.create(
@@ -98,7 +98,7 @@ class ReceiptParser:
 
     def parse_customer(self):
         name_seller = self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('name_seller'),
+            self.json_data, CONSTANT_RECEIPT.get('name_seller', None),
         )
         retail_place_address = self.parser.parse_json(
             self.json_data, CONSTANT_RECEIPT.get('retail_place_address', None),
@@ -114,16 +114,16 @@ class ReceiptParser:
 
     def parse_receipt(self, chat_id):  # noqa: WPS210
         receipt_date = convert_date_time(self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('receipt_date'),
+            self.json_data, CONSTANT_RECEIPT.get('receipt_date', None),
         ))
         number_receipt = self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('number_receipt'),
+            self.json_data, CONSTANT_RECEIPT.get('number_receipt', None),
         )
         operation_type = self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('operation_type'),
+            self.json_data, CONSTANT_RECEIPT.get('operation_type', None),
         )
         total_sum = convert_price(self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('total_sum'),
+            self.json_data, CONSTANT_RECEIPT.get('total_sum', 0),
         ))
 
         if operation_type in {2, 3}:
