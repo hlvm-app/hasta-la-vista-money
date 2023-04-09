@@ -21,7 +21,6 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
@@ -36,7 +35,6 @@ ALLOWED_HOSTS = os.environ.get(
 ).split(',') if os.environ.get(
     'ALLOWED_HOSTS',
 ) else ['localhost', '127.0.0.1']
-
 
 # Application definition
 
@@ -82,13 +80,18 @@ MIDDLEWARE = [
     'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 ]
 
-CSP_DEFAULT_SRC = ("'self'", 'https://money.pavlovteam.ru')
+CSP_DEFAULT_SRC = (
+    "'self'",
+    'https://money.pavlovteam.ru',
+    'https://api.telegram.org',
+)
 CSP_SCRIPT_SRC = (
     "'self'",
     "'unsafe-inline'",
     'https://cdn.jsdelivr.net',
     'https://code.jquery.com',
     'https://money.pavlovteam.ru',
+    'https://api.telegram.org',
 )
 CSP_STYLE_SRC = (
     "'self'",
@@ -102,7 +105,6 @@ CSP_CONNECT_SRC = ("'self'", 'https://api.telegram.org')
 CSP_FRAME_SRC = ("'self'",)
 CSP_BASE_URI = ("'none'",)
 CSP_OBJECT_SRC = ("'none'",)
-
 
 ROOT_URLCONF = 'hasta_la_vista_money.urls'
 
@@ -163,7 +165,6 @@ CONN_MAX_AGE = 500
 if os.getenv('DATABASE_URL'):
     DATABASES['default'] = dj_database_url.config(conn_max_age=CONN_MAX_AGE)
 
-
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
@@ -208,8 +209,7 @@ LANGUAGES = (
 
 LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
 
-FIXTURE_DIRS = (os.path.join(BASE_DIR, 'fixtures'), )
-
+FIXTURE_DIRS = (os.path.join(BASE_DIR, 'fixtures'),)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
