@@ -61,7 +61,6 @@ class ReceiptApiReceiver:
         }
 
         response = requests.post(url, json=payload, headers=headers, timeout=10)
-        print(response.json())
         self._session_id = response.json()['sessionId']
 
     def get_receipt(self, qr: str) -> dict:
@@ -79,6 +78,7 @@ class ReceiptApiReceiver:
         }
         try:
             resp = requests.get(url, headers=headers, timeout=10)
+            print(resp.json())
             return resp.json()
         except json.decoder.JSONDecodeError as json_error:
             logger.error(

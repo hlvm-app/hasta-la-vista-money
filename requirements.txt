@@ -21,4 +21,3 @@ whitenoise==6.4.0; python_version >= "3.7"
 setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
 furo>=2023.3.27
 myst-parser>=1.0.0
-django-csp>=3.7
