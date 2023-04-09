@@ -11,11 +11,3 @@ hasta\_la\_vista\_money.bot.management.commands.startbot module
    :members:
    :undoc-members:
    :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: hasta_la_vista_money.bot.management.commands
-   :members:
-   :undoc-members:
-   :show-inheritance:

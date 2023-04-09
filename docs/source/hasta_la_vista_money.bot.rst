@@ -1,24 +1,5 @@
-hasta\_la\_vista\_money.bot package
+Бот
 ===================================
-
-Subpackages
------------
-
-.. toctree::
-   :maxdepth: 4
-
-   hasta_la_vista_money.bot.management
-
-Submodules
-----------
-
-hasta\_la\_vista\_money.bot.apps module
----------------------------------------
-
-.. automodule:: hasta_la_vista_money.bot.apps
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 hasta\_la\_vista\_money.bot.config\_bot module
 ----------------------------------------------
@@ -60,26 +41,10 @@ hasta\_la\_vista\_money.bot.receipt\_parser\_text module
    :undoc-members:
    :show-inheritance:
 
-hasta\_la\_vista\_money.bot.services module
+Вспомогательные службы
 -------------------------------------------
 
 .. automodule:: hasta_la_vista_money.bot.services
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-hasta\_la\_vista\_money.bot.tests module
-----------------------------------------
-
-.. automodule:: hasta_la_vista_money.bot.tests
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: hasta_la_vista_money.bot
    :members:
    :undoc-members:
    :show-inheritance:

@@ -51,11 +51,3 @@ hasta\_la\_vista\_money.users.views module
    :members:
    :undoc-members:
    :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: hasta_la_vista_money.users
-   :members:
-   :undoc-members:
-   :show-inheritance:
