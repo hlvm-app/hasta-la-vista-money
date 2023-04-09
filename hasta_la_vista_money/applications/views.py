@@ -7,9 +7,8 @@ from django.views.generic import TemplateView
 
 
 class PageApplication(LoginRequiredMixin, SuccessMessageMixin, TemplateView):
-    """
-    Отображает список приложений в проекте на сайте.
-    """
+    """Отображает список приложений в проекте на сайте."""
+
     template_name = 'applications/page_application.html'
     context_object_name = 'applications'
     error_message = gettext_lazy(
