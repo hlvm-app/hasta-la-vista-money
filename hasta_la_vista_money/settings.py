@@ -98,7 +98,7 @@ CSP_STYLE_SRC = (
 )
 CSP_IMG_SRC = ("'self'", 'data:', 'https://money.pavlovteam.ru')
 CSP_FONT_SRC = ("'self'", 'https://money.pavlovteam.ru')
-CSP_CONNECT_SRC = ("'self'",)
+CSP_CONNECT_SRC = ("'self'", 'https://api.telegram.org')
 CSP_FRAME_SRC = ("'self'",)
 CSP_BASE_URI = ("'none'",)
 CSP_OBJECT_SRC = ("'none'",)
