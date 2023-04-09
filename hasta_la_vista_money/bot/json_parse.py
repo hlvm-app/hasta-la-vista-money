@@ -69,20 +69,20 @@ class ReceiptParser:
             )
             price = convert_price(
                 self.parser.parse_json(
-                    product, CONSTANT_RECEIPT.get('price', 0),
+                    product, CONSTANT_RECEIPT.get('price', 0.0),
                 ),
             )
             quantity = self.parser.parse_json(
                 product, CONSTANT_RECEIPT.get('quantity', 0),
             )
             amount = convert_price(self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('amount', 0),
+                product, CONSTANT_RECEIPT.get('amount', 0.0),
             ))
             nds_type = self.parser.parse_json(
                 product, CONSTANT_RECEIPT.get('nds_type', None),
             )
             nds_sum = convert_price(self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('nds_sum', 0),
+                product, CONSTANT_RECEIPT.get('nds_sum', 0.0),
             ))
 
             products = Product.objects.create(
