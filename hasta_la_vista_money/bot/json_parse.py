@@ -4,7 +4,7 @@ import types
 from django.db import IntegrityError
 from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.log_config import logger
-from hasta_la_vista_money.bot.services import convert_date_time, convert_price
+from hasta_la_vista_money.bot.services import convert_date_time, convert_number
 from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
 
 CONSTANT_RECEIPT = types.MappingProxyType(
@@ -67,7 +67,7 @@ class ReceiptParser:
             product_name = self.parser.parse_json(
                 product, CONSTANT_RECEIPT.get('product_name', None),
             )
-            price = convert_price(
+            price = convert_number(
                 self.parser.parse_json(
                     product, CONSTANT_RECEIPT.get('price', 0),
                 ),
@@ -75,13 +75,13 @@ class ReceiptParser:
             quantity = self.parser.parse_json(
                 product, CONSTANT_RECEIPT.get('quantity', 0),
             )
-            amount = convert_price(self.parser.parse_json(
+            amount = convert_number(self.parser.parse_json(
                 product, CONSTANT_RECEIPT.get('amount', 0),
             ))
             nds_type = self.parser.parse_json(
                 product, CONSTANT_RECEIPT.get('nds_type', None),
             )
-            nds_sum = convert_price(self.parser.parse_json(
+            nds_sum = convert_number(self.parser.parse_json(
                 product, CONSTANT_RECEIPT.get('nds_sum', 0),
             ))
 
@@ -122,7 +122,7 @@ class ReceiptParser:
         operation_type = self.parser.parse_json(
             self.json_data, CONSTANT_RECEIPT.get('operation_type', None),
         )
-        total_sum = convert_price(self.parser.parse_json(
+        total_sum = convert_number(self.parser.parse_json(
             self.json_data, CONSTANT_RECEIPT.get('total_sum', 0),
         ))
 
