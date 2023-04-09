@@ -9,5 +9,6 @@ def webhooks(request):
         json_data = request.body.decode('utf8')
         print(json_data)
         update = bot_type.Update.de_json(json_data)
+        print(update)
         bot_admin.process_new_updates([update])
         return HttpResponse('')
