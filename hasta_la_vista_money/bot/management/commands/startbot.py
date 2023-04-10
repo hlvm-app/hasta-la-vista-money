@@ -6,8 +6,10 @@ from hasta_la_vista_money.bot.receipt_parser_text import bot_admin as bot_text
 class Command(BaseCommand):
     """
     Django команда для запуска бота через polling.
+
     Разбирает чеки и взаимодействуют с пользователем через Telegram.
     """
+
     def handle(self, *args, **options):
         """
         Метод, который запускает бота через polling.
