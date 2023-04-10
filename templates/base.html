@@ -1,6 +1,7 @@
 {{ '<' }}{{'!doctype html>'}}
 {# Load the tag library #}
 {% load django_bootstrap5 %}
+{% load csp %}
 
 {# Load CSS and JavaScript #}
 {% bootstrap_css %}
@@ -22,16 +23,15 @@
           maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="shortcut icon" href="{% static 'img/favicon/favicon.png' %}" type="image/x-icon">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
     <div class="min-vh-100 bg-success bg-gradient">
         {% block content %}
         {% endblock %}
     </div>
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'js/jquery-3.6.3.min.js' %}"></script>
-    <script src="{% static 'js/script.js' %}"></script>
+    <script nonce="{{request.csp_nonce}}" src="{% static 'js/jquery-3.6.3.min.js' %}"></script>
+    <script nonce="{{request.csp_nonce}}" src="{% static 'js/script.js' %}"></script>
 </body>
 </html>
 
