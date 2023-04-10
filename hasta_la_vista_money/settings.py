@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'csp',
     'django_filters',
     'django_bootstrap5',
     'hasta_la_vista_money.bot',
@@ -80,29 +81,31 @@ MIDDLEWARE = [
     'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 ]
 
+
+CSP_INCLUDE_NONCE_IN = ['script-src']
+
 CSP_DEFAULT_SRC = (
     "'self'",
     'https://money.pavlovteam.ru',
-    'https://api.telegram.org',
-    "form-action 'self'",
-    "frame-ancestors 'none'",
 )
+
 CSP_SCRIPT_SRC = (
     "'self'",
+    'https://money.pavlovteam.ru',
     'https://cdn.jsdelivr.net',
     'https://code.jquery.com',
-    'https://money.pavlovteam.ru',
-    'https://api.telegram.org',
 )
+
 CSP_STYLE_SRC = (
     "'self'",
     'https://cdn.jsdelivr.net',
     'https://money.pavlovteam.ru',
 )
+
 CSP_IMG_SRC = ("'self'", 'data:', 'https://money.pavlovteam.ru')
 CSP_FONT_SRC = ("'self'", 'https://money.pavlovteam.ru')
 CSP_CONNECT_SRC = ("'self'", 'https://api.telegram.org')
-CSP_FRAME_SRC = ("'self'",)
+CSP_FRAME_SRC = ("'none'",)
 CSP_BASE_URI = ("'none'",)
 CSP_OBJECT_SRC = ("'none'",)
 
