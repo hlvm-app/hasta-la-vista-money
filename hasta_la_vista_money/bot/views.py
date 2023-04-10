@@ -12,7 +12,7 @@ def webhooks(request):
         json_data = request.body.decode('utf8')
         try:
             update = bot_type.Update.de_json(json_data)
-            if update.message.document.mime_type == 'application/json':
+            if update.message.json.document.mime_type == 'application/json':
                 handle_receipt_json(update.message)
                 bot_admin.process_new_updates([update])
             else:
