@@ -84,10 +84,11 @@ CSP_DEFAULT_SRC = (
     "'self'",
     'https://money.pavlovteam.ru',
     'https://api.telegram.org',
+    "form-action 'self'",
+    "frame-ancestors 'none'",
 )
 CSP_SCRIPT_SRC = (
     "'self'",
-    "'unsafe-inline'",
     'https://cdn.jsdelivr.net',
     'https://code.jquery.com',
     'https://money.pavlovteam.ru',
@@ -95,7 +96,6 @@ CSP_SCRIPT_SRC = (
 )
 CSP_STYLE_SRC = (
     "'self'",
-    "'unsafe-inline'",
     'https://cdn.jsdelivr.net',
     'https://money.pavlovteam.ru',
 )
