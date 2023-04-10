@@ -1,10 +1,10 @@
 from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_exempt
 from hasta_la_vista_money.bot.config_bot import bot_admin, bot_type
 from hasta_la_vista_money.bot.log_config import logger
 
 
-@csrf_protect
+@csrf_exempt
 def webhooks(request):
     if request.method == 'POST':
         json_data = request.body.decode('utf8')

@@ -131,10 +131,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hasta_la_vista_money.wsgi.application'
 
-CSRF_USE_REFERER = True
-
-CSRF_TRUSTED_ORIGINS = ['https://money.pavlovteam.ru']
-
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend'
