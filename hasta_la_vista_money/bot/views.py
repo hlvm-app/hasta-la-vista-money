@@ -2,8 +2,6 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from hasta_la_vista_money.bot.config_bot import bot_admin, bot_type
 from hasta_la_vista_money.bot.log_config import logger
-from hasta_la_vista_money.bot.receipt_parser_json import handle_receipt_json
-from hasta_la_vista_money.bot.receipt_parser_text import handle_receipt_text
 
 
 @csrf_exempt
@@ -13,10 +11,6 @@ def webhooks(request):
         try:
             update = bot_type.Update.de_json(json_data)
             bot_admin.process_new_updates([update])
-            if update.message.content_type == 'document':
-                handle_receipt_json(update.message)
-            else:
-                handle_receipt_text(update.message)
             return HttpResponse('Webhook processed successfully')
         except Exception as error:
             logger.error(error)
