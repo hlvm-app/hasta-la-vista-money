@@ -4,11 +4,15 @@
 [![wemake-python-styleguide](https://img.shields.io/badge/style-wemake-000000.svg)](https://github.com/wemake-services/wemake-python-styleguide)
 [![CodeFactor](https://www.codefactor.io/repository/github/turtleold/hasta-la-vista-money/badge)](https://www.codefactor.io/repository/github/turtleold/hasta-la-vista-money)
 
-English version is available by [link](README_ENG.md)
+English version is available by [link](README_ENG.md)  
+
+[Документация по проекту](https://hasta-la-vista-money.readthedocs.io)
+
+---
 
 # _Hasta La Vista, Money!_  
 
----------------------------------------------------------------------
+---
 
 Hasta La Vista, Money - проект домашней бухгалтерии для контроля расходов и доходов семьи с возможностью просмотра отчётов
   
@@ -48,6 +52,3 @@ Hasta La Vista, Money - проект домашней бухгалтерии д�
 ![Example Receipt](static/img/example_receipt.jpg)
 
 ---
-
-[Документация по проекту](https://hasta-la-vista-money.readthedocs.io)
-----------------------------------------------------------------------
