@@ -13,7 +13,7 @@ def webhooks(request):
         try:
             update = bot_type.Update.de_json(json_data)
             bot_admin.process_new_updates([update])
-            if update.content_type == 'document':
+            if update.message.content_type == 'document':
                 handle_receipt_json(update.message)
             else:
                 handle_receipt_text(update.message)
