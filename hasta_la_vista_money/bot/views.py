@@ -12,12 +12,11 @@ def webhooks(request):
         json_data = request.body.decode('utf8')
         try:
             update = bot_type.Update.de_json(json_data)
-            if update.message.json.document.mime_type == 'application/json':
+            bot_admin.process_new_updates([update])
+            if 'application/json' in update.message:
                 handle_receipt_json(update.message)
-                bot_admin.process_new_updates([update])
             else:
                 handle_receipt_text(update.message)
-                bot_admin.process_new_updates([update])
             return HttpResponse('Webhook processed successfully')
         except Exception as error:
             logger.error(error)
