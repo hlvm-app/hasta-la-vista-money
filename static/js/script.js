@@ -59,10 +59,12 @@ function toggleNewSellerField() {
     }
 }
 
-$(function () {
+$(document).ready(function() {
+  toggleNewSellerField();
+  $('#id_existing_seller').on('change', function() {
     toggleNewSellerField();
-    $('select#existingSeller').change(toggleNewSellerField)
-})
+  });
+});
 
 
 function amountUpdate() {
