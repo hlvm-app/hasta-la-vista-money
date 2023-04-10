@@ -1,10 +1,7 @@
-hasta\_la\_vista\_money.bot.management.commands package
+Start the bot via polling
 =======================================================
 
-Submodules
-----------
-
-hasta\_la\_vista\_money.bot.management.commands.startbot module
+Startbot module
 ---------------------------------------------------------------
 
 .. automodule:: hasta_la_vista_money.bot.management.commands.startbot
