@@ -1,3 +1,5 @@
+"""Модуль описания конфигурации Django приложения - bot."""
+
 from django.apps import AppConfig
 
 
