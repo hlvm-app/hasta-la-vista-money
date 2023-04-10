@@ -21,6 +21,7 @@ rollbar = ">=0.16.2"
 pyTelegramBotAPI = ">=4.6.0"
 Django = ">=4.1.7"
 urllib3 = "^1.26.15"
+django-csp = "^3.7"
 
 [tool.poetry.dev-dependencies]
 Faker = ">=13.7.0"
