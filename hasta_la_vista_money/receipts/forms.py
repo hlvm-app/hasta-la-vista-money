@@ -57,7 +57,6 @@ class CustomerForm(BaseForm):
         required=False,
         widget=Select(attrs={
             'id': 'id_existing_seller',
-            'onchange': 'toggleNewSellerField()',
         }),
     )
     new_seller = CharField(
