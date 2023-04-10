@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from hasta_la_vista_money.bot.config_bot import bot_admin, bot_type
+from hasta_la_vista_money.bot.log_config import logger
 
 
 @csrf_exempt
@@ -12,4 +13,4 @@ def webhooks(request):
             bot_admin.process_new_updates([update])
             return HttpResponse('Webhook processed successfully')
         except Exception as error:
-            return HttpResponse(error)
+            logger.error(error)
