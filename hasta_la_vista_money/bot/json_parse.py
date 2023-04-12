@@ -30,13 +30,26 @@ CONSTANT_RECEIPT = types.MappingProxyType(
 
 
 class JsonParser:
-    """Универсальный класс разбора json данных."""
+    """Универсальный класс разбора json данных.
+
+    МЕТОДЫ:
+
+    parse_json(json_data: dict, key: str) -> list[dict] | int | str | None
+        Метод разбора json данных.
+        Принимает словарь и ключ для поиска значения в переданном словаре.
+
+    __get_value(dictionary, key) -> str | list | int | None)
+        Приватный метод получения значений из словаря (json данных).
+    """
 
     def __init__(self, json_data):
         """
         Метод-конструктор инициализирующий аргумент json_data.
 
-        :param json_data: Инициализация аргумента содержащий json данные.
+        ПЕРЕМЕННЫЕ ЭКЗЕМПЛЯРА КЛАССА:
+
+        json_data: dict
+            Словарь с данными.
         """
         self.json_data = json_data
 
@@ -46,12 +59,20 @@ class JsonParser:
         """
         Метод разбора json данных.
 
-        :param json_data: json данные.
-        :type: dict
-        :param key: Ключ для поиска в словаре.
-        :type: str
-        :return:
-        :rtype: list[dict] | None
+        Принимает словарь и ключ для поиска значения в переданном словаре.
+
+        ПАРАМЕТРЫ:
+
+        json_data: dict
+            Принимает словарь.
+
+        key: str
+            Ключ для поиска в словаре.
+
+        ВОЗВРАЩАЕТ:
+
+        list[dict] | None
+            Словарь внутри списка, либо None
         """
         return JsonParser.__get_value(self, json_data, key)
 
@@ -61,12 +82,17 @@ class JsonParser:
         """
         Приватный метод получения значений из словаря (json данных).
 
-        :param dictionary: json данные - словарь.
-        :type: dict
-        :param key: Ключ для поиска в словаре.
-        :type: str
-        :return:
-        :rtype: str | list | int | None
+        ПАРАМЕТРЫ:
+
+        dictionary: dict
+            Принимает словарь данных.
+        key: str
+            Принимает ключ для поиска значения в словаре.
+
+        ВОЗВРАЩАЕТ:
+
+        str | list | int | None
+            В зависимости от условий, может возвращать строку, список, число.
         """
         if not isinstance(dictionary, dict):
             return None
@@ -88,20 +114,49 @@ class ReceiptParser:
     Класс парсинга чека.
 
     В методах этого класса, все данные записываются в базу данных.
+
+    АТРИБУТЫ:
+
+    json_data: dict
+        Принимает словарь.
+    parser: class
+        Экземпляр класса JsonParser.
+    customer: class
+        Объект модели Customer.
+    receipt: class
+        Объект модели Receipt.
+    product_list: list
+        Список продуктов.
+
+    МЕТОДЫ:
+
+    parse_products() -> None
+        Метод класса для парсинга продуктов из JSON данных чека.
+        Парсинг включает в себя название продукта, его цену, количество и сумму.
+        Также, тип НДС (10%, 20%) и сумма НДС по каждому товару.
+
+    parse_customer() -> None
+        Метод класса для парсинга продавца из JSON данных чека.
+        Парсинг включает в себя название продавца, например: ООО "Пятерочка".
+        Фактический адрес расположения магазина, в котором был распечатан чек.
+        Название того магазина, где был распечатан чек.
+
+    parse_receipt(chat_id: int) -> None
+        Метод класса для парсинга основной информации о чеке.
+        Парсится дата чека, номер, тип операции(Приход, расход и пр.) и итоговая
+        сумма.
+        В методе также проверяется существование номера чека в базе данных,
+        чтобы исключить дубли.
+        По итогу, если чек существует или был добавлен, отправляется
+        сообщение тому пользователю, кто попытался добавить чек.
+
+    parse(chat_id) -> None
+        Метод отвечает за вызов метода по парсингу чека.
+        В случае ошибки выбрасывает исключение и отправляет ошибку пользователю.
     """
 
     def __init__(self, json_data):
-        """
-        Метод-конструктор инициализирующий аргумента json_data.
-
-        Также, определяются переменные класса:
-        parser,
-        customer,
-        receipt,
-        product_list
-        :param json_data:
-        :type: dict
-        """
+        """Метод-конструктор инициализирующий аргумента json_data."""
         self.json_data = json_data
         self.parser = JsonParser(self.json_data)
         self.customer = None
@@ -113,10 +168,7 @@ class ReceiptParser:
         Метод класса для парсинга продуктов из JSON данных чека.
 
         Парсинг включает в себя название продукта, его цену, количество и сумму.
-
         Также, тип НДС (10%, 20%) и сумма НДС по каждому товару.
-
-        :return: None
         """
         products_list = self.parser.parse_json(
             self.json_data, CONSTANT_RECEIPT.get('items'),
@@ -155,14 +207,12 @@ class ReceiptParser:
         self.receipt.product.set(self.product_list)
 
     def parse_customer(self) -> None:
-        r"""
+        """
         Метод класса для парсинга продавца из JSON данных чека.
 
-        Парсинг включает в себя название продавца, например: ООО "Пятерочка".\n
-        Фактический адрес расположения магазина, в котором был распечатан чек.\n
+        Парсинг включает в себя название продавца, например: ООО "Пятерочка".
+        Фактический адрес расположения магазина, в котором был распечатан чек.
         Название того магазина, где был распечатан чек.
-
-        :return: None
         """
         name_seller = self.parser.parse_json(
             self.json_data, CONSTANT_RECEIPT.get('name_seller', None),
@@ -180,20 +230,22 @@ class ReceiptParser:
         )
 
     def parse_receipt(self, chat_id: int) -> None:  # noqa: WPS210
-        r"""
+        """
         Метод класса для парсинга основной информации о чеке.
 
         Парсится дата чека, номер, тип операции(Приход, расход и пр.) и итоговая
-        сумма.\n
+        сумма.
 
         В методе также проверяется существование номера чека в базе данных,
-        чтобы исключить дубли.\n
+        чтобы исключить дубли.
         По итогу, если чек существует или был добавлен, отправляется
         сообщение тому пользователю, кто попытался добавить чек.
 
-        :param chat_id: ID пользователя, кому направлять сообщения.
-        :type: int
-        :return: None
+        ПАРАМЕТРЫ:
+
+        chat_id:int
+            ID пользователя, кому направлять сообщения.
+
         """
         receipt_date = convert_date_time(self.parser.parse_json(
             self.json_data, CONSTANT_RECEIPT.get('receipt_date', None),
@@ -230,16 +282,20 @@ class ReceiptParser:
             self.parse_products()
             bot_admin.send_message(chat_id, 'Чек принят!')
 
-    def parse(self, chat_id):
+    def parse(self, chat_id) -> None:
         """
         Метод отвечает за вызов метода по парсингу чека.
 
-        В случае ошибки выбрасывает исключение.
+        В случае ошибки выбрасывает исключение и отправляет ошибку пользователю.
 
-        :param chat_id: ID пользователя, кому направлять сообщения.
-        :type: int
-        :return: None
-        :raise: ValueError, KeyError, AttributeError, TypeError, IntegrityError
+        ПАРАМЕТРЫ:
+
+        chat_id: int
+            ID пользователя, кому направлять сообщения.
+
+        ИСКЛЮЧЕНИЯ:
+
+        ValueError, KeyError, AttributeError, TypeError, IntegrityError
 
         """
         try:
