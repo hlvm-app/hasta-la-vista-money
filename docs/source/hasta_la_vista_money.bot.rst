@@ -1,15 +1,18 @@
 Бот
 ===================================
 
-hasta\_la\_vista\_money.bot.config\_bot module
+Модуль с настройками бота
 ----------------------------------------------
+
+.. py:data:: hasta_la_vista_money.bot.config_bot.token
+.. py:data:: hasta_la_vista_money.bot.config_bot.bot_admin
+.. py:data:: hasta_la_vista_money.bot.config_bot.bot_type
 
 .. automodule:: hasta_la_vista_money.bot.config_bot
    :members:
-   :undoc-members:
-   :show-inheritance:
 
-hasta\_la\_vista\_money.bot.json\_parse module
+
+Модуль парсинга json данных
 ----------------------------------------------
 
 .. automodule:: hasta_la_vista_money.bot.json_parse
@@ -17,7 +20,7 @@ hasta\_la\_vista\_money.bot.json\_parse module
    :undoc-members:
    :show-inheritance:
 
-hasta\_la\_vista\_money.bot.log\_config module
+Модуль конфигурации логов
 ----------------------------------------------
 
 .. automodule:: hasta_la_vista_money.bot.log_config
@@ -25,7 +28,7 @@ hasta\_la\_vista\_money.bot.log\_config module
    :undoc-members:
    :show-inheritance:
 
-hasta\_la\_vista\_money.bot.receipt\_parser\_json module
+Модуль входящей точки по парсингу json файла
 --------------------------------------------------------
 
 .. automodule:: hasta_la_vista_money.bot.receipt_parser_json
@@ -33,7 +36,7 @@ hasta\_la\_vista\_money.bot.receipt\_parser\_json module
    :undoc-members:
    :show-inheritance:
 
-hasta\_la\_vista\_money.bot.receipt\_parser\_text module
+Модуль входящей точки по парсингу текста
 --------------------------------------------------------
 
 .. automodule:: hasta_la_vista_money.bot.receipt_parser_text

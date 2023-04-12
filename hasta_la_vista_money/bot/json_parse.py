@@ -34,7 +34,7 @@ class JsonParser:
 
     def __init__(self, json_data):
         """
-        Метод-конструктор инициализирующий аргумента json_data.
+        Метод-конструктор инициализирующий аргумент json_data.
 
         :param json_data: Инициализация аргумента содержащий json данные.
         """
@@ -46,9 +46,9 @@ class JsonParser:
         """
         Метод разбора json данных.
 
-        :param json_data:
+        :param json_data: json данные.
         :type: dict
-        :param key:
+        :param key: Ключ для поиска в словаре.
         :type: str
         :return:
         :rtype: list[dict] | None
@@ -61,9 +61,9 @@ class JsonParser:
         """
         Приватный метод получения значений из словаря (json данных).
 
-        :param dictionary:
+        :param dictionary: json данные - словарь.
         :type: dict
-        :param key:
+        :param key: Ключ для поиска в словаре.
         :type: str
         :return:
         :rtype: str | list | int | None
@@ -84,15 +84,40 @@ class JsonParser:
 
 
 class ReceiptParser:
+    """
+    Класс парсинга чека.
+
+    В методах этого класса, все данные записываются в базу данных.
+    """
+
     def __init__(self, json_data):
+        """
+        Метод-конструктор инициализирующий аргумента json_data.
+
+        Также, определяются переменные класса:
+        parser,
+        customer,
+        receipt,
+        product_list
+        :param json_data:
+        :type: dict
+        """
         self.json_data = json_data
         self.parser = JsonParser(self.json_data)
         self.customer = None
         self.receipt = None
         self.product_list = []
 
-    def parse_products(self):  # noqa: WPS210
-        """My Code parse_products."""
+    def parse_products(self) -> None:  # noqa: WPS210
+        """
+        Метод класса для парсинга продуктов из JSON данных чека.
+
+        Парсинг включает в себя название продукта, его цену, количество и сумму.
+
+        Также, тип НДС (10%, 20%) и сумма НДС по каждому товару.
+
+        :return: None
+        """
         products_list = self.parser.parse_json(
             self.json_data, CONSTANT_RECEIPT.get('items'),
         )
@@ -129,7 +154,16 @@ class ReceiptParser:
             self.product_list.append(products)
         self.receipt.product.set(self.product_list)
 
-    def parse_customer(self):
+    def parse_customer(self) -> None:
+        """
+        Метод класса для парсинга продавца из JSON данных чека.
+
+        Парсинг включает в себя название продавца, например: ООО "Пятерочка".\n
+        Фактический адрес расположения магазина, в котором был распечатан чек.\n
+        Название того магазина, где был распечатан чек.
+
+        :return: None
+        """
         name_seller = self.parser.parse_json(
             self.json_data, CONSTANT_RECEIPT.get('name_seller', None),
         )
@@ -145,7 +179,22 @@ class ReceiptParser:
             retail_place=retail_place,
         )
 
-    def parse_receipt(self, chat_id):  # noqa: WPS210
+    def parse_receipt(self, chat_id: int) -> None:  # noqa: WPS210
+        """
+        Метод класса для парсинга основной информации о чеке.
+
+        Парсится дата чека, номер, тип операции(Приход, расход и пр.) и итоговая
+        сумма.\n
+
+        В методе также проверяется существование номера чека в базе данных,
+        чтобы исключить дубли.\n
+        По итогу, если чек существует или был добавлен, отправляется
+        сообщение тому пользователю, кто попытался добавить чек.
+
+        :param chat_id: ID пользователя, кому направлять сообщения.
+        :type: int
+        :return: None
+        """
         receipt_date = convert_date_time(self.parser.parse_json(
             self.json_data, CONSTANT_RECEIPT.get('receipt_date', None),
         ))
@@ -182,6 +231,17 @@ class ReceiptParser:
             bot_admin.send_message(chat_id, 'Чек принят!')
 
     def parse(self, chat_id):
+        """
+        Метод отвечает за вызов метода по парсингу чека.
+
+        В случае ошибки выбрасывает исключение.
+
+        :param chat_id: ID пользователя, кому направлять сообщения.
+        :type: int
+        :return: None
+        :raise: ValueError, KeyError, AttributeError, TypeError, IntegrityError
+
+        """
         try:
             self.parse_receipt(chat_id)
         except (ValueError, KeyError) as value_key_error:
