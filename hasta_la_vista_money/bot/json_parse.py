@@ -1,3 +1,5 @@
+"""Модуль разбора json данных."""
+
 import datetime
 import types
 
@@ -28,13 +30,44 @@ CONSTANT_RECEIPT = types.MappingProxyType(
 
 
 class JsonParser:
+    """Универсальный класс разбора json данных."""
+
     def __init__(self, json_data):
+        """
+        Метод-конструктор инициализирующий аргумента json_data.
+
+        :param json_data: Инициализация аргумента содержащий json данные.
+        """
         self.json_data = json_data
 
-    def parse_json(self, json_data: dict, key: str):
-        return JsonParser.get_value(self, json_data, key)
+    def parse_json(
+        self, json_data: dict, key: str,
+    ) -> list[dict] | int | str | None:
+        """
+        Метод разбора json данных.
 
-    def get_value(self, dictionary, key):
+        :param json_data:
+        :type: dict
+        :param key:
+        :type: str
+        :return:
+        :rtype: list[dict] | None
+        """
+        return JsonParser.__get_value(self, json_data, key)
+
+    def __get_value(  # noqa: WPS112
+        self, dictionary, key,
+    ) -> str | list | int | None:
+        """
+        Приватный метод получения значений из словаря (json данных).
+
+        :param dictionary:
+        :type: dict
+        :param key:
+        :type: str
+        :return:
+        :rtype: str | list | int | None
+        """
         if not isinstance(dictionary, dict):
             return None
 
@@ -43,7 +76,7 @@ class JsonParser:
             return dict_value
 
         for nested_dict in dictionary.values():
-            dict_value = self.get_value(nested_dict, key)
+            dict_value = self.__get_value(nested_dict, key)
             if dict_value is not None:
                 return dict_value
 
