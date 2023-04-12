@@ -1,3 +1,5 @@
+"""Модуль конфигурации бота."""
+
 import os
 
 import telebot
