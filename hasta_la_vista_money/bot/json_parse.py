@@ -155,7 +155,7 @@ class ReceiptParser:
         self.receipt.product.set(self.product_list)
 
     def parse_customer(self) -> None:
-        """
+        r"""
         Метод класса для парсинга продавца из JSON данных чека.
 
         Парсинг включает в себя название продавца, например: ООО "Пятерочка".\n
@@ -180,7 +180,7 @@ class ReceiptParser:
         )
 
     def parse_receipt(self, chat_id: int) -> None:  # noqa: WPS210
-        """
+        r"""
         Метод класса для парсинга основной информации о чеке.
 
         Парсится дата чека, номер, тип операции(Приход, расход и пр.) и итоговая
