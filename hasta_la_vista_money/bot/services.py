@@ -44,7 +44,52 @@ def convert_number(number: int) -> Union[int, float]:
 
 
 class ReceiptApiReceiver:
+    """
+    Класс для получения информации о чеке из базы налоговой службы РФ.
+
+    АТРИБУТЫ:
+
+    _session_id: str
+        Идентификатор сессии, полученный при авторизации в сервисе.
+    host: str
+        URL-адрес сервиса.
+    device_os: str
+        Операционная система устройства.
+    client_version: str
+        Версия приложения клиента.
+    device_id: str
+        Идентификатор устройства.
+    accept: str
+        Строка с типом и версией принимаемого контента.
+    user_agent: str
+        User-Agent HTTP заголовка.
+    accept_language: str
+        Языковые предпочтения клиента для HTTP заголовка Accept-Language.
+
+    МЕТОДЫ:
+
+    session_id() -> None
+        Получает идентификатор сессии в сервисе налоговой службы РФ.
+        Внутренний метод, вызывается при создании экземпляра класса.
+        Если не удалось получить идентификатор, вызывает исключение ValueError.
+
+    get_receipt(qr: str) -> dict
+        Получает информацию о чеке по QR-коду.
+        Если не удалось получить информацию, записывает сообщение об ошибке в
+        лог.
+
+    _get_receipt_id(qr: str) -> str
+        Получает идентификатор чека по QR-коду.
+        Внутренний метод, используется в методе get_receipt().
+    """
+
     def __init__(self) -> None:
+        """
+        Конструктор класса.
+
+        Выполняет авторизацию в сервисе при создании экземпляра класса.
+
+        """
         load_dotenv()
         self._session_id = None
         self.host = 'irkkt-mobile.nalog.ru:8888'
@@ -59,7 +104,13 @@ class ReceiptApiReceiver:
         self.accept_language = 'ru-RU;q=1, en-US;q=0.9'
         self.session_id()
 
-    def session_id(self):
+    def session_id(self) -> None:
+        """
+        Получает идентификатор сессии в сервисе налоговой службы РФ.
+
+        Если не удалось получить идентификатор, вызывает исключение ValueError.
+
+        """
         client_secret = [
             env
             for env in ('CLIENT_SECRET', 'INN', 'PASSWORD')
@@ -90,6 +141,22 @@ class ReceiptApiReceiver:
         self._session_id = response.json()['sessionId']
 
     def get_receipt(self, qr: str) -> dict:
+        """
+        Получает информацию о чеке по QR-коду.
+
+        ПАРАМЕТРЫ:
+
+        qr: str
+            QR-код, содержащий информацию о чеке.
+
+        ВОЗВРАЩАЕТ:
+
+        dict
+            Словарь с информацией о чеке.
+
+        Если не удалось получить информацию, записывает сообщение об ошибке в
+        лог.
+        """
         ticket_id = self._get_receipt_id(qr)
         url = f'https://{self.host}/v2/tickets/{ticket_id}'
         headers = {
@@ -113,6 +180,19 @@ class ReceiptApiReceiver:
             )
 
     def _get_receipt_id(self, qr: str) -> str:
+        """
+        Получает идентификатор чека по QR-коду.
+
+        ПАРАМЕТРЫ:
+
+        qr: str
+            QR-код, содержащий информацию о чеке.
+
+        ВОЗВРАЩАЕТ:
+
+        str
+            Идентификатор чека.
+        """
         url = f'https://{self.host}/v2/ticket'
         payload = {'qr': qr}
         headers = {
