@@ -30,7 +30,13 @@ CONSTANT_RECEIPT = types.MappingProxyType(
 
 
 class JsonParser:
-    """Универсальный класс разбора json данных.
+    """
+    Универсальный класс разбора json данных.
+
+    АТРИБУТЫ:
+
+    json_data: dict
+        Словарь с данными.
 
     МЕТОДЫ:
 
@@ -43,14 +49,7 @@ class JsonParser:
     """
 
     def __init__(self, json_data):
-        """
-        Метод-конструктор инициализирующий аргумент json_data.
-
-        ПЕРЕМЕННЫЕ ЭКЗЕМПЛЯРА КЛАССА:
-
-        json_data: dict
-            Словарь с данными.
-        """
+        """Метод-конструктор инициализирующий аргумент json_data."""
         self.json_data = json_data
 
     def parse_json(
@@ -284,7 +283,7 @@ class ReceiptParser:
 
     def parse(self, chat_id) -> None:
         """
-        Метод отвечает за вызов метода по парсингу чека.
+        Метод отвечает за вызов метода `parse_receipt` по парсингу чека.
 
         В случае ошибки выбрасывает исключение и отправляет ошибку пользователю.
 
