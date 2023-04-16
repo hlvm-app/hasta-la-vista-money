@@ -1,10 +1,9 @@
-hasta\_la\_vista\_money package
+Hasta la Vista, Money
 ===============================
 
-hasta\_la\_vista\_money.forms module
+Модуль базовой формы
 ------------------------------------
 
 .. automodule:: hasta_la_vista_money.forms
    :members:
-   :undoc-members:
    :show-inheritance:
