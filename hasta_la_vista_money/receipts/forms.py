@@ -14,6 +14,8 @@ from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
 
 
 class ReceiptFilter(django_filters.FilterSet):
+    """Класс представляющий фильтр чеков на сайте."""
+
     name_seller = django_filters.ModelChoiceFilter(
         queryset=Customer.objects.distinct(
             'name_seller',
@@ -44,6 +46,8 @@ class ReceiptFilter(django_filters.FilterSet):
 
 
 class CustomerForm(BaseForm):
+    """Класс формы продавца."""
+
     labels = {
         'existing_seller': _('Продавец'),
         'new_seller': _('Новый продавец'),
@@ -72,6 +76,13 @@ class CustomerForm(BaseForm):
         fields = ['existing_seller', 'new_seller', 'add_new_seller']
 
     def __init__(self, *args, **kwargs):
+        """
+        Инициализирующий класс-конструктор.
+
+        Сначала мы инициализируем поле существующего продавца со значением None.
+        Потом добавляем в начало выпадающего списка нужные поля и выводим
+        список существующих продавцов.
+        """
         super().__init__(*args, **kwargs)
         self.fields['existing_seller'].initial = None
         self.fields[
@@ -81,6 +92,11 @@ class CustomerForm(BaseForm):
         )[1:]
 
     def clean(self):
+        """
+        Переопределение метода для дополнительной валидации формы.
+
+        :return cleaned_data: Очищенные данные.
+        """
         cleaned_data = super().clean()
         existing_seller = cleaned_data.get('existing_seller')
         new_seller = cleaned_data.get('new_seller')
@@ -113,6 +129,8 @@ class CustomerForm(BaseForm):
 
 
 class ProductForm(BaseForm):
+    """Форма для внесения данных по продуктам."""
+
     labels = {
         'product_name': _('Наименование продукта'),
         'price': _('Цена'),
@@ -134,6 +152,8 @@ ProductFormSet = formset_factory(ProductForm, extra=1)
 
 
 class ReceiptForm(BaseForm):
+    """Форма для внесения данных по чеку."""
+
     labels = {
         'receipt_date': _('Дата и время чека'),
         'number_receipt': _('Номер документа'),

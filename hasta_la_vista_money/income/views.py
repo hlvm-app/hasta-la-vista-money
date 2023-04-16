@@ -9,6 +9,7 @@ from hasta_la_vista_money.income.models import Income
 
 class IncomeView(LoginRequiredMixin, ListView):
     """Представление просмотра доходов из модели, на сайте."""
+
     model = Income
     template_name = 'income/income.html'
     context_object_name = 'incomes'
@@ -20,6 +21,7 @@ class IncomeView(LoginRequiredMixin, ListView):
 
 class AddIncome(LoginRequiredMixin, CreateView, FormView):
     """Класс отвечающий за добавление данных в базу по доходам."""
+
     model = Income
     form_class = IncomeForm
     template_name = 'income/add_income.html'

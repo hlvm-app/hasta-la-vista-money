@@ -10,6 +10,8 @@ OPERATION_TYPES = (
 
 
 class Customer(models.Model):
+    """Модель продавца."""
+
     name_seller = models.CharField(max_length=255)  # noqa: WPS432
     retail_place_address = models.CharField(null=True, max_length=100)
     retail_place = models.CharField(null=True, blank=True, max_length=100)
@@ -19,6 +21,8 @@ class Customer(models.Model):
 
 
 class Receipt(models.Model):
+    """Модель чека."""
+
     receipt_date = models.DateTimeField()
     number_receipt = models.IntegerField(null=True)
     operation_type = models.IntegerField(
@@ -38,6 +42,8 @@ class Receipt(models.Model):
 
 
 class Product(models.Model):
+    """Модель продуктов."""
+
     product_name = models.CharField(max_length=1000)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.DecimalField(max_digits=10, decimal_places=2)

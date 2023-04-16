@@ -17,6 +17,8 @@ from hasta_la_vista_money.receipts.models import Customer, Receipt
 
 
 class ReceiptView(LoginRequiredMixin, SuccessMessageMixin, FilterView):
+    """Класс представления чека на сайте."""
+
     template_name = 'receipts/receipts.html'
     model = Receipt
     context_object_name = 'receipts'
@@ -42,6 +44,8 @@ class ReceiptView(LoginRequiredMixin, SuccessMessageMixin, FilterView):
 
 
 class ReceiptCreateView(LoginRequiredMixin, CreateView):
+    """Класс для преставления формы создания чека на сайте."""
+
     model = Receipt
     template_name = 'receipts/create_receipt.html'
     success_url = 'receipts:list'
