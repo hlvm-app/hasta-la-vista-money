@@ -155,7 +155,7 @@ class ReceiptParser:
     """
 
     def __init__(self, json_data):
-        """Метод-конструктор инициализирующий аргумента json_data."""
+        """Метод-конструктор инициализирующий аргумент json_data."""
         self.json_data = json_data
         self.parser = JsonParser(self.json_data)
         self.customer = None
@@ -240,10 +240,8 @@ class ReceiptParser:
         По итогу, если чек существует или был добавлен, отправляется
         сообщение тому пользователю, кто попытался добавить чек.
 
-        АРГУМЕНТЫ:
+        :param chat_id: ID пользователя, кому направлять сообщения.
 
-        chat_id:int
-            ID пользователя, кому направлять сообщения.
 
         """
         receipt_date = convert_date_time(self.parser.parse_json(
@@ -281,20 +279,16 @@ class ReceiptParser:
             self.parse_products()
             bot_admin.send_message(chat_id, 'Чек принят!')
 
-    def parse(self, chat_id) -> None:
+    def parse(self, chat_id: int) -> None:
         """
         Метод отвечает за вызов метода `parse_receipt` по парсингу чека.
 
         В случае ошибки выбрасывает исключение и отправляет ошибку пользователю.
 
-        АРГУМЕНТЫ:
+        :argument chat_id: ID пользователя, кому направлять сообщения.
 
-        chat_id: int
-            ID пользователя, кому направлять сообщения.
 
-        ИСКЛЮЧЕНИЯ:
-
-        ValueError, KeyError, AttributeError, TypeError, IntegrityError
+        :raises: ValueError, KeyError, AttributeError, TypeError, IntegrityError
 
         """
         try:
