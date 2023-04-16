@@ -4,6 +4,8 @@ from hasta_la_vista_money.income.models import Income
 
 
 class IncomeForm(BaseForm):
+    """Модельная форма отображения доходов на сайте."""
+
     labels = {
         'type_income': _('Тип дохода'),
         'month': _('Месяц'),
