@@ -19,6 +19,12 @@ class ExpenseView(LoginRequiredMixin, View, SuccessMessageMixin):
     no_permission_url = reverse_lazy('login')
 
     def get(self, request):
+        """
+        Метод отображения расходов по месяцам на странице.
+
+        :param request: Запрос данных со страницы сайта.
+        :return: Рендеринг данных на странице сайта.
+        """
         group_by_months = Receipt.objects.annotate(
             month=TruncMonth('receipt_date'),
         ).values(
