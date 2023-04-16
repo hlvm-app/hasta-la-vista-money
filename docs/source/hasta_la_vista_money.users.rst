@@ -1,53 +1,23 @@
-hasta\_la\_vista\_money.users package
+Пользователи
 =====================================
 
-Submodules
-----------
-
-hasta\_la\_vista\_money.users.admin module
-------------------------------------------
-
-.. automodule:: hasta_la_vista_money.users.admin
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-hasta\_la\_vista\_money.users.apps module
------------------------------------------
-
-.. automodule:: hasta_la_vista_money.users.apps
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-hasta\_la\_vista\_money.users.forms module
+Модуль форм пользователей
 ------------------------------------------
 
 .. automodule:: hasta_la_vista_money.users.forms
    :members:
-   :undoc-members:
    :show-inheritance:
 
-hasta\_la\_vista\_money.users.models module
+Модуль моделей
 -------------------------------------------
 
 .. automodule:: hasta_la_vista_money.users.models
    :members:
-   :undoc-members:
    :show-inheritance:
 
-hasta\_la\_vista\_money.users.urls module
------------------------------------------
-
-.. automodule:: hasta_la_vista_money.users.urls
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-hasta\_la\_vista\_money.users.views module
+Модуль представления пользователей
 ------------------------------------------
 
 .. automodule:: hasta_la_vista_money.users.views
    :members:
-   :undoc-members:
    :show-inheritance:
