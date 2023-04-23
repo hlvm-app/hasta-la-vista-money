@@ -1,5 +1,5 @@
 # pull official base image
-FROM python:3.9.16-alpine
+FROM python:3.10.6-alpine
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
