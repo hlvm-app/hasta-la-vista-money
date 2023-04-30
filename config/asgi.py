@@ -13,7 +13,7 @@ from django.core.asgi import get_asgi_application
 
 os.environ.setdefault(
     'DJANGO_SETTINGS_MODULE',
-    'hasta_la_vista_money.settings',
+    'config.django.base',
 )
 
 application = get_asgi_application()

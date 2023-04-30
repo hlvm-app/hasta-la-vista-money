@@ -19,7 +19,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -109,9 +109,9 @@ CSP_FRAME_SRC = ("'none'",)
 CSP_BASE_URI = ("'none'",)
 CSP_OBJECT_SRC = ("'none'",)
 
-ROOT_URLCONF = 'hasta_la_vista_money.urls'
+ROOT_URLCONF = 'config.urls'
 
-TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
+TEMPLATE_DIR = os.path.join(BASE_DIR, '../../templates')
 
 TEMPLATES = [
     {
@@ -129,7 +129,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'hasta_la_vista_money.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
@@ -219,7 +219,7 @@ FIXTURE_DIRS = (os.path.join(BASE_DIR, 'fixtures'),)
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATIC_URL = os.path.join(BASE_DIR, 'static/')
+STATIC_URL = os.path.join(BASE_DIR, 'static')
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (

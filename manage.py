@@ -3,14 +3,11 @@
 import os
 import sys
 
-from hasta_la_vista_money import settings
-from hasta_la_vista_money.bot.config_bot import bot_admin
-
 
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE',
-                          'hasta_la_vista_money.settings')
+                          'config.django.base.py')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

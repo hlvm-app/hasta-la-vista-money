@@ -12,13 +12,13 @@ import django
 
 sys.path.insert(0, os.path.abspath('../..'))
 os.environ.setdefault(
-    'DJANGO_SETTINGS_MODULE', 'hasta_la_vista_money.settings',
+    'DJANGO_SETTINGS_MODULE', 'config.django.base',
 )
 
 django.setup()
 
 # Configure the Sphinx Django extension
-django_settings = 'hasta_la_vista_money.settings'
+django_settings = 'config.django.base'
 
 
 project = 'Hasta La Vista Money'
