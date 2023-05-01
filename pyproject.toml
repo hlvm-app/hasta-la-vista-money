@@ -32,9 +32,6 @@ sphinx-rtd-theme = "^1.2.0"
 furo = "^2023.3.27"
 myst-parser = "^1.0.0"
 
-[too.isort]
-skip_glob = ["*/migrations/*", "config/*"]
-
 [build-system]
 requires = ["poetry-core>=1.4.0"]
 build-backend = "poetry.core.masonry.api"
