@@ -82,7 +82,7 @@ MIDDLEWARE = [
 ]
 
 
-CSP_INCLUDE_NONCE_IN = ['script-src']
+CSP_INCLUDE_NONCE_IN = ['script-src', 'style-src', 'img-src', 'font-src']
 
 CSP_DEFAULT_SRC = (
     "'self'",
@@ -91,6 +91,7 @@ CSP_DEFAULT_SRC = (
 
 CSP_SCRIPT_SRC = (
     "'self'",
+    '127.0.0.1',
     'https://money.pavlovteam.ru',
     'https://cdn.jsdelivr.net',
     'https://code.jquery.com',

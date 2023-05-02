@@ -3,6 +3,7 @@ let container = document.querySelector("#form-create-receipt")
 let addButton = document.querySelector("#add-form")
 let removeButton = document.querySelector("#remove-form")
 let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
+window.onload = onClickRemoveButton;
 
 let formNum = productForm.length-1
 addButton.addEventListener('click', addForm)
@@ -124,3 +125,16 @@ addNewSellerBtn.addEventListener('click', () => {
 
 const formCheck = document.querySelector('.form-check');
 formCheck.closest('.row').style.display = 'none';
+
+
+function onClickRemoveButton() {
+  const removeButtons = document.querySelectorAll('.remove-button');
+  removeButtons.forEach((button) => {
+    button.addEventListener('click', (event) => {
+      const confirmed = confirm('Вы уверены, что хотите удалить этот чек?');
+      if (!confirmed) {
+        event.preventDefault();
+      }
+    });
+  });
+}
