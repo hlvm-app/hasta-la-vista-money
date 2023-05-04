@@ -11,7 +11,6 @@ def webhooks(request):
         try:
             update = bot_type.Update.de_json(json_data)
             bot_admin.process_new_updates([update])
-            print(bot_admin)
             return HttpResponse('Webhook processed successfully')
         except Exception as error:
             logger.error(error)

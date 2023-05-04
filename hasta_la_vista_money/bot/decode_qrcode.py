@@ -1,11 +1,5 @@
 """Модуль декодирования изображения QR-кода в текст."""
-
-import io
-
 import cv2
-import numpy as np
-from PIL import Image
-
 from hasta_la_vista_money.bot.log_config import logger
 
 
