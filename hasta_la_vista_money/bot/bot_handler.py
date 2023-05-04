@@ -1,4 +1,4 @@
-from hasta_la_vista_money.bot.config_bot import bot_admin, bot_type
+from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.receipt_parser_json import handle_receipt_json
 from hasta_la_vista_money.bot.receipt_parser_text import handle_receipt_text
 from hasta_la_vista_money.bot.receipt_parser_text_qrcode import \
@@ -6,8 +6,7 @@ from hasta_la_vista_money.bot.receipt_parser_text_qrcode import \
 
 
 @bot_admin.message_handler(content_types=['text', 'document', 'photo'])
-def handler(message: bot_type.Message):
-    print(message)
+def handler(message):
     if message.content_type == 'text':
         handle_receipt_text(message, bot_admin)
     elif message.content_type == 'photo':
