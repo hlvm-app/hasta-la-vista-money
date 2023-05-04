@@ -38,10 +38,18 @@
     :undoc-members:
     :show-inheritance:
 
-Модуль входящей точки по парсингу текста
---------------------------------------------------------
+Модуль входящей точки по парсингу текста присланного боту
+----------------------------------------------------------
 
 .. automodule:: hasta_la_vista_money.bot.receipt_parser_text
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Модуль входящей точки по парсингу текста после извлечения из QR-кода
+---------------------------------------------------------------------
+
+.. automodule:: hasta_la_vista_money.bot.receipt_parser_text_qrcode
     :members:
     :undoc-members:
     :show-inheritance:
