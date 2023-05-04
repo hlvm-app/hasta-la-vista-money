@@ -54,6 +54,14 @@
     :undoc-members:
     :show-inheritance:
 
+Модуль декодирования изображения в текст
+---------------------------------------------------------------------
+
+.. automodule:: hasta_la_vista_money.bot.decode_qrcode
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Вспомогательные службы
 -------------------------------------------
 
