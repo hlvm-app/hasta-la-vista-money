@@ -10,13 +10,9 @@ def webhooks(request):
     print(request.stream.read())
     if request.method == 'POST':
         try:
-            bot_admin.process_new_updates(
-                [
-                    bot_type.Update.de_json(
-                        request.stream.read().decode("utf-8")
-                    )
-                ]
-            )
+            json_data = request.get_data().decode('utf-8')
+            updates = bot_type.Update.de_json(json_data)
+            bot_admin.process_new_updates([updates])
             return HttpResponse('Webhook processed successfully')
         except Exception as error:
             logger.error(error)
