@@ -7,6 +7,7 @@ from hasta_la_vista_money.bot.receipt_parser_text_qrcode import \
 
 @bot_admin.message_handler(content_types=['text', 'document', 'photo'])
 def handler(message: bot_type.Message):
+    print(message)
     if message.content_type == 'text':
         handle_receipt_text(message, bot_admin)
     elif message.content_type == 'photo':
