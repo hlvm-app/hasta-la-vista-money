@@ -1,6 +1,8 @@
 from django.core.management import BaseCommand
 from hasta_la_vista_money.bot.receipt_parser_json import bot_admin as bot_json
 from hasta_la_vista_money.bot.receipt_parser_text import bot_admin as bot_text
+from hasta_la_vista_money.bot.receipt_parser_text_qrcode import \
+    bot_admin as bot_text_qrcode
 
 
 class Command(BaseCommand):
@@ -25,3 +27,4 @@ class Command(BaseCommand):
         """
         bot_json.polling(none_stop=True, skip_pending=False)
         bot_text.polling(none_stop=True, skip_pending=False)
+        bot_text_qrcode.polling(none_stop=True, skip_pending=False)
