@@ -10,8 +10,9 @@ def webhooks(request):
         json_data = request.body.decode('utf8')
         print(json_data)
         try:
-            update = bot_type.Update.de_json(json_data)
-            bot_admin.process_new_updates([update])
+            updates = bot_type.Update.de_json(json_data)
+            print(updates, 'updated')
+            bot_admin.process_new_updates([updates])
             return HttpResponse('Webhook processed successfully')
         except Exception as error:
             logger.error(error)
