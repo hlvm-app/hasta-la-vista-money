@@ -6,24 +6,24 @@ import cv2
 import numpy as np
 from PIL import Image
 
+from hasta_la_vista_money.bot.log_config import logger
 
-def decode_qrcode(array_bytes):
+
+def decode_qrcode(image):
     """
     Функцию по декодированию изображения QR-кода в текст.
 
-    :param array_bytes: Байт-код изображения.
-    :type array_bytes: bytes
+    :param image: Байт-код изображения.
+    :type image: photo
     :return: Строка текста извлеченная из QR-кода.
     :rtype: str
     """
-    image = Image.open(io.BytesIO(array_bytes))
+    try:
+        img = cv2.imread(image)
+        detector = cv2.QRCodeDetector()
+        text_qrcode, bbox, straight_qrcode = detector.detectAndDecode(img)
 
-    # Преобразуем изображение в массив numpy
-    img = np.array(image)
-
-    # Используем cv2 для распознавания QR-кода
-    detector = cv2.QRCodeDetector()
-    text_qrcode, _, _ = detector.detectAndDecode(img)
-
-    # Выводим текст из QR-кода
-    return text_qrcode
+        # Выводим текст из QR-кода
+        return text_qrcode
+    except Exception as error:
+        logger.error(error)
