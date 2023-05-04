@@ -3,14 +3,13 @@
 
 От пользователя будет ожидаться картинка с QR-кодом.
 """
-from hasta_la_vista_money.bot.config_bot import bot_admin
+import tempfile
 from hasta_la_vista_money.bot.decode_qrcode import decode_qrcode
 from hasta_la_vista_money.bot.json_parse import ReceiptParser
 from hasta_la_vista_money.bot.services import ReceiptApiReceiver
 
 
-@bot_admin.message_handler(content_types=['photo'])
-def handle_receipt_text_qrcode(message):
+def handle_receipt_text_qrcode(message, bot):
     """
     Функция по обработке сообщения от пользователя.
 
@@ -27,13 +26,30 @@ def handle_receipt_text_qrcode(message):
     message (telegram.MESSAGE): Объект сообщения, содержащий текст,
     отправленный пользователем.
     """
-    qr_code_file_id = bot_admin.get_file(message.photo[-1].file_id)
-    byte_code = bot_admin.download_file(
-        file_path=qr_code_file_id.file_path,
-    )
-    text_qr_code = decode_qrcode(byte_code)
+    if message.photo:
+        try:
+            qr_code_file_id = bot.get_file(message.photo[-1].file_id)
+            byte_code = bot.download_file(
+                file_path=qr_code_file_id.file_path,
+            )
+            # Создает временный файл.
+            temp_file = tempfile.NamedTemporaryFile(mode='w+b', suffix='.png')
+            # Записываем байт-код картинки во вложенный файл и вносим данные
+            # в переменную image_file.
+            with open(temp_file.name, 'wb') as image_file:
+                image_file.write(byte_code)
+            # Из image_file с помощью функции decode_qrcode получает текст из
+            # QR-кода.
+            text_qr_code = decode_qrcode(image_file.name)
 
-    json_data = ReceiptApiReceiver().get_receipt(text_qr_code)
+            json_data = ReceiptApiReceiver().get_receipt(text_qr_code)
 
-    parse = ReceiptParser(json_data)
-    parse.parse(message.chat.id)
+            parse = ReceiptParser(json_data)
+            parse.parse(message.chat.id)
+        except Exception as error:
+            bot.send_message(message.chat.id, error)
+    else:
+        bot.send_message(
+            message.chat.id,
+            'Надо загружать только фото или картинку с QR-кодом!'
+        )
