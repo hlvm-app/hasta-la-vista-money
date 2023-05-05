@@ -5,7 +5,7 @@ from hasta_la_vista_money.bot.log_config import logger
 
 
 @csrf_exempt
-def webhooks(request):
+async def webhooks(request):
     try:
         if request.method == 'POST':
             json_data = request.body.decode('utf8')
