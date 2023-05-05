@@ -11,7 +11,7 @@ def webhooks(request):
             length = int(request.headers['content-length'])
             json_string = request.body.read(length)
             update = bot_type.Update.de_json(json_string.decode("utf-8"))
-            bot_admin.process_new_messages([update.message])
+            bot_admin.process_new_messages([update])
             return HttpResponse('Webhook processed successfully')
     except Exception as error:
         logger.error(error)
