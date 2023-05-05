@@ -8,9 +8,10 @@ from hasta_la_vista_money.bot.log_config import logger
 def webhooks(request):
     try:
         if request.method == 'POST':
-            json_data = request.body.decode('utf8')
-            updates = bot_type.Update.de_json(json_data)
-            bot_admin.process_new_updates([updates])
+            length = int(request.headers['content-length'])
+            json_string = request.body.read(length)
+            update = bot_type.Update.de_json(json_string.decode("utf-8"))
+            bot_admin.process_new_messages([update])
             return HttpResponse('Webhook processed successfully')
     except Exception as error:
         logger.error(error)
