@@ -6,6 +6,9 @@ import sys
 from hasta_la_vista_money.bot.config_bot import bot_admin
 
 
+token_bot = os.environ.get('TOKEN_TELEGRAM_BOT')
+
+
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE',
@@ -22,4 +25,7 @@ def main():
 
 
 if __name__ == '__main__':
+    bot_admin.delete_webhook()
+    bot_admin.set_webhook(
+        f'https://money.pavlovteam.ru/bot/webhooks/{token_bot}/')
     main()

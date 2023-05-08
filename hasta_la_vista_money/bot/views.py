@@ -1,11 +1,11 @@
 import json
+import os
 
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.log_config import logger
 from telebot import types
-
 
 STATUS_SUCCESS = 200
 STATUS_BAD = 500
@@ -27,3 +27,6 @@ def webhooks(request):
             )
     except Exception as error:
         logger.error(error)
+
+
+
