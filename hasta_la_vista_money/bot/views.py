@@ -10,7 +10,7 @@ from hasta_la_vista_money.bot.log_config import logger
 def webhooks(request):
     if request.method == 'POST':
         try:
-            json_data = json.loads(request.body.decode('utf8'))
+            json_data = request.body.decode('utf8')
             updates = bot_type.Update.de_json(json_data)
             bot_admin.process_new_updates([updates])
             return HttpResponse('Webhook processed successfully', status=200)
