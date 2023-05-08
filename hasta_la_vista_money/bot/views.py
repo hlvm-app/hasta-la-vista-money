@@ -23,4 +23,4 @@ def webhooks(request):
 
 @bot_admin.message_handler()
 def testing(message):
-    bot_admin.reply_to(message.chat.id, 'Answer')
+    bot_admin.send_message(message.chat.id, 'Answer')
