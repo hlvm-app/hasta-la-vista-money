@@ -1,3 +1,5 @@
+import json
+
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from hasta_la_vista_money.bot.config_bot import bot_admin, bot_type
@@ -10,6 +12,7 @@ def webhooks(request):
         try:
             print(request)
             print(request.body)
+            print(json.loads(request.body))
             print(request.content_type)
             print(request.POST)
             json_data = request.body.decode('utf8')
