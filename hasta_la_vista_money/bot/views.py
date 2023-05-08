@@ -22,9 +22,8 @@ def webhooks(request):
             return HttpResponse(
                 'Webhook processed successfully', status=STATUS_SUCCESS,
             )
-        else:
-            return HttpResponse(
-                'Webhook URL for Telegram bot', status=STATUS_SUCCESS,
+        return HttpResponse(
+            'Webhook URL for Telegram bot', status=STATUS_SUCCESS,
             )
     except Exception as error:
         logger.error(error)
