@@ -41,3 +41,5 @@ whitenoise==6.4.0; python_version >= "3.7"
 zope.interface==6.0; python_version >= "3.7" and python_full_version >= "3.7.1"
 daphne>=4.0.0
 channels>=4.0.0
+Pillow>=9.5.0
+pyzbar>=0.1.9
