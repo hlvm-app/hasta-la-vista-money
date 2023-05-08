@@ -11,7 +11,6 @@ django-bootstrap5==23.1; python_version >= "3.7"
 django-csp==3.7
 django-filter==23.2; python_version >= "3.7"
 django==4.2.1; python_version >= "3.8"
-gunicorn==20.1.0; python_version >= "3.5"
 h2==4.1.0; python_full_version >= "3.7.1"
 hpack==4.0.0; python_full_version >= "3.7.1"
 hyperframe==6.0.1; python_full_version >= "3.7.1"
