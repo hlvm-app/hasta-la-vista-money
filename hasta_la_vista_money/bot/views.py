@@ -24,19 +24,3 @@ def webhooks(request):
             logger.error(error)
 
 
-@bot_admin.message_handler()
-def testing(message):
-    bot_admin.send_message(message.chat.id, message.text)
-
-
-@bot_admin.message_handler(content_types=['text', 'document'])
-def handle_receipt(message):
-    if message.content_type == 'text':
-        handle_receipt_text(message, bot_admin)
-    elif message.content_type == 'document':
-        handle_receipt_json(message, bot_admin)
-    else:
-        bot_admin.send_message(
-            message.chat.id,
-            'Принимаются файлы JSON, текст по формату и фотографии QR-кодов',
-        )
