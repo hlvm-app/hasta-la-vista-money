@@ -6,9 +6,6 @@ from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.log_config import logger
 from telebot import types
 
-from hasta_la_vista_money.bot.receipt_parser_json import handle_receipt_json
-from hasta_la_vista_money.bot.receipt_parser_text import handle_receipt_text
-
 STATUS_SUCCESS = 200
 
 
