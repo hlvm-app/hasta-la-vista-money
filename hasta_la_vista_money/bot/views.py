@@ -1,56 +1,13 @@
 import json
-import os
-from typing import List, Optional, Callable
 
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.log_config import logger
-from telebot import types, TeleBot
+from telebot import types
 
 STATUS_SUCCESS = 200
 STATUS_BAD = 500
-token_bot = os.environ.get('TOKEN_TELEGRAM_BOT')
-
-
-class MyBot(TeleBot):
-    def process_new_updates(self, updates: List[types.Update]):
-        try:
-            if not updates:
-                logger.error('Not Updates')
-            logger.error(updates)
-            super().process_new_updates(updates)
-        except Exception as error:
-            logger.error(error)
-
-    def process_new_messages(self, new_messages):
-        try:
-            if not new_messages:
-                logger.error('Not New_Messages')
-            logger.error(new_messages)
-            super().process_new_messages(new_messages)
-        except Exception as error:
-            logger.error(error)
-
-    def message_handler(
-            self,
-            commands: Optional[List[str]] = None,
-            regexp: Optional[str] = None,
-            func: Optional[Callable] = None,
-            content_types: Optional[List[str]] = None,
-            chat_types: Optional[List[str]] = None,
-            **kwargs):
-        logger.error(content_types)
-        super().message_handler(
-            commands,
-            regexp,
-            func,
-            content_types,
-            chat_types,
-            **kwargs)
-
-
-my_bot = MyBot(token_bot)
 
 
 @csrf_exempt
@@ -60,12 +17,15 @@ def webhooks(request):
             update = types.Update.de_json(
                 json.loads(request.body.decode('utf8'))
             )
-            my_bot.process_new_updates([update])
+            bot_admin.process_new_updates([update])
             return HttpResponse(
                 'Webhook processed successfully', status=STATUS_SUCCESS,
             )
         return HttpResponse(
             'Webhook URL for Telegram bot', status=STATUS_SUCCESS,
-        )
+            )
     except Exception as error:
         logger.error(error)
+
+
+
