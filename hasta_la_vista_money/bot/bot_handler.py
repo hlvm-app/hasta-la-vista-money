@@ -10,8 +10,8 @@ from hasta_la_vista_money.bot.receipt_parser_text_qrcode import (
 def handle_receipt(message):
     if message.content_type == 'text':
         handle_receipt_text(message, bot_admin)
-    elif message.content_type == 'photo':
-        handle_receipt_text_qrcode(message, bot_admin)
+    # elif message.content_type == 'photo':
+    #     handle_receipt_text_qrcode(message, bot_admin)
     elif message.content_type == 'document':
         handle_receipt_json(message, bot_admin)
     else:
