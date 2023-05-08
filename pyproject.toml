@@ -26,6 +26,8 @@ opencv-python = "^4.7.0"
 Pillow = "^9.5.0"
 Twisted = {extras = ["tls", "http2"], version = "^22.10.0"}
 channels = "^4.0.0"
+asyncio = "^3.4.3"
+aiohttp = "^3.8.4"
 
 [tool.poetry.dev-dependencies]
 Faker = ">=13.7.0"
