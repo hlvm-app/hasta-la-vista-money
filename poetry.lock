@@ -1291,6 +1291,14 @@ python-versions = ">=3.7"
 brotli = ["brotli"]
 
 [[package]]
+name = "zbar"
+version = "0.10"
+description = "read barcodes from images or video"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "zipp"
 version = "3.15.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
@@ -1318,7 +1326,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<4"
-content-hash = "5d85746e21c32ce0746a1e0c2818e2fdfc6869666b590f7a5bb8de122b10faf3"
+content-hash = "9e1daa62510e6403595c5f73598e6dfa46364467b646c33d630c5da4a7e21d08"
 
 [metadata.files]
 alabaster = []
@@ -1426,5 +1434,6 @@ tzdata = []
 urllib3 = []
 wemake-python-styleguide = []
 whitenoise = []
+zbar = []
 zipp = []
 "zope.interface" = []
