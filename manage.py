@@ -25,6 +25,4 @@ def main():
 
 
 if __name__ == '__main__':
-    bot_admin.delete_webhook()
-    bot_admin.set_webhook(f'https://money.pavlovteam.ru/bot/webhooks/')
     main()
