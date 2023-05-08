@@ -51,4 +51,4 @@ def handle_receipt_text(message):
         parse = ReceiptParser(json_data)
         parse.parse(message.chat.id)
     else:
-        bot.send_message(message.chat.id, 'Недопустимый текст')
+        bot_admin.send_message(message.chat.id, 'Недопустимый текст')

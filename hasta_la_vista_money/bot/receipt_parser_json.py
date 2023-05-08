@@ -32,13 +32,13 @@ def handle_receipt_json(message):
         исключение.
     """
     if message.document.mime_type != 'application/json':
-        bot.send_message(
+        bot_admin.send_message(
             message.chat.id, 'Файл должен быть только в формате JSON!',
         )
         return
     try:
-        file_info = bot.get_file(message.document.file_id)
-        file_downloaded = bot.download_file(
+        file_info = bot_admin.get_file(message.document.file_id)
+        file_downloaded = bot_admin.download_file(
             file_path=file_info.file_path,
         )
         json_data = json.loads(file_downloaded)
