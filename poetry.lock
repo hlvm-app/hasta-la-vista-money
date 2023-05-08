@@ -952,6 +952,14 @@ pil = ["pillow (>=9.1.0)"]
 test = ["coverage", "pytest"]
 
 [[package]]
+name = "qrtools"
+version = "0.0.2"
+description = "qrtools is a suite of tools for handling QR codes."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "requests"
 version = "2.30.0"
 description = "Python HTTP for Humans."
@@ -1373,7 +1381,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<4"
-content-hash = "603a66c067172ca4667de4e3d9f65e33a86651038b0f053a172dd6f6c222fa15"
+content-hash = "d89b51804a71c2954e37be69edc8e7637be7f7f5d096eeb152c53337d0cd5145"
 
 [metadata.files]
 alabaster = []
@@ -1457,6 +1465,7 @@ python-dotenv = []
 pyyaml = []
 pyzbar = []
 qrcode = []
+qrtools = []
 requests = []
 restructuredtext-lint = []
 rich = []

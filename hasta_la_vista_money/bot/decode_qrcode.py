@@ -1,5 +1,7 @@
 """Модуль декодирования изображения QR-кода в текст."""
-import cv2
+import io
+
+from qrtools import QR
 from hasta_la_vista_money.bot.log_config import logger
 
 
@@ -13,11 +15,11 @@ def decode_qrcode(image):
     :rtype: str
     """
     try:
-        img = cv2.imread(image)
-        detector = cv2.QRCodeDetector()
-        text_qrcode, bbox, straight_qrcode = detector.detectAndDecode(img)
-
+        qr = QR(filename=io.BytesIO(image))
+        qr_decode = qr.decode()
         # Выводим текст из QR-кода
-        return text_qrcode
+        return qr_decode.data
     except Exception as error:
         logger.error(error)
+
+

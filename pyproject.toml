@@ -28,6 +28,7 @@ Pillow = "^9.5.0"
 opencv-python = "^4.7.0"
 qrcode = "^7.4.2"
 numpy = "^1.24.3"
+qrtools = "^0.0.2"
 
 [tool.poetry.dev-dependencies]
 Faker = ">=13.7.0"
