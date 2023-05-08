@@ -35,5 +35,6 @@ class MyBot(TeleBot):
             if not updates:
                 logger.error('Not Updates')
             logger.error(updates)
+            super(MyBot, self).process_new_updates(updates)
         except Exception as error:
             logger.error(error)
