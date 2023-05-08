@@ -6,6 +6,9 @@ from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.log_config import logger
 from telebot import types
 
+from hasta_la_vista_money.bot.receipt_parser_json import handle_receipt_json
+from hasta_la_vista_money.bot.receipt_parser_text import handle_receipt_text
+
 STATUS_SUCCESS = 200
 
 
@@ -24,3 +27,16 @@ def webhooks(request):
 @bot_admin.message_handler()
 def testing(message):
     bot_admin.send_message(message.chat.id, message.text)
+
+
+@bot_admin.message_handler(content_types=['text', 'document'])
+def handle_receipt(message):
+    if message.content_type == 'text':
+        handle_receipt_text(message, bot_admin)
+    elif message.content_type == 'document':
+        handle_receipt_json(message, bot_admin)
+    else:
+        bot_admin.send_message(
+            message.chat.id,
+            'Принимаются файлы JSON, текст по формату и фотографии QR-кодов',
+        )
