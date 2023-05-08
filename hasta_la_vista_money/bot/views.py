@@ -1,6 +1,6 @@
 import json
 import os
-from typing import List
+from typing import List, Optional, Callable
 
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -32,6 +32,23 @@ class MyBot(TeleBot):
         except Exception as error:
             logger.error(error)
 
+    def message_handler(
+            self,
+            commands: Optional[List[str]] = None,
+            regexp: Optional[str] = None,
+            func: Optional[Callable] = None,
+            content_types: Optional[List[str]] = None,
+            chat_types: Optional[List[str]] = None,
+            **kwargs):
+        logger.error(content_types)
+        super(MyBot, self).message_handler(
+            commands,
+            regexp,
+            func,
+            content_types,
+            chat_types,
+            **kwargs)
+
 
 my_bot = MyBot(token_bot)
 
@@ -49,9 +66,6 @@ def webhooks(request):
             )
         return HttpResponse(
             'Webhook URL for Telegram bot', status=STATUS_SUCCESS,
-            )
+        )
     except Exception as error:
         logger.error(error)
-
-
-
