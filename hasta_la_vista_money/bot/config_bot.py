@@ -10,5 +10,5 @@ load_dotenv()
 token = os.getenv('TOKEN_TELEGRAM_BOT')
 bot_admin = TeleBot(token, parse_mode='html')
 
-telebot.logger.setLevel(logging.DEBUG)
+telebot.logger.setLevel(logging.ERROR)
 bot_type = types
