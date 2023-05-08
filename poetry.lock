@@ -772,33 +772,6 @@ testing = ["beautifulsoup4", "coverage", "pytest (>=7,<8)", "pytest-cov", "pytes
 testing-docutils = ["pygments", "pytest (>=7,<8)", "pytest-param-files (>=0.3.4,<0.4.0)"]
 
 [[package]]
-name = "numpy"
-version = "1.24.3"
-description = "Fundamental package for array computing in Python"
-category = "main"
-optional = false
-python-versions = ">=3.8"
-
-[[package]]
-name = "opencv-python"
-version = "4.7.0.72"
-description = "Wrapper package for OpenCV python bindings."
-category = "main"
-optional = false
-python-versions = ">=3.6"
-
-[package.dependencies]
-numpy = [
-    {version = ">=1.21.0", markers = "python_version <= \"3.9\" and platform_system == \"Darwin\" and platform_machine == \"arm64\""},
-    {version = ">=1.21.2", markers = "python_version >= \"3.10\""},
-    {version = ">=1.21.4", markers = "python_version >= \"3.10\" and platform_system == \"Darwin\""},
-    {version = ">=1.22.0", markers = "python_version >= \"3.11\""},
-    {version = ">=1.19.3", markers = "python_version >= \"3.6\" and platform_system == \"Linux\" and platform_machine == \"aarch64\" or python_version >= \"3.9\""},
-    {version = ">=1.17.0", markers = "python_version >= \"3.7\""},
-    {version = ">=1.17.3", markers = "python_version >= \"3.8\""},
-]
-
-[[package]]
 name = "packaging"
 version = "23.1"
 description = "Core utilities for Python packages"
@@ -1423,7 +1396,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<4"
-content-hash = "e22a9d73640c5a7dc45d6e4efeb1d863087ee6631dca2e2ab1aede725b16a50c"
+content-hash = "e00a376552cb5262d4b4bc71466f851f15798e84be3dd44b15ccbc81802fe753"
 
 [metadata.files]
 aiohttp = []
@@ -1491,8 +1464,6 @@ mdit-py-plugins = []
 mdurl = []
 multidict = []
 myst-parser = []
-numpy = []
-opencv-python = []
 packaging = []
 pbr = []
 pep8-naming = []
