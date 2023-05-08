@@ -7,7 +7,6 @@ from hasta_la_vista_money.bot.log_config import logger
 from telebot import types
 
 STATUS_SUCCESS = 200
-STATUS_BAD = 500
 
 
 @csrf_exempt
