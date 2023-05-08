@@ -1,11 +1,23 @@
 """Модуль декодирования изображения QR-кода в текст."""
-import io
-
-from PIL import Image
-from pyzbar.pyzbar import decode
+import cv2
+from hasta_la_vista_money.bot.log_config import logger
 
 
-def decode_qrcode(image_from_bytes):
-    result_image = Image.open(io.BytesIO(image_from_bytes))
-    return decode(result_image)[0].data.decode()
+def decode_qrcode(image):
+    """
+    Функцию по декодированию изображения QR-кода в текст.
 
+    :param image: Байт-код изображения.
+    :type image: photo
+    :return: Строка текста извлеченная из QR-кода.
+    :rtype: str
+    """
+    try:
+        img = cv2.imread(image)
+        detector = cv2.QRCodeDetector()
+        text_qrcode, bbox, straight_qrcode = detector.detectAndDecode(img)
+
+        # Выводим текст из QR-кода
+        return text_qrcode
+    except Exception as error:
+        logger.error(error)
