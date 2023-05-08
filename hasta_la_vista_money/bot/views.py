@@ -23,6 +23,15 @@ class MyBot(TeleBot):
         except Exception as error:
             logger.error(error)
 
+    def process_new_messages(self, new_messages):
+        try:
+            if not new_messages:
+                logger.error('Not New_Messages')
+            logger.error(new_messages)
+            super(MyBot, self).process_new_messages(new_messages)
+        except Exception as error:
+            logger.error(error)
+
 
 my_bot = MyBot(token_bot)
 
