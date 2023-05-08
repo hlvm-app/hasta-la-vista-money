@@ -8,7 +8,7 @@ from hasta_la_vista_money.bot.receipt_parser_text_qrcode import \
 @bot_admin.message_handler(
     func=lambda message: True, content_types=['text', 'document', 'photo']
 )
-async def handler(message):
+def handler(message):
     if message.content_type == 'text':
         handle_receipt_text(message, bot_admin)
     elif message.content_type == 'photo':
@@ -16,7 +16,7 @@ async def handler(message):
     elif message.content_type == 'document':
         handle_receipt_json(message, bot_admin)
     else:
-        await bot_admin.send_message(
+        bot_admin.send_message(
             message.chat.id,
             'Принимаются файлы JSON, текст по формату и фотографии QR-кодов'
         )

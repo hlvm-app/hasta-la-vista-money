@@ -44,5 +44,3 @@ whitenoise==6.4.0; python_version >= "3.7"
 zope.interface==6.0; python_version >= "3.7" and python_full_version >= "3.7.1"
 daphne>=4.0.0
 channels>=4.0.0
-asyncio>=3.4.3
-aiohttp>=3.8.4
