@@ -11,7 +11,7 @@ from hasta_la_vista_money.bot.log_config import logger
 async def webhooks(request):
     try:
         if request.method == 'POST':
-            json_data = await request.body.decode('utf8')
+            json_data = request.body.decode('utf8')
             updates = await bot_type.Update.de_json(json.loads(json_data))
             await bot_admin.process_new_updates([updates])
             return HttpResponse('Webhook processed successfully')
