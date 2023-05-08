@@ -1,10 +1,9 @@
 from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.receipt_parser_json import handle_receipt_json
 from hasta_la_vista_money.bot.receipt_parser_text import handle_receipt_text
-from hasta_la_vista_money.bot.views import my_bot
 
 
-@my_bot.message_handler(content_types=['text', 'document'])
+@bot_admin.message_handler(content_types=['text', 'document'])
 def handle_receipt(message):
     if message.content_type == 'text':
         handle_receipt_text(message, bot_admin)
