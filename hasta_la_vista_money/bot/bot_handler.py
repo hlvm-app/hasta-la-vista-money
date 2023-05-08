@@ -1,9 +1,9 @@
 from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.receipt_parser_json import handle_receipt_json
 from hasta_la_vista_money.bot.receipt_parser_text import handle_receipt_text
-from hasta_la_vista_money.bot.receipt_parser_text_qrcode import (
-    handle_receipt_text_qrcode,
-)
+# from hasta_la_vista_money.bot.receipt_parser_text_qrcode import (
+#     handle_receipt_text_qrcode,
+# )
 
 
 @bot_admin.message_handler(content_types=['text', 'document', 'photo'])
