@@ -12,7 +12,9 @@ def webhooks(request):
     try:
         if request.method == 'POST':
             json_data = request.body.decode('utf8')
+            print(json_data)
             updates = bot_type.Update.de_json(json.loads(json_data))
+            print(updates)
             bot_admin.process_new_updates([updates])
             return HttpResponse('Webhook processed successfully')
     except Exception as error:
