@@ -1,4 +1,4 @@
-# from hasta_la_vista_money.bot.config_bot import bot_admin
+from hasta_la_vista_money.bot.config_bot import bot_admin
 # from hasta_la_vista_money.bot.receipt_parser_json import handle_receipt_json
 # from hasta_la_vista_money.bot.receipt_parser_text import handle_receipt_text
 #
@@ -14,3 +14,8 @@
 #             message.chat.id,
 #             'Принимаются файлы JSON, текст по формату и фотографии QR-кодов',
 #         )
+
+
+@bot_admin.message_handler()
+def testing(message):
+    bot_admin.reply_to(message.chat.id, 'Answer')

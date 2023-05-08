@@ -6,13 +6,12 @@ QR-кода чека.
 """
 
 import re
-from hasta_la_vista_money.bot.config_bot import bot_admin
+
 from hasta_la_vista_money.bot.json_parse import ReceiptParser
 from hasta_la_vista_money.bot.services import ReceiptApiReceiver
 
 
-@bot_admin.message_handler(content_types=['text'])
-def handle_receipt_text(message):
+def handle_receipt_text(message, bot):
     """
     Обрабатывает текстовые сообщения, содержащие информацию в QR-коде чека.
 
@@ -50,4 +49,4 @@ def handle_receipt_text(message):
         parse = ReceiptParser(json_data)
         parse.parse(message.chat.id)
     else:
-        bot_admin.send_message(message.chat.id, 'Недопустимый текст')
+        bot.send_message(message.chat.id, 'Недопустимый текст')

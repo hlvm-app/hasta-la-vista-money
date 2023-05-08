@@ -6,13 +6,11 @@
 import datetime
 import json
 
-from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.json_parse import ReceiptParser
 from hasta_la_vista_money.bot.log_config import logger
 
 
-@bot_admin.message_handler(content_types=['document'])
-def handle_receipt_json(message):
+def handle_receipt_json(message, bot):
     """
     Функция принимает один аргумент message.
 
@@ -32,13 +30,13 @@ def handle_receipt_json(message):
         исключение.
     """
     if message.document.mime_type != 'application/json':
-        bot_admin.send_message(
+        bot.send_message(
             message.chat.id, 'Файл должен быть только в формате JSON!',
         )
         return
     try:
-        file_info = bot_admin.get_file(message.document.file_id)
-        file_downloaded = bot_admin.download_file(
+        file_info = bot.get_file(message.document.file_id)
+        file_downloaded = bot.download_file(
             file_path=file_info.file_path,
         )
         json_data = json.loads(file_downloaded)
