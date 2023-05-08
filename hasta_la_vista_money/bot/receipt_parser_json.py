@@ -12,7 +12,7 @@ from hasta_la_vista_money.bot.log_config import logger
 
 
 @bot_admin.message_handler(content_types=['document'])
-def handle_receipt_json(message, bot):
+def handle_receipt_json(message):
     """
     Функция принимает один аргумент message.
 

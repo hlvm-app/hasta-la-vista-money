@@ -13,7 +13,7 @@ from hasta_la_vista_money.bot.services import ReceiptApiReceiver
 
 
 @bot_admin.message_handler(content_types=['text'])
-def handle_receipt_text(message, bot):
+def handle_receipt_text(message):
     """
     Обрабатывает текстовые сообщения, содержащие информацию в QR-коде чека.
 
