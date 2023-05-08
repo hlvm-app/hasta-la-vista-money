@@ -145,7 +145,7 @@ python-versions = ">=3.7.0"
 name = "colorama"
 version = "0.4.6"
 description = "Cross-platform colored terminal text."
-category = "dev"
+category = "main"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
 
@@ -695,6 +695,33 @@ testing = ["beautifulsoup4", "coverage", "pytest (>=7,<8)", "pytest-cov", "pytes
 testing-docutils = ["pygments", "pytest (>=7,<8)", "pytest-param-files (>=0.3.4,<0.4.0)"]
 
 [[package]]
+name = "numpy"
+version = "1.24.3"
+description = "Fundamental package for array computing in Python"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "opencv-python"
+version = "4.7.0.72"
+description = "Wrapper package for OpenCV python bindings."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+numpy = [
+    {version = ">=1.21.0", markers = "python_version <= \"3.9\" and platform_system == \"Darwin\" and platform_machine == \"arm64\""},
+    {version = ">=1.21.2", markers = "python_version >= \"3.10\""},
+    {version = ">=1.21.4", markers = "python_version >= \"3.10\" and platform_system == \"Darwin\""},
+    {version = ">=1.22.0", markers = "python_version >= \"3.11\""},
+    {version = ">=1.19.3", markers = "python_version >= \"3.6\" and platform_system == \"Linux\" and platform_machine == \"aarch64\" or python_version >= \"3.9\""},
+    {version = ">=1.17.0", markers = "python_version >= \"3.7\""},
+    {version = ">=1.17.3", markers = "python_version >= \"3.8\""},
+]
+
+[[package]]
 name = "packaging"
 version = "23.1"
 description = "Core utilities for Python packages"
@@ -833,6 +860,14 @@ docs = ["sphinx (!=5.2.0,!=5.2.0.post0)", "sphinx-rtd-theme"]
 test = ["flaky", "pretend", "pytest (>=3.0.1)"]
 
 [[package]]
+name = "pypng"
+version = "0.20220715.0"
+description = "Pure Python library for saving and loading PNG images"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "pytelegrambotapi"
 version = "4.11.0"
 description = "Python Telegram bot api."
@@ -895,6 +930,26 @@ python-versions = "*"
 
 [package.extras]
 scripts = ["Pillow (>=3.2.0)"]
+
+[[package]]
+name = "qrcode"
+version = "7.4.2"
+description = "QR Code image generator"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+colorama = {version = "*", markers = "platform_system == \"Windows\""}
+pypng = "*"
+typing-extensions = "*"
+
+[package.extras]
+all = ["zest.releaser", "tox", "pytest", "pytest-cov", "pillow (>=9.1.0)"]
+dev = ["tox", "pytest", "pytest-cov"]
+maintainer = ["zest.releaser"]
+pil = ["pillow (>=9.1.0)"]
+test = ["coverage", "pytest"]
 
 [[package]]
 name = "requests"
@@ -1291,14 +1346,6 @@ python-versions = ">=3.7"
 brotli = ["brotli"]
 
 [[package]]
-name = "zbar"
-version = "0.10"
-description = "read barcodes from images or video"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "zipp"
 version = "3.15.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
@@ -1326,7 +1373,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<4"
-content-hash = "9e1daa62510e6403595c5f73598e6dfa46364467b646c33d630c5da4a7e21d08"
+content-hash = "603a66c067172ca4667de4e3d9f65e33a86651038b0f053a172dd6f6c222fa15"
 
 [metadata.files]
 alabaster = []
@@ -1387,6 +1434,8 @@ mccabe = []
 mdit-py-plugins = []
 mdurl = []
 myst-parser = []
+numpy = []
+opencv-python = []
 packaging = []
 pbr = []
 pep8-naming = []
@@ -1401,11 +1450,13 @@ pydocstyle = []
 pyflakes = []
 pygments = []
 pyopenssl = []
+pypng = []
 pytelegrambotapi = []
 python-dateutil = []
 python-dotenv = []
 pyyaml = []
 pyzbar = []
+qrcode = []
 requests = []
 restructuredtext-lint = []
 rich = []
@@ -1434,6 +1485,5 @@ tzdata = []
 urllib3 = []
 wemake-python-styleguide = []
 whitenoise = []
-zbar = []
 zipp = []
 "zope.interface" = []

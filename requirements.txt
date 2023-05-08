@@ -43,3 +43,5 @@ daphne>=4.0.0
 channels>=4.0.0
 Pillow>=9.5.0
 pyzbar>=0.1.9
+opencv-python>=4.7
+qrcode>=7.4.2
