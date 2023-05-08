@@ -6,13 +6,11 @@
 import datetime
 import json
 
-from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.json_parse import ReceiptParser
 from hasta_la_vista_money.bot.log_config import logger
 
 
-@bot_admin.message_handler(content_types=['document'])
-def handle_receipt_json(message):
+def handle_receipt_json(message, bot_admin):
     """
     Функция принимает один аргумент message.
 
