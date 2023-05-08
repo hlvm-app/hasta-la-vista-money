@@ -1,8 +1,8 @@
 """Модуль конфигурации бота."""
 import os
 
-from telebot import TeleBot, types
 from dotenv import load_dotenv
+from telebot import TeleBot, types
 
 load_dotenv()
 token = os.getenv('TOKEN_TELEGRAM_BOT')

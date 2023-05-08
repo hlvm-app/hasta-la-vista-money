@@ -4,6 +4,7 @@
 От пользователя будет ожидаться картинка с QR-кодом.
 """
 import tempfile
+
 from hasta_la_vista_money.bot.decode_qrcode import decode_qrcode
 from hasta_la_vista_money.bot.json_parse import ReceiptParser
 from hasta_la_vista_money.bot.services import ReceiptApiReceiver
@@ -32,24 +33,24 @@ def handle_receipt_text_qrcode(message, bot):
             byte_code = bot.download_file(
                 file_path=qr_code_file_id.file_path,
             )
-            # Создает временный файл.
-            temp_file = tempfile.NamedTemporaryFile(mode='w+b', suffix='.png')
             # Записываем байт-код картинки во вложенный файл и вносим данные
             # в переменную image_file.
-            with open(temp_file.name, 'wb') as image_file:
+            with tempfile.NamedTemporaryFile(
+                mode='w+b', suffix='.png',
+            ) as image_file:
                 image_file.write(byte_code)
-            # Из image_file с помощью функции decode_qrcode получает текст из
-            # QR-кода.
-            text_qr_code = decode_qrcode(image_file.name)
+                # Из image_file с помощью функции decode_qrcode получает
+                # текст из QR-кода.
+                text_qr_code = decode_qrcode(image_file.name)
+                parse = ReceiptParser(
+                    ReceiptApiReceiver().get_receipt(text_qr_code),
+                )
+                parse.parse(message.chat.id)
 
-            json_data = ReceiptApiReceiver().get_receipt(text_qr_code)
-
-            parse = ReceiptParser(json_data)
-            parse.parse(message.chat.id)
         except Exception as error:
             bot.send_message(message.chat.id, error)
     else:
         bot.send_message(
             message.chat.id,
-            'Надо загружать только фото или картинку с QR-кодом!'
+            'Надо загружать только фото или картинку с QR-кодом!',
         )
