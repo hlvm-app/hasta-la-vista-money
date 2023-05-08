@@ -1,2 +1,1 @@
-web: gunicorn config.wsgi:application
-socket: daphne config.asgi:application
+web: daphne config.asgi:application --port $PORT --bind 0.0.0.0 -v2
