@@ -19,7 +19,7 @@ class MyBot(TeleBot):
             if not updates:
                 logger.error('Not Updates')
             logger.error(updates)
-            super(MyBot, self).process_new_updates(updates)
+            super().process_new_updates(updates)
         except Exception as error:
             logger.error(error)
 
@@ -28,7 +28,7 @@ class MyBot(TeleBot):
             if not new_messages:
                 logger.error('Not New_Messages')
             logger.error(new_messages)
-            super(MyBot, self).process_new_messages(new_messages)
+            super().process_new_messages(new_messages)
         except Exception as error:
             logger.error(error)
 
@@ -41,7 +41,7 @@ class MyBot(TeleBot):
             chat_types: Optional[List[str]] = None,
             **kwargs):
         logger.error(content_types)
-        super(MyBot, self).message_handler(
+        super().message_handler(
             commands,
             regexp,
             func,
