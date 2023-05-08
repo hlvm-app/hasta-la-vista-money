@@ -15,7 +15,7 @@ def webhooks(request):
     try:
         if request.method == 'POST':
             update = types.Update.de_json(
-                json.loads(request.body.decode('utf8'))
+                json.loads(request.body)
             )
             bot_admin.process_new_updates([update])
             return HttpResponse(
