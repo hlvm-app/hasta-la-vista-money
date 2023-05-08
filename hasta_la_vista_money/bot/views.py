@@ -13,7 +13,7 @@ async def webhooks(request):
         if request.method == 'POST':
             json_data = await request.body.decode('utf8')
             updates = await bot_type.Update.de_json(json.loads(json_data))
-            asyncio.create_task(bot_admin.process_new_updates([updates]))
+            await bot_admin.process_new_updates([updates])
             return HttpResponse('Webhook processed successfully')
     except Exception as error:
         logger.error(error)
