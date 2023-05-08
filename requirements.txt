@@ -43,3 +43,4 @@ urllib3==1.26.15; (python_version >= "2.7" and python_full_version < "3.0.0") or
 whitenoise==6.4.0; python_version >= "3.7"
 zope.interface==6.0; python_version >= "3.7" and python_full_version >= "3.7.1"
 daphne>=4.0.0
+channels>=4.0.0

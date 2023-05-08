@@ -118,6 +118,22 @@ python-versions = "*"
 pycparser = "*"
 
 [[package]]
+name = "channels"
+version = "4.0.0"
+description = "Brings async, event-driven capabilities to Django 3.2 and up."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+asgiref = ">=3.5.0,<4"
+Django = ">=3.2"
+
+[package.extras]
+daphne = ["daphne (>=4.0.0)"]
+tests = ["pytest", "pytest-django", "pytest-asyncio", "async-timeout", "coverage (>=4.5,<5.0)"]
+
+[[package]]
 name = "charset-normalizer"
 version = "3.1.0"
 description = "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet."
@@ -1332,7 +1348,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<4"
-content-hash = "b381fe32d69d98cdd37921f133b5ba5be03e7472b0639eb1c73b9bf8c9b93bf0"
+content-hash = "3672ae1f2716c667551f99bef5ca170822fdabf0adad4e3d02e1ff7741e27f58"
 
 [metadata.files]
 alabaster = []
@@ -1345,6 +1361,7 @@ bandit = []
 beautifulsoup4 = []
 certifi = []
 cffi = []
+channels = []
 charset-normalizer = []
 colorama = []
 constantly = []
