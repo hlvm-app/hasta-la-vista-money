@@ -20,3 +20,7 @@ def webhooks(request):
         except Exception as error:
             logger.error(error)
 
+
+@bot_admin.message_handler()
+def testing(message):
+    bot_admin.reply_to(message.chat.id, 'Answer')
