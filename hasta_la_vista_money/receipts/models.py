@@ -16,13 +16,13 @@ class Customer(models.Model):
     retail_place_address = models.CharField(
         default='Нет данных',
         null=True,
-        max_length=1000
+        max_length=1000,
     )
     retail_place = models.CharField(
         default='Нет данных',
         null=True,
         blank=True,
-        max_length=1000
+        max_length=1000,
     )
 
     def __str__(self):
