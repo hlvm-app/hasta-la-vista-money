@@ -23,12 +23,9 @@ urllib3 = "^1.26.15"
 django-csp = "^3.7"
 Twisted = {extras = ["tls", "http2"], version = "^22.10.0"}
 channels = "^4.0.0"
-pyzbar = "^0.1.9"
 Pillow = "^9.5.0"
 opencv-python = "^4.7.0"
-qrcode = "^7.4.2"
 numpy = "^1.24.3"
-qrtools = "^0.0.2"
 
 [tool.poetry.dev-dependencies]
 Faker = ">=13.7.0"

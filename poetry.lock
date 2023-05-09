@@ -145,7 +145,7 @@ python-versions = ">=3.7.0"
 name = "colorama"
 version = "0.4.6"
 description = "Cross-platform colored terminal text."
-category = "main"
+category = "dev"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
 
@@ -860,14 +860,6 @@ docs = ["sphinx (!=5.2.0,!=5.2.0.post0)", "sphinx-rtd-theme"]
 test = ["flaky", "pretend", "pytest (>=3.0.1)"]
 
 [[package]]
-name = "pypng"
-version = "0.20220715.0"
-description = "Pure Python library for saving and loading PNG images"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "pytelegrambotapi"
 version = "4.11.0"
 description = "Python Telegram bot api."
@@ -919,45 +911,6 @@ description = "YAML parser and emitter for Python"
 category = "main"
 optional = false
 python-versions = ">=3.6"
-
-[[package]]
-name = "pyzbar"
-version = "0.1.9"
-description = "Read one-dimensional barcodes and QR codes from Python 2 and 3."
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.extras]
-scripts = ["Pillow (>=3.2.0)"]
-
-[[package]]
-name = "qrcode"
-version = "7.4.2"
-description = "QR Code image generator"
-category = "main"
-optional = false
-python-versions = ">=3.7"
-
-[package.dependencies]
-colorama = {version = "*", markers = "platform_system == \"Windows\""}
-pypng = "*"
-typing-extensions = "*"
-
-[package.extras]
-all = ["zest.releaser", "tox", "pytest", "pytest-cov", "pillow (>=9.1.0)"]
-dev = ["tox", "pytest", "pytest-cov"]
-maintainer = ["zest.releaser"]
-pil = ["pillow (>=9.1.0)"]
-test = ["coverage", "pytest"]
-
-[[package]]
-name = "qrtools"
-version = "0.0.2"
-description = "qrtools is a suite of tools for handling QR codes."
-category = "main"
-optional = false
-python-versions = "*"
 
 [[package]]
 name = "requests"
@@ -1381,7 +1334,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<4"
-content-hash = "d89b51804a71c2954e37be69edc8e7637be7f7f5d096eeb152c53337d0cd5145"
+content-hash = "accec1e1a091b47d0ec2682a5ec536e6485a8135866922b7e43bb73c7cf36628"
 
 [metadata.files]
 alabaster = []
@@ -1458,14 +1411,10 @@ pydocstyle = []
 pyflakes = []
 pygments = []
 pyopenssl = []
-pypng = []
 pytelegrambotapi = []
 python-dateutil = []
 python-dotenv = []
 pyyaml = []
-pyzbar = []
-qrcode = []
-qrtools = []
 requests = []
 restructuredtext-lint = []
 rich = []
