@@ -5,6 +5,7 @@ import types
 
 from django.db import IntegrityError
 from hasta_la_vista_money.bot.config_bot import bot_admin
+from hasta_la_vista_money.bot.constants import ReceiptConstant
 from hasta_la_vista_money.bot.log_config import logger
 from hasta_la_vista_money.bot.services import convert_date_time, convert_number
 from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
@@ -214,7 +215,7 @@ class ReceiptParser:
         Название того магазина, где был распечатан чек.
         """
         name_seller = self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('name_seller', None),
+            self.json_data, ReceiptConstant.NAME_SELLER.value,
         )
         retail_place_address = self.parser.parse_json(
             self.json_data, CONSTANT_RECEIPT.get('retail_place_address', None),
