@@ -15,7 +15,7 @@ class TelegramLogsHandler(logging.Handler):
         self.tg_bot = tg_bot
 
     def format(self, record: logging.LogRecord) -> str:
-        return f'Появилось исключение!\n {record.getMessage()}'
+        return f'{record.getMessage()}'
 
     def emit(self, record):
         log_entry = self.format(record)
