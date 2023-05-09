@@ -51,7 +51,8 @@ def handle_receipt_text_qrcode(message, bot):
         except json.JSONDecodeError:
             logger.error(
                 'QR-код не считался,'
-                'попробуй ещё раз или воспользуйся приложением'  # noqa: C812
+                'попробуй ещё раз или '
+                'воспользуйся сторонним приложением'  # noqa: C812
             )
         except Exception as error:
             logger.error(error)
