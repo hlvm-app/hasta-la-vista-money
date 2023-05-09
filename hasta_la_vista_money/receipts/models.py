@@ -13,8 +13,15 @@ class Customer(models.Model):
     """Модель продавца."""
 
     name_seller = models.CharField(max_length=255)  # noqa: WPS432
-    retail_place_address = models.CharField(null=True, max_length=100)
-    retail_place = models.CharField(null=True, blank=True, max_length=100)
+    retail_place_address = models.CharField(
+        default='Нет данных',
+        null=True,
+        max_length=1000)
+    retail_place = models.CharField(
+        default='Нет данных',
+        null=True,
+        blank=True,
+        max_length=1000)
 
     def __str__(self):
         return self.name_seller
@@ -24,11 +31,18 @@ class Receipt(models.Model):
     """Модель чека."""
 
     receipt_date = models.DateTimeField()
-    number_receipt = models.IntegerField(null=True)
+    number_receipt = models.IntegerField(default=None, null=True)
     operation_type = models.IntegerField(
-        null=True, blank=True, choices=OPERATION_TYPES,
+        default=0,
+        null=True,
+        blank=True,
+        choices=OPERATION_TYPES,
     )
-    total_sum = models.DecimalField(max_digits=10, decimal_places=2)
+    total_sum = models.DecimalField(
+        default=0,
+        max_digits=10,
+        decimal_places=2
+    )
     customer = models.ForeignKey(
         Customer,
         on_delete=models.CASCADE,
@@ -44,12 +58,17 @@ class Receipt(models.Model):
 class Product(models.Model):
     """Модель продуктов."""
 
-    product_name = models.CharField(max_length=1000)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    quantity = models.DecimalField(max_digits=10, decimal_places=2)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    nds_type = models.IntegerField(null=True, blank=True)
-    nds_sum = models.DecimalField(null=True, max_digits=10, decimal_places=2)
+    product_name = models.CharField(default='Нет данных', max_length=1000)
+    price = models.DecimalField(default=0.0, max_digits=10, decimal_places=2)
+    quantity = models.DecimalField(default=0.0, max_digits=10, decimal_places=2)
+    amount = models.DecimalField(default=0.0, max_digits=10, decimal_places=2)
+    nds_type = models.IntegerField(default=None, null=True, blank=True)
+    nds_sum = models.DecimalField(
+        default=0.0,
+        null=True,
+        max_digits=10,
+        decimal_places=2
+    )
 
     def __str__(self):
         return self.product_name
