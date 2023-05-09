@@ -3,10 +3,12 @@
 
 От пользователя будет ожидаться картинка с QR-кодом.
 """
+import json
 import tempfile
 
 from hasta_la_vista_money.bot.decode_qrcode import decode_qrcode
 from hasta_la_vista_money.bot.json_parse import ReceiptParser
+from hasta_la_vista_money.bot.log_config import logger
 from hasta_la_vista_money.bot.services import ReceiptApiReceiver
 
 
@@ -46,9 +48,13 @@ def handle_receipt_text_qrcode(message, bot):
                     ReceiptApiReceiver().get_receipt(text_qr_code),
                 )
                 parse.parse(message.chat.id)
-
+        except json.JSONDecodeError:
+            logger.error(
+                'QR-код не считался,'
+                'попробуй ещё раз или воспользуйся приложением'  # noqa: C812
+            )
         except Exception as error:
-            bot.send_message(message.chat.id, error)
+            logger.error(error)
     else:
         bot.send_message(
             message.chat.id,
