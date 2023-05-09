@@ -16,12 +16,14 @@ class Customer(models.Model):
     retail_place_address = models.CharField(
         default='Нет данных',
         null=True,
-        max_length=1000)
+        max_length=1000
+    )
     retail_place = models.CharField(
         default='Нет данных',
         null=True,
         blank=True,
-        max_length=1000)
+        max_length=1000
+    )
 
     def __str__(self):
         return self.name_seller
@@ -41,7 +43,7 @@ class Receipt(models.Model):
     total_sum = models.DecimalField(
         default=0,
         max_digits=10,
-        decimal_places=2
+        decimal_places=2,
     )
     customer = models.ForeignKey(
         Customer,
@@ -59,15 +61,15 @@ class Product(models.Model):
     """Модель продуктов."""
 
     product_name = models.CharField(default='Нет данных', max_length=1000)
-    price = models.DecimalField(default=0.0, max_digits=10, decimal_places=2)
-    quantity = models.DecimalField(default=0.0, max_digits=10, decimal_places=2)
-    amount = models.DecimalField(default=0.0, max_digits=10, decimal_places=2)
+    price = models.DecimalField(default=0, max_digits=10, decimal_places=2)
+    quantity = models.DecimalField(default=0, max_digits=10, decimal_places=2)
+    amount = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     nds_type = models.IntegerField(default=None, null=True, blank=True)
     nds_sum = models.DecimalField(
-        default=0.0,
+        default=0,
         null=True,
         max_digits=10,
-        decimal_places=2
+        decimal_places=2,
     )
 
     def __str__(self):

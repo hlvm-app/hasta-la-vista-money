@@ -22,5 +22,3 @@ def webhooks(request):
             return HttpResponse('Webhook processed successfully')
         except Exception as error:
             logger.error(error)
-
-
