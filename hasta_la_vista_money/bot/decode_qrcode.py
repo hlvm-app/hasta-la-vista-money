@@ -18,7 +18,7 @@ def decode_qrcode(image):
     :rtype: str
     """
     try:
-        result = decode(Image.open(io.BytesIO(image)))
+        result = decode(Image.open(image))
         return result[0].data.decode()
 
         # Выводим текст из QR-кода
