@@ -50,7 +50,7 @@ def handle_receipt_text_qrcode(message, bot):
                 parse.parse(message.chat.id)
         except json.JSONDecodeError:
             logger.error(
-                'QR-код не считался,'
+                'QR-код не считался, '
                 'попробуй ещё раз или '
                 'воспользуйся сторонним приложением'  # noqa: C812
             )
