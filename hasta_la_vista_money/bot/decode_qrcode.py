@@ -1,7 +1,4 @@
 """Модуль декодирования изображения QR-кода в текст."""
-import io
-
-import cv2
 from PIL import Image
 from pyzbar.pyzbar import decode
 
