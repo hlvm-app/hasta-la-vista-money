@@ -913,6 +913,17 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "pyzbar"
+version = "0.1.9"
+description = "Read one-dimensional barcodes and QR codes from Python 2 and 3."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.extras]
+scripts = ["Pillow (>=3.2.0)"]
+
+[[package]]
 name = "requests"
 version = "2.30.0"
 description = "Python HTTP for Humans."
@@ -1335,7 +1346,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<4"
-content-hash = "5d7d990e7b0c861c6cc207fee40a64acdcddaef80fda0e731933a42662c95576"
+content-hash = "b0ff9b5724496277f0c905088b01a126ea6dd3bb6b4d0b6a4b61b8d9e3a3bc89"
 
 [metadata.files]
 alabaster = []
@@ -1416,6 +1427,7 @@ pytelegrambotapi = []
 python-dateutil = []
 python-dotenv = []
 pyyaml = []
+pyzbar = []
 requests = []
 restructuredtext-lint = []
 rich = []
