@@ -15,5 +15,4 @@ class ReceiptConstant(Values):
     AMOUNT = ValueConstant('sum')
     NDS_TYPE = ValueConstant('nds')
     NDS_SUM = ValueConstant('ndsSum')
-    ITEMS = ValueConstant('items')
-
+    ITEMS_PRODUCT = ValueConstant('items')
