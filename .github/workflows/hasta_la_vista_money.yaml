@@ -46,7 +46,7 @@ jobs:
       - name: wemake-python-styleguide
         uses: wemake-services/wemake-python-styleguide@0.17.0
 
-      - name: install zbar
+      - name: Install zbar
         run: sudo apt-get install -y zbar-tools
 
       # run makemigrations and migrate
