@@ -38,32 +38,33 @@ ALLOWED_HOSTS = os.environ.get(
 
 
 CSRF_TRUSTED_ORIGINS = os.environ.get(
-    'ALLOWED_HOSTS',
+    'CSRF_TRUSTED_ORIGINS'
 ).split(',') if os.environ.get(
-    'ALLOWED_HOSTS',
-) else ['localhost', '127.0.0.1']
+    'CSRF_TRUSTED_ORIGINS'
+) else ['https://127.0.0.1']
+
 
 # Application definition
 
 INSTALLED_APPS = [
-    'locale',
+    'csp',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
     'django.contrib.humanize',
     'django.contrib.messages',
+    'django.contrib.sessions',
     'django.contrib.staticfiles',
-    'csp',
-    'django_filters',
     'django_bootstrap5',
-    'hasta_la_vista_money.bot',
+    'django_filters',
     'hasta_la_vista_money',
     'hasta_la_vista_money.applications',
+    'hasta_la_vista_money.bot',
     'hasta_la_vista_money.expense',
     'hasta_la_vista_money.income',
     'hasta_la_vista_money.receipts',
     'hasta_la_vista_money.users',
+    'locale',
 ]
 
 AUTH_USER_MODEL = 'users.User'
