@@ -1,33 +1,13 @@
 """Модуль разбора json данных."""
 
 import datetime
-import types
 
 from django.db import IntegrityError
 from hasta_la_vista_money.bot.config_bot import bot_admin
-from hasta_la_vista_money.bot.constants import ReceiptConstant
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.bot.log_config import logger
 from hasta_la_vista_money.bot.services import convert_date_time, convert_number
 from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
-
-CONSTANT_RECEIPT = types.MappingProxyType(
-    {
-        'name_seller': 'user',
-        'retail_place_address': 'retailPlaceAddress',
-        'retail_place': 'retailPlace',
-        'receipt_date': 'dateTime',
-        'number_receipt': 'fiscalDocumentNumber',
-        'operation_type': 'operationType',
-        'total_sum': 'totalSum',
-        'product_name': 'name',
-        'price': 'price',
-        'quantity': 'quantity',
-        'amount': 'sum',
-        'nds_type': 'nds',
-        'nds_sum': 'ndsSum',
-        'items': 'items',
-    },
-)
 
 
 class JsonParser:
@@ -171,28 +151,28 @@ class ReceiptParser:
         Также, тип НДС (10%, 20%) и сумма НДС по каждому товару.
         """
         products_list = self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('items'),
+            self.json_data, constants.ITEMS_PRODUCT,
         )
         for product in products_list:
             product_name = self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('product_name', None),
+                product, constants.PRODUCT_NAME,
             )
             price = convert_number(
                 self.parser.parse_json(
-                    product, CONSTANT_RECEIPT.get('price', 0),
+                    product, constants.PRICE,
                 ),
             )
             quantity = self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('quantity', 0),
+                product, constants.QUANTITY,
             )
             amount = convert_number(self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('amount', 0),
+                product, constants.AMOUNT,
             ))
             nds_type = self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('nds_type', None),
+                product, constants.NDS_TYPE,
             )
             nds_sum = convert_number(self.parser.parse_json(
-                product, CONSTANT_RECEIPT.get('nds_sum', 0),
+                product, constants.NDS_SUM,
             ))
 
             products = Product.objects.create(
@@ -215,13 +195,13 @@ class ReceiptParser:
         Название того магазина, где был распечатан чек.
         """
         name_seller = self.parser.parse_json(
-            self.json_data, ReceiptConstant.NAME_SELLER.value,
+            self.json_data, constants.NAME_SELLER,
         )
         retail_place_address = self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('retail_place_address', None),
+            self.json_data, constants.RETAIL_PLACE_ADDRESS,
         )
         retail_place = self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('retail_place', None),
+            self.json_data, constants.RETAIL_PLACE,
         )
         self.customer = Customer.objects.create(
             name_seller=name_seller,
@@ -246,16 +226,16 @@ class ReceiptParser:
 
         """
         receipt_date = convert_date_time(self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('receipt_date', None),
+            self.json_data, constants.RECEIPT_DATE,
         ))
         number_receipt = self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('number_receipt', None),
+            self.json_data, constants.NUMBER_RECEIPT,
         )
         operation_type = self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('operation_type', None),
+            self.json_data, constants.OPERATION_TYPE,
         )
         total_sum = convert_number(self.parser.parse_json(
-            self.json_data, CONSTANT_RECEIPT.get('total_sum', 0),
+            self.json_data, constants.TOTAL_SUM,
         ))
 
         if operation_type in {2, 3}:
