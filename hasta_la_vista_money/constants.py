@@ -17,11 +17,15 @@ class ReceiptConstants(Enum):
     NDS_TYPE = 'nds'
     NDS_SUM = 'ndsSum'
     ITEMS_PRODUCT = 'items'
+    RECEIPT_ALREADY_EXISTS = _('Такой чек уже существует в базе!')
 
 
 class Messages(Enum):
-    SUCCESS_MESSAGE_LOGIN = _('Вы успешно авторизовались')
+    SUCCESS_MESSAGE_LOGIN = _('Вы успешно авторизовались!')
     SUCCESS_MESSAGE_REGISTRATION = _('Регистрация прошла успешно!')
     ACCESS_DENIED = _(
         'У вас нет прав на просмотр данной страницы! Авторизуйтесь!',
+    )
+    SUCCESS_MESSAGE_CREATE_RECEIPT = _(
+        'Чек был успешно добавлен в базу данных!'
     )
