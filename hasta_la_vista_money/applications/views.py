@@ -11,4 +11,4 @@ class PageApplication(CustomNoPermissionMixin, TemplateView):
     template_name = 'applications/page_application.html'
     context_object_name = 'applications'
     permission_denied_message = Messages.ACCESS_DENIED.value
-    no_permission_url = reverse_lazy('users:login')
+    no_permission_url = reverse_lazy('login')
