@@ -6,8 +6,10 @@
 import tempfile
 
 from hasta_la_vista_money.bot.decode_qrcode import decode_qrcode
-from hasta_la_vista_money.bot.json_parse import ReceiptParser
-from hasta_la_vista_money.bot.services import ReceiptApiReceiver
+from hasta_la_vista_money.bot.receipt_processing import (
+    ReceiptApiReceiver,
+    ReceiptParser,
+)
 
 
 def handle_receipt_text_qrcode(message, bot):

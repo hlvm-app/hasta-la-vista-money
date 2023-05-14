@@ -5,11 +5,11 @@ import os
 import requests
 from django.db import IntegrityError
 from dotenv import load_dotenv
-from hasta_la_vista_money import constants
 from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.json_parse import JsonParser
 from hasta_la_vista_money.bot.log_config import logger
 from hasta_la_vista_money.bot.services import convert_date_time, convert_number
+from hasta_la_vista_money.constants import ReceiptConstant
 from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
 
 
@@ -241,28 +241,28 @@ class ReceiptParser:
         Также, тип НДС (10%, 20%) и сумма НДС по каждому товару.
         """
         products_list = self.parser.parse_json(
-            self.json_data, constants.ITEMS_PRODUCT,
+            self.json_data, ReceiptConstant.ITEMS_PRODUCT.value,
         )
         for product in products_list:
             product_name = self.parser.parse_json(
-                product, constants.PRODUCT_NAME,
+                product, ReceiptConstant.PRODUCT_NAME.value,
             )
             price = convert_number(
                 self.parser.parse_json(
-                    product, constants.PRICE,
+                    product, ReceiptConstant.PRICE.value,
                 ),
             )
             quantity = self.parser.parse_json(
-                product, constants.QUANTITY,
+                product, ReceiptConstant.QUANTITY.value,
             )
             amount = convert_number(self.parser.parse_json(
-                product, constants.AMOUNT,
+                product, ReceiptConstant.AMOUNT.value,
             ))
             nds_type = self.parser.parse_json(
-                product, constants.NDS_TYPE,
+                product, ReceiptConstant.NDS_TYPE.value,
             )
             nds_sum = convert_number(self.parser.parse_json(
-                product, constants.NDS_SUM,
+                product, ReceiptConstant.NDS_SUM.value,
             ))
 
             products = Product.objects.create(
@@ -285,13 +285,13 @@ class ReceiptParser:
         Название того магазина, где был распечатан чек.
         """
         name_seller = self.parser.parse_json(
-            self.json_data, constants.NAME_SELLER,
+            self.json_data, ReceiptConstant.NAME_SELLER.value,
         )
         retail_place_address = self.parser.parse_json(
-            self.json_data, constants.RETAIL_PLACE_ADDRESS,
+            self.json_data, ReceiptConstant.RETAIL_PLACE_ADDRESS.value,
         )
         retail_place = self.parser.parse_json(
-            self.json_data, constants.RETAIL_PLACE,
+            self.json_data, ReceiptConstant.RETAIL_PLACE.value,
         )
         self.customer = Customer.objects.create(
             name_seller=name_seller,
@@ -316,16 +316,16 @@ class ReceiptParser:
 
         """
         receipt_date = convert_date_time(self.parser.parse_json(
-            self.json_data, constants.RECEIPT_DATE,
+            self.json_data, ReceiptConstant.RECEIPT_DATE.value,
         ))
         number_receipt = self.parser.parse_json(
-            self.json_data, constants.NUMBER_RECEIPT,
+            self.json_data, ReceiptConstant.NUMBER_RECEIPT.value,
         )
         operation_type = self.parser.parse_json(
-            self.json_data, constants.OPERATION_TYPE,
+            self.json_data, ReceiptConstant.OPERATION_TYPE.value,
         )
         total_sum = convert_number(self.parser.parse_json(
-            self.json_data, constants.TOTAL_SUM,
+            self.json_data, ReceiptConstant.TOTAL_SUM.value,
         ))
 
         if operation_type in {2, 3}:
