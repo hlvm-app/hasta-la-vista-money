@@ -29,3 +29,14 @@ class Messages(Enum):
     SUCCESS_MESSAGE_CREATE_RECEIPT = _(
         'Чек был успешно добавлен в базу данных!'
     )
+
+
+class HTTPStatusCode(Enum):
+    SUCCESS_CODE = 200
+    SERVER_ERROR = 500
+    NOT_FOUND = 404
+
+
+class ResponseText(Enum):
+    SUCCESS_WEBHOOKS = _('Webhook processed successfully')
+    WEBHOOKS_TELEGRAM = _('This page for Webhooks Telegram!')
