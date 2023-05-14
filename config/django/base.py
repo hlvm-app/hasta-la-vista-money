@@ -136,7 +136,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
             'libraries': {
-                'comma': 'hasta_la_vista_money.templatags.utils',
+                'comma': 'hasta_la_vista_money.templatags.thousand_comma',
             },
         },
     },
