@@ -2,7 +2,7 @@ from django.utils.translation import gettext_lazy as _
 from enum import Enum
 
 
-class ReceiptConstant(Enum):
+class ReceiptConstants(Enum):
     NAME_SELLER = 'user'
     RETAIL_PLACE_ADDRESS = 'retailPlaceAddress'
     RETAIL_PLACE = 'retailPlace'
@@ -22,3 +22,6 @@ class ReceiptConstant(Enum):
 class Messages(Enum):
     SUCCESS_MESSAGE_LOGIN = _('Вы успешно авторизовались')
     SUCCESS_MESSAGE_REGISTRATION = _('Регистрация прошла успешно!')
+    ACCESS_DENIED = _(
+        'У вас нет прав на просмотр данной страницы! Авторизуйтесь!',
+    )
