@@ -7,8 +7,10 @@ class ReceiptConstants(Enum):
     NAME_SELLER = 'user'
     RETAIL_PLACE_ADDRESS = 'retailPlaceAddress'
     RETAIL_PLACE = 'retailPlace'
-    RECEIPT_DATE = 'dateTime'
+    RECEIPT_DATE_TIME = 'dateTime'
+    RECEIPT_DATE = 'date'
     NUMBER_RECEIPT = 'fiscalDocumentNumber'
+    NUMBER_RECEIPT_ID = 'documentId'
     OPERATION_TYPE = 'operationType'
     TOTAL_SUM = 'totalSum'
     PRODUCT_NAME = 'name'
@@ -19,6 +21,9 @@ class ReceiptConstants(Enum):
     NDS_SUM = 'ndsSum'
     ITEMS_PRODUCT = 'items'
     RECEIPT_ALREADY_EXISTS = _('Такой чек уже существует в базе!')
+    RECEIPT_CANNOT_BE_ADDED = _(
+        'Чек не корректен, перепроверьте в приложении налоговой!',
+    )
 
 
 class Messages(Enum):
