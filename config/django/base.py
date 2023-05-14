@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'hasta_la_vista_money.income',
     'hasta_la_vista_money.receipts',
     'hasta_la_vista_money.users',
+    'hasta_la_vista_money.templatags.utils',
     'locale',
 ]
 
@@ -134,6 +135,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'comma': 'hasta_la_vista_money.templatags.utils',
+            }
         },
     },
 ]
@@ -206,11 +210,12 @@ AUTHENTICATION_BACKENDS = (
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'ru'
+LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
+USE_L10N = True
 
 USE_TZ = False
 
