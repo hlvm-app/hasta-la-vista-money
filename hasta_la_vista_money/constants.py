@@ -1,5 +1,6 @@
-from django.utils.translation import gettext_lazy as _
 from enum import Enum
+
+from django.utils.translation import gettext_lazy as _
 
 
 class ReceiptConstants(Enum):
@@ -27,7 +28,7 @@ class Messages(Enum):
         'У вас нет прав на просмотр данной страницы! Авторизуйтесь!',
     )
     SUCCESS_MESSAGE_CREATE_RECEIPT = _(
-        'Чек был успешно добавлен в базу данных!'
+        'Чек был успешно добавлен в базу данных!',
     )
 
 

@@ -1,6 +1,5 @@
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
-
 from hasta_la_vista_money.constants import Messages
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 

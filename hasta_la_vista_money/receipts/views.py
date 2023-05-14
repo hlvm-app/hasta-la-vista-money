@@ -44,7 +44,7 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
 class ReceiptCreateView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
-    CreateView
+    CreateView,
 ):
     """Класс для преставления формы создания чека на сайте."""
 

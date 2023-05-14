@@ -64,7 +64,7 @@ INSTALLED_APPS = [
     'hasta_la_vista_money.income',
     'hasta_la_vista_money.receipts',
     'hasta_la_vista_money.users',
-    'hasta_la_vista_money.templatags.utils',
+    'hasta_la_vista_money.templatags.thousand_comma',
     'locale',
 ]
 
