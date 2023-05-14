@@ -3,6 +3,7 @@
 {% load django_bootstrap5 %}
 {% load static %}
 {% load csp %}
+{% load comma %}
 
 
 
@@ -44,7 +45,7 @@
                       <tr>
                           <th><h4>Продавец: {{ receipt.customer.name_seller }}</h4></th>
                           <th>Дата и время: {{ receipt.receipt_date | date:"d.m.Y H:i" }}</th>
-                          <th>Итоговая сумма: {{ receipt.total_sum }}</th>
+                          <th>Итоговая сумма: {{ receipt.total_sum | comma }}</th>
                       </tr>
                       <tr>
                           <th>Наименование товара</th>
@@ -57,9 +58,9 @@
                     {% for product in receipt.product.all %}
                     <tr>
                       <td>{{ product.product_name }}</td>
-                      <td>{{ product.price }}</td>
+                      <td>{{ product.price | comma }}</td>
                       <td>{{ product.quantity }}</td>
-                      <td>{{ product.amount }}</td>
+                      <td>{{ product.amount | comma }}</td>
                     </tr>
                     {% endfor %}
                   </tbody>

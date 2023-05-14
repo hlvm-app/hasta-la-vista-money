@@ -3,6 +3,8 @@
 
 {% load django_bootstrap5 %}
 {% load static %}
+{% load comma %}
+
 
 
 {% block content %}
@@ -37,7 +39,7 @@
                             {{ month.month | date:"F Y" }}{% translate " г." %}
                         </td>
                         <td>
-                            {{ month.total_amount }}
+                            {{ month.total_amount | comma }}
                         </td>
                     </tr>
                     {% endlanguage %}

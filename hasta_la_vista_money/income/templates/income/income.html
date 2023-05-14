@@ -3,6 +3,9 @@
 {% load django_bootstrap5 %}
 {% load static %}
 {% load humanize %}
+{% load l10n %}
+{% load comma %}
+
 
 {% block content %}
     <title>Информация о доходе</title>
@@ -27,7 +30,7 @@
                     <tr>
                         <td>{{ income.type_income }}</td>
                         <td>{{ income.month }}</td>
-                        <td>{{ income.amount | intcomma }}</td>
+                        <td>{{ income.amount | comma }}</td>
                     </tr>
                     {% endfor %}
                 </table>
