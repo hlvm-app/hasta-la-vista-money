@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy as _
 from enum import Enum
 
 
@@ -16,3 +17,8 @@ class ReceiptConstant(Enum):
     NDS_TYPE = 'nds'
     NDS_SUM = 'ndsSum'
     ITEMS_PRODUCT = 'items'
+
+
+class Messages(Enum):
+    SUCCESS_MESSAGE_LOGIN = _('Вы успешно авторизовались')
+    SUCCESS_MESSAGE_REGISTRATION = _('Регистрация прошла успешно!')
