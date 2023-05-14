@@ -287,6 +287,9 @@ class ReceiptParser:
         name_seller = self.parser.parse_json(
             self.json_data, ReceiptConstants.NAME_SELLER.value,
         )
+        if not name_seller:
+            return
+
         retail_place_address = self.parser.parse_json(
             self.json_data, ReceiptConstants.RETAIL_PLACE_ADDRESS.value,
         )
@@ -316,11 +319,19 @@ class ReceiptParser:
 
         """
         receipt_date = convert_date_time(self.parser.parse_json(
-            self.json_data, ReceiptConstants.RECEIPT_DATE.value,
+            self.json_data, ReceiptConstants.RECEIPT_DATE_TIME.value,
         ))
+        if not receipt_date:
+            receipt_date = self.parser.parse_json(
+                self.json_data, ReceiptConstants.RECEIPT_DATE.value,
+            )
         number_receipt = self.parser.parse_json(
             self.json_data, ReceiptConstants.NUMBER_RECEIPT.value,
         )
+        if not number_receipt:
+            number_receipt = self.parser.parse_json(
+                self.json_data, ReceiptConstants.NUMBER_RECEIPT_ID.value,
+            )
         operation_type = self.parser.parse_json(
             self.json_data, ReceiptConstants.OPERATION_TYPE.value,
         )
@@ -335,7 +346,9 @@ class ReceiptParser:
             number_receipt=number_receipt,
         ).first()
 
-        if check_number_receipt:
+        if self.customer is None:
+            return
+        elif check_number_receipt:
             bot_admin.send_message(chat_id, 'Чек существует')
             return
         else:
@@ -363,6 +376,8 @@ class ReceiptParser:
 
         """
         try:
+            if not self.parse_receipt(chat_id):
+                logger.error(ReceiptConstants.RECEIPT_CANNOT_BE_ADDED.value)
             self.parse_receipt(chat_id)
         except (ValueError, KeyError) as value_key_error:
             logger.error(value_key_error)

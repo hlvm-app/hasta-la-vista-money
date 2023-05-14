@@ -5,7 +5,7 @@ from hasta_la_vista_money.bot.log_config import logger
 
 
 # Выделяем дату из json
-def convert_date_time(date_time: int) -> str:
+def convert_date_time(date_time: int) -> Union[str, None]:
     """
     Конвертация unix time числа в читабельное представление даты и времени.
 
@@ -18,6 +18,8 @@ def convert_date_time(date_time: int) -> str:
 
     """
     try:
+        if date_time is None:
+            return None
         dt = datetime.datetime.fromtimestamp(int(date_time))
         return f'{dt:%Y-%m-%d %H:%M}'
     except TypeError as error:
