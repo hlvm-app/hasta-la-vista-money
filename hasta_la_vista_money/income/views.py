@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy
@@ -13,13 +14,13 @@ class IncomeView(LoginRequiredMixin, ListView):
     model = Income
     template_name = 'income/income.html'
     context_object_name = 'incomes'
-    error_message = gettext_lazy(
+    permission_denied_message = gettext_lazy(
         'У вас нет прав на просмотр данной страницы! Авторизуйтесь!',
     )
     no_permission_url = 'login'
 
 
-class AddIncome(LoginRequiredMixin, CreateView, FormView):
+class AddIncome(LoginRequiredMixin, SuccessMessageMixin, CreateView, FormView):
     """Класс отвечающий за добавление данных в базу по доходам."""
 
     model = Income

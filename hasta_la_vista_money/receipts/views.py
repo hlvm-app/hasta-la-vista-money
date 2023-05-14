@@ -25,7 +25,7 @@ class ReceiptView(LoginRequiredMixin, SuccessMessageMixin, FilterView):
     filterset_class = ReceiptFilter
     ordering = ['-receipt_date']
     filter_backends = (filters.DjangoFilterBackend,)
-    error_message = gettext_lazy(
+    permission_denied_message = gettext_lazy(
         'У вас нет прав на просмотр данной страницы! Авторизуйтесь!',
     )
     no_permission_url = reverse_lazy('login')
@@ -43,13 +43,13 @@ class ReceiptView(LoginRequiredMixin, SuccessMessageMixin, FilterView):
         return self.get(request)
 
 
-class ReceiptCreateView(LoginRequiredMixin, CreateView):
+class ReceiptCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     """Класс для преставления формы создания чека на сайте."""
 
     model = Receipt
     template_name = 'receipts/create_receipt.html'
     success_url = 'receipts:list'
-    error_message = gettext_lazy(
+    permission_denied_message = gettext_lazy(
         'У вас нет прав на просмотр данной страницы! Авторизуйтесь!',
     )
     no_permission_url = reverse_lazy('login')

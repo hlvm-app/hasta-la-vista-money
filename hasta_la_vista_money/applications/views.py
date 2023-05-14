@@ -11,7 +11,7 @@ class PageApplication(LoginRequiredMixin, SuccessMessageMixin, TemplateView):
 
     template_name = 'applications/page_application.html'
     context_object_name = 'applications'
-    error_message = gettext_lazy(
+    permission_denied_message = gettext_lazy(
         'У вас нет прав на просмотр данной страницы! Авторизуйтесь!',
     )
     no_permission_url = 'login'

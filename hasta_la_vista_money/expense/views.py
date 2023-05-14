@@ -13,7 +13,7 @@ class ExpenseView(LoginRequiredMixin, View, SuccessMessageMixin):
     model = Receipt
     template_name = 'expense/expense.html'
     context_object_name = 'expense'
-    error_message = gettext_lazy(
+    permission_denied_message = gettext_lazy(
         'У вас нет прав на просмотр данной страницы! Авторизуйтесь!',
     )
     no_permission_url = reverse_lazy('login')
