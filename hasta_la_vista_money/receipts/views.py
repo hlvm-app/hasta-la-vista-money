@@ -1,13 +1,12 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.utils.translation import gettext_lazy
 from django.views.generic import CreateView
 from django_filters import rest_framework as filters
 from django_filters.views import FilterView
-from hasta_la_vista_money.constants import Messages
+from hasta_la_vista_money.constants import Messages, ReceiptConstants
+from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.receipts.forms import (
     CustomerForm,
     ProductFormSet,
@@ -17,7 +16,7 @@ from hasta_la_vista_money.receipts.forms import (
 from hasta_la_vista_money.receipts.models import Customer, Receipt
 
 
-class ReceiptView(LoginRequiredMixin, SuccessMessageMixin, FilterView):
+class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
     """Класс представления чека на сайте."""
 
     template_name = 'receipts/receipts.html'
@@ -42,7 +41,11 @@ class ReceiptView(LoginRequiredMixin, SuccessMessageMixin, FilterView):
         return self.get(request)
 
 
-class ReceiptCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+class ReceiptCreateView(
+    CustomNoPermissionMixin,
+    SuccessMessageMixin,
+    CreateView
+):
     """Класс для преставления формы создания чека на сайте."""
 
     model = Receipt
@@ -50,6 +53,7 @@ class ReceiptCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     success_url = 'receipts:list'
     permission_denied_message = Messages.ACCESS_DENIED.value
     no_permission_url = reverse_lazy('login')
+    success_message = Messages.SUCCESS_MESSAGE_CREATE_RECEIPT.value
 
     def get(self, request, *args, **kwargs):
         existing_sellers = Customer.objects.all()
@@ -104,7 +108,7 @@ class ReceiptCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
             number_receipt = self.check_exist_receipt(receipt_form)
             if number_receipt:
                 messages.error(
-                    request, gettext_lazy('Такой чек уже существует'),
+                    request, ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
                 )
             elif seller:
                 self.create_receipt(receipt_form, product_formset, seller)
