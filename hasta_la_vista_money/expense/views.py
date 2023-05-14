@@ -4,8 +4,9 @@ from django.db.models import Count, Sum
 from django.db.models.functions import TruncMonth
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.utils.translation import gettext_lazy
 from django.views import View
+
+from hasta_la_vista_money.constants import Messages
 from hasta_la_vista_money.receipts.models import Receipt
 
 
@@ -13,9 +14,7 @@ class ExpenseView(LoginRequiredMixin, View, SuccessMessageMixin):
     model = Receipt
     template_name = 'expense/expense.html'
     context_object_name = 'expense'
-    permission_denied_message = gettext_lazy(
-        'У вас нет прав на просмотр данной страницы! Авторизуйтесь!',
-    )
+    permission_denied_message = Messages.ACCESS_DENIED.value
     no_permission_url = reverse_lazy('login')
 
     def get(self, request):

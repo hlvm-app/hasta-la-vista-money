@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy
 from django.views.generic import CreateView
 from django_filters import rest_framework as filters
 from django_filters.views import FilterView
+from hasta_la_vista_money.constants import Messages
 from hasta_la_vista_money.receipts.forms import (
     CustomerForm,
     ProductFormSet,
@@ -25,9 +26,7 @@ class ReceiptView(LoginRequiredMixin, SuccessMessageMixin, FilterView):
     filterset_class = ReceiptFilter
     ordering = ['-receipt_date']
     filter_backends = (filters.DjangoFilterBackend,)
-    permission_denied_message = gettext_lazy(
-        'У вас нет прав на просмотр данной страницы! Авторизуйтесь!',
-    )
+    permission_denied_message = Messages.ACCESS_DENIED.value
     no_permission_url = reverse_lazy('login')
 
     def post(self, request):
@@ -49,9 +48,7 @@ class ReceiptCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Receipt
     template_name = 'receipts/create_receipt.html'
     success_url = 'receipts:list'
-    permission_denied_message = gettext_lazy(
-        'У вас нет прав на просмотр данной страницы! Авторизуйтесь!',
-    )
+    permission_denied_message = Messages.ACCESS_DENIED.value
     no_permission_url = reverse_lazy('login')
 
     def get(self, request, *args, **kwargs):
