@@ -1,4 +1,3 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count, Sum
 from django.db.models.functions import TruncMonth
@@ -7,10 +6,11 @@ from django.urls import reverse_lazy
 from django.views import View
 
 from hasta_la_vista_money.constants import Messages
+from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.receipts.models import Receipt
 
 
-class ExpenseView(LoginRequiredMixin, View, SuccessMessageMixin):
+class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, View):
     model = Receipt
     template_name = 'expense/expense.html'
     context_object_name = 'expense'

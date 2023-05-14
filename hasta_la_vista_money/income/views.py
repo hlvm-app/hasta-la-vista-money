@@ -1,14 +1,14 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView, ListView
 from hasta_la_vista_money.constants import Messages
+from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.income.forms import IncomeForm
 from hasta_la_vista_money.income.models import Income
 
 
-class IncomeView(LoginRequiredMixin, ListView):
+class IncomeView(CustomNoPermissionMixin, ListView):
     """Представление просмотра доходов из модели, на сайте."""
 
     model = Income
@@ -18,7 +18,12 @@ class IncomeView(LoginRequiredMixin, ListView):
     no_permission_url = reverse_lazy('login')
 
 
-class AddIncome(LoginRequiredMixin, SuccessMessageMixin, CreateView, FormView):
+class AddIncome(
+    CustomNoPermissionMixin,
+    SuccessMessageMixin,
+    CreateView,
+    FormView,
+):
     """Класс отвечающий за добавление данных в базу по доходам."""
 
     model = Income
