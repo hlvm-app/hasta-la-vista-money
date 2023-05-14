@@ -9,7 +9,7 @@ from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.json_parse import JsonParser
 from hasta_la_vista_money.bot.log_config import logger
 from hasta_la_vista_money.bot.services import convert_date_time, convert_number
-from hasta_la_vista_money.constants import ReceiptConstant
+from hasta_la_vista_money.constants import ReceiptConstants
 from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
 
 
@@ -241,28 +241,28 @@ class ReceiptParser:
         Также, тип НДС (10%, 20%) и сумма НДС по каждому товару.
         """
         products_list = self.parser.parse_json(
-            self.json_data, ReceiptConstant.ITEMS_PRODUCT.value,
+            self.json_data, ReceiptConstants.ITEMS_PRODUCT.value,
         )
         for product in products_list:
             product_name = self.parser.parse_json(
-                product, ReceiptConstant.PRODUCT_NAME.value,
+                product, ReceiptConstants.PRODUCT_NAME.value,
             )
             price = convert_number(
                 self.parser.parse_json(
-                    product, ReceiptConstant.PRICE.value,
+                    product, ReceiptConstants.PRICE.value,
                 ),
             )
             quantity = self.parser.parse_json(
-                product, ReceiptConstant.QUANTITY.value,
+                product, ReceiptConstants.QUANTITY.value,
             )
             amount = convert_number(self.parser.parse_json(
-                product, ReceiptConstant.AMOUNT.value,
+                product, ReceiptConstants.AMOUNT.value,
             ))
             nds_type = self.parser.parse_json(
-                product, ReceiptConstant.NDS_TYPE.value,
+                product, ReceiptConstants.NDS_TYPE.value,
             )
             nds_sum = convert_number(self.parser.parse_json(
-                product, ReceiptConstant.NDS_SUM.value,
+                product, ReceiptConstants.NDS_SUM.value,
             ))
 
             products = Product.objects.create(
@@ -285,13 +285,13 @@ class ReceiptParser:
         Название того магазина, где был распечатан чек.
         """
         name_seller = self.parser.parse_json(
-            self.json_data, ReceiptConstant.NAME_SELLER.value,
+            self.json_data, ReceiptConstants.NAME_SELLER.value,
         )
         retail_place_address = self.parser.parse_json(
-            self.json_data, ReceiptConstant.RETAIL_PLACE_ADDRESS.value,
+            self.json_data, ReceiptConstants.RETAIL_PLACE_ADDRESS.value,
         )
         retail_place = self.parser.parse_json(
-            self.json_data, ReceiptConstant.RETAIL_PLACE.value,
+            self.json_data, ReceiptConstants.RETAIL_PLACE.value,
         )
         self.customer = Customer.objects.create(
             name_seller=name_seller,
@@ -316,16 +316,16 @@ class ReceiptParser:
 
         """
         receipt_date = convert_date_time(self.parser.parse_json(
-            self.json_data, ReceiptConstant.RECEIPT_DATE.value,
+            self.json_data, ReceiptConstants.RECEIPT_DATE.value,
         ))
         number_receipt = self.parser.parse_json(
-            self.json_data, ReceiptConstant.NUMBER_RECEIPT.value,
+            self.json_data, ReceiptConstants.NUMBER_RECEIPT.value,
         )
         operation_type = self.parser.parse_json(
-            self.json_data, ReceiptConstant.OPERATION_TYPE.value,
+            self.json_data, ReceiptConstants.OPERATION_TYPE.value,
         )
         total_sum = convert_number(self.parser.parse_json(
-            self.json_data, ReceiptConstant.TOTAL_SUM.value,
+            self.json_data, ReceiptConstants.TOTAL_SUM.value,
         ))
 
         if operation_type in {2, 3}:
