@@ -137,7 +137,7 @@ TEMPLATES = [
             ],
             'libraries': {
                 'comma': 'hasta_la_vista_money.templatags.utils',
-            }
+            },
         },
     },
 ]
