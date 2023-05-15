@@ -346,9 +346,7 @@ class ReceiptParser:
             number_receipt=number_receipt,
         ).first()
 
-        if self.customer is None:
-            return
-        elif check_number_receipt:
+        if check_number_receipt:
             bot_admin.send_message(chat_id, 'Чек существует')
             return
         else:
@@ -376,13 +374,19 @@ class ReceiptParser:
 
         """
         try:
-            if not self.parse_receipt(chat_id):
-                logger.error(ReceiptConstants.RECEIPT_CANNOT_BE_ADDED.value)
             self.parse_receipt(chat_id)
-        except (ValueError, KeyError) as value_key_error:
-            logger.error(value_key_error)
-        except (AttributeError, TypeError, IntegrityError) as complex_error:
+        except (
+            AttributeError,
+            TypeError,
+            ValueError,
+            KeyError,
+        ) as complex_error:
             logger.error(complex_error)
+        except IntegrityError:
+            bot_admin.send_message(
+                chat_id,
+                'Чек не корректен, перепроверьте в приложении налоговой!',
+            )
         except Exception as error:
             logger.error(
                 f'{error}Время возникновения исключения: '
