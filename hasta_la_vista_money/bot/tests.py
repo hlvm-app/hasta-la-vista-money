@@ -19,6 +19,7 @@ AMOUNT_PRODUCT2 = PRICE_PRODUCT2 * QUANTITY_PRODUCT2
 
 
 class ReceiptParserTestCase(TestCase):
+
     def setUp(self) -> None:
         with open('fixtures/receipt.json', 'r') as receipt_json:
             json_data = json.load(receipt_json)
