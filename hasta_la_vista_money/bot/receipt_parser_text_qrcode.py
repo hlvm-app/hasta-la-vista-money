@@ -47,7 +47,9 @@ def handle_receipt_text_qrcode(message, bot):
                 ReceiptApiReceiver().get_receipt(text_qr_code),
             )
             parse.parse(message.chat.id)
-    bot.send_message(
-        message.chat.id,
-        'Надо загружать только фото или картинку с QR-кодом!',
-    )
+    else:
+        bot.send_message(
+            message.chat.id,
+            'Надо загружать только фото или картинку с QR-кодом!',
+        )
+        return
