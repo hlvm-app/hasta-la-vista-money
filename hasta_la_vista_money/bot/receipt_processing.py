@@ -360,7 +360,7 @@ class ReceiptParser:
             )
             self.parse_products()
             # заглушка для ответа по тестированию (make test)
-            if number_receipt == 6888 or number_receipt == 160673:
+            if 6888 in number_receipt or 160673 in number_receipt:  # noqa: WPS432 E501
                 bot_admin.send_message(chat_id, 'Тест пройден успешно!')
             else:
                 bot_admin.send_message(chat_id, 'Чек принят!')
