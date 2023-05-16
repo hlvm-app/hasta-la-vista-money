@@ -15,7 +15,6 @@ bot_admin.add_message_handler(handle_receipt)
 def webhooks(request):
     if request.method == 'POST':
         json_data = json.loads(request.body)
-        print(json_data)
         try:
             update = types.Update.de_json(json_data)
             bot_admin.process_new_updates([update])
