@@ -58,7 +58,7 @@ secretkey:
 		@poetry run python -c 'from django.utils.crypto import get_random_string; print(get_random_string(40))'
 
 test:
-		@poetry run python manage.py test
+		@poetry run coverage run --source='.' manage.py test
 
 coverage:
 		@poetry run coverage run manage.py test
