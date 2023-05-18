@@ -1,7 +1,5 @@
 from enum import Enum
 
-from django.utils.translation import gettext_lazy as _
-
 
 class ReceiptConstants(Enum):
     NAME_SELLER = 'user'
@@ -20,19 +18,19 @@ class ReceiptConstants(Enum):
     NDS_TYPE = 'nds'
     NDS_SUM = 'ndsSum'
     ITEMS_PRODUCT = 'items'
-    RECEIPT_ALREADY_EXISTS = _('Такой чек уже существует в базе!')
-    RECEIPT_CANNOT_BE_ADDED = _(
+    RECEIPT_ALREADY_EXISTS = 'Такой чек уже существует в базе!'
+    RECEIPT_CANNOT_BE_ADDED = (
         'Чек не корректен, перепроверьте в приложении налоговой!',
     )
 
 
 class Messages(Enum):
-    SUCCESS_MESSAGE_LOGIN = _('Вы успешно авторизовались!')
-    SUCCESS_MESSAGE_REGISTRATION = _('Регистрация прошла успешно!')
-    ACCESS_DENIED = _(
+    SUCCESS_MESSAGE_LOGIN = 'Вы успешно авторизовались!'
+    SUCCESS_MESSAGE_REGISTRATION = 'Регистрация прошла успешно!'
+    ACCESS_DENIED = (
         'У вас нет прав на просмотр данной страницы! Авторизуйтесь!',
     )
-    SUCCESS_MESSAGE_CREATE_RECEIPT = _(
+    SUCCESS_MESSAGE_CREATE_RECEIPT = (
         'Чек был успешно добавлен в базу данных!',
     )
 
@@ -44,8 +42,8 @@ class HTTPStatus(Enum):
 
 
 class ResponseText(Enum):
-    SUCCESS_WEBHOOKS = _('Webhook processed successfully')
-    WEBHOOKS_TELEGRAM = _('This page for Webhooks Telegram!')
+    SUCCESS_WEBHOOKS = 'Webhook processed successfully'
+    WEBHOOKS_TELEGRAM = 'This page for Webhooks Telegram!'
 
 
 class SessionCookie(Enum):
