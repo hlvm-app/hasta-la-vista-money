@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from hasta_la_vista_money.bot.bot_handler import handle_receipt
 from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.log_config import logger
-from hasta_la_vista_money.constants import HTTPStatusCode, ResponseText
+from hasta_la_vista_money.constants import HTTPStatus, ResponseText
 from telebot import types
 
 bot_admin.add_message_handler(handle_receipt)
@@ -20,11 +20,11 @@ def webhooks(request):
             bot_admin.process_new_updates([update])
             return HttpResponse(
                 ResponseText.SUCCESS_WEBHOOKS.value,
-                status=HTTPStatusCode.SUCCESS_CODE.value,
+                status=HTTPStatus.SUCCESS_CODE.value,
             )
         except Exception as error:
             logger.error(error)
     return HttpResponse(
         ResponseText.WEBHOOKS_TELEGRAM.value,
-        status=HTTPStatusCode.SUCCESS_CODE.value,
+        status=HTTPStatus.SUCCESS_CODE.value,
     )

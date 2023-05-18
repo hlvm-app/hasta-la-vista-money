@@ -6,7 +6,7 @@ from django.test import TestCase
 from django.urls import reverse
 from dotenv import load_dotenv
 from hasta_la_vista_money.bot.receipt_processing import ReceiptParser
-from hasta_la_vista_money.constants import HTTPStatusCode
+from hasta_la_vista_money.constants import HTTPStatus
 
 load_dotenv()
 
@@ -66,6 +66,6 @@ class TestWebhook(TestCase):
 
         # Проверяем, что ответ сервера имеет статус 200
         self.assertEqual(
-            response.status_code, HTTPStatusCode.SUCCESS_CODE.value,
+            response.status_code, HTTPStatus.SUCCESS_CODE.value,
         )
         self.assertEqual(response.content, b'Webhook processed successfully')
