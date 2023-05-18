@@ -4,6 +4,7 @@ import os
 
 import requests
 from django.db import IntegrityError
+from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
 from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.json_parse import JsonParser
@@ -347,7 +348,9 @@ class ReceiptParser:
         ).first()
 
         if check_number_receipt:
-            bot_admin.send_message(chat_id, 'Чек существует')
+            bot_admin.send_message(
+                chat_id, _(ReceiptConstants.RECEIPT_ALREADY_EXISTS.value)
+            )
             return
         else:
             self.parse_customer()
