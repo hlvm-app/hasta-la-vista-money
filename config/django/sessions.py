@@ -1,6 +1,7 @@
 import os
-from hasta_la_vista_money.constants import SessionCookie
+
 from dotenv import load_dotenv
+from hasta_la_vista_money.constants import SessionCookie
 
 load_dotenv()
 
