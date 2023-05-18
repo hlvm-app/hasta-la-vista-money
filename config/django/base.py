@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'hasta_la_vista_money.users',
     'hasta_la_vista_money.templatags.thousand_comma',
     'locale',
+    'reports',
 ]
 
 AUTH_USER_MODEL = 'users.User'
