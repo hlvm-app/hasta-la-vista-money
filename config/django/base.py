@@ -226,6 +226,8 @@ LANGUAGES = (
     ('ru', 'Russian'),
 )
 
+DATETIME_INPUT_FORMATS = ['%d-%m-%Y %H:%M']
+
 LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
 
 FIXTURE_DIRS = (os.path.join(BASE_DIR, 'fixtures'),)
