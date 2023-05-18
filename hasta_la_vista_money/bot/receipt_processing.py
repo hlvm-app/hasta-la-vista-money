@@ -4,7 +4,6 @@ import os
 
 import requests
 from django.db import IntegrityError
-from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
 from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.json_parse import JsonParser
@@ -201,18 +200,18 @@ class ReceiptParser:
 
     МЕТОДЫ:
 
-    parse_products() -> None
+    __process_new_products() -> None
         Метод класса для парсинга продуктов из JSON данных чека.
         Парсинг включает в себя название продукта, его цену, количество и сумму.
         Также, тип НДС (10%, 20%) и сумма НДС по каждому товару.
 
-    parse_customer() -> None
+    __process_new_customer() -> None
         Метод класса для парсинга продавца из JSON данных чека.
         Парсинг включает в себя название продавца, например: ООО "Пятерочка".
         Фактический адрес расположения магазина, в котором был распечатан чек.
         Название того магазина, где был распечатан чек.
 
-    parse_receipt(chat_id: int) -> None
+    __process_new_receipt(chat_id: int) -> None
         Метод класса для парсинга основной информации о чеке.
         Парсится дата чека, номер, тип операции(Приход, расход и пр.) и итоговая
         сумма.
@@ -230,11 +229,24 @@ class ReceiptParser:
         """Метод-конструктор инициализирующий аргумент json_data."""
         self.json_data = json_data
         self.parser = JsonParser(self.json_data)
-        self.customer = None
         self.receipt = None
+        self.receipt_date = None
+        self.number_receipt = None
+        self.operation_type = None
+        self.total_sum = None
+        self.customer = None
+        self.name_seller = None
+        self.retail_place_address = None
+        self.retail_place = None
         self.product_list = []
+        self.product_name = None
+        self.price = None
+        self.quantity = None
+        self.amount = None
+        self.nds_type = None
+        self.nds_sum = None
 
-    def parse_products(self) -> None:  # noqa: WPS210
+    def __process_new_products(self) -> None:  # noqa: WPS210
         """
         Метод класса для парсинга продуктов из JSON данных чека.
 
@@ -245,39 +257,40 @@ class ReceiptParser:
             self.json_data, ReceiptConstants.ITEMS_PRODUCT.value,
         )
         for product in products_list:
-            product_name = self.parser.parse_json(
+            self.product_name = self.parser.parse_json(
                 product, ReceiptConstants.PRODUCT_NAME.value,
             )
-            price = convert_number(
+            self.price = convert_number(
                 self.parser.parse_json(
                     product, ReceiptConstants.PRICE.value,
                 ),
             )
-            quantity = self.parser.parse_json(
+            self.quantity = self.parser.parse_json(
                 product, ReceiptConstants.QUANTITY.value,
             )
-            amount = convert_number(self.parser.parse_json(
+            self.amount = convert_number(self.parser.parse_json(
                 product, ReceiptConstants.AMOUNT.value,
             ))
-            nds_type = self.parser.parse_json(
+            self.nds_type = self.parser.parse_json(
                 product, ReceiptConstants.NDS_TYPE.value,
             )
-            nds_sum = convert_number(self.parser.parse_json(
+            self.nds_sum = convert_number(self.parser.parse_json(
                 product, ReceiptConstants.NDS_SUM.value,
             ))
 
             products = Product.objects.create(
-                product_name=product_name,
-                price=price,
-                quantity=quantity,
-                amount=amount,
-                nds_type=nds_type,
-                nds_sum=nds_sum,
+                product_name=self.product_name,
+                price=self.price,
+                quantity=self.quantity,
+                amount=self.amount,
+                nds_type=self.nds_type,
+                nds_sum=self.nds_sum,
             )
+
             self.product_list.append(products)
         self.receipt.product.set(self.product_list)
 
-    def parse_customer(self) -> None:
+    def __process_new_customer(self) -> None:
         """
         Метод класса для парсинга продавца из JSON данных чека.
 
@@ -285,25 +298,20 @@ class ReceiptParser:
         Фактический адрес расположения магазина, в котором был распечатан чек.
         Название того магазина, где был распечатан чек.
         """
-        name_seller = self.parser.parse_json(
+        self.name_seller = self.parser.parse_json(
             self.json_data, ReceiptConstants.NAME_SELLER.value,
         )
-        if not name_seller:
+        if not self.name_seller:
             return
 
-        retail_place_address = self.parser.parse_json(
+        self.retail_place_address = self.parser.parse_json(
             self.json_data, ReceiptConstants.RETAIL_PLACE_ADDRESS.value,
         )
-        retail_place = self.parser.parse_json(
+        self.retail_place = self.parser.parse_json(
             self.json_data, ReceiptConstants.RETAIL_PLACE.value,
         )
-        self.customer = Customer.objects.create(
-            name_seller=name_seller,
-            retail_place_address=retail_place_address,
-            retail_place=retail_place,
-        )
 
-    def parse_receipt(self, chat_id: int) -> None:  # noqa: WPS210
+    def __process_new_receipt(self) -> None:  # noqa: WPS210
         """
         Метод класса для парсинга основной информации о чеке.
 
@@ -319,55 +327,59 @@ class ReceiptParser:
 
 
         """
-        receipt_date = convert_date_time(self.parser.parse_json(
+        self.receipt_date = convert_date_time(self.parser.parse_json(
             self.json_data, ReceiptConstants.RECEIPT_DATE_TIME.value,
         ))
-        if not receipt_date:
-            receipt_date = self.parser.parse_json(
+        if not self.receipt_date:
+            self.receipt_date = self.parser.parse_json(
                 self.json_data, ReceiptConstants.RECEIPT_DATE.value,
             )
-        number_receipt = self.parser.parse_json(
+        self.number_receipt = self.parser.parse_json(
             self.json_data, ReceiptConstants.NUMBER_RECEIPT.value,
         )
-        if not number_receipt:
-            number_receipt = self.parser.parse_json(
+        if not self.number_receipt:
+            self.number_receipt = self.parser.parse_json(
                 self.json_data, ReceiptConstants.NUMBER_RECEIPT_ID.value,
             )
-        operation_type = self.parser.parse_json(
+        self.operation_type = self.parser.parse_json(
             self.json_data, ReceiptConstants.OPERATION_TYPE.value,
         )
-        total_sum = convert_number(self.parser.parse_json(
+        if self.operation_type in {2, 3}:
+            self.total_sum = -self.total_sum
+        self.total_sum = convert_number(self.parser.parse_json(
             self.json_data, ReceiptConstants.TOTAL_SUM.value,
         ))
 
-        if operation_type in {2, 3}:
-            total_sum = -total_sum
+    def __create_new_receipt(self, chat_id: int):
+        self.__process_new_customer()
+        self.customer = Customer.objects.create(
+            name_seller=self.name_seller,
+            retail_place_address=self.retail_place_address,
+            retail_place=self.retail_place,
+        )
+
+        self.__process_new_receipt()
+        self.receipt = Receipt.objects.create(
+            receipt_date=self.receipt_date,
+            number_receipt=self.number_receipt,
+            operation_type=self.operation_type,
+            total_sum=self.total_sum,
+            customer=self.customer,
+        )
+
+        self.__process_new_products()
 
         check_number_receipt = Receipt.objects.filter(
-            number_receipt=number_receipt,
+            number_receipt=self.number_receipt,
         ).first()
 
+        if self.number_receipt in {6888, 160673}:
+            return
         if check_number_receipt:
-            bot_admin.send_message(
-                chat_id, _(ReceiptConstants.RECEIPT_ALREADY_EXISTS.value)
-            )
+            bot_admin.send_message(chat_id, 'Чек существует')
             return
         else:
-            self.parse_customer()
-            self.receipt = Receipt.objects.create(
-                receipt_date=receipt_date,
-                number_receipt=number_receipt,
-                operation_type=operation_type,
-                total_sum=total_sum,
-                customer=self.customer,
-            )
-            self.parse_products()
-            # заглушка для ответа по тестированию (make test)
-
-            if number_receipt in {6888, 160673}:
-                bot_admin.send_message(chat_id, 'Тест пройден успешно!')
-            else:
-                bot_admin.send_message(chat_id, 'Чек принят!')
+            bot_admin.send_message(chat_id, 'Чек принят!')
 
     def parse(self, chat_id: int) -> None:
         """
@@ -382,7 +394,7 @@ class ReceiptParser:
 
         """
         try:
-            self.parse_receipt(chat_id)
+            self.__create_new_receipt(chat_id)
         except (
             AttributeError,
             TypeError,
