@@ -37,7 +37,7 @@ class Messages(Enum):
     )
 
 
-class HTTPStatusCode(Enum):
+class HTTPStatus(Enum):
     SUCCESS_CODE = 200
     SERVER_ERROR = 500
     NOT_FOUND = 404
@@ -46,3 +46,7 @@ class HTTPStatusCode(Enum):
 class ResponseText(Enum):
     SUCCESS_WEBHOOKS = _('Webhook processed successfully')
     WEBHOOKS_TELEGRAM = _('This page for Webhooks Telegram!')
+
+
+class SessionCookie(Enum):
+    SESSION_COOKIE_AGE = 1209600
