@@ -14,7 +14,7 @@ from pathlib import Path
 
 import dj_database_url
 import rollbar
-from config.django.sessions import *  # noqa: WPS347
+from config.django.sessions import *  # NOQA
 from dotenv import load_dotenv
 
 load_dotenv()
