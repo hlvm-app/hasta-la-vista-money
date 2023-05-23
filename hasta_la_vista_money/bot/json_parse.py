@@ -65,14 +65,19 @@ class JsonParser:
         str | list | int | None
             В зависимости от условий, может возвращать строку, список, число.
         """
-        if not isinstance(dictionary, dict):
+        if isinstance(dictionary, dict):
+            dictionary_values = dictionary.values()
+            dict_value = dictionary.get(key)
+        elif isinstance(dictionary, list):
+            dictionary_values = dictionary[0].values()
+            dict_value = dictionary[0].get(key)
+        else:
             return None
 
-        dict_value = dictionary.get(key)
         if dict_value is not None:
             return dict_value
 
-        for nested_dict in dictionary.values():
+        for nested_dict in dictionary_values:
             dict_value = self.__get_value(nested_dict, key)
             if dict_value is not None:
                 return dict_value
