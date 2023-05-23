@@ -5,13 +5,13 @@ from hasta_la_vista_money.bot.log_config import logger
 
 
 # Выделяем дату из json
-def convert_date_time(date_time: int) -> Union[str, None]:
+def convert_date_time(date_time: Union[str, int]) -> Union[str, None]:
     """
     Конвертация unix time числа в читабельное представление даты и времени.
 
     :param date_time: Unix timestamp (Количество секунд от
                     1970-01-01 00:00:00 UTC)
-    :type date_time: int
+    :type date_time: Union[str, int]
     :return: Строка с читабельным представлением даты и времени
     :rtype: str
     :raise: TypeError: Если аргумент не является целым числом
@@ -20,6 +20,9 @@ def convert_date_time(date_time: int) -> Union[str, None]:
     try:
         if date_time is None:
             return None
+        if isinstance(date_time, str):
+            dt = datetime.datetime.strptime(date_time, '%Y-%m-%dT%H:%M:%S')
+            return dt.strftime('%Y-%m-%d %H:%M')
         dt = datetime.datetime.fromtimestamp(int(date_time))
         return f'{dt:%Y-%m-%d %H:%M}'
     except TypeError as error:
