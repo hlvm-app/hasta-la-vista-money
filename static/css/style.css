@@ -1,4 +1,5 @@
 .receipt {
+    position: relative;
     overflow: scroll;
     border: 1px solid black;
     padding: 10px;
@@ -89,7 +90,8 @@ table th:nth-child(3) {
     border: 0;
     width: 15px;
     height: 15px;
-    margin: .5rem 79rem;
+    margin: 0 auto;
+    right: 2%;
     position: absolute;
     transform: rotate(45deg) scale(2);
 }
@@ -123,7 +125,7 @@ table th:nth-child(3) {
 
 @-webkit-keyframes top-out {
     from {
-        top: 0%;
+        top: 0;
         height: 100%;
     }
     to {
@@ -134,31 +136,31 @@ table th:nth-child(3) {
 
 @keyframes top-out {
     from {
-        top: 0%;
+        top: 0;
         height: 100%;
     }
     to {
         top: 200%;
-        height: 0%;
+        height: 0;
     }
 }
 @-webkit-keyframes top-in {
     from {
         top: -100%;
-        height: 0%;
+        height: 0;
     }
     to {
-        top: 0%;
+        top: 0;
         height: 100%;
     }
 }
 @keyframes top-in {
     from {
         top: -100%;
-        height: 0%;
+        height: 0;
     }
     to {
-        top: 0%;
+        top: 0;
         height: 100%;
     }
 }
