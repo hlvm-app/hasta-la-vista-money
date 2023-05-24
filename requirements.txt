@@ -29,7 +29,7 @@ pyopenssl==23.1.1; python_full_version >= "3.7.1" and python_version >= "3.6"
 pytelegrambotapi==4.11.0
 python-dotenv==1.0.0; python_version >= "3.8"
 pyyaml==6.0; python_version >= "3.6"
-requests==2.30.0; python_version >= "3.7"
+requests==2.31.0; python_version >= "3.7"
 rollbar==0.16.3
 service-identity==21.1.0; python_full_version >= "3.7.1"
 six==1.16.0; python_full_version >= "3.7.1"
