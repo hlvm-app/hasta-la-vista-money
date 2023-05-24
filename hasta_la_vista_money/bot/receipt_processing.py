@@ -337,7 +337,7 @@ class ReceiptParser:
 
         if check_number_receipt:
             bot_admin.send_message(
-                chat_id, ReceiptConstants.RECEIPT_ALREADY_EXISTS.value
+                chat_id, ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
             )
             return
         else:
@@ -366,14 +366,16 @@ class ReceiptParser:
         """
         try:
             self.parse_receipt(chat_id)
-        except (ValueError,
-                KeyError,
-                AttributeError,
-                TypeError) as value_key_error:
+        except (
+            ValueError,
+            KeyError,
+            AttributeError,
+            TypeError,
+        ) as value_key_error:
             logger.error(value_key_error)
         except IntegrityError:
             bot_admin.send_message(
-                ReceiptConstants.RECEIPT_CANNOT_BE_ADDED.value
+                ReceiptConstants.RECEIPT_CANNOT_BE_ADDED.value,
             )
         except Exception as error:
             logger.error(
@@ -383,8 +385,10 @@ class ReceiptParser:
 
 
 class ReceiptDataWriter:
-    @staticmethod
-    def create_product(product_name, price, quantity, amount, nds_type, nds_sum):
+    @classmethod
+    def create_product(  # noqa: WPS211
+        cls, product_name, price, quantity, amount, nds_type, nds_sum,
+    ):
         return Product.objects.create(
             product_name=product_name,
             price=price,
@@ -394,16 +398,23 @@ class ReceiptDataWriter:
             nds_sum=nds_sum,
         )
 
-    @staticmethod
-    def create_customer(name_seller, retail_place_address, retail_place):
+    @classmethod
+    def create_customer(cls, name_seller, retail_place_address, retail_place):
         return Customer.objects.create(
             name_seller=name_seller,
             retail_place_address=retail_place_address,
             retail_place=retail_place,
         )
 
-    @staticmethod
-    def create_receipt(receipt_date, number_receipt, operation_type, total_sum, customer):
+    @classmethod
+    def create_receipt(  # noqa: WPS211
+        cls,
+        receipt_date,
+        number_receipt,
+        operation_type,
+        total_sum,
+        customer,
+    ):
         return Receipt.objects.create(
             receipt_date=receipt_date,
             number_receipt=number_receipt,
