@@ -1,16 +1,9 @@
 import json
 from os import environ
-from unittest.mock import patch
 
-import requests_mock
-
-from config.django.base import BASE_DIR
 from django.test import TestCase
-from django.urls import reverse
 from dotenv import load_dotenv
-from django.test.client import RequestFactory
 from hasta_la_vista_money.bot.receipt_processing import ReceiptParser
-from hasta_la_vista_money.constants import HTTPStatus
 
 load_dotenv()
 
