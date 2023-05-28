@@ -2,17 +2,21 @@
 {% load django_bootstrap5 %}
 {% load i18n %}
 
+
 {% block content %}
     <title>{% translate 'Страница приложений' %}</title>
     <div class="container">
-        <div class="display-4 text-center pt-3 text-light">
-            Список приложений
-        </div>
         <div class="row">
-            <div class="col mt-5">
-                <a class="text-light btn btn-outline-primary btn-lg text-decoration-none display-6" href="{% url 'receipts:list' %}">Просмотр чеков</a>
-                <a class="text-light btn btn-outline-warning btn-lg text-decoration-none display-6" href="{% url 'income:list' %}">Информация о доходах</a>
-                <a class="text-light btn btn-outline-dark btn-lg text-decoration-none display-6" href="{% url 'expense:list' %}">Информация о расходах</a>
+            <div class="display-4 text-center pt-3 text-light">
+                Список приложений
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-xl-12 mt-xl-5 mt-4">
+                <a class="m-3 text-light btn btn-outline-primary btn-lg text-decoration-none display-6" href="{% url 'receipts:list' %}">Просмотр чеков</a>
+                <a class="m-3 text-light btn btn-outline-warning btn-lg text-decoration-none display-6" href="{% url 'income:list' %}">Информация о доходах</a>
+                <a class="m-3 text-light btn btn-outline-dark btn-lg text-decoration-none display-6" href="{% url 'expense:list' %}">Информация о расходах</a>
+                <a class="m-3 text-light btn btn-outline-info btn-lg text-decoration-none display-6" href="{% url 'reports:list' %}">Отчёты</a>
             </div>
         </div>
     </div>
