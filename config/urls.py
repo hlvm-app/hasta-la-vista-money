@@ -58,5 +58,9 @@ urlpatterns = [
         ),
         name='bot',
     ),
+    path('reports',
+         include('hasta_la_vista_money.reports.urls', namespace='reports'),
+         name='reports'
+         ),
     path('adminushka/', admin.site.urls),
 ]
