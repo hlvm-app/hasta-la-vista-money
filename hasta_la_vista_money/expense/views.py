@@ -31,4 +31,6 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, View):
             c=Count('id'),
             total_amount=Sum('total_sum'),
         ).order_by('-month')
-        return render(request, self.template_name, {'months': group_by_months})
+        return render(request, self.template_name, {
+            'expense_by_months': group_by_months,
+        })
