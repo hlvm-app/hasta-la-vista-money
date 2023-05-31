@@ -29,8 +29,11 @@
         {% block content %}
         {% endblock %}
     </div>
+
     <script nonce="{{request.csp_nonce}}" src="{% static 'js/jquery-3.6.3.min.js' %}"></script>
     <script nonce="{{request.csp_nonce}}" src="{% static 'js/script.js' %}"></script>
+    <script nonce="{{request.csp_nonce}}" src="{% static 'js/chart.min.js' %}"></script>
+    <script nonce="{{request.csp_nonce}}" src="{% static 'js/reports.js' %}"></script>
 </body>
 </html>
 
