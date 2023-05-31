@@ -1,3 +1,4 @@
+import datetime
 from enum import Enum
 
 
@@ -47,3 +48,52 @@ class ResponseText(Enum):
 
 class SessionCookie(Enum):
     SESSION_COOKIE_AGE = 1209600
+
+
+CURRENT_YEAR = datetime.date.today().year
+
+
+class NumberMonthOfYear(Enum):
+    NUMBER_FIRST_MONTH_YEAR = 1
+    NUMBER_SECOND_MONTH_YEAR = 2
+    NUMBER_THIRD_MONTH_YEAR = 3
+    NUMBER_FOURTH_MONTH_YEAR = 4
+    NUMBER_FIFTH_MONTH_YEAR = 5
+    NUMBER_SIXTH_MONTH_YEAR = 6
+    NUMBER_SEVENTH_MONTH_YEAR = 7
+    NUMBER_EIGHTH_MONTH_YEAR = 8
+    NUMBER_NINTH_MONTH_YEAR = 9
+    NUMBER_TENTH_MONTH_YEAR = 10
+    NUMBER_ELEVENTH_MONTH_YEAR = 11
+    NUMBER_TWELFTH_MONTH_YEAR = 12
+
+
+MONTH_NUMBERS = {  # noqa: WPS407
+    'Январь': 1,
+    'Февраль': 2,
+    'Март': 3,
+    'Апрель': 4,
+    'Май': 5,
+    'Июнь': 6,
+    'Июль': 7,
+    'Август': 8,
+    'Сентябрь': 9,
+    'Октябрь': 10,
+    'Ноябрь': 11,
+    'Декабрь': 12,
+}
+
+MONTH_NAMES = {  # noqa: WPS407
+    1: 'Январь',
+    2: 'Февраль',
+    3: 'Март',
+    4: 'Апрель',
+    5: 'Май',
+    6: 'Июнь',
+    7: 'Июль',
+    8: 'Август',
+    9: 'Сентябрь',
+    10: 'Октябрь',
+    11: 'Ноябрь',
+    12: 'Декабрь',
+}
