@@ -34,7 +34,7 @@
                 <form  action="" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="receipt_id" value="{{ receipt.id }}">
-                    <button class="remove-button" data-nonce="{{request.csp_nonce}}" type="submit" name="delete_button">
+                    <button class="remove-button" data-nonce="{{request.csp_nonce}}" type="submit" name="delete_receipt_button">
                         <span class="top"></span>
                         <span class="bot"></span>
                     </button>

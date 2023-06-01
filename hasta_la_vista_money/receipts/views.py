@@ -29,7 +29,7 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
     no_permission_url = reverse_lazy('login')
 
     def post(self, request):
-        if 'delete_button' in request.POST:
+        if 'delete_receipt_button' in request.POST:
             receipt_id = request.POST.get('receipt_id')
             receipt = get_object_or_404(self.model, pk=receipt_id)
 
