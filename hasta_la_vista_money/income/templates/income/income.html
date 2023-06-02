@@ -20,20 +20,43 @@
             </div>
             <div class="col mt-2">
 
-                <table class="table table-hover table-bordered border-warning align-middle mb-0 text-light">
-                    <tr>
-                        <th>Тип дохода</th>
-                        <th>Период</th>
-                        <th>Сумма</th>
-                    </tr>
-                    {% for income in incomes %}
-                    <tr>
-                        <td>{{ income.type_income }}</td>
-                        <td>{{ income.month }}</td>
-                        <td>{{ income.amount | comma }}</td>
-                    </tr>
-                    {% endfor %}
+                <table class="table table-hover text-center table-bordered border-warning align-middle mb-0 text-light">
+                    <thead>
+                        <tr class="d-flex">
+                            <th class="col-4">Тип дохода</th>
+                            <th class="col-4">Период</th>
+                            <th class="col-3">Сумма</th>
+                            <th class="col-1">Удалить?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for income in incomes %}
+
+                            <tr class="d-flex">
+
+                                <td class="col-4">{{ income.type_income }}</td>
+                                <td class="col-4">{{ income.month }}</td>
+                                <td class="col-3">{{ income.amount | comma }}</td>
+                                <td class="col-1">
+                                    <div class="wrapper-remove-income-button">
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="income_id" value="{{ income.id }}">
+                                            <button class="remove-income-button" data-nonce="{{request.csp_nonce}}" type="submit" name="delete_income_button">
+                                                <span class="top"></span>
+                                                <span class="bot"></span>
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+
                 </table>
+
+
             </div>
 
         </div>
