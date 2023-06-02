@@ -129,6 +129,7 @@ formCheck.closest('.row').style.display = 'none';
 
 function onClickRemoveButton() {
   const removeButtons = document.querySelectorAll('.remove-button');
+  const removeIncomeButton = document.querySelectorAll('.remove-income-button');
   removeButtons.forEach((button) => {
     button.addEventListener('click', (event) => {
       const confirmed = confirm('Вы уверены, что хотите удалить этот чек?');
@@ -137,4 +138,12 @@ function onClickRemoveButton() {
       }
     });
   });
+  removeIncomeButton.forEach((button) => {
+      button.addEventListener('click', (event) => {
+          const confirmed = confirm('Вы уверены, что хотите удалить этот чек?')
+          if (!confirmed) {
+              event.preventDefault()
+          }
+      })
+  })
 }
