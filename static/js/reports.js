@@ -124,14 +124,14 @@ const incomeExpenseChartsLine = new Chart(incomeExpenseByMonthsChartsLine, {
         datasets: [{
             label: 'Доходы по месяцам',
             data: incomeAmounts,
-            backgroundColor: 'rgb(255, 159, 64, 0.5)',
-            borderColor: 'rgb(255, 159, 64)',
+            backgroundColor: 'rgb(255, 99, 132, 0.5)',
+            borderColor: 'rgb(255, 99, 132)',
             fill: false
         }, {
             label: 'Расходы по месяцам',
             data: receiptSums,
-            backgroundColor: 'rgb(255, 99, 132, 0.5)',
-            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgb(137, 8, 165, 0.5)',
+            borderColor: 'rgb(137, 8, 165)',
             fill: false
         }]
     },
