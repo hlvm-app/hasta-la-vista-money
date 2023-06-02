@@ -1,14 +1,16 @@
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView, ListView
+from django_filters.views import FilterView
+
 from hasta_la_vista_money.constants import Messages
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.income.forms import IncomeForm
 from hasta_la_vista_money.income.models import Income
 
 
-class IncomeView(CustomNoPermissionMixin, ListView):
+class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
     """Представление просмотра доходов из модели, на сайте."""
 
     model = Income
@@ -16,6 +18,14 @@ class IncomeView(CustomNoPermissionMixin, ListView):
     context_object_name = 'incomes'
     permission_denied_message = Messages.ACCESS_DENIED.value
     no_permission_url = reverse_lazy('login')
+
+    def post(self, request):
+        if 'delete_income_button' in request.POST:
+            print('delete_receipt_button')
+            id_income = request.POST.get('income_id')
+            income = get_object_or_404(self.model, pk=id_income)
+            income.delete()
+        return self.get(request)
 
 
 class AddIncome(
