@@ -1,9 +1,8 @@
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, FormView, ListView
+from django.views.generic import CreateView, FormView
 from django_filters.views import FilterView
-
 from hasta_la_vista_money.constants import Messages
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.income.forms import IncomeForm
@@ -21,7 +20,6 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
 
     def post(self, request):
         if 'delete_income_button' in request.POST:
-            print('delete_receipt_button')
             id_income = request.POST.get('income_id')
             income = get_object_or_404(self.model, pk=id_income)
             income.delete()
