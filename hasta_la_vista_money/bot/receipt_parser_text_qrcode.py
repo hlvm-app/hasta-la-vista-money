@@ -43,6 +43,8 @@ def handle_receipt_text_qrcode(message, bot):
             # Из image_file с помощью функции decode_qrcode получает
             # текст из QR-кода.
             text_qr_code = decode_qrcode(image_file.name)
+            if not text_qr_code:
+                return
             parse = ReceiptParser(
                 ReceiptApiReceiver().get_receipt(text_qr_code),
             )
