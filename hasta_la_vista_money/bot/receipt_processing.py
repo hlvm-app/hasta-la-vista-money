@@ -335,7 +335,10 @@ class ReceiptParser:
             number_receipt=number_receipt,
         ).first()
 
-        if check_number_receipt:
+        if 'documentId' in self.json_data['query'] and number_receipt is None:
+            logger.error(ReceiptConstants.RECEIPT_NOT_ACCEPTED.value)
+            return
+        elif check_number_receipt:
             bot_admin.send_message(
                 chat_id, ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
             )
@@ -350,7 +353,7 @@ class ReceiptParser:
                 customer=self.customer,
             )
             self.parse_products()
-            bot_admin.send_message(chat_id, 'Чек принят!')
+            bot_admin.send_message(chat_id, ReceiptConstants.RECEIPT_BE_ADDED.value)
 
     def parse(self, chat_id: int) -> None:
         """
