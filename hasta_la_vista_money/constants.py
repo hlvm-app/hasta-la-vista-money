@@ -8,6 +8,7 @@ class ReceiptConstants(Enum):
     RETAIL_PLACE = 'retailPlace'
     RECEIPT_DATE_TIME = 'dateTime'
     NUMBER_RECEIPT = 'fiscalDocumentNumber'
+    NUMBER_RECEIPT_ID = 'documentId'
     OPERATION_TYPE = 'operationType'
     TOTAL_SUM = 'totalSum'
     PRODUCT_NAME = 'name'
@@ -22,6 +23,10 @@ class ReceiptConstants(Enum):
         'Чек не корректен, перепроверьте в приложении налоговой!',
     )
     RECEIPT_BE_ADDED = 'Чек добавлен в базу данных!'
+    RECEIPT_NOT_ACCEPTED = 'Чек не прошёл валидацию.\n' \
+                           'Вероятно он ещё не попал в базу данных налоговой!\n' \
+                           'Обычно чек попадает в базу не позже суток.\n' \
+                           'Попробуйте позже или внесите данные вручную на сайте.'
 
 
 class Messages(Enum):
