@@ -110,7 +110,7 @@ class ReceiptApiReceiver:
         response = requests.post(url, json=payload, headers=headers, timeout=10)
         self._session_id = response.json()['sessionId']
 
-    def get_receipt(self, qr: str) -> dict:
+    def get_receipt(self, qr: str) -> dict | None:
         """
         Получает информацию о чеке по QR-коду.
 
@@ -127,19 +127,20 @@ class ReceiptApiReceiver:
         Если не удалось получить информацию, записывает сообщение об ошибке в
         лог.
         """
-        ticket_id = self._get_receipt_id(qr)
-        url = f'https://{self.host}/v2/tickets/{ticket_id}'
-        headers = {
-            'Host': self.host,
-            'sessionId': self._session_id,
-            'Device-OS': self.device_os,
-            'clientVersion': self.client_version,
-            'Device-Id': self.device_id,
-            'Accept': self.accept,
-            'User-Agent': self.user_agent,
-            'Accept-Language': self.accept_language,
-        }
         try:
+            ticket_id = self._get_receipt_id(qr)
+            url = f'https://{self.host}/v2/tickets/{ticket_id}'
+            headers = {
+                'Host': self.host,
+                'sessionId': self._session_id,
+                'Device-OS': self.device_os,
+                'clientVersion': self.client_version,
+                'Device-Id': self.device_id,
+                'Accept': self.accept,
+                'User-Agent': self.user_agent,
+                'Accept-Language': self.accept_language,
+            }
+
             resp = requests.get(url, headers=headers, timeout=10)
             return resp.json()
         except json.decoder.JSONDecodeError as json_error:
@@ -353,7 +354,9 @@ class ReceiptParser:
                 customer=self.customer,
             )
             self.parse_products()
-            bot_admin.send_message(chat_id, ReceiptConstants.RECEIPT_BE_ADDED.value)
+            bot_admin.send_message(
+                chat_id, ReceiptConstants.RECEIPT_BE_ADDED.value,
+            )
 
     def parse(self, chat_id: int) -> None:
         """
