@@ -1,5 +1,5 @@
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView
 from django_filters.views import FilterView
@@ -17,6 +17,12 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
     context_object_name = 'incomes'
     permission_denied_message = Messages.ACCESS_DENIED.value
     no_permission_url = reverse_lazy('login')
+
+    def get(self, request, *args, **kwargs):
+        sort_by_month = Income.objects.all().order_by('-month')
+        return render(
+            request, self.template_name, {'income_by_month': sort_by_month},
+        )
 
     def post(self, request):
         if 'delete_income_button' in request.POST:
