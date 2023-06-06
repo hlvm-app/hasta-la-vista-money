@@ -19,7 +19,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
     no_permission_url = reverse_lazy('login')
 
     def get(self, request, *args, **kwargs):
-        sort_by_month = Income.objects.all().order_by('-month')
+        sort_by_month = Income.objects.all().order_by('-date')
         return render(
             request, self.template_name, {'income_by_month': sort_by_month},
         )
