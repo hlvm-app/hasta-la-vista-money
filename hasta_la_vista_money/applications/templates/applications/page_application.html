@@ -5,18 +5,34 @@
 
 {% block content %}
     <title>{% translate 'Страница приложений' %}</title>
-    <div class="container">
-        <div class="row">
-            <div class="display-4 text-center pt-3 text-light">
-                Список приложений
+    <div class="container-fluid">
+        <div class="row d-flex align-items-center">
+            <div class="col-xl-3">
+                <div class="display-6 text-center pt-3 text-light">
+                    Список приложений
+                </div>
             </div>
+            <div class="offset-3 col-xl-1">
+                <a class="m-3 text-light btn btn-outline-primary btn-sm text-decoration-none" href="{% url 'receipts:list' %}">Просмотр чеков</a>
+            </div>
+            <div class="col-xl-1">
+                <a class="m-3 text-light btn btn-outline-warning btn-sm text-decoration-none display-6" href="{% url 'income:list' %}">Информация о доходах</a>
+            </div>
+            <div class="col-xl-1">
+                <a class="m-3 text-light btn btn-outline-dark btn-sm text-decoration-none display-6" href="{% url 'expense:list' %}">Информация о расходах</a>
+            </div>
+            <div class="col-xl-1">
+                <a class="m-3 text-light btn btn-outline-info btn-sm text-decoration-none display-6" href="{% url 'reports:list' %}">Отчёты</a>
+            </div>
+
         </div>
-        <div class="row text-center">
-            <div class="col-xl-12 mt-xl-5 mt-4">
-                <a class="m-3 text-light btn btn-outline-primary btn-lg text-decoration-none display-6" href="{% url 'receipts:list' %}">Просмотр чеков</a>
-                <a class="m-3 text-light btn btn-outline-warning btn-lg text-decoration-none display-6" href="{% url 'income:list' %}">Информация о доходах</a>
-                <a class="m-3 text-light btn btn-outline-dark btn-lg text-decoration-none display-6" href="{% url 'expense:list' %}">Информация о расходах</a>
-                <a class="m-3 text-light btn btn-outline-info btn-lg text-decoration-none display-6" href="{% url 'reports:list' %}">Отчёты</a>
+        <div class="row">
+            <div class="col-xl-12">
+                    {% for account in accounts %}
+                        {{ account.name_account }}
+                        {{ account.balance }}
+                        {{ account.currency }}
+                    {% endfor %}
             </div>
         </div>
     </div>
