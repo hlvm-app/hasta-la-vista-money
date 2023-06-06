@@ -8,10 +8,11 @@ class IncomeForm(BaseForm):
 
     labels = {
         'type_income': _('Тип дохода'),
-        'month': _('Месяц'),
+        'date': _('Дата'),
         'amount': _('Сумма'),
+        'account': _('Счёт'),
     }
 
     class Meta:
         model = Income
-        fields = ['type_income', 'month', 'amount']
+        fields = ['type_income', 'date', 'amount', 'account']
