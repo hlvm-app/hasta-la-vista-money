@@ -1,0 +1,25 @@
+{% load django_bootstrap5 %}
+{% load i18n %}
+{% load static %}
+
+    {% block content %}
+
+    <div class="row d-flex align-items-center">
+            <div class="m-4 col-xl-3">
+                <img src="{%  static 'img/logo/logo.png' %}" alt="Логотип">
+            </div>
+            <div class="offset-4 col-xl-1">
+                <a class="mt-3 text-light btn btn-outline-primary btn-sm text-decoration-none" href="{% url 'receipts:list' %}">Просмотр чеков</a>
+            </div>
+            <div class="col-xl-1">
+                <a class="mt-3 text-light btn btn-outline-warning btn-sm text-decoration-none" href="{% url 'income:list' %}">Информация о доходах</a>
+            </div>
+            <div class="col-xl-1">
+                <a class="mt-3 text-light btn btn-outline-dark btn-sm text-decoration-none " href="{% url 'expense:list' %}">Информация о расходах</a>
+            </div>
+            <div class="col-xl-1">
+                <a class="mt-3 text-light btn btn-outline-info btn-sm text-decoration-none" href="{% url 'reports:list' %}">Отчёты</a>
+            </div>
+
+        </div>
+    {% endblock %}
