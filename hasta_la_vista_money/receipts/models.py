@@ -1,5 +1,8 @@
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
+from hasta_la_vista_money.users.models import User, Account
 
 OPERATION_TYPES = (
     (1, _('Приход')),
@@ -12,6 +15,8 @@ OPERATION_TYPES = (
 class Customer(models.Model):
     """Модель продавца."""
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
     name_seller = models.CharField(max_length=255)  # noqa: WPS432
     retail_place_address = models.CharField(
         default='Нет данных',
@@ -32,6 +37,8 @@ class Customer(models.Model):
 class Receipt(models.Model):
     """Модель чека."""
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
     receipt_date = models.DateTimeField()
     number_receipt = models.IntegerField(default=None, null=True)
     operation_type = models.IntegerField(
@@ -60,6 +67,8 @@ class Receipt(models.Model):
 class Product(models.Model):
     """Модель продуктов."""
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
     product_name = models.CharField(default='Нет данных', max_length=1000)
     price = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     quantity = models.DecimalField(default=0, max_digits=10, decimal_places=2)
