@@ -15,7 +15,7 @@ class PageApplication(CustomNoPermissionMixin, TemplateView):
     no_permission_url = reverse_lazy('login')
 
     def get(self, request, *args, **kwargs):
-        accounts = Account.objects.all()
+        accounts = Account.objects.filter(user=request.user)
         return render(
             request,
             self.template_name,
