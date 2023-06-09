@@ -7,6 +7,7 @@ from hasta_la_vista_money.constants import Messages
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.income.forms import IncomeForm
 from hasta_la_vista_money.income.models import Income
+from hasta_la_vista_money.users.models import Account
 
 
 class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
@@ -19,12 +20,14 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
     no_permission_url = reverse_lazy('login')
 
     def get(self, request, *args, **kwargs):
-        sort_by_month = Income.objects.all().order_by('-date')
+        sort_by_month = Income.objects.filter(
+            user=request.user
+        ).order_by('-date')
         return render(
             request, self.template_name, {'income_by_month': sort_by_month},
         )
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         if 'delete_income_button' in request.POST:
             id_income = request.POST.get('income_id')
             income = get_object_or_404(self.model, pk=id_income)
@@ -47,14 +50,27 @@ class AddIncome(
     success_url = reverse_lazy('income:list')
 
     def get(self, request, *args, **kwargs):
-        income_form = IncomeForm()
-        return self.render_to_response({'income_form': income_form})
+        if request.user:
+            income_form = IncomeForm()
+            income_form.fields['account'].queryset = Account.objects.filter(
+                user=request.user
+            )
+            return self.render_to_response({'income_form': income_form})
 
     def post(self, request, *args, **kwargs):
         income_form = IncomeForm(request.POST)
         if income_form.is_valid():
-            income_form.save()
-            return redirect(reverse_lazy('income:list'))
+            income = income_form.save(commit=False)
+            amount = income_form.cleaned_data.get('amount')
+            account = income_form.cleaned_data.get('account')
+            account_balance = get_object_or_404(Account, id=account.id)
+
+            if account_balance.user == request.user:
+                account_balance.balance += amount
+                account_balance.save()
+                income.user = request.user
+                income.save()
+                return redirect(reverse_lazy('income:list'))
         else:
             return self.render_to_response(  # noqa: WPS503
                 {'income_form': income_form},
