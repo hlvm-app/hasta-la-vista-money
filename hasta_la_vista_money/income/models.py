@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.db import models
 
-from hasta_la_vista_money.users.models import Account
+from hasta_la_vista_money.users.models import Account, User
 
 salary = (
     ('Зарплата', 'Зарплата'),
@@ -30,10 +30,11 @@ months = (
 class Income(models.Model):
     """Модель доходов."""
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
     type_income = models.CharField(max_length=20, choices=salary)
     date = models.DateTimeField()
     amount = models.DecimalField(max_digits=20, decimal_places=2)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.type_income
