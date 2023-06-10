@@ -1,5 +1,5 @@
 from django.db import models
-
+from hasta_la_vista_money.constants import NumericParameter
 from hasta_la_vista_money.users.models import Account, User
 
 CATEGORIES = (
@@ -10,7 +10,11 @@ CATEGORIES = (
 class Expense(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=NumericParameter.ONE_HUNDRED.value)
     date = models.DateTimeField()
-    category = models.CharField(max_length=20, choices=CATEGORIES)
-    description = models.CharField(max_length=250)
+    category = models.CharField(
+        max_length=NumericParameter.TWENTY.value, choices=CATEGORIES,
+    )
+    description = models.CharField(
+        max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
+    )
