@@ -12,7 +12,7 @@ from hasta_la_vista_money.bot.receipt_processing import (
 )
 
 
-def handle_receipt_text_qrcode(message, bot):
+def handle_receipt_text_qrcode(message, bot, user, account):
     """
     Функция по обработке сообщения от пользователя.
 
@@ -47,6 +47,8 @@ def handle_receipt_text_qrcode(message, bot):
                 return
             parse = ReceiptParser(
                 ReceiptApiReceiver().get_receipt(text_qr_code),
+                user,
+                account
             )
             parse.parse(message.chat.id)
     else:

@@ -10,7 +10,7 @@ from hasta_la_vista_money.bot.log_config import logger
 from hasta_la_vista_money.bot.receipt_processing import ReceiptParser
 
 
-def handle_receipt_json(message, bot):
+def handle_receipt_json(message, bot, user, account):
     """
     Функция принимает один аргумент message.
 
@@ -41,7 +41,7 @@ def handle_receipt_json(message, bot):
         )
         json_data = json.loads(file_downloaded)
 
-        parse = ReceiptParser(json_data)
+        parse = ReceiptParser(json_data, user, account)
         parse.parse(message.chat.id)
 
     except json.decoder.JSONDecodeError as json_error:
