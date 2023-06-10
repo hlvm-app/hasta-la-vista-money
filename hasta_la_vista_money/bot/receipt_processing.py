@@ -1,6 +1,7 @@
 import datetime
 import json
 import os
+import traceback
 
 import requests
 from django.db import IntegrityError
@@ -9,7 +10,7 @@ from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.json_parse import JsonParser
 from hasta_la_vista_money.bot.log_config import logger
 from hasta_la_vista_money.bot.services import convert_date_time, convert_number
-from hasta_la_vista_money.constants import ReceiptConstants
+from hasta_la_vista_money.constants import ReceiptConstants, TelegramMessage
 from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
 
 
@@ -184,8 +185,6 @@ class ReceiptParser:
     """
     Класс парсинга чека.
 
-    В методах этого класса, все данные записываются в базу данных.
-
     АТРИБУТЫ:
 
     json_data: dict
@@ -226,9 +225,11 @@ class ReceiptParser:
         В случае ошибки выбрасывает исключение и отправляет ошибку пользователю.
     """
 
-    def __init__(self, json_data):
+    def __init__(self, json_data, user, account):
         """Метод-конструктор инициализирующий аргумент json_data."""
         self.json_data = json_data
+        self.user = user
+        self.account = account
         self.parser = JsonParser(self.json_data)
         self.customer = None
         self.receipt = None
@@ -241,41 +242,48 @@ class ReceiptParser:
         Парсинг включает в себя название продукта, его цену, количество и сумму.
         Также, тип НДС (10%, 20%) и сумма НДС по каждому товару.
         """
-        products_list = self.parser.parse_json(
-            self.json_data, ReceiptConstants.ITEMS_PRODUCT.value,
-        )
-        for product in products_list:
-            product_name = self.parser.parse_json(
-                product, ReceiptConstants.PRODUCT_NAME.value,
+        try:
+            products_list = self.parser.parse_json(
+                self.json_data, ReceiptConstants.ITEMS_PRODUCT.value,
             )
-            price = convert_number(
-                self.parser.parse_json(
-                    product, ReceiptConstants.PRICE.value,
-                ),
-            )
-            quantity = self.parser.parse_json(
-                product, ReceiptConstants.QUANTITY.value,
-            )
-            amount = convert_number(self.parser.parse_json(
-                product, ReceiptConstants.AMOUNT.value,
-            ))
-            nds_type = self.parser.parse_json(
-                product, ReceiptConstants.NDS_TYPE.value,
-            )
-            nds_sum = convert_number(self.parser.parse_json(
-                product, ReceiptConstants.NDS_SUM.value,
-            ))
+            for product in products_list:
+                product_name = self.parser.parse_json(
+                    product, ReceiptConstants.PRODUCT_NAME.value,
+                )
+                price = convert_number(
+                    self.parser.parse_json(
+                        product, ReceiptConstants.PRICE.value,
+                    ),
+                )
+                quantity = self.parser.parse_json(
+                    product, ReceiptConstants.QUANTITY.value,
+                )
+                amount = convert_number(self.parser.parse_json(
+                    product, ReceiptConstants.AMOUNT.value,
+                ))
+                nds_type = self.parser.parse_json(
+                    product, ReceiptConstants.NDS_TYPE.value,
+                )
+                nds_sum = convert_number(self.parser.parse_json(
+                    product, ReceiptConstants.NDS_SUM.value,
+                ))
 
-            products = ReceiptDataWriter.create_product(
-                product_name=product_name,
-                price=price,
-                quantity=quantity,
-                amount=amount,
-                nds_type=nds_type,
-                nds_sum=nds_sum,
+                products = ReceiptDataWriter.create_product(
+                    user=self.user,
+                    account=self.account,
+                    product_name=product_name,
+                    price=price,
+                    quantity=quantity,
+                    amount=amount,
+                    nds_type=nds_type,
+                    nds_sum=nds_sum,
+                )
+                self.product_list.append(products)
+            self.receipt.product.set(self.product_list)
+        except IntegrityError as integrity_error:
+            logger.error(
+                f'Ошибка записи товаров в базу данных: {integrity_error}'
             )
-            self.product_list.append(products)
-        self.receipt.product.set(self.product_list)
 
     def parse_customer(self) -> None:
         """
@@ -285,20 +293,27 @@ class ReceiptParser:
         Фактический адрес расположения магазина, в котором был распечатан чек.
         Название того магазина, где был распечатан чек.
         """
-        name_seller = self.parser.parse_json(
-            self.json_data, ReceiptConstants.NAME_SELLER.value,
-        )
-        retail_place_address = self.parser.parse_json(
-            self.json_data, ReceiptConstants.RETAIL_PLACE_ADDRESS.value,
-        )
-        retail_place = self.parser.parse_json(
-            self.json_data, ReceiptConstants.RETAIL_PLACE.value,
-        )
-        self.customer = ReceiptDataWriter.create_customer(
-            name_seller=name_seller,
-            retail_place_address=retail_place_address,
-            retail_place=retail_place,
-        )
+        try:
+            name_seller = self.parser.parse_json(
+                self.json_data, ReceiptConstants.NAME_SELLER.value,
+            )
+            retail_place_address = self.parser.parse_json(
+                self.json_data, ReceiptConstants.RETAIL_PLACE_ADDRESS.value,
+            )
+            retail_place = self.parser.parse_json(
+                self.json_data, ReceiptConstants.RETAIL_PLACE.value,
+            )
+            self.customer = ReceiptDataWriter.create_customer(
+                user=self.user,
+                account=self.account,
+                name_seller=name_seller,
+                retail_place_address=retail_place_address,
+                retail_place=retail_place,
+            )
+        except IntegrityError as integrity_error:
+            logger.error(
+                f'Ошибка записи продавца в базу данных: {integrity_error}'
+            )
 
     def parse_receipt(self, chat_id: int) -> None:  # noqa: WPS210
         """
@@ -316,47 +331,57 @@ class ReceiptParser:
 
 
         """
-        receipt_date = convert_date_time(self.parser.parse_json(
-            self.json_data, ReceiptConstants.RECEIPT_DATE_TIME.value,
-        ))
-        number_receipt = self.parser.parse_json(
-            self.json_data, ReceiptConstants.NUMBER_RECEIPT.value,
-        )
-        operation_type = self.parser.parse_json(
-            self.json_data, ReceiptConstants.OPERATION_TYPE.value,
-        )
-        total_sum = convert_number(self.parser.parse_json(
-            self.json_data, ReceiptConstants.TOTAL_SUM.value,
-        ))
-
-        if operation_type in {2, 3}:
-            total_sum = -total_sum
-
-        check_number_receipt = Receipt.objects.filter(
-            number_receipt=number_receipt,
-        ).first()
-
-        if 'documentId' in self.json_data['query'] and number_receipt is None:
-            logger.error(ReceiptConstants.RECEIPT_NOT_ACCEPTED.value)
-            return
-        elif check_number_receipt:
-            bot_admin.send_message(
-                chat_id, ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
+        try:
+            receipt_date = convert_date_time(self.parser.parse_json(
+                self.json_data, ReceiptConstants.RECEIPT_DATE_TIME.value,
+            ))
+            number_receipt = self.parser.parse_json(
+                self.json_data, ReceiptConstants.NUMBER_RECEIPT.value,
             )
-            return
-        else:
-            self.parse_customer()
-            self.receipt = ReceiptDataWriter.create_receipt(
-                receipt_date=receipt_date,
+            operation_type = self.parser.parse_json(
+                self.json_data, ReceiptConstants.OPERATION_TYPE.value,
+            )
+            total_sum = convert_number(self.parser.parse_json(
+                self.json_data, ReceiptConstants.TOTAL_SUM.value,
+            ))
+
+            if operation_type in {2, 3}:
+                total_sum = -total_sum
+
+            check_number_receipt = Receipt.objects.filter(
+                user=self.user,
+                account=self.account,
                 number_receipt=number_receipt,
-                operation_type=operation_type,
-                total_sum=total_sum,
-                customer=self.customer,
-            )
-            self.parse_products()
-            bot_admin.send_message(
-                chat_id, ReceiptConstants.RECEIPT_BE_ADDED.value,
-            )
+            ).first()
+
+            if 'query' in self.json_data and number_receipt is None:
+                logger.error(ReceiptConstants.RECEIPT_NOT_ACCEPTED.value)
+                return
+            elif check_number_receipt:
+                bot_admin.send_message(
+                    chat_id, ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
+                )
+                return
+            else:
+                self.parse_customer()
+                self.receipt = ReceiptDataWriter.create_receipt(
+                    user=self.user,
+                    account=self.account,
+                    receipt_date=receipt_date,
+                    number_receipt=number_receipt,
+                    operation_type=operation_type,
+                    total_sum=total_sum,
+                    customer=self.customer,
+                )
+                self.parse_products()
+                bot_admin.send_message(
+                    chat_id, ReceiptConstants.RECEIPT_BE_ADDED.value,
+                )
+        except IntegrityError as integrity_error:
+            if 'account' in str(integrity_error):
+                logger.error(TelegramMessage.NOT_CREATE_ACCOUNT.value)
+            else:
+                logger.error(TelegramMessage.ERROR_DATABASE_RECORD.value)
 
     def parse(self, chat_id: int) -> None:
         """
@@ -367,35 +392,26 @@ class ReceiptParser:
         :argument chat_id: ID пользователя, кому направлять сообщения.
 
 
-        :raises: ValueError, KeyError, AttributeError, TypeError, IntegrityError
-
         """
-        try:
-            self.parse_receipt(chat_id)
-        except (
-            ValueError,
-            KeyError,
-            AttributeError,
-            TypeError,
-        ) as value_key_error:
-            logger.error(value_key_error)
-        except IntegrityError:
-            bot_admin.send_message(
-                ReceiptConstants.RECEIPT_CANNOT_BE_ADDED.value,
-            )
-        except Exception as error:
-            logger.error(
-                f'{error}Время возникновения исключения: '
-                f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S}',
-            )
+        self.parse_receipt(chat_id)
 
 
 class ReceiptDataWriter:
     @classmethod
     def create_product(  # noqa: WPS211
-        cls, product_name, price, quantity, amount, nds_type, nds_sum,
+        cls,
+        user,
+        account,
+        product_name,
+        price,
+        quantity,
+        amount,
+        nds_type,
+        nds_sum,
     ):
         return Product.objects.create(
+            user=user,
+            account=account,
             product_name=product_name,
             price=price,
             quantity=quantity,
@@ -405,8 +421,17 @@ class ReceiptDataWriter:
         )
 
     @classmethod
-    def create_customer(cls, name_seller, retail_place_address, retail_place):
+    def create_customer(  # noqa: WPS211
+        cls,
+        user,
+        account,
+        name_seller,
+        retail_place_address,
+        retail_place
+    ):
         return Customer.objects.create(
+            user=user,
+            account=account,
             name_seller=name_seller,
             retail_place_address=retail_place_address,
             retail_place=retail_place,
@@ -415,6 +440,8 @@ class ReceiptDataWriter:
     @classmethod
     def create_receipt(  # noqa: WPS211
         cls,
+        user,
+        account,
         receipt_date,
         number_receipt,
         operation_type,
@@ -422,6 +449,8 @@ class ReceiptDataWriter:
         customer,
     ):
         return Receipt.objects.create(
+            user=user,
+            account=account,
             receipt_date=receipt_date,
             number_receipt=number_receipt,
             operation_type=operation_type,
