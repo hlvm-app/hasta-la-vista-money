@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.db import models
-
+from hasta_la_vista_money.constants import NumericParameter
 from hasta_la_vista_money.users.models import Account, User
 
 salary = (
@@ -32,9 +32,13 @@ class Income(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    type_income = models.CharField(max_length=20, choices=salary)
+    type_income = models.CharField(
+        max_length=NumericParameter.TWENTY.value, choices=salary,
+    )
     date = models.DateTimeField()
-    amount = models.DecimalField(max_digits=20, decimal_places=2)
+    amount = models.DecimalField(
+        max_digits=NumericParameter.TWENTY.value, decimal_places=2,
+    )
 
     def __str__(self):
         return self.type_income
