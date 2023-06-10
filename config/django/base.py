@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'django_filters',
     'hasta_la_vista_money',
+    'hasta_la_vista_money.account',
     'hasta_la_vista_money.applications',
     'hasta_la_vista_money.bot',
     'hasta_la_vista_money.expense',
