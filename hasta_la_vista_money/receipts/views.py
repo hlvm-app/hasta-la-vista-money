@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django_filters import rest_framework as filters
 from django_filters.views import FilterView
-from hasta_la_vista_money.constants import Messages, ReceiptConstants
+from hasta_la_vista_money.constants import MessageOnSite, ReceiptConstants
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.receipts.forms import (
     CustomerForm,
@@ -25,7 +25,7 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
     filterset_class = ReceiptFilter
     ordering = ['-receipt_date']
     filter_backends = (filters.DjangoFilterBackend,)
-    permission_denied_message = Messages.ACCESS_DENIED.value
+    permission_denied_message = MessageOnSite.ACCESS_DENIED.value
     no_permission_url = reverse_lazy('login')
 
     def post(self, request):
@@ -51,9 +51,9 @@ class ReceiptCreateView(
     model = Receipt
     template_name = 'receipts/create_receipt.html'
     success_url = 'receipts:list'
-    permission_denied_message = Messages.ACCESS_DENIED.value
+    permission_denied_message = MessageOnSite.ACCESS_DENIED.value
     no_permission_url = reverse_lazy('login')
-    success_message = Messages.SUCCESS_MESSAGE_CREATE_RECEIPT.value
+    success_message = MessageOnSite.SUCCESS_MESSAGE_CREATE_RECEIPT.value
 
     def get(self, request, *args, **kwargs):
         existing_sellers = Customer.objects.all()
