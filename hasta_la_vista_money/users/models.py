@@ -17,7 +17,7 @@ class TelegramUser(models.Model):
     username = models.CharField(
         max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
     )
-    telegram_id = models.IntegerField(unique=False)
+    telegram_id = models.BigIntegerField(unique=True)
 
 
 class Account(models.Model):
