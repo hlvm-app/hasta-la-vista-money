@@ -40,7 +40,7 @@ class ReceiptConstants(Enum):
     )
 
 
-class Messages(Enum):
+class MessageOnSite(Enum):
     SUCCESS_MESSAGE_LOGIN = 'Вы успешно авторизовались!'
     SUCCESS_MESSAGE_REGISTRATION = 'Регистрация прошла успешно!'
     ACCESS_DENIED = (
@@ -51,10 +51,49 @@ class Messages(Enum):
     )
 
 
+class TelegramMessage(Enum):
+    ALREADY_LOGGING_LINK_ACCOUNT = (
+        'Вы уже авторизованы и связаны с этим аккаунтом.',
+    )
+    ALREADY_LINK_ANOTHER_ACCOUNT = (
+        'Ваш аккаунт уже связан с другим Telegram аккаунтом.',
+    )
+    AUTHORIZATION_SUCCESSFUL = (
+        'Авторизация прошла успешно. Вы привязаны к своему аккаунту.',
+    )
+    INVALID_USERNAME_PASSWORD = (
+        'Неверный логин или пароль. Попробуйте ещё раз.',
+    )
+    INCORRECT_FORMAT = 'Некорректный формат. Повторите ввод логина и пароля.'
+    REQUIRED_AUTHORIZATION = ''.join((
+        'Требуется авторизация.\n',
+        'Введите логин и пароль в формате: логин:пароль',
+    ))
+    ACCEPTED_FORMAT_JSON = (
+        'Принимаются файлы JSON, текст по формату и фотографии QR-кодов',
+    )
+
+
 class HTTPStatus(Enum):
     SUCCESS_CODE = 200
     SERVER_ERROR = 500
     NOT_FOUND = 404
+
+
+class NumericParameter(Enum):
+    TEN = 10
+    TWENTY = 10
+    THIRTY = 30
+    FORTY = 40
+    FIFTY = 50
+    SIXTY = 60
+    SEVENTY = 70
+    EIGHTY = 80
+    NINTY = 90
+    ONE_HUNDRED = 100
+    ONE_HUNDRED_FIFTY = 150
+    TWO_HUNDRED = 200
+    TWO_HUNDRED_FIFTY = 250
 
 
 class ResponseText(Enum):
