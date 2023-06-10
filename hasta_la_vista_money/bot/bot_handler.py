@@ -4,8 +4,9 @@ from hasta_la_vista_money.bot.receipt_parser_text import handle_receipt_text
 from hasta_la_vista_money.bot.receipt_parser_text_qrcode import (
     handle_receipt_text_qrcode,
 )
+from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import TelegramMessage
-from hasta_la_vista_money.users.models import Account, TelegramUser, User
+from hasta_la_vista_money.users.models import TelegramUser, User
 
 
 @bot_admin.message_handler(commands=['auth'])

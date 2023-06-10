@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from hasta_la_vista_money.constants import MessageOnSite
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
-from hasta_la_vista_money.users.models import Account
+from hasta_la_vista_money.account.models import Account
 
 
 class PageApplication(CustomNoPermissionMixin, TemplateView):

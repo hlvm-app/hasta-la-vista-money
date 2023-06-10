@@ -7,7 +7,7 @@ from hasta_la_vista_money.constants import MessageOnSite
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.income.forms import IncomeForm
 from hasta_la_vista_money.income.models import Income
-from hasta_la_vista_money.users.models import Account
+from hasta_la_vista_money.account.models import Account
 
 
 class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
