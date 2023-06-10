@@ -72,6 +72,8 @@ class TelegramMessage(Enum):
     ACCEPTED_FORMAT_JSON = (
         'Принимаются файлы JSON, текст по формату и фотографии QR-кодов',
     )
+    NOT_CREATE_ACCOUNT = 'Не создан счёт! Сначала создайте счёт на сайте!'
+    ERROR_DATABASE_RECORD = 'Ошибка записи в базу данных!'
 
 
 class HTTPStatus(Enum):
