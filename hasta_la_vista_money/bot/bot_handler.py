@@ -5,7 +5,7 @@ from hasta_la_vista_money.bot.receipt_parser_text_qrcode import (
     handle_receipt_text_qrcode,
 )
 from hasta_la_vista_money.constants import TelegramMessage
-from hasta_la_vista_money.users.models import TelegramUser, User
+from hasta_la_vista_money.users.models import Account, TelegramUser, User
 
 
 @bot_admin.message_handler(commands=['auth'])
@@ -22,6 +22,8 @@ def handle_auth(message):
         username = auth_data[0].strip()
         password = auth_data[1].strip()
         user = User.objects.filter(username=username).first()
+        telegram_username = message.from_user.username
+
         if user and user.check_password(password):
             existing_telegram_user = TelegramUser.objects.filter(
                 user=user,
@@ -39,7 +41,9 @@ def handle_auth(message):
                     )
             else:
                 TelegramUser.objects.create(
-                    user=user, telegram_id=message.from_user.id,
+                    user=user,
+                    username=telegram_username,
+                    telegram_id=message.from_user.id,
                 )
                 bot_admin.reply_to(
                     message, TelegramMessage.AUTHORIZATION_SUCCESSFUL.value,
@@ -54,17 +58,22 @@ def handle_auth(message):
 
 @bot_admin.message_handler(content_types=['text', 'document', 'photo'])
 def handle_receipt(message):
-    telegram_user = message.from_user.id
+    telegram_user_id = message.from_user.id
 
-    user = TelegramUser.objects.filter(telegram_id=telegram_user).first()
+    telegram_user = TelegramUser.objects.filter(
+        telegram_id=telegram_user_id
+    ).first()
 
-    if user:
+    if telegram_user:
+        user = telegram_user.user
+        account = Account.objects.filter(user=telegram_user.user).first()
+
         if message.content_type == 'text':
-            handle_receipt_text(message, bot_admin)
+            handle_receipt_text(message, bot_admin, user, account)
         elif message.content_type == 'photo':
-            handle_receipt_text_qrcode(message, bot_admin)
+            handle_receipt_text_qrcode(message, bot_admin, user, account)
         elif message.content_type == 'document':
-            handle_receipt_json(message, bot_admin)
+            handle_receipt_json(message, bot_admin, user, account)
         else:
             bot_admin.send_message(
                 message.chat.id,
