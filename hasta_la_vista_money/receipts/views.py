@@ -1,16 +1,14 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from django_filters import rest_framework as filters
 from django_filters.views import FilterView
 from hasta_la_vista_money.constants import MessageOnSite, ReceiptConstants
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.receipts.forms import (
     CustomerForm,
     ProductFormSet,
-    ReceiptFilter,
     ReceiptForm,
 )
 from hasta_la_vista_money.receipts.models import Customer, Receipt
@@ -22,11 +20,15 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
     template_name = 'receipts/receipts.html'
     model = Receipt
     context_object_name = 'receipts'
-    filterset_class = ReceiptFilter
     ordering = ['-receipt_date']
-    filter_backends = (filters.DjangoFilterBackend,)
     permission_denied_message = MessageOnSite.ACCESS_DENIED.value
     no_permission_url = reverse_lazy('login')
+
+    def get(self, request, *args, **kwargs):
+        receipts = Receipt.objects.filter(
+            user=request.user,
+        )
+        return render(request, self.template_name, {'receipts': receipts})
 
     def post(self, request):
         if 'delete_receipt_button' in request.POST:
