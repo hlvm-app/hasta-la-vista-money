@@ -3,7 +3,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, ListView
-from hasta_la_vista_money.constants import Messages
+from hasta_la_vista_money.constants import MessageOnSite
 from hasta_la_vista_money.users.forms import RegisterUserForm, UserLoginForm
 from hasta_la_vista_money.users.models import User
 
@@ -18,7 +18,7 @@ class LoginUser(SuccessMessageMixin, LoginView):
     model = User
     template_name = 'users/login.html'
     form_class = UserLoginForm
-    success_message = Messages.SUCCESS_MESSAGE_LOGIN.value
+    success_message = MessageOnSite.SUCCESS_MESSAGE_LOGIN.value
     next_page = '/applications'
 
     def get_context_data(self, **kwargs):
@@ -31,7 +31,7 @@ class CreateUser(SuccessMessageMixin, CreateView):
     model = User
     template_name = 'users/registration.html'
     form_class = RegisterUserForm
-    success_message = Messages.SUCCESS_MESSAGE_REGISTRATION.value
+    success_message = MessageOnSite.SUCCESS_MESSAGE_REGISTRATION.value
     success_url = reverse_lazy('login')
 
     def get_context_data(self, **kwargs):
