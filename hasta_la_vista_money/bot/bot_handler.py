@@ -1,10 +1,10 @@
+from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.receipt_parser_json import handle_receipt_json
 from hasta_la_vista_money.bot.receipt_parser_text import handle_receipt_text
 from hasta_la_vista_money.bot.receipt_parser_text_qrcode import (
     handle_receipt_text_qrcode,
 )
-from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import TelegramMessage
 from hasta_la_vista_money.users.models import TelegramUser, User
 
@@ -17,7 +17,7 @@ def handle_start(message):
     bot_admin.register_next_step_handler(message, handle_auth)
 
 
-def handle_auth(message):
+def handle_auth(message):  # noqa: WPS210
     auth_data = message.text.split(':')
     if len(auth_data) == 2:
         username = auth_data[0].strip()
@@ -62,7 +62,7 @@ def handle_receipt(message):
     telegram_user_id = message.from_user.id
 
     telegram_user = TelegramUser.objects.filter(
-        telegram_id=telegram_user_id
+        telegram_id=telegram_user_id,
     ).first()
 
     if telegram_user:
