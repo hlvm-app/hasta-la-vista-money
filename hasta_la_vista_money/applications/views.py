@@ -8,7 +8,11 @@ from hasta_la_vista_money.constants import MessageOnSite
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 
 
-class PageApplication(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
+class PageApplication(
+    CustomNoPermissionMixin,
+    SuccessMessageMixin,
+    TemplateView,
+):
     """Отображает список приложений в проекте на сайте."""
 
     model = Account
