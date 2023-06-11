@@ -6,7 +6,10 @@
 
     <div class="row d-flex align-items-center">
             <div class="m-4 col-xl-3">
-                <img src="{%  static 'img/logo/logo.png' %}" alt="Логотип">
+                <a href="{% url 'applications:list' %}">
+                    <img src="{%  static 'img/logo/logo.png' %}" alt="Логотип">
+                </a>
+
             </div>
             <div class="offset-4 col-xl-1">
                 <a class="mt-3 text-light btn btn-outline-primary btn-sm text-decoration-none" href="{% url 'receipts:list' %}">Просмотр чеков</a>
