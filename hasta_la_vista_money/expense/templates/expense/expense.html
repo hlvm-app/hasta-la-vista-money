@@ -9,7 +9,22 @@
 
 {% block content %}
     <title>Информация о расходах</title>
+    <div class="container-fluid">
+        {% include 'header.html' %}
+    </div>
     <div class="container">
+        <div class="modal fade" id="example">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Добавить расходную операцию</h5>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Добавить!</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col">
                 <div class="display-4 text-center pt-3 text-light">
@@ -21,6 +36,7 @@
             <div class="link-wrapper">
                 <a class="link-application btn btn-outline-warning" href="{% url 'applications:list' %}">Вернуться на страницу с приложениями</a>
             </div>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#example">Открыть модальное окно</button>
             <div class="col pt-5">
                 <table class="table table-hover table-bordered text-light">
                     <tr>

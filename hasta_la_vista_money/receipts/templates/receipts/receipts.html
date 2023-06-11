@@ -10,13 +10,12 @@
 {% block content %}
     <title>Список чеков</title>
 
+    <div class="container-fluid">
+        {% include 'header.html' %}
+    </div>
     <div class="container">
-        <div class="display-4 text-center pt-3 text-light">
-            Список чеков
-        </div>
         <div class="row mt-5 justify-content-center">
             <div class="link-wrapper p-0">
-                <a class="link-application btn btn-outline-warning" href="{% url 'applications:list' %}">Вернуться на страницу с приложениями</a>
                 <a class="add-receipt-button btn btn-outline-danger" href="{% url 'receipts:create' %}">Добавить чек вручную</a>
             </div>
             {% for receipt in receipts %}

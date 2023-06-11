@@ -9,10 +9,10 @@
 
 {% block content %}
     <title>Информация о доходе</title>
+    <div class="container-fluid">
+        {% include 'header.html' %}
+    </div>
     <div class="container">
-        <div class="display-3 text-center pt-3 text-light">
-            Доход
-        </div>
         <div class="row">
             <div class="link-wrapper mt-5">
                 <a class="link-application btn btn-outline-info" href="{% url 'applications:list' %}">Вернуться на страницу с приложениями</a>
