@@ -1,10 +1,13 @@
 import datetime
+import decimal
 import json
 import os
 
 import requests
 from django.db import IntegrityError
+from django.shortcuts import get_object_or_404
 from dotenv import load_dotenv
+from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.json_parse import JsonParser
 from hasta_la_vista_money.bot.log_config import logger
@@ -314,7 +317,7 @@ class ReceiptParser:
                 f'Ошибка записи продавца в базу данных: {integrity_error}',
             )
 
-    def parse_receipt(self, chat_id: int) -> None:  # noqa: WPS231 C901
+    def parse_receipt(self, chat_id: int) -> None:  # noqa: WPS231 C901 WPS210
         """
         Метод класса для парсинга основной информации о чеке.
 
@@ -363,6 +366,11 @@ class ReceiptParser:
                 return
             else:
                 self.parse_customer()
+                account = self.account
+                account_balance = get_object_or_404(Account, id=account.id)
+                if account_balance.user == self.user:
+                    account_balance.balance -= decimal.Decimal(total_sum)
+                    account_balance.save()
                 self.receipt = ReceiptDataWriter.create_receipt(
                     user=self.user,
                     account=self.account,
