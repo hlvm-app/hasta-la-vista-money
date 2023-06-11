@@ -1,8 +1,8 @@
 from datetime import datetime
 
 from django.db import models
-from hasta_la_vista_money.constants import NumericParameter
 from hasta_la_vista_money.account.models import Account
+from hasta_la_vista_money.constants import NumericParameter
 from hasta_la_vista_money.users.models import User
 
 salary = (
