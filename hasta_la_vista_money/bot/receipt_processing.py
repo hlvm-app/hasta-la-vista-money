@@ -1,7 +1,6 @@
 import datetime
 import json
 import os
-import traceback
 
 import requests
 from django.db import IntegrityError
@@ -282,7 +281,7 @@ class ReceiptParser:
             self.receipt.product.set(self.product_list)
         except IntegrityError as integrity_error:
             logger.error(
-                f'Ошибка записи товаров в базу данных: {integrity_error}'
+                f'Ошибка записи товаров в базу данных: {integrity_error}',
             )
 
     def parse_customer(self) -> None:
@@ -312,10 +311,10 @@ class ReceiptParser:
             )
         except IntegrityError as integrity_error:
             logger.error(
-                f'Ошибка записи продавца в базу данных: {integrity_error}'
+                f'Ошибка записи продавца в базу данных: {integrity_error}',
             )
 
-    def parse_receipt(self, chat_id: int) -> None:  # noqa: WPS210
+    def parse_receipt(self, chat_id: int) -> None:  # noqa: WPS231 C901
         """
         Метод класса для парсинга основной информации о чеке.
 
@@ -427,7 +426,7 @@ class ReceiptDataWriter:
         account,
         name_seller,
         retail_place_address,
-        retail_place
+        retail_place,
     ):
         return Customer.objects.create(
             user=user,
