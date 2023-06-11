@@ -1,5 +1,5 @@
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from hasta_la_vista_money.account.forms import AddAccountForm
@@ -31,8 +31,13 @@ class PageApplication(
         return context
 
     def post(self, request, *args, **kwargs):
-        account_form = AddAccountForm(request.POST)
+        if 'delete_account_button' in request.POST:
+            account_id = request.POST.get('account_id')
+            account = get_object_or_404(self.model, pk=account_id)
+            account.delete()
+            return redirect(reverse_lazy(self.success_url))
 
+        account_form = AddAccountForm(request.POST)
         if account_form.is_valid():
             add_account = account_form.save(commit=False)
             if request.user:
@@ -41,5 +46,7 @@ class PageApplication(
                 return redirect(reverse_lazy(self.success_url))
         else:
             return self.render_to_response(
-                {'account_form': account_form},
+                {
+                    'add_account_form': account_form,
+                },
             )
