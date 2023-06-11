@@ -14,7 +14,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">
-                            Добавить новый счёт
+                            Добавить счёт
                         </h5>
                     </div>
                     <div class="modal-body">
@@ -27,6 +27,7 @@
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-xl-12 d-flex justify-content-end pe-5">
                 <div class="account bg-light border border-primary border-2 rounded-4">
@@ -36,7 +37,7 @@
                                 <th>Название счёта</th>
                                 <th>Баланс счёта</th>
                                 <th>Валюта счёта</th>
-                                <th><button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#add-account">Добавить счёт</button></th>
+                                <th><button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#add-account">Добавить счёт</button></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,8 +46,18 @@
                                     <td>{{ account.name_account }}</td>
                                     <td>{{ account.balance | comma }}</td>
                                     <td>{{ account.currency }}</td>
-                                    <td></td>
+                                    <td class="wrapper-remove-account-button">
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="account_id" value="{{ account.id }}">
+                                            <button class="remove-account-button" data-nonce="{{request.csp_nonce}}" type="submit" name="delete_account_button">
+                                                <span class="top"></span>
+                                                <span class="bot"></span>
+                                            </button>
+                                        </form>
+                                    </td>
                                 </tr>
+
                             {% endfor %}
                         </tbody>
                     </table>
