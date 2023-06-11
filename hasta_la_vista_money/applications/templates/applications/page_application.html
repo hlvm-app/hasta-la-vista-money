@@ -9,39 +9,48 @@
     <title>{% translate 'Страница приложений' %}</title>
     <div class="container-fluid">
         {% include 'header.html' %}
-
+        <div id="add-account" class="modal fade" >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            Добавить новый счёт
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form" method="post">
+                            {% csrf_token %}
+                            {% bootstrap_form add_account_form layout='horizontal' %}
+                            {% bootstrap_button 'Добавить счёт' %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-xl-12 d-flex justify-content-end pe-5">
                 <div class="account bg-light border border-primary border-2 rounded-4">
-
-                        <table class="table table-hover table-borderless">
-                            <thead>
-                                <tr>
-                                    <th>Название счёта</th>
-                                    <th>Баланс счёта</th>
-                                    <th>Валюта счёта</th>
-                                    <th>Добавить счёт</th>
+                    <table class="table table-hover table-borderless">
+                        <thead>
+                            <tr>
+                                <th>Название счёта</th>
+                                <th>Баланс счёта</th>
+                                <th>Валюта счёта</th>
+                                <th><button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#add-account">Добавить счёт</button></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for account in accounts %}
+                                <tr class="text-center">
+                                    <td>{{ account.name_account }}</td>
+                                    <td>{{ account.balance | comma }}</td>
+                                    <td>{{ account.currency }}</td>
+                                    <td></td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {% for account in accounts %}
-                                    <tr class="text-center">
-                                        <td>{{ account.name_account }}</td>
-                                        <td>{{ account.balance | comma }}</td>
-                                        <td>{{ account.currency }}</td>
-                                        <td></td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-
-
-                        </table>
-
-
-
-
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
-
             </div>
         </div>
     </div>
