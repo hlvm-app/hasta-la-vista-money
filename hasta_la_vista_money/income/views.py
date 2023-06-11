@@ -3,11 +3,11 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView
 from django_filters.views import FilterView
+from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import MessageOnSite
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.income.forms import IncomeForm
 from hasta_la_vista_money.income.models import Income
-from hasta_la_vista_money.account.models import Account
 
 
 class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
@@ -59,6 +59,7 @@ class AddIncome(
 
     def post(self, request, *args, **kwargs):
         income_form = IncomeForm(request.POST)
+
         if income_form.is_valid():
             income = income_form.save(commit=False)
             amount = income_form.cleaned_data.get('amount')
