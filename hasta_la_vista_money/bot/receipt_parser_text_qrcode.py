@@ -48,7 +48,7 @@ def handle_receipt_text_qrcode(message, bot, user, account):
             parse = ReceiptParser(
                 ReceiptApiReceiver().get_receipt(text_qr_code),
                 user,
-                account
+                account,
             )
             parse.parse(message.chat.id)
     else:
