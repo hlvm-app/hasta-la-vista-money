@@ -69,6 +69,49 @@
     margin-left: 80%;
 }
 
+/* Style for button Remove Account */
+.wrapper-remove-account-button {
+    position: relative;
+}
+
+.remove-account-button {
+    position: absolute;
+    left: 50%;
+    background: none;
+    border: 0;
+    width: 15px;
+    height: 15px;
+    transform: rotate(45deg) scale(2);
+}
+
+.remove-account-button .top,
+.remove-account-button .bot {
+    display: block;
+    background: #000;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    animation-timing-function: cubic-bezier(1, 0, 0, 1);
+    animation-iteration-count: 1;
+}
+
+.remove-account-button .top {
+    height: 100%;
+    width: 2px;
+    margin-left: -1px;
+    transform: skewY(45deg);
+    top: 0;
+}
+
+.remove-account-button .bot {
+    width: 100%;
+    height: 2px;
+    margin-top: -1px;
+    transform: skewX(-45deg);
+    left: 0;
+}
+
+/* Style for button Remove Income */
 .wrapper-remove-income-button {
     position: relative;
     left: 40%;
