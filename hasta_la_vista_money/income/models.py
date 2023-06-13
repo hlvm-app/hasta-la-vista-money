@@ -5,19 +5,6 @@ from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import NumericParameter
 from hasta_la_vista_money.users.models import User
 
-# TYPE_INCOME = (
-#     ('Зарплата', 'Зарплата'),
-#     ('Алименты', 'Алименты'),
-#     ('Возврат денег (Налог, покупка)', 'Возврат денег (Налог, покупка)'),
-#     ('Доход от аренды', 'Доход от аренды'),
-#     ('Дивиденды', 'Дивиденды'),
-#     ('Кредит', 'Кредит'),
-#     ('Лотереи (Азартные игры)', 'Лотереи (Азартные игры)'),
-#     ('Подарки', 'Подарки'),
-#     ('Продажа', 'Продажа'),
-#     ('Членские взносы и гранды', 'Членские взносы и гранды'),
-# )
-
 
 class IncomeType(models.Model):
     name = models.CharField(max_length=NumericParameter.TWO_HUNDRED_FIFTY.value)
