@@ -48,6 +48,7 @@ CSRF_TRUSTED_ORIGINS = os.environ.get(
 # Application definition
 
 INSTALLED_APPS = [
+    'bootstrap_datepicker_plus',
     'csp',
     'django.contrib.admin',
     'django.contrib.auth',
