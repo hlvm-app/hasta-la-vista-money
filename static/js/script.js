@@ -44,10 +44,10 @@ function removeForm(e) {
 
 function toggleNewSellerField() {
 
-    var existingSeller = document.getElementById('id_existing_seller');
-    var newSeller = document.getElementById('form-create-receipt').getElementsByClassName('row')[1]
-    var addNewSellerBtn = document.getElementById('add-new-seller-btn');
-    var addNewSellerCheckBox = document.getElementById('id_add_new_seller');
+    const existingSeller = document.getElementById('id_existing_seller');
+    const newSeller = document.getElementById('form-create-receipt').getElementsByClassName('row')[1];
+    const addNewSellerBtn = document.getElementById('add-new-seller-btn');
+    const addNewSellerCheckBox = document.getElementById('id_add_new_seller');
 
     if (existingSeller.value === 'other') {
         newSeller.style.display = 'flex';
@@ -97,7 +97,7 @@ function totalSum() {
         let amountInputs = formInput.querySelectorAll('.amount');
         amountInputs.forEach(amountInput => { 
             if (amountInput) {  
-                total_sum += parseFloat(amountInput.value);  
+                total_sum += parseFloat(amountInput.value);
             }  
         }); 
     });  
