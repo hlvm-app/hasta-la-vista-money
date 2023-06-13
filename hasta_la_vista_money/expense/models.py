@@ -8,14 +8,19 @@ CATEGORIES = (
 )
 
 
+class ExpenseType(models.Model):
+    name = models.CharField(max_length=NumericParameter.TWO_HUNDRED_FIFTY.value)
+
+    def __str__(self):
+        return self.name
+
+
 class Expense(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     account = models.ForeignKey(Account, on_delete=models.PROTECT)
     name = models.CharField(max_length=NumericParameter.ONE_HUNDRED.value)
     date = models.DateTimeField()
-    category = models.CharField(
-        max_length=NumericParameter.TWENTY.value, choices=CATEGORIES,
-    )
+    category = models.ForeignKey(ExpenseType, on_delete=models.PROTECT)
     description = models.CharField(
         max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
     )
