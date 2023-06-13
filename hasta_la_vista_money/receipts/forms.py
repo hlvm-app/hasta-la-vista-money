@@ -75,7 +75,7 @@ class CustomerForm(BaseForm):
         model = Customer
         fields = ['existing_seller', 'new_seller', 'add_new_seller']
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         """
         Инициализирующий класс-конструктор.
 
@@ -83,13 +83,23 @@ class CustomerForm(BaseForm):
         Потом добавляем в начало выпадающего списка нужные поля и выводим
         список существующих продавцов.
         """
+        self.user = user
         super().__init__(*args, **kwargs)
-        self.fields['existing_seller'].initial = None
-        self.fields[
-            'existing_seller'
-        ].choices = [('--', '-------'), ('other', 'Другой продавец')] + list(
-            self.fields['existing_seller'].choices,
-        )[1:]
+        existing_seller_field = self.fields['existing_seller']
+        existing_seller_field.initial = None
+        existing_seller_field.queryset = Customer.objects.filter(
+            user=user,
+        ).distinct(
+            'name_seller',
+        ).order_by(
+            'name_seller',
+        )
+        existing_seller_field.widget.attrs['id'] = 'id_existing_seller'
+        existing_seller_field.choices = [(
+            '--', '-------',
+        ), (
+            'other', 'Другой продавец',
+        )] + list(existing_seller_field.choices)[1:]
 
     def clean(self):
         """
@@ -122,7 +132,10 @@ class CustomerForm(BaseForm):
                 ),
             )
         if add_new_seller and new_seller:
-            new_customer = Customer(name_seller=new_seller)
+            new_customer = Customer(
+                user=self.user,
+                name_seller=new_seller,
+            )
             new_customer.save()
             new_customer.delete()
         return cleaned_data
@@ -155,6 +168,7 @@ class ReceiptForm(BaseForm):
     """Форма для внесения данных по чеку."""
 
     labels = {
+        'account': _('Счёт'),
         'receipt_date': _('Дата и время чека'),
         'number_receipt': _('Номер документа'),
         'operation_type': _('Тип операции'),
@@ -164,7 +178,11 @@ class ReceiptForm(BaseForm):
     class Meta:
         model = Receipt
         fields = [
-            'receipt_date', 'number_receipt', 'operation_type', 'total_sum',
+            'account',
+            'receipt_date',
+            'number_receipt',
+            'operation_type',
+            'total_sum',
         ]
         widgets = {
             'total_sum': NumberInput(
