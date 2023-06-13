@@ -60,8 +60,7 @@
 }
 
 .add-income {
-    position: absolute;
-    right: 16.2%;
+    float: right;
 }
 
 .button-add-form-income {
