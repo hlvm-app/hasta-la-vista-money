@@ -13,10 +13,28 @@
         {% include 'header.html' %}
     </div>
     <div class="container">
+        <div id="add-income" class="modal fade" >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            Добавить доход
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form" method="post">
+                            {% csrf_token %}
+                            {% bootstrap_form income_form layout='horizontal' horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
+                            {% bootstrap_button button_text_create_income button_type="submit" button_class="add-income btn btn-primary"  %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="link-wrapper mt-5">
-                <a class="link-application btn btn-outline-info" href="{% url 'applications:list' %}">Вернуться на страницу с приложениями</a>
-                <a class="button-add-form-income btn btn-outline-primary" href="{% url 'income:create' %}">Добавить новый доход</a>
+                <button type="button" class="button-add-form-income btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#add-income">Добавить новый доход</button>
             </div>
             <div class="col mt-2">
 
