@@ -21,7 +21,7 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
 
     @classmethod
     def get_month_total_amount_income(cls):
-        return Income.objects.values('month').annotate(
+        return Income.objects.values('date').annotate(
             total_amount=Sum('amount'),
         )
 
@@ -73,7 +73,7 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         # Создание словаря для хранения сумм доходов/чеков по месяцам
         income_amounts = {
             income_dict_date_sums[
-                'month'
+                'date'
             ]: income_dict_date_sums[
                 'total_amount'
             ] for income_dict_date_sums in self.get_month_total_amount_income()
