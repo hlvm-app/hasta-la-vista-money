@@ -1,13 +1,7 @@
-from django.contrib.humanize.templatetags.humanize import intcomma
-
 from config.django.forms import BaseForm
-from django import forms
 from django.utils.translation import gettext_lazy as _
+from bootstrap_datepicker_plus.widgets import DateTimePickerInput
 from hasta_la_vista_money.income.models import Income
-
-
-class DateTimeInput(forms.DateTimeInput):
-    input_type = 'datetime-local'
 
 
 class IncomeForm(BaseForm):
@@ -24,5 +18,10 @@ class IncomeForm(BaseForm):
         model = Income
         fields = ['type_income', 'date', 'amount', 'account']
         widgets = {
-            'date': DateTimeInput(),
+            'date': DateTimePickerInput(
+                options={
+                    "format": "DD/MM/YYYY HH:ss",
+                    "showTodayButton": True,
+
+                })
         }
