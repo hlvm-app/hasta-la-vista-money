@@ -5,27 +5,20 @@ from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import NumericParameter
 from hasta_la_vista_money.users.models import User
 
-salary = (
+TYPE_INCOME = (
     ('Зарплата', 'Зарплата'),
+    ('Алименты', 'Алименты'),
+    ('Возврат денег (Налог, покупка)', 'Возврат денег (Налог, покупка)'),
+    ('Доход от аренды', 'Доход от аренды'),
+    ('Дивиденды', 'Дивиденды'),
+    ('Кредит', 'Кредит'),
+    ('Лотереи (Азартные игры)', 'Лотереи (Азартные игры)'),
+    ('Подарки', 'Подарки'),
+    ('Продажа', 'Продажа'),
+    ('Членские взносы и гранды', 'Членские взносы и гранды'),
 )
 
 current_year = datetime.now().year
-
-
-months = (
-    (f'Январь {current_year}', f'Январь {current_year}'),
-    (f'Февраль {current_year}', f'Февраль {current_year}'),
-    (f'Март {current_year}', f'Март {current_year}'),
-    (f'Апрель {current_year}', f'Апрель {current_year}'),
-    (f'Май {current_year}', f'Май {current_year}'),
-    (f'Июнь {current_year}', f'Июнь {current_year}'),
-    (f'Июль {current_year}', f'Июль {current_year}'),
-    (f'Август {current_year}', f'Август {current_year}'),
-    (f'Сентябрь {current_year}', f'Сентябрь {current_year}'),
-    (f'Октябрь {current_year}', f'Октябрь {current_year}'),
-    (f'Ноябрь {current_year}', f'Ноябрь {current_year}'),
-    (f'Декабрь {current_year}', f'Декабрь {current_year}'),
-)
 
 
 class Income(models.Model):
@@ -34,7 +27,8 @@ class Income(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     type_income = models.CharField(
-        max_length=NumericParameter.TWENTY.value, choices=salary,
+        max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
+        choices=TYPE_INCOME,
     )
     date = models.DateTimeField()
     amount = models.DecimalField(
