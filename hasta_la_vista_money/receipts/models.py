@@ -15,7 +15,6 @@ class Customer(models.Model):
     """Модель продавца."""
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
     name_seller = models.CharField(max_length=255)  # noqa: WPS432
     retail_place_address = models.CharField(
         default='Нет данных',
@@ -67,7 +66,6 @@ class Product(models.Model):
     """Модель продуктов."""
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
     product_name = models.CharField(default='Нет данных', max_length=1000)
     price = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     quantity = models.DecimalField(default=0, max_digits=10, decimal_places=2)
