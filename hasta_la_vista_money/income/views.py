@@ -40,10 +40,16 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
 
     def post(self, request, *args, **kwargs):
         if 'delete_income_button' in request.POST:
-            id_income = request.POST.get('income_id')
-            income = get_object_or_404(self.model, pk=id_income)
-            income.delete()
-            return redirect(self.success_url)
+            income_id = request.POST.get('income_id')
+            income = get_object_or_404(self.model, pk=income_id)
+            account = income.account
+            amount = income.amount
+            account_balance = get_object_or_404(Account, id=account.id)
+            if account_balance.user == request.user:
+                account_balance.balance -= amount
+                account_balance.save()
+                income.delete()
+                return redirect(self.success_url)
 
         income_form = IncomeForm(request.POST)
 
