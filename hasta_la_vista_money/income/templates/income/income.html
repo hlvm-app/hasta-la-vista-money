@@ -23,6 +23,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        {{ income_form.media }}
                         <form class="form" method="post">
                             {% csrf_token %}
                             {% bootstrap_form income_form layout='horizontal' horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
