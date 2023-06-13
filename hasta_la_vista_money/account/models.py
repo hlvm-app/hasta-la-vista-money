@@ -8,7 +8,7 @@ CURRENCY = (
 
 
 class Account(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
     name_account = models.CharField(
         max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
         default='Основной счёт',

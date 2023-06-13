@@ -9,8 +9,8 @@ CATEGORIES = (
 
 
 class Expense(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    account = models.ForeignKey(Account, on_delete=models.PROTECT)
     name = models.CharField(max_length=NumericParameter.ONE_HUNDRED.value)
     date = models.DateTimeField()
     category = models.CharField(

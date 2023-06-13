@@ -14,7 +14,7 @@ OPERATION_TYPES = (
 class Customer(models.Model):
     """Модель продавца."""
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
     name_seller = models.CharField(max_length=255)  # noqa: WPS432
     retail_place_address = models.CharField(
         default='Нет данных',
@@ -35,8 +35,8 @@ class Customer(models.Model):
 class Receipt(models.Model):
     """Модель чека."""
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    account = models.ForeignKey(Account, on_delete=models.PROTECT)
     receipt_date = models.DateTimeField()
     number_receipt = models.IntegerField(default=None, null=True)
     operation_type = models.IntegerField(
@@ -52,7 +52,7 @@ class Receipt(models.Model):
     )
     customer = models.ForeignKey(
         Customer,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         verbose_name='customer',
         related_name='customer',
     )
@@ -65,7 +65,7 @@ class Receipt(models.Model):
 class Product(models.Model):
     """Модель продуктов."""
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
     product_name = models.CharField(default='Нет данных', max_length=1000)
     price = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     quantity = models.DecimalField(default=0, max_digits=10, decimal_places=2)

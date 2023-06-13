@@ -9,7 +9,7 @@ class User(AbstractUser):
 
 
 class TelegramUser(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
     username = models.CharField(
         max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
     )
