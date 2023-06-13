@@ -35,39 +35,36 @@
         </div>
         <div class="row">
             <div class="link-wrapper mt-5">
-                <button type="button" class="button-add-form-income btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#add-income">Добавить новый доход</button>
+                <button type="button" class="button-add-form-income btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#add-income">Добавить новый доход</button>
             </div>
-            <div class="col mt-2">
-
+            <div class="col-xl-12 mt-2">
                 <table class="table table-hover text-center table-bordered border-warning align-middle mb-0 text-light">
                     <thead>
-                        <tr class="d-flex">
-                            <th class="col-4">Тип дохода</th>
-                            <th class="col-4">Период</th>
-                            <th class="col-3">Сумма</th>
-                            <th class="col-1">Удалить?</th>
+                        <tr>
+                            <th class="col-2">Тип дохода</th>
+                            <th class="col-2">Период</th>
+                            <th class="col-2">Сумма</th>
+                            <th class="col-1"></th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for income in income_by_month %}
 
-                            <tr class="d-flex">
+                            <tr>
 
-                                <td class="col-4">{{ income.type_income }}</td>
-                                <td class="col-4">{{ income.date | date:"F Y" }}</td>
-                                <td class="col-3">{{ income.amount | comma }}</td>
+                                <td class="col-2">{{ income.type_income }}</td>
+                                <td class="col-2">{{ income.date | date:"F Y" }}</td>
+                                <td class="col-2">{{ income.amount | comma }}</td>
                                 <td class="col-1">
-                                    <div class="wrapper-remove-income-button">
-                                        <form method="post">
-                                            {% csrf_token %}
-                                            <input type="hidden" name="income_id" value="{{ income.id }}">
-                                            <button class="remove-income-button" data-nonce="{{request.csp_nonce}}" type="submit" name="delete_income_button">
-                                                <span class="top"></span>
-                                                <span class="bot"></span>
-                                            </button>
-                                        </form>
-                                    </div>
-
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="income_id" value="{{ income.id }}">
+                                        <button class="btn btn-outline-danger remove-income-button" data-nonce="{{request.csp_nonce}}" type="submit" name="delete_income_button">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+                                            </svg>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         {% endfor %}
