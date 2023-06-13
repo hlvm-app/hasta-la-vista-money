@@ -21,8 +21,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="shortcut icon" href="{% static 'img/favicon/favicon.png' %}" type="image/x-icon">
+    <link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/bootstrap-icons.min.css' %}">
+    <script nonce="{{request.csp_nonce}}" src="{% static 'js/jquery-3.6.3.min.js' %}"></script>
     <link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/style.css' %}">
     <link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/style_mobile.css' %}">
+
 </head>
 <body>
     <div class="min-vh-100 bg-success bg-gradient">
@@ -30,7 +33,7 @@
         {% endblock %}
     </div>
 
-    <script nonce="{{request.csp_nonce}}" src="{% static 'js/jquery-3.6.3.min.js' %}"></script>
+
     <script nonce="{{request.csp_nonce}}" src="{% static 'js/script.js' %}"></script>
     <script nonce="{{request.csp_nonce}}" src="{% static 'js/chart.min.js' %}"></script>
     <script nonce="{{request.csp_nonce}}" src="{% static 'js/reports.js' %}"></script>
