@@ -1,3 +1,5 @@
+from telebot import types
+
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.receipt_parser_json import handle_receipt_json
@@ -55,6 +57,46 @@ def handle_auth(message):  # noqa: WPS210
             )
     else:
         bot_admin.reply_to(message, TelegramMessage.INCORRECT_FORMAT.value)
+
+
+@bot_admin.message_handler(commands=['select_account'])
+def select_account(message):
+    telegram_user_id = message.from_user.id
+
+    telegram_user = TelegramUser.objects.filter(
+        telegram_id=telegram_user_id,
+    ).first()
+
+    if telegram_user:
+        user = telegram_user.user
+        accounts = Account.objects.filter(user=user)
+        if accounts.exists():
+            markup = types.InlineKeyboardMarkup()
+            for account in accounts:
+                button = types.InlineKeyboardButton(
+                    text=account.name_account,
+                    callback_data=f'select_account_{account.id}'
+                )
+                markup.add(button)
+            bot_admin.reply_to(message, 'Выберете счёт:', reply_markup=markup)
+        else:
+            bot_admin.reply_to(message, 'У вас нет доступных счетов.')
+    else:
+        bot_admin.reply_to(message, 'Вы не авторизованы.')
+
+
+@bot_admin.callback_query_handler(lambda query: query.data.startswith('select_account'))
+def handle_select_account(call):
+    print(call)
+    account_id = int(call.data.split('_')[2])
+    print(account_id)
+    account = Account.objects.filter(id=account_id).first()
+    print(account)
+    if account:
+        # Выбранный счет
+        bot_admin.send_message(call.message.chat.id, f'Выбран счет: {account.name}')
+    else:
+        bot_admin.send_message(call.message.chat.id, 'Ошибка: счет не найден.')
 
 
 @bot_admin.message_handler(content_types=['text', 'document', 'photo'])
