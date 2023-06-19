@@ -22,6 +22,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        {{ receipt_form.media }}
                         <form id='form-create-receipt' method="post">
                             {% csrf_token %}
                             <div class="p-3 border">
