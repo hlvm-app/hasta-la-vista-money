@@ -3,10 +3,6 @@ from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import NumericParameter
 from hasta_la_vista_money.users.models import User
 
-CATEGORIES = (
-    ('ЖКХ', 'ЖКХ'),
-)
-
 
 class ExpenseType(models.Model):
     name = models.CharField(max_length=NumericParameter.TWO_HUNDRED_FIFTY.value)
@@ -18,9 +14,10 @@ class ExpenseType(models.Model):
 class Expense(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     account = models.ForeignKey(Account, on_delete=models.PROTECT)
-    name = models.CharField(max_length=NumericParameter.ONE_HUNDRED.value)
-    date = models.DateTimeField()
     category = models.ForeignKey(ExpenseType, on_delete=models.PROTECT)
-    description = models.CharField(
-        max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
+    date = models.DateTimeField()
+    amount = models.DecimalField(
+        null=True,
+        max_digits=NumericParameter.TWENTY.value,
+        decimal_places=NumericParameter.TWO.value,
     )
