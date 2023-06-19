@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+
 from hasta_la_vista_money.constants import NumericParameter
 
 
@@ -14,3 +15,10 @@ class TelegramUser(models.Model):
         max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
     )
     telegram_id = models.BigIntegerField(unique=True)
+    selected_account = models.ForeignKey(
+        'account.Account',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
