@@ -130,6 +130,7 @@ formCheck.closest('.row').style.display = 'none';
 function onClickRemoveButton() {
     const removeButtons = document.querySelectorAll('.remove-receipt-button');
     const removeIncomeButton = document.querySelectorAll('.remove-income-button');
+    const removeExpenseButton = document.querySelectorAll('.remove-expense-button');
     const removeAccountButton = document.querySelectorAll('.remove-account-button');
     removeButtons.forEach((button) => {
     button.addEventListener('click', (event) => {
@@ -141,7 +142,7 @@ function onClickRemoveButton() {
     });
     removeIncomeButton.forEach((button) => {
       button.addEventListener('click', (event) => {
-          const confirmed = confirm('Вы уверены, что хотите удалить этот чек?')
+          const confirmed = confirm('Вы уверены, что хотите удалить этот доход?')
           if (!confirmed) {
               event.preventDefault()
           }
@@ -149,10 +150,18 @@ function onClickRemoveButton() {
     });
     removeAccountButton.forEach((button) => {
       button.addEventListener('click', (event) => {
-          const confirmed = confirm('Вы уверены, что хотите удалить этот чек?')
+          const confirmed = confirm('Вы уверены, что хотите удалить этот счёт?')
           if (!confirmed) {
               event.preventDefault()
           }
       });
+    });
+    removeExpenseButton.forEach((button) => {
+       button.addEventListener('click', (event) => {
+           const confirmed = confirm('Вы уверены, что хотите удалить этот расход?')
+           if (!confirmed) {
+               event.preventDefault()
+           }
+       });
     });
 }
