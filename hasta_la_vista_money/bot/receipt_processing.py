@@ -272,7 +272,6 @@ class ReceiptParser:
 
                 products = ReceiptDataWriter.create_product(
                     user=self.user,
-                    account=self.account,
                     product_name=product_name,
                     price=price,
                     quantity=quantity,
@@ -307,7 +306,6 @@ class ReceiptParser:
             )
             self.customer = ReceiptDataWriter.create_customer(
                 user=self.user,
-                account=self.account,
                 name_seller=name_seller,
                 retail_place_address=retail_place_address,
                 retail_place=retail_place,
@@ -366,14 +364,14 @@ class ReceiptParser:
                 return
             else:
                 self.parse_customer()
-                account = self.account
-                account_balance = get_object_or_404(Account, id=account.id)
+                account_balance = get_object_or_404(Account, id=self.account)
+                print(account_balance)
                 if account_balance.user == self.user:
                     account_balance.balance -= decimal.Decimal(total_sum)
                     account_balance.save()
                 self.receipt = ReceiptDataWriter.create_receipt(
                     user=self.user,
-                    account=self.account,
+                    account=account_balance,
                     receipt_date=receipt_date,
                     number_receipt=number_receipt,
                     operation_type=operation_type,
@@ -408,7 +406,6 @@ class ReceiptDataWriter:
     def create_product(  # noqa: WPS211
         cls,
         user,
-        account,
         product_name,
         price,
         quantity,
@@ -418,7 +415,6 @@ class ReceiptDataWriter:
     ):
         return Product.objects.create(
             user=user,
-            account=account,
             product_name=product_name,
             price=price,
             quantity=quantity,
@@ -431,14 +427,12 @@ class ReceiptDataWriter:
     def create_customer(  # noqa: WPS211
         cls,
         user,
-        account,
         name_seller,
         retail_place_address,
         retail_place,
     ):
         return Customer.objects.create(
             user=user,
-            account=account,
             name_seller=name_seller,
             retail_place_address=retail_place_address,
             retail_place=retail_place,
