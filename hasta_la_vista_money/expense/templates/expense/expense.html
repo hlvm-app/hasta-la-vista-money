@@ -11,58 +11,85 @@
     <title>Информация о расходах</title>
     <div class="container-fluid">
         {% include 'header.html' %}
-    </div>
-    <div class="container">
-        <div class="modal fade" id="example">
+        <div id="add-expense" class="modal fade" >
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Добавить расходную операцию</h5>
+                        <h5 class="modal-title">
+                            Добавить расход
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <h5>Добавить!</h5>
+                        {{ add_expense_form.media }}
+                        <form class="form" method="post">
+                            {% csrf_token %}
+                            {% bootstrap_form add_expense_form layout='horizontal' horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
+                            {% bootstrap_button button_text_create_expense button_type="submit" button_class="add-expense btn btn-primary"  %}
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col">
-                <div class="display-4 text-center pt-3 text-light">
-                    Страница расходов
-                </div>
-            </div>
-        </div>
-        <div class="row mt-5 justify-content-center">
-            <div class="link-wrapper">
-                <a class="link-application btn btn-outline-warning" href="{% url 'applications:list' %}">Вернуться на страницу с приложениями</a>
-            </div>
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#example">Открыть модальное окно</button>
-            <div class="col pt-5">
-                <table class="table table-hover table-bordered text-light">
+        <div class="row mt-2 justify-content-start">
+            <div class="col-xl-3 pt-5">
+                <table class="table table-hover text-center table-bordered text-light">
                     <tr>
                         <th>
                             Период
                         </th>
-
+                        <th>
+                            Количество чеков
+                        </th>
                         <th>
                             Сумма
                         </th>
+                        <th>
+                            Счёт
+                        </th>
                     </tr>
-                    {% for month in expense_by_months %}
-                    {% language 'ru' %}
-                    <tr>
-                        <td>
-                            {{ month.month | date:"F Y" }}{% translate " г." %}
-                        </td>
-                        <td>
-                            {{ month.total_amount | comma }}
-                        </td>
-                    </tr>
-                    {% endlanguage %}
+                    {% for receipt in receipt_info_by_month %}
+                        <tr>
+                            <td class="col-3">{{ receipt.month | date:"F Y" }}</td>
+                            <td class="col-1">{{ receipt.count }}</td>
+                            <td class="col-1">{{ receipt.total_amount }}</td>
+                            <td class="col-3">{{ receipt.account__name_account }}</td>
+                        </tr>
                     {% endfor %}
                 </table>
+            </div>
+            <div class="offset-xl-1 col-xl-6 pt-5">
+                <div class="wrapper-table-expense">
+                    <table class="table table-expense table-hover text-center text-light table-bordered">
+                        <tr>
+                            <th>Категория</th>
+                            <th>Дата</th>
+                            <th>Сумма</th>
+                            <th>Счёт</th>
+                            <th class="col-2"><button type="button" class="add-expense-button btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#add-expense">Добавить расход</button></th>
+                        </tr>
+                        {% for expense in expenses %}
+                            <tr>
+                                <td>{{ expense.category__name }}</td>
+                                <td>{{ expense.date }}</td>
+                                <td>{{ expense.amount }}</td>
+                                <td>{{ expense.account__name_account }}</td>
+                                <td>
+                                    <form class="form-remove-expense-button" action="" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="receipt_id" value="{{ expense.id }}">
+                                    <button class="remove-expense-button btn btn-outline-danger border-0 btn-sm" data-nonce="{{request.csp_nonce}}" type="submit" name="delete_expense_button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+                                        </svg>
+                                    </button>
+                                </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
 
-
+                </div>
 
             </div>
         </div>
