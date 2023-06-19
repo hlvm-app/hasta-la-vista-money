@@ -75,3 +75,11 @@
     position: absolute;
     right: 1%;
 }
+
+.wrapper-table-expense {
+    position: relative;
+}
+
+.add-expense-button {
+    font-size: 13px;
+}
