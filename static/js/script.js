@@ -128,7 +128,7 @@ formCheck.closest('.row').style.display = 'none';
 
 
 function onClickRemoveButton() {
-    const removeButtons = document.querySelectorAll('.remove-button');
+    const removeButtons = document.querySelectorAll('.remove-receipt-button');
     const removeIncomeButton = document.querySelectorAll('.remove-income-button');
     const removeAccountButton = document.querySelectorAll('.remove-account-button');
     removeButtons.forEach((button) => {
