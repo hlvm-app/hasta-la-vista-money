@@ -83,6 +83,7 @@ class HTTPStatus(Enum):
 
 
 class NumericParameter(Enum):
+    TWO = 2
     TEN = 10
     TWENTY = 10
     THIRTY = 30
