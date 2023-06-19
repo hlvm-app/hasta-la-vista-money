@@ -1,4 +1,5 @@
 import django_filters
+from bootstrap_datepicker_plus.widgets import DateTimePickerInput
 from config.django.forms import BaseForm
 from django.forms import (
     BooleanField,
@@ -187,6 +188,12 @@ class ReceiptForm(BaseForm):
         widgets = {
             'total_sum': NumberInput(
                 attrs={'class': 'total-sum', 'readonly': True},
+            ),
+            'receipt_date': DateTimePickerInput(
+                options={
+                    'format': 'DD/MM/YYYY HH:ss',
+                    'showTodayButton': True,
+                },
             ),
         }
 
