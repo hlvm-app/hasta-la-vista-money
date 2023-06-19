@@ -32,7 +32,7 @@ django-bootstrap-datepicker-plus = "^5.0.3"
 [tool.poetry.dev-dependencies]
 Faker = ">=13.7.0"
 coverage = ">=6.4"
-wemake-python-styleguide = "^0.17.0"
+wemake-python-styleguide = "^0.18.0"
 Sphinx = "^6.2.1"
 sphinx-rtd-theme = "^1.2.0"
 furo = "^2023.3.27"
