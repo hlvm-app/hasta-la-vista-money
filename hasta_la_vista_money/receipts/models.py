@@ -52,7 +52,7 @@ class Receipt(models.Model):
     )
     customer = models.ForeignKey(
         Customer,
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         verbose_name='customer',
         related_name='customer',
     )
