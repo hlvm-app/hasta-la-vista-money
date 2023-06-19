@@ -1,5 +1,3 @@
-from telebot import types
-
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.receipt_parser_json import handle_receipt_json
@@ -9,6 +7,7 @@ from hasta_la_vista_money.bot.receipt_parser_text_qrcode import (
 )
 from hasta_la_vista_money.constants import TelegramMessage
 from hasta_la_vista_money.users.models import TelegramUser, User
+from telebot import types
 
 
 @bot_admin.message_handler(commands=['auth'])
@@ -60,7 +59,7 @@ def handle_auth(message):  # noqa: WPS210
 
 
 @bot_admin.message_handler(commands=['select_account'])
-def select_account(message):
+def select_account(message):  # noqa: C812 WPS210
     telegram_user_id = message.from_user.id
 
     telegram_user = TelegramUser.objects.filter(
@@ -75,7 +74,7 @@ def select_account(message):
             for account in accounts:
                 button = types.InlineKeyboardButton(
                     text=account.name_account,
-                    callback_data=f'select_account_{account.id}'
+                    callback_data=f'select_account_{account.id}',
                 )
                 markup.add(button)
             bot_admin.reply_to(message, 'Выберете счёт:', reply_markup=markup)
@@ -85,19 +84,27 @@ def select_account(message):
         bot_admin.reply_to(message, 'Вы не авторизованы.')
 
 
-@bot_admin.callback_query_handler(func=lambda call: call.data.startswith('select_account_'))
+@bot_admin.callback_query_handler(func=lambda call: call.data.startswith(
+    'select_account_',
+))
 def handle_select_account(call):
     account_id = int(call.data.split('_')[2])
     account = Account.objects.filter(id=account_id).first()
     if account:
         telegram_user_id = call.from_user.id
-        telegram_user = TelegramUser.objects.filter(telegram_id=telegram_user_id).first()
+        telegram_user = TelegramUser.objects.filter(
+            telegram_id=telegram_user_id,
+        ).first()
         if telegram_user:
             telegram_user.selected_account_id = account_id
             telegram_user.save()
-            bot_admin.send_message(call.message.chat.id, f'Выбран счёт: {account.name_account}')
+            bot_admin.send_message(
+                call.message.chat.id, f'Выбран счёт: {account.name_account}',
+            )
         else:
-            bot_admin.send_message(call.message.chat.id, 'Ошибка: счёт не найден.')
+            bot_admin.send_message(
+                call.message.chat.id, 'Ошибка: счёт не найден.',
+            )
 
 
 @bot_admin.message_handler(content_types=['text', 'document', 'photo'])

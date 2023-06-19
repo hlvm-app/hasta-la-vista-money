@@ -1,10 +1,9 @@
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count, Sum
 from django.db.models.functions import TruncMonth
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
-
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import MessageOnSite
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
@@ -30,11 +29,13 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         """
         if request.user:
             add_expense_form = AddExpenseForm()
-            add_expense_form.fields['account'].queryset = Account.objects.filter(
+            add_expense_form.fields[
+                'account'
+            ].queryset = Account.objects.filter(
                 user=request.user,
             )
             receipt_info_by_month = Receipt.objects.filter(
-                user=request.user
+                user=request.user,
             ).annotate(
                 month=TruncMonth('receipt_date'),
             ).values(
@@ -45,7 +46,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 total_amount=Sum('total_sum'),
             ).order_by('-month')
 
-            expenses = Expense.objects.filter(user=request.user).annotate(
+            expenses = Expense.objects.filter(user=request.user).annotate(  # noqa: WPS221 E501
                 month=TruncMonth('date'),
             ).values(
                 'date',
@@ -62,7 +63,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 'add_expense_form': add_expense_form,
             })
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):  # noqa: WPS210
         if 'delete_expense_button' in request.POST:
             expense_id = request.POST.get('expense_id')
             expense = get_object_or_404(self.model, pk=expense_id)

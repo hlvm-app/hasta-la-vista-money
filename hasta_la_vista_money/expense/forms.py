@@ -1,8 +1,6 @@
 from bootstrap_datepicker_plus.widgets import DateTimePickerInput
-
 from config.django.forms import BaseForm
 from django.utils.translation import gettext_lazy as _
-
 from hasta_la_vista_money.expense.models import Expense
 
 
@@ -20,7 +18,8 @@ class AddExpenseForm(BaseForm):
         widgets = {
             'date': DateTimePickerInput(
                 options={
-                    "format": "DD/MM/YYYY HH:ss",
-                    "showTodayButton": True,
-                })
+                    'format': 'DD/MM/YYYY HH:ss',
+                    'showTodayButton': True,
+                },
+            ),
         }

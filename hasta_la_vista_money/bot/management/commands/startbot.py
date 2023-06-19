@@ -1,5 +1,4 @@
 from django.core.management import BaseCommand
-
 from hasta_la_vista_money.bot.bot_handler import bot_admin
 
 

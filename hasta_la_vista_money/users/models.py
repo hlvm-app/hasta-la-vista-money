@@ -1,6 +1,5 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
 from hasta_la_vista_money.constants import NumericParameter
 
 
@@ -19,6 +18,5 @@ class TelegramUser(models.Model):
         'account.Account',
         on_delete=models.SET_NULL,
         null=True,
-        blank=True
+        blank=True,
     )
-
