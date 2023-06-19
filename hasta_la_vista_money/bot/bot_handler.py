@@ -85,18 +85,19 @@ def select_account(message):
         bot_admin.reply_to(message, 'Вы не авторизованы.')
 
 
-@bot_admin.callback_query_handler(lambda query: query.data.startswith('select_account'))
+@bot_admin.callback_query_handler(func=lambda call: call.data.startswith('select_account_'))
 def handle_select_account(call):
-    print(call)
     account_id = int(call.data.split('_')[2])
-    print(account_id)
     account = Account.objects.filter(id=account_id).first()
-    print(account)
     if account:
-        # Выбранный счет
-        bot_admin.send_message(call.message.chat.id, f'Выбран счет: {account.name}')
-    else:
-        bot_admin.send_message(call.message.chat.id, 'Ошибка: счет не найден.')
+        telegram_user_id = call.from_user.id
+        telegram_user = TelegramUser.objects.filter(telegram_id=telegram_user_id).first()
+        if telegram_user:
+            telegram_user.selected_account_id = account_id
+            telegram_user.save()
+            bot_admin.send_message(call.message.chat.id, f'Выбран счёт: {account.name_account}')
+        else:
+            bot_admin.send_message(call.message.chat.id, 'Ошибка: счёт не найден.')
 
 
 @bot_admin.message_handler(content_types=['text', 'document', 'photo'])
@@ -109,7 +110,7 @@ def handle_receipt(message):
 
     if telegram_user:
         user = telegram_user.user
-        account = Account.objects.filter(user=telegram_user.user).first()
+        account = telegram_user.selected_account_id
 
         if message.content_type == 'text':
             handle_receipt_text(message, bot_admin, user, account)
