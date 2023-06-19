@@ -338,6 +338,7 @@ class ReceiptParser:
             number_receipt = self.parser.parse_json(
                 self.json_data, ReceiptConstants.NUMBER_RECEIPT.value,
             )
+
             operation_type = self.parser.parse_json(
                 self.json_data, ReceiptConstants.OPERATION_TYPE.value,
             )
@@ -350,7 +351,6 @@ class ReceiptParser:
 
             check_number_receipt = Receipt.objects.filter(
                 user=self.user,
-                account=self.account,
                 number_receipt=number_receipt,
             ).first()
 
@@ -365,7 +365,6 @@ class ReceiptParser:
             else:
                 self.parse_customer()
                 account_balance = get_object_or_404(Account, id=self.account)
-                print(account_balance)
                 if account_balance.user == self.user:
                     account_balance.balance -= decimal.Decimal(total_sum)
                     account_balance.save()
