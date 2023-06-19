@@ -23,7 +23,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, View):
         :param request: Запрос данных со страницы сайта.
         :return: Рендеринг данных на странице сайта.
         """
-        group_by_months = Receipt.objects.annotate(
+        receipt_info_by_month = Receipt.objects.annotate(
             month=TruncMonth('receipt_date'),
         ).values(
             'month',
@@ -32,5 +32,5 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, View):
             total_amount=Sum('total_sum'),
         ).order_by('-month')
         return render(request, self.template_name, {
-            'expense_by_months': group_by_months,
+            'receipt_info_by_month': receipt_info_by_month,
         })
