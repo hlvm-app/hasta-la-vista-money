@@ -127,7 +127,7 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                     request,
                     receipt_form,
                     product_formset,
-                    seller,
+                    seller[0],
                 )
                 return redirect(reverse_lazy(self.success_url))
 
