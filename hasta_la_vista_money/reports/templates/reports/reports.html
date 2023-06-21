@@ -38,7 +38,7 @@
     <script nonce="{{request.csp_nonce}}">
         const incomeExpense = {
             incomeAmounts: {{ income_amounts | safe }},
-            receiptSums: {{ receipt_sums | safe }}
+            expenseAmounts: {{ expense_amounts | safe }}
         };
     </script>
 {% endblock %}

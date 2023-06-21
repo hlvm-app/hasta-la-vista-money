@@ -1,6 +1,5 @@
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import CharField, IntegerField, Sum, Value
-from django.db.models.functions import Cast, Concat
+from django.db.models import Sum
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
@@ -11,31 +10,38 @@ from hasta_la_vista_money.constants import (
     NumberMonthOfYear,
 )
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
+from hasta_la_vista_money.expense.models import Expense
 from hasta_la_vista_money.income.models import Income
-from hasta_la_vista_money.receipts.models import Receipt
 
 
 class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
     template_name = 'reports/reports.html'
     no_permission_url = reverse_lazy('login')
+    success_url = reverse_lazy('reports:list')
 
     @classmethod
-    def get_month_total_amount_income(cls):
-        return Income.objects.values('date').annotate(
+    def format_month_year(cls, dt):
+        month_number = dt.month
+        month_name = list(MONTH_NUMBERS.keys())[
+            list(MONTH_NUMBERS.values()).index(month_number)
+        ]
+        year = dt.year
+        return f'{month_name} {year}'
+
+    @classmethod
+    def get_month_total_amount_income(cls, request):
+        return Income.objects.filter(
+            user=request.user,
+        ).values('date', 'account').annotate(
             total_amount=Sum('amount'),
         )
 
     @classmethod
-    def get_month_sum_receipt(cls):
-        return Receipt.objects.annotate(
-            month_year=Concat(
-                Cast('receipt_date__month', CharField()),
-                Value(' '),
-                'receipt_date__year',
-                output_field=CharField(),
-            ),
-        ).values('month_year').annotate(total_sum=Sum('total_sum')).order_by(
-            Cast('receipt_date__month', IntegerField()),
+    def get_month_total_amount_expense(cls, request):
+        return Expense.objects.filter(
+            user=request.user,
+        ).values('date', 'account').annotate(
+            total_amount=Sum('amount'),
         )
 
     @classmethod
@@ -55,53 +61,35 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         return months_year
 
     def get(self, request, *args, **kwargs):
-        receipt_data = [
-            {
-                'month_year': MONTH_NAMES.get(
-                    int(receipt_list_month_total_sum['month_year'].split()[0]),
-                    'Неизвестно',
-                ) + ' ' + receipt_list_month_total_sum[
-                    'month_year'
-                ].split()[1],
-                'total_sum': receipt_list_month_total_sum[
-                    'total_sum'
-                ],
+        if request.user:
+            income_amounts = {
+                self.format_month_year(income_dict['date']):
+                    income_dict['total_amount']
+                for income_dict in self.get_month_total_amount_income(request)
             }
-            for receipt_list_month_total_sum in self.get_month_sum_receipt()
-        ]
 
-        # Создание словаря для хранения сумм доходов/чеков по месяцам
-        income_amounts = {
-            income_dict_date_sums[
-                'date'
-            ]: income_dict_date_sums[
-                'total_amount'
-            ] for income_dict_date_sums in self.get_month_total_amount_income()
-        }
+            expense_amounts = {
+                self.format_month_year(expense_dict['date']):
+                    expense_dict['total_amount']
+                for expense_dict in self.get_month_total_amount_expense(request)
+            }
 
-        receipt_sums = {
-            receipt_dict_date_sums[
-                'month_year'
-            ]: receipt_dict_date_sums[
-                'total_sum'
-            ] for receipt_dict_date_sums in receipt_data
-        }
+            # Создание списков сумм доходов/чеков в правильном порядке
+            income_amounts = [
+                float(income_amounts.get(
+                    month_year, 0,
+                ),
+                ) for month_year in self.get_list_months_year()
+            ]
 
-        # Создание списков сумм доходов/чеков в правильном порядке
-        income_amounts = [
-            float(income_amounts.get(
-                month_year, 0,
-            ),
-            ) for month_year in self.get_list_months_year()
-        ]
+            expense_amounts = [
+                float(expense_amounts.get(
+                    month_year, 0,
+                ),
+                ) for month_year in self.get_list_months_year()
+            ]
 
-        receipt_sums = [
-            float(
-                receipt_sums.get(month_year, 0),
-            ) for month_year in self.get_list_months_year()
-        ]
-
-        return render(request, self.template_name, {
-            'income_amounts': income_amounts,
-            'receipt_sums': receipt_sums,
-        })
+            return render(request, self.template_name, {
+                'income_amounts': income_amounts,
+                'expense_amounts': expense_amounts,
+            })
