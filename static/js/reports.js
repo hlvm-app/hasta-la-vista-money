@@ -1,5 +1,5 @@
 const incomeAmounts = incomeExpense.incomeAmounts;
-const receiptSums = incomeExpense.receiptSums;
+const expenseAmounts = incomeExpense.expenseAmounts;
 const incomeExpenseByMonthsChartsBar = document.getElementById('income_expense_by_months_charts_bar').getContext('2d');
 const incomeExpenseByMonthsChartsLine = document.getElementById('income_expense_by_months_charts_line').getContext('2d');
 
@@ -74,7 +74,7 @@ const incomeExpenseChartsBar = new Chart(incomeExpenseByMonthsChartsBar, {
             fill: false
         }, {
             label: 'Расходы по месяцам',
-            data: receiptSums,  // Суммы чеков на оси Y
+            data: expenseAmounts,  // Суммы чеков на оси Y
             backgroundColor: [
                 'rgb(137, 8, 165)',
                 'rgb(137, 8, 165)',
@@ -129,7 +129,7 @@ const incomeExpenseChartsLine = new Chart(incomeExpenseByMonthsChartsLine, {
             fill: false
         }, {
             label: 'Расходы по месяцам',
-            data: receiptSums,
+            data: expenseAmounts,
             backgroundColor: 'rgb(137, 8, 165, 0.5)',
             borderColor: 'rgb(137, 8, 165)',
             fill: false
