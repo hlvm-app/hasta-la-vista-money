@@ -8,7 +8,7 @@ class ExpenseType(models.Model):
     name = models.CharField(max_length=NumericParameter.TWO_HUNDRED_FIFTY.value)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class Expense(models.Model):
@@ -21,3 +21,6 @@ class Expense(models.Model):
         max_digits=NumericParameter.TWENTY.value,
         decimal_places=NumericParameter.TWO.value,
     )
+
+    def __str__(self):
+        return str(self.category)

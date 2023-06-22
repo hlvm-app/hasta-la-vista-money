@@ -23,4 +23,4 @@ class Income(models.Model):
     )
 
     def __str__(self):
-        return self.type_income
+        return str(self.type_income)
