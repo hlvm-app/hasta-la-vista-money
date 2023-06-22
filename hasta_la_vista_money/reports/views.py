@@ -76,17 +76,13 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
 
             # Создание списков сумм доходов/чеков в правильном порядке
             income_amounts = [
-                float(income_amounts.get(
-                    month_year, 0,
-                ),
-                ) for month_year in self.get_list_months_year()
+                float(income_amounts.get(month_year, 0))
+                for month_year in self.get_list_months_year()
             ]
 
             expense_amounts = [
-                float(expense_amounts.get(
-                    month_year, 0,
-                ),
-                ) for month_year in self.get_list_months_year()
+                float(expense_amounts.get(month_year, 0))
+                for month_year in self.get_list_months_year()
             ]
 
             return render(request, self.template_name, {
