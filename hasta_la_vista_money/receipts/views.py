@@ -14,6 +14,7 @@ from hasta_la_vista_money.receipts.forms import (
     ReceiptForm,
 )
 from hasta_la_vista_money.receipts.models import Customer, Receipt
+from hasta_la_vista_money.utils import button_delete_receipt
 
 
 class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
@@ -22,7 +23,6 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
     template_name = 'receipts/receipts.html'
     model = Receipt
     context_object_name = 'receipts'
-    ordering = ['-receipt_date']
     success_url = 'receipts:list'
     permission_denied_message = MessageOnSite.ACCESS_DENIED.value
     no_permission_url = reverse_lazy('login')
@@ -39,13 +39,18 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             product_formset = ProductFormSet()
             receipts = Receipt.objects.filter(
                 user=request.user,
+            ).order_by('-receipt_date')
+
+            return render(
+                request,
+                self.template_name,
+                {
+                    'receipts': receipts,
+                    'seller_form': seller_form,
+                    'receipt_form': receipt_form,
+                    'product_formset': product_formset,
+                }
             )
-            return render(request, self.template_name, {
-                'receipts': receipts,
-                'seller_form': seller_form,
-                'receipt_form': receipt_form,
-                'product_formset': product_formset,
-            })
 
     @classmethod
     def get_or_create_seller(cls, request, seller_form):
@@ -88,24 +93,15 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             user=request.user, number_receipt=number_receipt,
         )
 
-    def post(self, request, *args, **kwargs) -> Dict[str, Any]:  # noqa: WPS231 C901 E501
+    def post(self, request, *args, **kwargs) -> Dict[str, Any]:
         if 'delete_receipt_button' in request.POST:
             receipt_id = request.POST.get('receipt_id')
-            receipt = get_object_or_404(self.model, pk=receipt_id)
-            account = receipt.account
-            total_sum = receipt.total_sum
-            account_balance = get_object_or_404(Account, id=account.id)
-
-            if account_balance.user == request.user:
-                account_balance.balance += total_sum
-                account_balance.save()
-                for product in receipt.product.all():
-                    product.delete()
-
-                receipt.customer.delete()
-
-                receipt.delete()
-                return redirect(reverse_lazy(self.success_url))
+            button_delete_receipt(
+                model=Receipt,
+                request=request,
+                object_id=receipt_id,
+                url=self.success_url,
+            )
 
         seller_form = CustomerForm(request.user, request.POST)
         receipt_form = ReceiptForm(request.POST)
@@ -131,7 +127,9 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 )
                 return redirect(reverse_lazy(self.success_url))
 
-        return self.render_to_response(
+        return render(
+            request,
+            self.template_name,
             {
                 'seller_form': seller_form,
                 'receipt_form': receipt_form,

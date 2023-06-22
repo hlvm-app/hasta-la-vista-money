@@ -7,6 +7,7 @@ from hasta_la_vista_money.constants import MessageOnSite
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.income.forms import IncomeForm
 from hasta_la_vista_money.income.models import Income
+from hasta_la_vista_money.utils import button_delete_income
 
 
 class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
@@ -17,7 +18,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
     context_object_name = 'incomes'
     permission_denied_message = MessageOnSite.ACCESS_DENIED.value
     no_permission_url = reverse_lazy('login')
-    success_url = reverse_lazy('income:list')
+    success_url = 'income:list'
 
     def get(self, request, *args, **kwargs):
         if request.user:
@@ -28,6 +29,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
             sort_by_month = Income.objects.filter(
                 user=request.user,
             ).order_by('-date')
+
             return render(
                 request,
                 self.template_name,
@@ -37,18 +39,15 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                 },
             )
 
-    def post(self, request, *args, **kwargs):  # noqa: WPS210
+    def post(self, request, *args, **kwargs):
         if 'delete_income_button' in request.POST:
             income_id = request.POST.get('income_id')
-            income = get_object_or_404(self.model, pk=income_id)
-            account = income.account
-            amount = income.amount
-            account_balance = get_object_or_404(Account, id=account.id)
-            if account_balance.user == request.user:
-                account_balance.balance -= amount
-                account_balance.save()
-                income.delete()
-                return redirect(self.success_url)
+            button_delete_income(
+                model=Income,
+                request=request,
+                object_id=income_id,
+                url=self.success_url,
+            )
 
         income_form = IncomeForm(request.POST)
 
@@ -63,8 +62,10 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                 account_balance.save()
                 income.user = request.user
                 income.save()
-                return redirect(self.success_url)
+                return redirect(reverse_lazy(self.success_url))
         else:
-            return self.render_to_response(  # noqa: WPS503
+            return render(
+                request,
+                self.template_name,
                 {'income_form': income_form},
             )

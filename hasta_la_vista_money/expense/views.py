@@ -10,6 +10,7 @@ from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.expense.forms import AddExpenseForm
 from hasta_la_vista_money.expense.models import Expense
 from hasta_la_vista_money.receipts.models import Receipt
+from hasta_la_vista_money.utils import button_delete_expenses
 
 
 class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
@@ -18,7 +19,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
     context_object_name = 'expense'
     permission_denied_message = MessageOnSite.ACCESS_DENIED.value
     no_permission_url = reverse_lazy('login')
-    success_url = reverse_lazy('income:list')
+    success_url = 'expense:list'
 
     def get(self, request, *args, **kwargs):
         """
@@ -46,35 +47,33 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 total_amount=Sum('total_sum'),
             ).order_by('-month')
 
-            expenses = Expense.objects.filter(user=request.user).annotate(  # noqa: WPS221 E501
-                month=TruncMonth('date'),
-            ).values(
+            expenses = Expense.objects.filter(user=request.user).values(
+                'id',
                 'date',
                 'account__name_account',
                 'category__name',
                 'amount',
-            ).annotate(
-                total_amount=Sum('amount'),
+            ).order_by('-date')
+            print(expenses.values('id'))
+            return render(
+                request,
+                self.template_name,
+                {
+                    'receipt_info_by_month': receipt_info_by_month,
+                    'expenses': expenses,
+                    'add_expense_form': add_expense_form,
+                }
             )
 
-            return render(request, self.template_name, {
-                'receipt_info_by_month': receipt_info_by_month,
-                'expenses': expenses,
-                'add_expense_form': add_expense_form,
-            })
-
-    def post(self, request, *args, **kwargs):  # noqa: WPS210
+    def post(self, request, *args, **kwargs):
         if 'delete_expense_button' in request.POST:
             expense_id = request.POST.get('expense_id')
-            expense = get_object_or_404(self.model, pk=expense_id)
-            account = expense.account
-            amount = expense.amount
-            account_balance = get_object_or_404(Account, id=account.id)
-            if account_balance.user == request.user:
-                account_balance.balance -= amount
-                account_balance.save()
-                expense.delete()
-                return redirect(self.success_url)
+            button_delete_expenses(
+                model=Expense,
+                request=request,
+                object_id=expense_id,
+                url=self.success_url,
+            )
 
         add_expense_form = AddExpenseForm(request.POST)
 
@@ -91,6 +90,8 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 return redirect(self.success_url)
 
         else:
-            return self.render_to_response(  # noqa: WPS503
+            return render(
+                request,
+                self.template_name,
                 {'add_expense_form': add_expense_form},
             )

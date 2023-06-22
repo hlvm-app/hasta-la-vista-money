@@ -8,6 +8,7 @@ from hasta_la_vista_money.account.forms import AddAccountForm
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import MessageOnSite
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
+from hasta_la_vista_money.utils import button_delete_account
 
 
 class PageApplication(
@@ -35,18 +36,12 @@ class PageApplication(
     def post(self, request, *args, **kwargs):
         if 'delete_account_button' in request.POST:
             account_id = request.POST.get('account_id')
-            account = get_object_or_404(self.model, pk=account_id)
-            try:
-                account.delete()
-            except ProtectedError:
-                messages.error(
-                    request,
-                    'Счёт не может быть удалён! Сначала '
-                    'вам необходимо удалить все чеки, '
-                    'доходы и расходы привязанные к счёту!',
-                )
-                return redirect(reverse_lazy(self.success_url))
-            return redirect(reverse_lazy(self.success_url))
+            button_delete_account(
+                Account,
+                request,
+                account_id,
+                self.success_url,
+            )
 
         account_form = AddAccountForm(request.POST)
         if account_form.is_valid():
