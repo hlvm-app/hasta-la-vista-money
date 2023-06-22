@@ -1,4 +1,6 @@
+from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import ProtectedError
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
@@ -34,7 +36,16 @@ class PageApplication(
         if 'delete_account_button' in request.POST:
             account_id = request.POST.get('account_id')
             account = get_object_or_404(self.model, pk=account_id)
-            account.delete()
+            try:
+                account.delete()
+            except ProtectedError:
+                messages.error(
+                    request,
+                    'Счёт не может быть удалён! Сначала '
+                    'вам необходимо удалить все чеки, '
+                    'доходы и расходы привязанные к счёту!',
+                )
+                return redirect(reverse_lazy(self.success_url))
             return redirect(reverse_lazy(self.success_url))
 
         account_form = AddAccountForm(request.POST)
