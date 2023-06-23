@@ -126,15 +126,19 @@ def handle_receipt(message):
     if telegram_user:
         user = telegram_user.user
         account = telegram_user.selected_account_id
+        telegram_content_type(message, user, account)
+        
 
-        if message.content_type == 'text':
-            handle_receipt_text(message, bot_admin, user, account)
-        elif message.content_type == 'photo':
-            handle_receipt_text_qrcode(message, bot_admin, user, account)
-        elif message.content_type == 'document':
-            handle_receipt_json(message, bot_admin, user, account)
-        else:
-            bot_admin.send_message(
-                message.chat.id,
-                TelegramMessage.ACCEPTED_FORMAT_JSON.value,
-            )
+
+def telegram_content_type(message, user, account):
+    if message.content_type == 'text':
+        handle_receipt_text(message, bot_admin, user, account)
+    elif message.content_type == 'photo':
+        handle_receipt_text_qrcode(message, bot_admin, user, account)
+    elif message.content_type == 'document':
+        handle_receipt_json(message, bot_admin, user, account)
+    else:
+        bot_admin.send_message(
+            message.chat.id,
+            TelegramMessage.ACCEPTED_FORMAT_JSON.value,
+        )
