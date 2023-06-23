@@ -21,8 +21,7 @@ def handle_start(message):
 def handle_auth(message):  # noqa: WPS210
     auth_data = message.text.split(':')
     if len(auth_data) == 2:
-        username = auth_data[0].strip()
-        password = auth_data[1].strip()
+        username, password = map(str, string)
         user = User.objects.filter(username=username).first()
         telegram_username = message.from_user.username
 
