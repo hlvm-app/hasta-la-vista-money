@@ -30,31 +30,39 @@ def handle_auth(message):  # noqa: WPS210
                 user=user,
             ).first()
             if existing_telegram_user:
-                if existing_telegram_user.telegram_id == message.from_user.id:
-                    bot_admin.reply_to(
-                        message,
-                        TelegramMessage.ALREADY_LOGGING_LINK_ACCOUNT.value,
-                    )
-                else:
-                    bot_admin.reply_to(
-                        message,
-                        TelegramMessage.ALREADY_LINK_ANOTHER_ACCOUNT.value,
-                    )
+                authenticated_user(message, existing_telegram_user)
             else:
-                TelegramUser.objects.create(
-                    user=user,
-                    username=telegram_username,
-                    telegram_id=message.from_user.id,
-                )
-                bot_admin.reply_to(
-                    message, TelegramMessage.AUTHORIZATION_SUCCESSFUL.value,
-                )
+                create_telegram_user(message, telegram_username, user)
         else:
             bot_admin.reply_to(
                 message, TelegramMessage.INVALID_USERNAME_PASSWORD.value,
             )
     else:
         bot_admin.reply_to(message, TelegramMessage.INCORRECT_FORMAT.value)
+
+
+def authenticated_user(message, existing_telegram_user):
+    if existing_telegram_user.telegram_id == message.from_user.id:
+        bot_admin.reply_to(
+            message,
+            TelegramMessage.ALREADY_LOGGING_LINK_ACCOUNT.value,
+        )
+    else:
+        bot_admin.reply_to(
+            message,
+            TelegramMessage.ALREADY_LINK_ANOTHER_ACCOUNT.value,
+        )
+
+
+def create_telegram_user(message, telegram_username, user):
+    TelegramUser.objects.create(
+        user=user,
+        username=telegram_username,
+        telegram_id=message.from_user.id,
+    )
+    bot_admin.reply_to(
+        message, TelegramMessage.AUTHORIZATION_SUCCESSFUL.value,
+    )
 
 
 @bot_admin.message_handler(commands=['select_account'])
