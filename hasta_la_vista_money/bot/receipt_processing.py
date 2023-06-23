@@ -5,6 +5,7 @@ import os
 
 import requests
 from django.db import IntegrityError
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from dotenv import load_dotenv
 from hasta_la_vista_money.account.models import Account
@@ -386,6 +387,8 @@ class ReceiptParser:
                 logger.error(TelegramMessage.NOT_CREATE_ACCOUNT.value)
             else:
                 logger.error(TelegramMessage.ERROR_DATABASE_RECORD.value)
+        except Http404:
+            logger.error(TelegramMessage.NOT_CREATE_ACCOUNT.value)
 
     def parse(self, chat_id: int) -> None:
         """
