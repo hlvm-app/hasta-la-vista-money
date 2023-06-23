@@ -23,15 +23,15 @@ def handle_auth(message):  # noqa: WPS210
     if len(auth_data) != 2:
         bot_admin.reply_to(message, TelegramMessage.INCORRECT_FORMAT.value)
         return
-        
+
     username, password = map(str, auth_data)
     user = User.objects.filter(username=username).first()
     telegram_username = message.from_user.username
+    existing_telegram_user = TelegramUser.objects.filter(
+        user=user,
+    ).first()
 
     if user and user.check_password(password):
-        existing_telegram_user = TelegramUser.objects.filter(
-            user=user,
-        ).first()
         if existing_telegram_user:
             authenticated_user(message, existing_telegram_user)
         else:
