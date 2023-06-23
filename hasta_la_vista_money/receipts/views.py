@@ -2,6 +2,7 @@ from typing import Any, Dict
 
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import ProtectedError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
@@ -23,9 +24,9 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
     template_name = 'receipts/receipts.html'
     model = Receipt
     context_object_name = 'receipts'
-    success_url = 'receipts:list'
     permission_denied_message = MessageOnSite.ACCESS_DENIED.value
     no_permission_url = reverse_lazy('login')
+    success_url = 'receipts:list'
 
     def get(self, request, *args, **kwargs):
         if request.user:
@@ -96,22 +97,36 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
     def post(self, request, *args, **kwargs) -> Dict[str, Any]:
         if 'delete_receipt_button' in request.POST:
             receipt_id = request.POST.get('receipt_id')
-            button_delete_receipt(
-                model=Receipt,
-                request=request,
-                object_id=receipt_id,
-                url=self.success_url,
-            )
+            name_model = get_object_or_404(self.model, pk=receipt_id)
+            account = name_model.account
+            amount_object = name_model.total_sum
+            account_balance = get_object_or_404(Account, id=account.id)
+            try:
+                if account_balance.user == request.user:
+                    account_balance.balance += amount_object
+                    account_balance.save()
+
+                    for product in name_model.product.all():
+                        product.delete()
+                    name_model.customer.delete()
+
+                    name_model.delete()
+                    messages.success(request, 'Чек успешно удалён!')
+                    return redirect(reverse_lazy(self.success_url))
+            except ProtectedError:
+                messages.error(request, 'Чек не может быть удалён!')
+                return redirect(reverse_lazy(self.success_url))
 
         seller_form = CustomerForm(request.user, request.POST)
         receipt_form = ReceiptForm(request.POST)
         product_formset = ProductFormSet(request.POST)
 
-        if (
-            receipt_form.is_valid() and
-            product_formset.is_valid() and
-            seller_form.is_valid()
-        ):
+        valid_form = (
+                receipt_form.is_valid() and
+                product_formset.is_valid() and
+                seller_form.is_valid()
+        )
+        if valid_form:
             seller = self.get_or_create_seller(request, seller_form)
             number_receipt = self.check_exist_receipt(request, receipt_form)
             if number_receipt:
