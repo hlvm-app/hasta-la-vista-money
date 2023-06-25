@@ -1,14 +1,11 @@
-from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import ProtectedError
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from hasta_la_vista_money.account.forms import AddAccountForm
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.constants import MessageOnSite
+from hasta_la_vista_money.buttons_delete import button_delete_account
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
-from hasta_la_vista_money.utils import button_delete_account
 
 
 class PageApplication(
@@ -21,13 +18,12 @@ class PageApplication(
     model = Account
     template_name = 'applications/page_application.html'
     context_object_name = 'applications'
-    permission_denied_message = MessageOnSite.ACCESS_DENIED.value
     no_permission_url = reverse_lazy('login')
     success_url = 'applications:list'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if self.request.user:
+        if self.request.user.is_authenticated:
             accounts = Account.objects.filter(user=self.request.user)
             context['accounts'] = accounts
             context['add_account_form'] = AddAccountForm()
