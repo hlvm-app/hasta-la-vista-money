@@ -30,13 +30,15 @@
 </head>
 <body>
     <div class="min-vh-100 bg-success bg-gradient">
-        {% include 'header.html' %}
-        <div class="container text-center">
-            {% bootstrap_messages  %}
-        </div>
-
+        {% if user.is_authenticated %}
+            {% include 'header.html' %}
+            <div class="container text-center">
+                {% bootstrap_messages  %}
+            </div>
+        {% endif %}
         {% block content %}
         {% endblock %}
+
     </div>
 
 
