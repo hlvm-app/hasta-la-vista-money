@@ -33,10 +33,7 @@ class PageApplication(
         if 'delete_account_button' in request.POST:
             account_id = request.POST.get('account_id')
             button_delete_account(
-                Account,
-                request,
-                account_id,
-                self.success_url,
+                Account, request, account_id, self.success_url,
             )
 
         accounts = Account.objects.filter(user=self.request.user).all()
