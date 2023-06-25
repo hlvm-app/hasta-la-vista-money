@@ -18,7 +18,7 @@ class AddExpenseForm(BaseForm):
         widgets = {
             'date': DateTimePickerInput(
                 options={
-                    'format': 'DD/MM/YYYY HH:ss',
+                    'format': 'DD/MM/YYYY HH:mm',
                     'showTodayButton': True,
                 },
             ),
