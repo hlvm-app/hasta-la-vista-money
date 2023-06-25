@@ -2,7 +2,6 @@ from django.contrib import messages
 from django.db.models import ProtectedError
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-
 from hasta_la_vista_money.account.models import Account
 
 
