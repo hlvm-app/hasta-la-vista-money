@@ -3,11 +3,10 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django_filters.views import FilterView
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.constants import MessageOnSite
+from hasta_la_vista_money.buttons_delete import button_delete_income
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.income.forms import IncomeForm
 from hasta_la_vista_money.income.models import Income
-from hasta_la_vista_money.utils import button_delete_income
 
 
 class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
@@ -16,7 +15,6 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
     model = Income
     template_name = 'income/income.html'
     context_object_name = 'incomes'
-    permission_denied_message = MessageOnSite.ACCESS_DENIED.value
     no_permission_url = reverse_lazy('login')
     success_url = 'income:list'
 
@@ -39,7 +37,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                 },
             )
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):  # noqa: WPS210
         if 'delete_income_button' in request.POST:
             income_id = request.POST.get('income_id')
             button_delete_income(
