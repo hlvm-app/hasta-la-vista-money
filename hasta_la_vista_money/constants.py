@@ -43,9 +43,6 @@ class ReceiptConstants(Enum):
 class MessageOnSite(Enum):
     SUCCESS_MESSAGE_LOGIN = 'Вы успешно авторизовались!'
     SUCCESS_MESSAGE_REGISTRATION = 'Регистрация прошла успешно!'
-    ACCESS_DENIED = (
-        'У вас нет прав на просмотр данной страницы! Авторизуйтесь!',
-    )
     SUCCESS_MESSAGE_CREATE_RECEIPT = (
         'Чек был успешно добавлен в базу данных!',
     )
