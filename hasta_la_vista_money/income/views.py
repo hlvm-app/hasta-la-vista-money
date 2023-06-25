@@ -19,7 +19,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
     success_url = 'income:list'
 
     def get(self, request, *args, **kwargs):
-        if request.user:
+        if request.user.is_authenticated:
             income_form = IncomeForm()
             income_form.fields['account'].queryset = Account.objects.filter(
                 user=request.user,

@@ -26,7 +26,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         :param request: Запрос данных со страницы сайта.
         :return: Рендеринг данных на странице сайта.
         """
-        if request.user:
+        if request.user.is_authenticated:
             add_expense_form = AddExpenseForm()
             add_expense_form.fields[
                 'account'

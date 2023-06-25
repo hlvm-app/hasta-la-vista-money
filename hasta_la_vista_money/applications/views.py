@@ -40,7 +40,7 @@ class PageApplication(
         account_form = AddAccountForm(request.POST)
         if account_form.is_valid():
             add_account = account_form.save(commit=False)
-            if request.user:
+            if request.user.is_authenticated:
                 add_account.user = request.user
                 add_account.save()
                 return redirect(reverse_lazy(self.success_url))

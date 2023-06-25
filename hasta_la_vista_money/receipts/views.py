@@ -29,7 +29,7 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
     success_url = 'receipts:list'
 
     def get(self, request, *args, **kwargs):
-        if request.user:
+        if request.user.is_authenticated:
             existing_sellers = Customer.objects.filter(user=request.user)
             seller_form = CustomerForm(user=request.user)
             seller_form.fields['existing_seller'].queryset = existing_sellers

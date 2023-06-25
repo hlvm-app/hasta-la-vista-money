@@ -61,7 +61,7 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         return months_year
 
     def get(self, request, *args, **kwargs):
-        if request.user:
+        if request.user.is_authenticated:
             income_amounts = {
                 self.format_month_year(income_dict['date']):
                     income_dict['total_amount']
