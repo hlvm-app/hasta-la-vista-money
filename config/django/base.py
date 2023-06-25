@@ -228,6 +228,12 @@ LANGUAGES = (
     ('ru', 'Russian'),
 )
 
+BOOTSTRAP_DATEPICKER_PLUS = {
+    'options': {
+        'locale': 'ru',
+    }
+}
+
 DATETIME_INPUT_FORMATS = ['%d-%m-%Y %H:%M']
 
 LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
