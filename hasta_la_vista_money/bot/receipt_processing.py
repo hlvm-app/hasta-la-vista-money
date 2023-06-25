@@ -316,7 +316,7 @@ class ReceiptParser:
                 f'Ошибка записи продавца в базу данных: {integrity_error}',
             )
 
-    def parse_receipt(self, chat_id: int) -> None:  # noqa: WPS231 C901 WPS210
+    def parse_receipt(self, chat_id: int) -> None:  # noqa: WPS231 C901 WPS210 WPS213 E501
         """
         Метод класса для парсинга основной информации о чеке.
 
