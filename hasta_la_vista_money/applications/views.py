@@ -1,5 +1,5 @@
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from hasta_la_vista_money.account.forms import AddAccountForm
@@ -39,6 +39,7 @@ class PageApplication(
                 self.success_url,
             )
 
+        accounts = Account.objects.filter(user=self.request.user).all()
         account_form = AddAccountForm(request.POST)
         if account_form.is_valid():
             add_account = account_form.save(commit=False)
@@ -47,8 +48,11 @@ class PageApplication(
                 add_account.save()
                 return redirect(reverse_lazy(self.success_url))
         else:
-            return self.render_to_response(
+            return render(
+                request,
+                self.template_name,
                 {
+                    'accounts': accounts,
                     'add_account_form': account_form,
                 },
             )
