@@ -30,6 +30,52 @@
                 </div>
             </div>
         </div>
+        <div id="category-expense" class="modal fade" >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            Управление категориями
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-group list-group-numbered list-group-flush">
+                            {% for category in categories %}
+                                <li class="list-group-item">
+                                    {{ category }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" data-bs-target="#add-category-expense" data-bs-toggle="modal" data-bs-dismiss="modal">Добавить категорию</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="add-category-expense" class="modal fade" >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            Добавить категорию
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form" method="post">
+                            {% csrf_token %}
+                            {% bootstrap_form add_category_form %}
+                            {% bootstrap_button button_add_category_expense button_type="submit" button_class='add-category-expense btn btn-primary' %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row mt-2 justify-content-start">
             <div class="col-xl-3 pt-5">
                 <table class="table table-hover text-center table-bordered text-light">
@@ -65,7 +111,7 @@
                             <th>Дата</th>
                             <th>Сумма</th>
                             <th>Счёт</th>
-                            <th class="col-2"><button type="button" class="add-expense-button btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#add-expense">Добавить расход</button></th>
+                            <th class="col-2"><button type="button" class="open-modal-expense-button btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#add-expense">Добавить расход</button></th>
                         </tr>
                         {% for expense in expenses %}
                             <tr>
@@ -86,8 +132,9 @@
                                 </td>
                             </tr>
                         {% endfor %}
-                    </table>
 
+                    </table>
+                    <button type="button" class="open-modal-categories-button btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#category-expense">Управление категориями</button>
                 </div>
 
             </div>
