@@ -4,12 +4,10 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, DeleteView
-from django.views.generic.edit import DeletionMixin
-
+from django.views.generic import TemplateView
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.buttons_delete import button_delete_receipt
-from hasta_la_vista_money.constants import ReceiptConstants, MessageOnSite
+from hasta_la_vista_money.constants import ReceiptConstants
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.receipts.forms import (
     CustomerForm,
