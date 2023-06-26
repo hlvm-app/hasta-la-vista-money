@@ -40,7 +40,7 @@
     float: right;
 }
 
-.link-wrapper {
+.wrapper-table-income {
     position: relative;
 }
 
@@ -63,8 +63,7 @@
 }
 
 .button-add-form-income {
-    width: 20%;
-    margin-left: 80%;
+    font-size: 12px;
 }
 
 .form-remove-receipt-button {
@@ -84,8 +83,14 @@
     font-size: 13px;
 }
 
-.open-modal-categories-button {
+.open-modal-categories-expense-button {
     position: absolute;
-    top: 15%;
+    top: .5rem;
+    right: -15rem;
+}
+
+.open-modal-categories-income-button {
+    position: absolute;
+    top: .9rem;
     right: -15rem;
 }
