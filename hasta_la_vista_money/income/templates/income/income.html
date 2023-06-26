@@ -30,46 +30,98 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="link-wrapper mt-5">
-                <button type="button" class="button-add-form-income btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#add-income">Добавить новый доход</button>
-            </div>
-            <div class="col-xl-12 mt-2">
-                <table class="table table-hover text-center table-bordered border-warning align-middle mb-0 text-light">
-                    <thead>
-                        <tr>
-                            <th class="col-2">Тип дохода</th>
-                            <th class="col-2">Период</th>
-                            <th class="col-2">Сумма</th>
-                            <th class="col-1"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for income in income_by_month %}
-
-                            <tr>
-
-                                <td class="col-2">{{ income.type_income }}</td>
-                                <td class="col-2">{{ income.date | date:"F Y" }}</td>
-                                <td class="col-2">{{ income.amount | comma }}</td>
-                                <td class="col-1">
-                                    <form method="post">
+        <div id="category-income" class="modal fade" >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            Управление категориями дохода
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-group list-group-numbered list-group-flush">
+                            {% for category in categories %}
+                                <li class="list-group-item d-flex align-items">
+                                    {{ category }}
+                                    <form class="form-remove-category-button" method="post">
                                         {% csrf_token %}
-                                        <input type="hidden" name="income_id" value="{{ income.id }}">
-                                        <button class="btn btn-outline-danger remove-income-button btn-small border-0" data-nonce="{{request.csp_nonce}}" type="submit" name="delete_income_button">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                        <input type="hidden" name="category_income_id" value="{{ category.id }}">
+                                        <button class="remove-category-button btn btn-outline-danger border-0 btn-sm" data-nonce="{{request.csp_nonce}}" type="submit" name="delete_category_income_button">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 15 25">
                                                 <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
                                             </svg>
                                         </button>
                                     </form>
-                                </td>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" data-bs-target="#add-category-income" data-bs-toggle="modal" data-bs-dismiss="modal">Добавить категорию</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="add-category-income" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            Добавить категорию дохода
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form" method="post">
+                            {% csrf_token %}
+                            {% bootstrap_form add_category_income_form %}
+                            {% bootstrap_button button_add_category button_type="submit" button_class='add-category-income btn btn-primary' %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="wrapper-table-income mt-5">
+
+
+                <div class="col-xl-12 mt-2">
+                    <table class="table table-hover text-center align-middle table-bordered border-warning align-middle mb-0 text-light">
+                        <thead>
+                            <tr>
+                                <th class="col-2">Категория дохода</th>
+                                <th class="col-2">Период</th>
+                                <th class="col-2">Сумма</th>
+                                <th class="col-1"><button type="button" class="button-add-form-income btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#add-income">Добавить новый доход</button></th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
+                        </thead>
+                        <tbody>
+                            {% for income in income_by_month %}
 
-                </table>
+                                <tr>
 
+                                    <td class="col-2">{{ income.type_income }}</td>
+                                    <td class="col-2">{{ income.date | date:"F Y" }}</td>
+                                    <td class="col-2">{{ income.amount | comma }}</td>
+                                    <td class="col-1">
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="income_id" value="{{ income.id }}">
+                                            <button class="btn btn-outline-danger remove-income-button btn-small border-0" data-nonce="{{request.csp_nonce}}" type="submit" name="delete_income_button">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
 
+                    </table>
+                    <button type="button" class="open-modal-categories-income-button btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#category-income">Управление категориями</button>
+                </div>
             </div>
 
         </div>
