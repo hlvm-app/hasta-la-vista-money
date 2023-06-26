@@ -82,7 +82,7 @@ def button_delete_category(model, request, object_id, url):
         messages.error(
             request,
             'Категория не может быть удалена! Сначала '
-            'вам необходимо удалить все расходы, '
+            'вам необходимо удалить все расходы или доходы, '
             'привязанные к категории!',
         )
-    redirect(reverse_lazy(url))
+        redirect(reverse_lazy(url))

@@ -85,11 +85,12 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         if 'delete_category_expense_button' in request.POST:
             category_id = request.POST.get('category_expense_id')
             button_delete_category(
-                ExpenseType,
-                request,
+                model=ExpenseType,
+                request=request,
                 object_id=category_id,
                 url=self.success_url,
             )
+
         categories = ExpenseType.objects.filter(user=request.user).all()
         add_expense_form = AddExpenseForm(request.POST)
         add_category_form = AddCategoryForm(request.POST)

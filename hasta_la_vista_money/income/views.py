@@ -33,7 +33,9 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
             sort_by_month = Income.objects.filter(
                 user=request.user,
             ).order_by('-date')
+
             categories = IncomeType.objects.filter(user=request.user).all()
+
             return render(
                 request,
                 self.template_name,
@@ -57,8 +59,8 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
         if 'delete_category_income_button' in request.POST:
             category_id = request.POST.get('category_income_id')
             button_delete_category(
-                IncomeType,
-                request,
+                model=IncomeType,
+                request=request,
                 object_id=category_id,
                 url=self.success_url,
             )
@@ -66,6 +68,9 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
         categories = IncomeType.objects.filter(user=request.user).all()
         income_form = IncomeForm(request.POST)
         add_category_income_form = AddCategoryIncomeForm(request.POST)
+        sort_by_month = Income.objects.filter(
+            user=request.user,
+        ).order_by('-date')
 
         if income_form.is_valid():
             income = income_form.save(commit=False)
@@ -90,7 +95,10 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
             return render(
                 request,
                 self.template_name,
-                {'income_form': income_form},
-                {'add_category_income_form': add_category_income_form},
-                {'categories': categories},
+                {
+                    'add_category_income_form': add_category_income_form,
+                    'categories': categories,
+                    'income_by_month': sort_by_month,
+                    'income_form': income_form,
+                },
             )
