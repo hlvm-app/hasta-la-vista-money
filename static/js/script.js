@@ -4,6 +4,7 @@ let addButton = document.querySelector("#add-form")
 let removeButton = document.querySelector("#remove-form")
 let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
 window.onload = onClickRemoveButton;
+window.onload = onClickRemoveCategory;
 
 let formNum = productForm.length-1
 addButton.addEventListener('click', addForm)
@@ -163,5 +164,17 @@ function onClickRemoveButton() {
                event.preventDefault()
            }
        });
+    });
+}
+
+function onClickRemoveCategory() {
+    const removeButtonCategory = document.querySelectorAll('.remove-category-button')
+    removeButtonCategory.forEach((button) => {
+        button.addEventListener('click', (event) => {
+            const confirmed_button_category = confirm('Вы уверены, что хотите удалить эту категорию?')
+            if (!confirmed_button_category) {
+                event.preventDefault()
+            }
+        });
     });
 }
