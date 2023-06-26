@@ -1,4 +1,3 @@
-{{ '<' }}{{'!doctype html>'}}
 {# Load the tag library #}
 {% load django_bootstrap5 %}
 {% load csp %}
@@ -15,13 +14,15 @@
 {% translate 'Добавить расход' as button_text_create_expense %}
 {% translate 'Удалить один товар' as button_text_remove_receipt %}
 {% translate 'Добавить нового продавца' as add_new_seller_btn %}
-{% translate 'Добавить' as button_add_category_expense %}
+{% translate 'Добавить' as button_add_category %}
 
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Базовый шаблон</title>
     <link rel="shortcut icon" href="{% static 'img/favicon/favicon.png' %}" type="image/x-icon">
     <link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/bootstrap-icons.min.css' %}">
     <script nonce="{{request.csp_nonce}}" src="{% static 'js/jquery-3.6.3.min.js' %}"></script>
