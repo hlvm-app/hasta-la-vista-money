@@ -80,6 +80,12 @@
     position: relative;
 }
 
-.add-expense-button {
+.open-modal-expense-button {
     font-size: 13px;
+}
+
+.open-modal-categories-button {
+    position: absolute;
+    top: 15%;
+    right: -15rem;
 }
