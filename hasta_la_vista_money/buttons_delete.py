@@ -6,20 +6,20 @@ from hasta_la_vista_money.account.models import Account
 
 
 def button_delete_receipt(model, request, object_id, url):
-    name_model = get_object_or_404(model, pk=object_id)
-    account = name_model.account
-    amount_object = name_model.total_sum
+    receipt = get_object_or_404(model, pk=object_id)
+    account = receipt.account
+    amount_object = receipt.total_sum
     account_balance = get_object_or_404(Account, id=account.id)
     try:
         if account_balance.user == request.user:
             account_balance.balance += amount_object
             account_balance.save()
 
-            for product in name_model.product.all():
+            for product in receipt.product.all():
                 product.delete()
-            name_model.customer.delete()
+            receipt.customer.delete()
 
-            name_model.delete()
+            receipt.delete()
             messages.success(request, 'Чек успешно удалён!')
             return redirect(reverse_lazy(url))
     except ProtectedError:
@@ -28,15 +28,15 @@ def button_delete_receipt(model, request, object_id, url):
 
 
 def button_delete_income(model, request, object_id, url):
-    name_model = get_object_or_404(model, pk=object_id)
-    account = name_model.account
-    amount_object = name_model.amount
+    income = get_object_or_404(model, pk=object_id)
+    account = income.account
+    amount_object = income.amount
     account_balance = get_object_or_404(Account, id=account.id)
     if account_balance.user == request.user:
         account_balance.balance -= amount_object
         account_balance.save()
         try:
-            name_model.delete()
+            income.delete()
             messages.success(request, 'Доходная операция успешно удалена!')
             redirect(reverse_lazy(url))
         except ProtectedError:
@@ -45,21 +45,22 @@ def button_delete_income(model, request, object_id, url):
 
 
 def button_delete_expenses(model, request, object_id, url):
-    name_model = get_object_or_404(model, pk=object_id)
-    account = name_model.account
-    amount_object = name_model.amount
+    expense = get_object_or_404(model, pk=object_id)
+    account = expense.account
+    amount_object = expense.amount
     account_balance = get_object_or_404(Account, id=account.id)
     if account_balance.user == request.user:
         account_balance.balance += amount_object
         account_balance.save()
-        name_model.delete()
+        expense.delete()
         redirect(reverse_lazy(url))
 
 
 def button_delete_account(model, request, object_id, url):
-    name_model = get_object_or_404(model, pk=object_id)
+    account = get_object_or_404(model, pk=object_id)
     try:
-        name_model.delete()
+        account.delete()
+        messages.success(request, 'Счёт успешно удалён!')
         return redirect(reverse_lazy(url))
     except ProtectedError:
         messages.error(
@@ -67,5 +68,21 @@ def button_delete_account(model, request, object_id, url):
             'Счёт не может быть удалён! Сначала '
             'вам необходимо удалить все чеки, '
             'доходы и расходы привязанные к счёту!',
+        )
+    redirect(reverse_lazy(url))
+
+
+def button_delete_category(model, request, object_id, url):
+    category = get_object_or_404(model, pk=object_id)
+    try:
+        category.delete()
+        messages.success(request, 'Категория успешно удалена!')
+        return redirect(reverse_lazy(url))
+    except ProtectedError:
+        messages.error(
+            request,
+            'Категория не может быть удалена! Сначала '
+            'вам необходимо удалить все расходы, '
+            'привязанные к категории!',
         )
     redirect(reverse_lazy(url))
