@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count, Sum
 from django.db.models.functions import TruncMonth
@@ -7,8 +8,8 @@ from django.views.generic import TemplateView
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.buttons_delete import button_delete_expenses
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
-from hasta_la_vista_money.expense.forms import AddExpenseForm
-from hasta_la_vista_money.expense.models import Expense
+from hasta_la_vista_money.expense.forms import AddExpenseForm, AddCategoryForm
+from hasta_la_vista_money.expense.models import Expense, ExpenseType
 from hasta_la_vista_money.receipts.models import Receipt
 
 
@@ -28,6 +29,8 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         """
         if request.user.is_authenticated:
             add_expense_form = AddExpenseForm()
+            add_category_form = AddCategoryForm()
+
             add_expense_form.fields[
                 'account'
             ].queryset = Account.objects.filter(
@@ -53,10 +56,14 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 'amount',
             ).order_by('-date')
 
+            categories = ExpenseType.objects.all()
+
             return render(
                 request,
                 self.template_name,
                 {
+                    'add_category_form': add_category_form,
+                    'categories': categories,
                     'receipt_info_by_month': receipt_info_by_month,
                     'expenses': expenses,
                     'add_expense_form': add_expense_form,
@@ -74,6 +81,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             )
 
         add_expense_form = AddExpenseForm(request.POST)
+        add_category_form = AddCategoryForm(request.POST)
 
         if add_expense_form.is_valid():
             expense = add_expense_form.save(commit=False)
@@ -86,10 +94,14 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 expense.user = request.user
                 expense.save()
                 return redirect(self.success_url)
-
+        elif add_category_form.is_valid():
+            add_category_form.save()
+            messages.success(request, 'Категория добавлена!')
+            return redirect(self.success_url)
         else:
             return render(
                 request,
                 self.template_name,
                 {'add_expense_form': add_expense_form},
+                {'add_category_form': add_category_form},
             )
