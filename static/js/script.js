@@ -3,8 +3,8 @@ let container = document.querySelector("#form-create-receipt")
 let addButton = document.querySelector("#add-form")
 let removeButton = document.querySelector("#remove-form")
 let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
-window.onload = onClickRemoveButton;
-window.onload = onClickRemoveCategory;
+
+window.onload = onClickRemoveObject;
 
 let formNum = productForm.length-1
 addButton.addEventListener('click', addForm)
@@ -128,50 +128,11 @@ const formCheck = document.querySelector('.form-check');
 formCheck.closest('.row').style.display = 'none';
 
 
-function onClickRemoveButton() {
-    const removeButtons = document.querySelectorAll('.remove-receipt-button');
-    const removeIncomeButton = document.querySelectorAll('.remove-income-button');
-    const removeExpenseButton = document.querySelectorAll('.remove-expense-button');
-    const removeAccountButton = document.querySelectorAll('.remove-account-button');
-    removeButtons.forEach((button) => {
-    button.addEventListener('click', (event) => {
-      const confirmed = confirm('Вы уверены, что хотите удалить этот чек?');
-      if (!confirmed) {
-        event.preventDefault();
-      }
-    });
-    });
-    removeIncomeButton.forEach((button) => {
-      button.addEventListener('click', (event) => {
-          const confirmed = confirm('Вы уверены, что хотите удалить этот доход?')
-          if (!confirmed) {
-              event.preventDefault()
-          }
-      });
-    });
-    removeAccountButton.forEach((button) => {
-      button.addEventListener('click', (event) => {
-          const confirmed = confirm('Вы уверены, что хотите удалить этот счёт?')
-          if (!confirmed) {
-              event.preventDefault()
-          }
-      });
-    });
-    removeExpenseButton.forEach((button) => {
-       button.addEventListener('click', (event) => {
-           const confirmed = confirm('Вы уверены, что хотите удалить этот расход?')
-           if (!confirmed) {
-               event.preventDefault()
-           }
-       });
-    });
-}
-
-function onClickRemoveCategory() {
-    const removeButtonCategory = document.querySelectorAll('.remove-category-button')
-    removeButtonCategory.forEach((button) => {
+function onClickRemoveObject() {
+    const removeButton = document.querySelectorAll('.remove-object-button')
+    removeButton.forEach((button) => {
         button.addEventListener('click', (event) => {
-            const confirmed_button_category = confirm('Вы уверены, что хотите удалить эту категорию?')
+            const confirmed_button_category = confirm('Вы уверены?')
             if (!confirmed_button_category) {
                 event.preventDefault()
             }

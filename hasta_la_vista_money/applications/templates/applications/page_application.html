@@ -31,12 +31,12 @@
         <div class="row">
             <div class="col-xl-12 d-flex justify-content-end pe-5">
                 <div class="account bg-light border border-primary border-2 rounded-4">
-                    <table class="table table-hover table-borderless">
+                    <table class="table table-hover mb-0 table-borderless">
                         <thead>
                             <tr>
-                                <th>Название счёта</th>
-                                <th>Баланс счёта</th>
-                                <th>Валюта счёта</th>
+                                <th class="align-middle">Название счёта</th>
+                                <th class="align-middle">Баланс счёта</th>
+                                <th class="align-middle">Валюта счёта</th>
                                 <th><button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#add-account">Добавить счёт</button></th>
                             </tr>
                         </thead>
@@ -46,11 +46,11 @@
                                     <td>{{ account.name_account }}</td>
                                     <td>{{ account.balance | comma }}</td>
                                     <td>{{ account.currency }}</td>
-                                    <td>
+                                    <td class="position-relative">
                                         <form method="post">
                                             {% csrf_token %}
                                             <input type="hidden" name="account_id" value="{{ account.id }}">
-                                            <button class="remove-account-button btn btn-outline-danger border-0 btn-sm" data-nonce="{{request.csp_nonce}}" type="submit" name="delete_account_button">
+                                            <button class="remove-object-button btn position-absolute top-50 start-50 translate-middle btn-outline-danger border-0 btn-sm" data-nonce="{{request.csp_nonce}}" type="submit" name="delete_account_button">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                                                     <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
                                                 </svg>
