@@ -6,9 +6,12 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.buttons_delete import button_delete_expenses
+from hasta_la_vista_money.buttons_delete import (
+    button_delete_category,
+    button_delete_expenses,
+)
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
-from hasta_la_vista_money.expense.forms import AddExpenseForm, AddCategoryForm
+from hasta_la_vista_money.expense.forms import AddCategoryForm, AddExpenseForm
 from hasta_la_vista_money.expense.models import Expense, ExpenseType
 from hasta_la_vista_money.receipts.models import Receipt
 
@@ -79,7 +82,15 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 object_id=expense_id,
                 url=self.success_url,
             )
-
+        if 'delete_category_button' in request.POST:
+            category_id = request.POST.get('category_id')
+            button_delete_category(
+                ExpenseType,
+                request,
+                object_id=category_id,
+                url=self.success_url,
+            )
+        categories = ExpenseType.objects.all()
         add_expense_form = AddExpenseForm(request.POST)
         add_category_form = AddCategoryForm(request.POST)
 
@@ -102,6 +113,9 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             return render(
                 request,
                 self.template_name,
-                {'add_expense_form': add_expense_form},
-                {'add_category_form': add_category_form},
+                {
+                    'add_category_form': add_category_form,
+                    'categories': categories,
+                    'add_expense_form': add_expense_form,
+                },
             )
