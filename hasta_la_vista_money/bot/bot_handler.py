@@ -127,7 +127,6 @@ def handle_receipt(message):
         user = telegram_user.user
         account = telegram_user.selected_account_id
         telegram_content_type(message, user, account)
-        
 
 
 def telegram_content_type(message, user, account):
