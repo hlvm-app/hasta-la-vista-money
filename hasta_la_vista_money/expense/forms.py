@@ -1,7 +1,7 @@
 from bootstrap_datepicker_plus.widgets import DateTimePickerInput
 from config.django.forms import BaseForm
 from django.utils.translation import gettext_lazy as _
-from hasta_la_vista_money.expense.models import Expense
+from hasta_la_vista_money.expense.models import Expense, ExpenseType
 
 
 class AddExpenseForm(BaseForm):
@@ -23,3 +23,13 @@ class AddExpenseForm(BaseForm):
                 },
             ),
         }
+
+
+class AddCategoryForm(BaseForm):
+    labels = {
+        'name': 'Название категории',
+    }
+
+    class Meta:
+        model = ExpenseType
+        fields = ['name']
