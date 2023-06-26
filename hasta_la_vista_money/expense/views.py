@@ -59,7 +59,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 'amount',
             ).order_by('-date')
 
-            categories = ExpenseType.objects.all()
+            categories = ExpenseType.objects.filter(user=request.user).all()
 
             return render(
                 request,
@@ -82,15 +82,15 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 object_id=expense_id,
                 url=self.success_url,
             )
-        if 'delete_category_button' in request.POST:
-            category_id = request.POST.get('category_id')
+        if 'delete_category_expense_button' in request.POST:
+            category_id = request.POST.get('category_expense_id')
             button_delete_category(
                 ExpenseType,
                 request,
                 object_id=category_id,
                 url=self.success_url,
             )
-        categories = ExpenseType.objects.all()
+        categories = ExpenseType.objects.filter(user=request.user).all()
         add_expense_form = AddExpenseForm(request.POST)
         add_category_form = AddCategoryForm(request.POST)
 
@@ -106,7 +106,9 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 expense.save()
                 return redirect(self.success_url)
         elif add_category_form.is_valid():
-            add_category_form.save()
+            category_form = add_category_form.save(commit=False)
+            category_form.user = request.user
+            category_form.save()
             messages.success(request, 'Категория добавлена!')
             return redirect(self.success_url)
         else:
