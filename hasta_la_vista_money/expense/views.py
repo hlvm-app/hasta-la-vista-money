@@ -121,22 +121,11 @@ class DeleteExpenseView(DetailView, DeleteView):
         if account_balance.user == self.request.user:
             account_balance.balance += amount
             account_balance.save()
+            messages.success(self.request, 'Операция расхода успешно удалена!')
             return super().form_valid(form)
 
-    # def delete(self, request, *args, **kwargs):
-    #     expense = self.get_object()
-    #     account = expense.account
-    #     amount = expense.amount
-    #     account_balance = get_object_or_404(Account, id=account.id)
-    #
-    #     if account_balance.user == request.user:
-    #         account_balance.balance = F('balance') + amount
-    #         account_balance.save()
-    #         messages.success(request, 'Доходная операция успешно удалена!')
-    #         return super().delete(request, *args, **kwargs)
 
-
-class DeleteCategoryExpenseView(DeleteView, DetailView):
+class DeleteExpenseCategoryView(DeleteView, DetailView):
     model = ExpenseType
     template_name = 'expense/expense.html'
     context_object_name = 'expense'

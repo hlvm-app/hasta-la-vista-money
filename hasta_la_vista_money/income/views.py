@@ -104,10 +104,11 @@ class IncomeDeleteView(DeleteView, DetailView):
         if account_balance.user == self.request.user:
             account_balance.balance -= amount
             account_balance.save()
+            messages.success(self.request, 'Операция дохода успешно удалена!')
             return super().form_valid(form)
 
 
-class IncomeCategoryDeleteView(DeleteView, DetailView):
+class DeleteIncomeCategoryView(DeleteView, DetailView):
     model = IncomeType
     template_name = 'income/income.html'
     context_object_name = 'category_incomes'
