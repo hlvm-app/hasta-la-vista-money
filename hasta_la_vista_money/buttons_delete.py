@@ -44,10 +44,6 @@ def button_delete_income(model, request, object_id, url):
             return redirect(reverse_lazy(url))
 
 
-# def button_delete_expenses(model, request, object_id, url):
-#
-
-
 def button_delete_account(model, request, object_id, url):
     account = get_object_or_404(model, pk=object_id)
     try:
@@ -62,19 +58,3 @@ def button_delete_account(model, request, object_id, url):
             'доходы и расходы привязанные к счёту!',
         )
     redirect(reverse_lazy(url))
-
-
-def button_delete_category(model, request, object_id, url):
-    category = get_object_or_404(model, pk=object_id)
-    try:
-        category.delete()
-        messages.success(request, 'Категория успешно удалена!')
-        return redirect(reverse_lazy(url))
-    except ProtectedError:
-        messages.error(
-            request,
-            'Категория не может быть удалена! Сначала '
-            'вам необходимо удалить все расходы или доходы, '
-            'привязанные к категории!',
-        )
-        redirect(reverse_lazy(url))

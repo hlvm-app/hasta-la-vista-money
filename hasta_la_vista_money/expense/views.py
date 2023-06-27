@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import Count, Sum
+from django.db.models import Count, Sum, ProtectedError
 from django.db.models.functions import TruncMonth
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -81,8 +81,31 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         if account_balance.user == request.user:
             account_balance.balance += amount_object
             account_balance.save()
-            expense.delete()
-            messages.success(request, 'Расходная операция успешно удалена!')
+            try:
+                expense.delete()
+                messages.success(request, 'Расходная операция успешно удалена!')
+                redirect(reverse_lazy(url))
+            except ProtectedError:
+                messages.error(
+                    request,
+                    'Расходная операция не может быть удалена!',
+                )
+                redirect(reverse_lazy(url))
+
+    @classmethod
+    def button_delete_category(cls, model, request, object_id, url):
+        category = get_object_or_404(model, pk=object_id)
+        try:
+            category.delete()
+            messages.success(request, 'Категория успешно удалена!')
+            return redirect(reverse_lazy(url))
+        except ProtectedError:
+            messages.error(
+                request,
+                'Категория не может быть удалена! Сначала '
+                'вам необходимо удалить все расходы или доходы, '
+                'привязанные к категории!',
+            )
             redirect(reverse_lazy(url))
 
     def post(self, request, *args, **kwargs):  # noqa: WPS210
