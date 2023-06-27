@@ -111,10 +111,7 @@ class IncomeDeleteView(DetailView, DeleteView):
 
 
 class DeleteIncomeCategoryView(DeleteCategoryMixin):
-    model = IncomeType
-    template_name = TemplateHTMLView.INCOME_TEMPLATE.value
     context_object_name = 'category_incomes'
-    no_permission_url = reverse_lazy('login')
     success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)
 
     def get_success_message(self):

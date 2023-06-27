@@ -129,10 +129,7 @@ class DeleteExpenseView(DetailView, DeleteView):
 
 
 class DeleteExpenseCategoryView(DeleteCategoryMixin):
-    model = ExpenseType
-    template_name = TemplateHTMLView.EXPENSE_TEMPLATE.value
     context_object_name = 'category_expenses'
-    no_permission_url = reverse_lazy('login')
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
 
     def get_success_message(self):

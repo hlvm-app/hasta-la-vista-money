@@ -19,7 +19,6 @@ class CustomNoPermissionMixin(LoginRequiredMixin):
 class DeleteCategoryMixin(DetailView, DeleteView):
     context_object_name = None
     no_permission_url = reverse_lazy('login')
-    template_name = None
     success_url = None
 
     def form_valid(self, form):
