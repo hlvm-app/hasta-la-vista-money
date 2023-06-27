@@ -1,0 +1,12 @@
+[
+{
+    "model": "users.telegramuser",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "username": "test",
+        "telegram_id": 111111111,
+        "selected_account": 1
+    }
+}
+]

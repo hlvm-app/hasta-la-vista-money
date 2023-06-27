@@ -1,6 +1,0 @@
--   model: receipts.customer
-    pk: 1
-    fields:
-        name_seller: ООО "Перекрёсток"
-        retail_place_address: null
-        retail_place: null

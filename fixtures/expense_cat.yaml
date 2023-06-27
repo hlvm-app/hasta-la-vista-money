@@ -1,0 +1,10 @@
+[
+{
+    "model": "expense.expensetype",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "name": "ЖКХ"
+    }
+}
+]

@@ -1,0 +1,18 @@
+[
+{
+    "model": "receipts.receipt",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "account": 1,
+        "receipt_date": "2023-05-16T19:35:00",
+        "number_receipt": 40463,
+        "operation_type": 1,
+        "total_sum": "98.00",
+        "customer": 1,
+        "product": [
+            1
+        ]
+    }
+}
+]

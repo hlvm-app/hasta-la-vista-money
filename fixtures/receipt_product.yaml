@@ -1,0 +1,15 @@
+[
+{
+    "model": "receipts.product",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "product_name": "Напиток \"Чай травяной\", 1 л,шт",
+        "price": "98.00",
+        "quantity": "1.00",
+        "amount": "98.00",
+        "nds_type": 1,
+        "nds_sum": "0.00"
+    }
+}
+]

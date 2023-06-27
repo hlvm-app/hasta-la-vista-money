@@ -1,0 +1,10 @@
+[
+{
+    "model": "income.incometype",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "name": "Зарплата"
+    }
+}
+]

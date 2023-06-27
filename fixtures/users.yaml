@@ -1,15 +1,38 @@
--   model: users.user
-    pk: 1
-    fields:
-        password: pbkdf2_sha256$320000$6tNMxd5FkklklyS0TclEMn$xXvyXTfjtv8yY+g2YhHwy0foYlUrI6FsrL0P3V4rQpE=
-        last_login: 2022-05-31 04:21:05.770362+00:00
-        is_superuser: false
-        username: turtleold
-        first_name: Alexander
-        last_name: Pavlov
-        email: ''
-        is_staff: false
-        is_active: true
-        date_joined: 2022-05-29 06:51:56.621974+00:00
-        groups: []
-        user_permissions: []
+[
+{
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$IOP4ixuXJo9Oa3ItjT3emG$MmJGnEkMBrlGeJ/3hnOePwphz6tccCiIJRy2HvRs9tk=",
+        "last_login": null,
+        "is_superuser": true,
+        "username": "test1",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2023-06-26T21:31:15.461",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$IOP4ixuXJo9Oa3ItjT3emG$MmJGnEkMBrlGeJ/3hnOePwphz6tccCiIJRy2HvRs9tk=",
+        "last_login": "2023-06-26T22:14:01.013",
+        "is_superuser": true,
+        "username": "test2",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2023-06-26T21:31:26.694",
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]
