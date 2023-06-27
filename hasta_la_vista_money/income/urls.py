@@ -8,10 +8,10 @@ from hasta_la_vista_money.income.views import (
 app_name = 'income'
 urlpatterns = [
     path('', IncomeView.as_view(), name='list'),
-    path('<int:pk>/', IncomeDeleteView.as_view(), name='income_delete'),
+    path('<int:pk>/', IncomeDeleteView.as_view(), name='delete_income'),
     path(
         'category/<int:pk>/',
         IncomeCategoryDeleteView.as_view(),
-        name='income_category_delete',
+        name='delete_category_income',
     ),
 ]
