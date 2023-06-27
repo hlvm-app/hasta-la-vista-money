@@ -111,7 +111,6 @@ class IncomeDeleteView(DetailView, DeleteView):
 
 
 class DeleteIncomeCategoryView(DeleteCategoryMixin):
-    context_object_name = 'category_incomes'
     success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)
 
     def get_success_message(self):
