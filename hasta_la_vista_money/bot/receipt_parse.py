@@ -1,5 +1,6 @@
 import decimal
 from dataclasses import dataclass
+from typing import Any
 
 from django.db import IntegrityError
 from django.http import Http404
@@ -135,12 +136,14 @@ class ReceiptParser:
             retail_place = self.parser.parse_json(
                 self.json_data, ReceiptConstants.RETAIL_PLACE.value,
             )
-            self.customer = ReceiptDataWriter.create_customer(
+
+            customer_data = CustomerData(
                 user=self.user,
                 name_seller=name_seller,
                 retail_place_address=retail_place_address,
                 retail_place=retail_place,
             )
+            self.customer = ReceiptDataWriter.create_customer(customer_data)
         except IntegrityError as integrity_error:
             logger.error(
                 f'Ошибка записи продавца в базу данных: {integrity_error}',
@@ -199,7 +202,7 @@ class ReceiptParser:
                 if account_balance.user == self.user:
                     account_balance.balance -= decimal.Decimal(total_sum)
                     account_balance.save()
-                self.receipt = ReceiptDataWriter.create_receipt(
+                receipt_data = ReceiptData(
                     user=self.user,
                     account=account_balance,
                     receipt_date=receipt_date,
@@ -208,6 +211,7 @@ class ReceiptParser:
                     total_sum=total_sum,
                     customer=self.customer,
                 )
+                self.receipt = ReceiptDataWriter.create_receipt(receipt_data)
                 self.parse_products()
                 bot_admin.send_message(
                     chat_id, ReceiptConstants.RECEIPT_BE_ADDED.value,
@@ -244,6 +248,25 @@ class ProductData:
     nds_sum: float
 
 
+@dataclass
+class CustomerData:
+    user: str
+    name_seller: str
+    retail_place_address: str
+    retail_place: str
+
+
+@dataclass
+class ReceiptData:
+    user: str
+    account: Any
+    receipt_date: str
+    number_receipt: int
+    operation_type: int
+    total_sum: float
+    customer: str
+
+
 class ReceiptDataWriter:
     @classmethod
     def create_product(cls, product_data: ProductData):
@@ -258,37 +281,22 @@ class ReceiptDataWriter:
         )
 
     @classmethod
-    def create_customer(  # noqa: WPS211
-        cls,
-        user,
-        name_seller,
-        retail_place_address,
-        retail_place,
-    ):
+    def create_customer(cls, customer_data: CustomerData):
         return Customer.objects.create(
-            user=user,
-            name_seller=name_seller,
-            retail_place_address=retail_place_address,
-            retail_place=retail_place,
+            user=customer_data.user,
+            name_seller=customer_data.name_seller,
+            retail_place_address=customer_data.retail_place_address,
+            retail_place=customer_data.retail_place,
         )
 
     @classmethod
-    def create_receipt(  # noqa: WPS211
-        cls,
-        user,
-        account,
-        receipt_date,
-        number_receipt,
-        operation_type,
-        total_sum,
-        customer,
-    ):
+    def create_receipt(cls, receipt_data: ReceiptData):
         return Receipt.objects.create(
-            user=user,
-            account=account,
-            receipt_date=receipt_date,
-            number_receipt=number_receipt,
-            operation_type=operation_type,
-            total_sum=total_sum,
-            customer=customer,
+            user=receipt_data.user,
+            account=receipt_data.account,
+            receipt_date=receipt_data.receipt_date,
+            number_receipt=receipt_data.number_receipt,
+            operation_type=receipt_data.operation_type,
+            total_sum=receipt_data.total_sum,
+            customer=receipt_data.customer,
         )
