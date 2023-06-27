@@ -1,4 +1,5 @@
 import decimal
+from dataclasses import dataclass
 
 from django.db import IntegrityError
 from django.http import Http404
@@ -99,7 +100,7 @@ class ReceiptParser:
                     product, ReceiptConstants.NDS_SUM.value,
                 ))
 
-                products = ReceiptDataWriter.create_product(
+                product_data = ProductData(
                     user=self.user,
                     product_name=product_name,
                     price=price,
@@ -108,6 +109,7 @@ class ReceiptParser:
                     nds_type=nds_type,
                     nds_sum=nds_sum,
                 )
+                products = ReceiptDataWriter.create_product(product_data)
                 self.product_list.append(products)
             self.receipt.product.set(self.product_list)
         except IntegrityError as integrity_error:
@@ -231,26 +233,28 @@ class ReceiptParser:
         self.parse_receipt(chat_id)
 
 
+@dataclass
+class ProductData:
+    user: str
+    product_name: str
+    price: float
+    quantity: int
+    amount: float
+    nds_type: int
+    nds_sum: float
+
+
 class ReceiptDataWriter:
     @classmethod
-    def create_product(  # noqa: WPS211
-        cls,
-        user,
-        product_name,
-        price,
-        quantity,
-        amount,
-        nds_type,
-        nds_sum,
-    ):
+    def create_product(cls, product_data: ProductData):
         return Product.objects.create(
-            user=user,
-            product_name=product_name,
-            price=price,
-            quantity=quantity,
-            amount=amount,
-            nds_type=nds_type,
-            nds_sum=nds_sum,
+            user=product_data.user,
+            product_name=product_data.product_name,
+            price=product_data.price,
+            quantity=product_data.quantity,
+            amount=product_data.amount,
+            nds_type=product_data.nds_type,
+            nds_sum=product_data.nds_sum,
         )
 
     @classmethod
