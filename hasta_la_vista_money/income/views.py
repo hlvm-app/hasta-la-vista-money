@@ -1,10 +1,13 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import ProtectedError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django_filters.views import FilterView
 from hasta_la_vista_money.account.models import Account
+from hasta_la_vista_money.buttons_delete import (
+    button_delete_category_income,
+    button_delete_income,
+)
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.income.forms import AddCategoryIncomeForm, IncomeForm
 from hasta_la_vista_money.income.models import Income, IncomeType
@@ -44,42 +47,10 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                 },
             )
 
-    @classmethod
-    def button_delete_income(cls, model, request, object_id, url):
-        income = get_object_or_404(model, pk=object_id)
-        account = income.account
-        amount_object = income.amount
-        account_balance = get_object_or_404(Account, id=account.id)
-        if account_balance.user == request.user:
-            account_balance.balance -= amount_object
-            account_balance.save()
-            try:
-                income.delete()
-                messages.success(request, 'Доходная операция успешно удалена!')
-                redirect(reverse_lazy(url))
-            except ProtectedError:
-                messages.error(request,
-                               'Доходная операция не может быть удалена!')
-                return redirect(reverse_lazy(url))
-
-    @classmethod
-    def button_delete_category(cls, model, request, object_id, url):
-        category = get_object_or_404(model, pk=object_id)
-        try:
-            category.delete()
-            messages.success(request, 'Операция дохода успешно удалена!')
-            return redirect(reverse_lazy(url))
-        except ProtectedError:
-            messages.error(
-                request,
-                'Операция дохода не может быть удалена!',
-            )
-            redirect(reverse_lazy(url))
-
     def post(self, request, *args, **kwargs):  # noqa: WPS210
         if 'delete_income_button' in request.POST:
             income_id = request.POST.get('income_id')
-            self.button_delete_income(
+            button_delete_income(
                 model=Income,
                 request=request,
                 object_id=income_id,
@@ -87,7 +58,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
             )
         if 'delete_category_income_button' in request.POST:
             category_id = request.POST.get('category_income_id')
-            self.button_delete_category(
+            button_delete_category_income(
                 model=IncomeType,
                 request=request,
                 object_id=category_id,

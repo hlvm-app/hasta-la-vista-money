@@ -1,11 +1,15 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import Count, Sum, ProtectedError
+from django.db.models import Count, Sum
 from django.db.models.functions import TruncMonth
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from hasta_la_vista_money.account.models import Account
+from hasta_la_vista_money.buttons_delete import (
+    button_delete_category_expense,
+    button_delete_expenses,
+)
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.expense.forms import AddCategoryForm, AddExpenseForm
 from hasta_la_vista_money.expense.models import Expense, ExpenseType
@@ -69,46 +73,10 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 },
             )
 
-    @classmethod
-    def button_delete_expenses(cls, model, request, object_id, url):
-        expense = get_object_or_404(model, pk=object_id)
-        account = expense.account
-        amount_object = expense.amount
-        account_balance = get_object_or_404(Account, id=account.id)
-        if account_balance.user == request.user:
-            account_balance.balance += amount_object
-            account_balance.save()
-            try:
-                expense.delete()
-                messages.success(request, 'Расходная операция успешно удалена!')
-                redirect(reverse_lazy(url))
-            except ProtectedError:
-                messages.error(
-                    request,
-                    'Расходная операция не может быть удалена!',
-                )
-                redirect(reverse_lazy(url))
-
-    @classmethod
-    def button_delete_category(cls, model, request, object_id, url):
-        category = get_object_or_404(model, pk=object_id)
-        try:
-            category.delete()
-            messages.success(request, 'Категория успешно удалена!')
-            return redirect(reverse_lazy(url))
-        except ProtectedError:
-            messages.error(
-                request,
-                'Категория не может быть удалена! Сначала '
-                'вам необходимо удалить все расходы или доходы, '
-                'привязанные к категории!',
-            )
-            redirect(reverse_lazy(url))
-
     def post(self, request, *args, **kwargs):  # noqa: WPS210
         if 'delete_expense_button' in request.POST:
             expense_id = request.POST.get('expense_id')
-            self.button_delete_expenses(
+            button_delete_expenses(
                 model=Expense,
                 request=request,
                 object_id=expense_id,
@@ -116,7 +84,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             )
         if 'delete_category_expense_button' in request.POST:
             category_id = request.POST.get('category_expense_id')
-            self.button_delete_category(
+            button_delete_category_expense(
                 model=ExpenseType,
                 request=request,
                 object_id=category_id,
