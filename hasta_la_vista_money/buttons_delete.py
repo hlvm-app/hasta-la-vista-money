@@ -27,23 +27,6 @@ def button_delete_receipt(model, request, object_id, url):
         return redirect(reverse_lazy(url))
 
 
-def button_delete_income(model, request, object_id, url):
-    income = get_object_or_404(model, pk=object_id)
-    account = income.account
-    amount_object = income.amount
-    account_balance = get_object_or_404(Account, id=account.id)
-    if account_balance.user == request.user:
-        account_balance.balance -= amount_object
-        account_balance.save()
-        try:
-            income.delete()
-            messages.success(request, 'Доходная операция успешно удалена!')
-            redirect(reverse_lazy(url))
-        except ProtectedError:
-            messages.error(request, 'Доходная операция не может быть удалена!')
-            return redirect(reverse_lazy(url))
-
-
 def button_delete_account(model, request, object_id, url):
     account = get_object_or_404(model, pk=object_id)
     try:

@@ -6,9 +6,6 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.buttons_delete import (
-    button_delete_category,
-)
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.expense.forms import AddCategoryForm, AddExpenseForm
 from hasta_la_vista_money.expense.models import Expense, ExpenseType
@@ -119,7 +116,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             )
         if 'delete_category_expense_button' in request.POST:
             category_id = request.POST.get('category_expense_id')
-            button_delete_category(
+            self.button_delete_category(
                 model=ExpenseType,
                 request=request,
                 object_id=category_id,
