@@ -44,16 +44,8 @@ def button_delete_income(model, request, object_id, url):
             return redirect(reverse_lazy(url))
 
 
-def button_delete_expenses(model, request, object_id, url):
-    expense = get_object_or_404(model, pk=object_id)
-    account = expense.account
-    amount_object = expense.amount
-    account_balance = get_object_or_404(Account, id=account.id)
-    if account_balance.user == request.user:
-        account_balance.balance += amount_object
-        account_balance.save()
-        expense.delete()
-        redirect(reverse_lazy(url))
+# def button_delete_expenses(model, request, object_id, url):
+#
 
 
 def button_delete_account(model, request, object_id, url):

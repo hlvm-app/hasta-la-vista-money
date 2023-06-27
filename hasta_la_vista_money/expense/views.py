@@ -8,7 +8,6 @@ from django.views.generic import TemplateView
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.buttons_delete import (
     button_delete_category,
-    button_delete_expenses,
 )
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.expense.forms import AddCategoryForm, AddExpenseForm
@@ -73,10 +72,23 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 },
             )
 
+    @classmethod
+    def button_delete_expenses(cls, model, request, object_id, url):
+        expense = get_object_or_404(model, pk=object_id)
+        account = expense.account
+        amount_object = expense.amount
+        account_balance = get_object_or_404(Account, id=account.id)
+        if account_balance.user == request.user:
+            account_balance.balance += amount_object
+            account_balance.save()
+            expense.delete()
+            messages.success(request, 'Расходная операция успешно удалена!')
+            redirect(reverse_lazy(url))
+
     def post(self, request, *args, **kwargs):  # noqa: WPS210
         if 'delete_expense_button' in request.POST:
             expense_id = request.POST.get('expense_id')
-            button_delete_expenses(
+            self.button_delete_expenses(
                 model=Expense,
                 request=request,
                 object_id=expense_id,
