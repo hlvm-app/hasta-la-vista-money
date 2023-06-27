@@ -7,10 +7,8 @@ QR-кода чека.
 
 import re
 
-from hasta_la_vista_money.bot.receipt_api_receiver import (
-    ReceiptApiReceiver,
-    ReceiptParser,
-)
+from hasta_la_vista_money.bot.receipt_api_receiver import ReceiptApiReceiver
+from hasta_la_vista_money.bot.receipt_parse import ReceiptParser
 
 
 def handle_receipt_text(message, bot, user, account):

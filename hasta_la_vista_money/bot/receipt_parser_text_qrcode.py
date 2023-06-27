@@ -6,10 +6,8 @@
 import tempfile
 
 from hasta_la_vista_money.bot.decode_qrcode import decode_qrcode
-from hasta_la_vista_money.bot.receipt_api_receiver import (
-    ReceiptApiReceiver,
-    ReceiptParser,
-)
+from hasta_la_vista_money.bot.receipt_api_receiver import ReceiptApiReceiver
+from hasta_la_vista_money.bot.receipt_parse import ReceiptParser
 
 
 def handle_receipt_text_qrcode(message, bot, user, account):
@@ -44,7 +42,7 @@ def handle_receipt_text_qrcode(message, bot, user, account):
             # текст из QR-кода.
             text_qr_code = decode_qrcode(image_file.name)
             if not text_qr_code:
-                return
+                return ''
             parse = ReceiptParser(
                 ReceiptApiReceiver().get_receipt(text_qr_code),
                 user,
@@ -56,4 +54,4 @@ def handle_receipt_text_qrcode(message, bot, user, account):
             message.chat.id,
             'Надо загружать только фото или картинку с QR-кодом!',
         )
-        return
+        return ''
