@@ -9,14 +9,15 @@ class IncomeForm(BaseForm):
 
     labels = {
         'category': _('Категория дохода'),
+        'account': _('Счёт'),
         'date': _('Дата'),
         'amount': _('Сумма'),
-        'account': _('Счёт'),
+
     }
 
     class Meta:
         model = Income
-        fields = ['category', 'date', 'amount', 'account']
+        fields = ['category', 'account', 'date', 'amount']
         widgets = {
             'date': DateTimePickerInput(
                 options={
