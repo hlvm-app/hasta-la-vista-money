@@ -6,7 +6,7 @@
 import tempfile
 
 from hasta_la_vista_money.bot.decode_qrcode import decode_qrcode
-from hasta_la_vista_money.bot.receipt_processing import (
+from hasta_la_vista_money.bot.receipt_api_receiver import (
     ReceiptApiReceiver,
     ReceiptParser,
 )

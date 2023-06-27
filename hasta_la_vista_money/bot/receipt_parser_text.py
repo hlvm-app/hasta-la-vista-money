@@ -7,7 +7,7 @@ QR-кода чека.
 
 import re
 
-from hasta_la_vista_money.bot.receipt_processing import (
+from hasta_la_vista_money.bot.receipt_api_receiver import (
     ReceiptApiReceiver,
     ReceiptParser,
 )
