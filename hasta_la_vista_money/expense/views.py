@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, DetailView, TemplateView
 from hasta_la_vista_money.account.models import Account
+from hasta_la_vista_money.constants import SuccessUrlView, TemplateHTMLView
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
     DeleteCategoryMixin,
@@ -17,10 +18,10 @@ from hasta_la_vista_money.receipts.models import Receipt
 
 class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
     model = Expense
-    template_name = 'expense/expense.html'
+    template_name = TemplateHTMLView.EXPENSE_TEMPLATE.value
     context_object_name = 'expense'
     no_permission_url = reverse_lazy('login')
-    success_url = 'expense:list'
+    success_url = SuccessUrlView.EXPENSE_URL.value
 
     def get(self, request, *args, **kwargs):
         """
@@ -109,10 +110,10 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
 
 class DeleteExpenseView(DetailView, DeleteView):
     model = Expense
-    template_name = 'expense/expense.html'
+    template_name = TemplateHTMLView.EXPENSE_TEMPLATE.value
     context_object_name = 'expense'
     no_permission_url = reverse_lazy('login')
-    success_url = reverse_lazy('expense:list')
+    success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
 
     def form_valid(self, form):
         expense = self.get_object()
@@ -129,10 +130,10 @@ class DeleteExpenseView(DetailView, DeleteView):
 
 class DeleteExpenseCategoryView(DeleteCategoryMixin):
     model = ExpenseType
-    template_name = 'expense/expense.html'
+    template_name = TemplateHTMLView.EXPENSE_TEMPLATE.value
     context_object_name = 'category_expenses'
     no_permission_url = reverse_lazy('login')
-    success_url = reverse_lazy('expense:list')
+    success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
 
     def get_success_message(self):
         return 'Категория дохода успешно удалена!'

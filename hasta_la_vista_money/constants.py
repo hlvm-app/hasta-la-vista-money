@@ -152,3 +152,13 @@ MONTH_NAMES = {  # noqa: WPS407
     11: 'Ноябрь',
     12: 'Декабрь',
 }
+
+
+class TemplateHTMLView(Enum):
+    INCOME_TEMPLATE = 'income/income.html'
+    EXPENSE_TEMPLATE = 'expense/expense.html'
+
+
+class SuccessUrlView(Enum):
+    INCOME_URL = 'income:list'
+    EXPENSE_URL = 'expense:list'

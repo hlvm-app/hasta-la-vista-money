@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import DeleteView, DetailView
 from django_filters.views import FilterView
 from hasta_la_vista_money.account.models import Account
+from hasta_la_vista_money.constants import SuccessUrlView, TemplateHTMLView
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
     DeleteCategoryMixin,
@@ -18,10 +19,10 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
     """Представление просмотра доходов из модели, на сайте."""
 
     model = Income
-    template_name = 'income/income.html'
+    template_name = TemplateHTMLView.INCOME_TEMPLATE.value
     context_object_name = 'incomes'
     no_permission_url = reverse_lazy('login')
-    success_url = 'income:list'
+    success_url = SuccessUrlView.INCOME_URL.value
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -91,10 +92,10 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
 
 class IncomeDeleteView(DetailView, DeleteView):
     model = Income
-    template_name = 'income/income.html'
+    template_name = TemplateHTMLView.INCOME_TEMPLATE.value
     context_object_name = 'incomes'
     no_permission_url = reverse_lazy('login')
-    success_url = reverse_lazy('income:list')
+    success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)
 
     def form_valid(self, form):
         income = self.get_object()
@@ -111,10 +112,10 @@ class IncomeDeleteView(DetailView, DeleteView):
 
 class DeleteIncomeCategoryView(DeleteCategoryMixin):
     model = IncomeType
-    template_name = 'income/income.html'
+    template_name = TemplateHTMLView.INCOME_TEMPLATE.value
     context_object_name = 'category_incomes'
     no_permission_url = reverse_lazy('login')
-    success_url = reverse_lazy('income:list')
+    success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)
 
     def get_success_message(self):
         return 'Категория дохода успешно удалена!'
