@@ -128,7 +128,7 @@ class DeleteExpenseView(DetailView, DeleteView):
 class DeleteExpenseCategoryView(DetailView, DeleteView):
     model = ExpenseType
     template_name = 'expense/expense.html'
-    context_object_name = 'expense'
+    context_object_name = 'category_expenses'
     no_permission_url = reverse_lazy('login')
     success_url = reverse_lazy('expense:list')
     
