@@ -1,10 +1,11 @@
+from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import ProtectedError
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DeleteView
 from hasta_la_vista_money.account.forms import AddAccountForm
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.buttons_delete import button_delete_account
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 
 
@@ -30,12 +31,6 @@ class PageApplication(
         return context
 
     def post(self, request, *args, **kwargs):
-        if 'delete_account_button' in request.POST:
-            account_id = request.POST.get('account_id')
-            button_delete_account(
-                Account, request, account_id, self.success_url,
-            )
-
         accounts = Account.objects.filter(user=self.request.user).all()
         account_form = AddAccountForm(request.POST)
         if account_form.is_valid():
@@ -53,3 +48,19 @@ class PageApplication(
                     'add_account_form': account_form,
                 },
             )
+
+
+class DeleteAccountView(DeleteView):
+    model = Account
+    success_url = reverse_lazy('applications:list')
+
+    def form_valid(self, form):
+        try:
+            account = self.get_object()
+            account.delete()
+            messages.success(self.request, 'Счёт успешно удалён!')
+            return super().form_valid(form)
+        except ProtectedError:
+            messages.error(self.request, 'Счёт не может быть удалён!')
+            return redirect(self.success_url)
+

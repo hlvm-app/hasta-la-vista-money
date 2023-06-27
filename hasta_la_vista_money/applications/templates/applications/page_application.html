@@ -47,7 +47,7 @@
                                     <td>{{ account.balance | comma }}</td>
                                     <td>{{ account.currency }}</td>
                                     <td class="position-relative">
-                                        <form method="post">
+                                        <form method="post" action="{% url 'applications:delete_account' account.id %}">
                                             {% csrf_token %}
                                             <input type="hidden" name="account_id" value="{{ account.id }}">
                                             <button class="remove-object-button btn position-absolute top-50 start-50 translate-middle btn-outline-danger border-0 btn-sm" data-nonce="{{request.csp_nonce}}" type="submit" name="delete_account_button">
