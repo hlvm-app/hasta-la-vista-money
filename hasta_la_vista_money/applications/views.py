@@ -3,7 +3,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import ProtectedError
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, DeleteView
+from django.views.generic import DeleteView, TemplateView
 from hasta_la_vista_money.account.forms import AddAccountForm
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
@@ -63,4 +63,3 @@ class DeleteAccountView(DeleteView):
         except ProtectedError:
             messages.error(self.request, 'Счёт не может быть удалён!')
             return redirect(self.success_url)
-

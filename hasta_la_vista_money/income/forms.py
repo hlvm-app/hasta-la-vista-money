@@ -12,7 +12,6 @@ class IncomeForm(BaseForm):
         'account': _('Счёт'),
         'date': _('Дата'),
         'amount': _('Сумма'),
-
     }
 
     class Meta:

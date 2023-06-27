@@ -10,6 +10,6 @@ urlpatterns = [
     path(
         'account/<int:pk>',
         DeleteAccountView.as_view(),
-        name='delete_account'
+        name='delete_account',
     ),
 ]

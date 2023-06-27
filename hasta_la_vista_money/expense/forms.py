@@ -14,7 +14,7 @@ class AddExpenseForm(BaseForm):
 
     class Meta:
         model = Expense
-        fields = ['category', 'account',  'date', 'amount']
+        fields = ['category', 'account', 'date', 'amount']
         widgets = {
             'date': DateTimePickerInput(
                 options={

@@ -1,6 +1,5 @@
 from django.test import TestCase
 from django.urls import reverse_lazy
-
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import HTTPStatus
 from hasta_la_vista_money.users.models import User
@@ -23,4 +22,4 @@ class TestAccount(TestCase):
         self.assertQuerySetEqual(account_list, [self.account1, self.account2])
 
     def test_account_create(self):
-        ...
+        ...  # noqa: WPS428
