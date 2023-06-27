@@ -125,9 +125,13 @@ class DeleteExpenseView(DetailView, DeleteView):
             return super().form_valid(form)
 
 
-class DeleteExpenseCategoryView(DeleteView, DetailView):
+class DeleteExpenseCategoryView(DetailView, DeleteView):
     model = ExpenseType
     template_name = 'expense/expense.html'
     context_object_name = 'expense'
     no_permission_url = reverse_lazy('login')
     success_url = reverse_lazy('expense:list')
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'Категория расхода успешно удалена!')
+        return super().form_valid(form)

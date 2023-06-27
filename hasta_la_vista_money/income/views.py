@@ -88,7 +88,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
             )
 
 
-class IncomeDeleteView(DeleteView, DetailView):
+class IncomeDeleteView(DetailView, DeleteView):
     model = Income
     template_name = 'income/income.html'
     context_object_name = 'incomes'
@@ -108,9 +108,13 @@ class IncomeDeleteView(DeleteView, DetailView):
             return super().form_valid(form)
 
 
-class DeleteIncomeCategoryView(DeleteView, DetailView):
+class DeleteIncomeCategoryView(DetailView, DeleteView):
     model = IncomeType
     template_name = 'income/income.html'
     context_object_name = 'category_incomes'
     no_permission_url = reverse_lazy('login')
     success_url = reverse_lazy('income:list')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Категория дохода успешно удалена!')
+        return super().form_valid(form)
