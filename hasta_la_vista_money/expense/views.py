@@ -1,14 +1,15 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import Count, Sum, F
+from django.db.models import Count, ProtectedError, Sum
 from django.db.models.functions import TruncMonth
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, DeleteView, DetailView
-from django.views.generic.edit import FormMixin
-
+from django.views.generic import DeleteView, DetailView, TemplateView
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
+from hasta_la_vista_money.custom_mixin import (
+    CustomNoPermissionMixin,
+    DeleteCategoryMixin,
+)
 from hasta_la_vista_money.expense.forms import AddCategoryForm, AddExpenseForm
 from hasta_la_vista_money.expense.models import Expense, ExpenseType
 from hasta_la_vista_money.receipts.models import Receipt
@@ -71,7 +72,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 },
             )
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):  # noqa: WPS210
         categories = ExpenseType.objects.filter(user=request.user).all()
         add_expense_form = AddExpenseForm(request.POST)
         add_category_form = AddCategoryForm(request.POST)
@@ -86,6 +87,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 account_balance.save()
                 expense.user = request.user
                 expense.save()
+                messages.success(request, 'Операция расхода успешно добавлена!')
                 return redirect(self.success_url)
         elif add_category_form.is_valid():
             category_form = add_category_form.save(commit=False)
@@ -125,13 +127,22 @@ class DeleteExpenseView(DetailView, DeleteView):
             return super().form_valid(form)
 
 
-class DeleteExpenseCategoryView(DetailView, DeleteView):
+class DeleteExpenseCategoryView(DeleteCategoryMixin):
     model = ExpenseType
     template_name = 'expense/expense.html'
     context_object_name = 'category_expenses'
     no_permission_url = reverse_lazy('login')
     success_url = reverse_lazy('expense:list')
-    
-    def form_valid(self, form):
-        messages.success(self.request, 'Категория расхода успешно удалена!')
-        return super().form_valid(form)
+
+    def get_success_message(self):
+        return 'Категория дохода успешно удалена!'
+
+    def get_error_message(self):
+        return 'Категория не может быть удалена, так как связана с одним из пунктом расхода'  # noqa: E501
+
+    def delete_category(self):
+        try:
+            self.object.delete()
+            return True
+        except ProtectedError:
+            return False

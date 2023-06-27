@@ -1,8 +1,8 @@
 from django.urls import path
 from hasta_la_vista_money.expense.views import (
-    ExpenseView,
     DeleteExpenseCategoryView,
     DeleteExpenseView,
+    ExpenseView,
 )
 
 app_name = 'expense'

@@ -1,15 +1,15 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import ProtectedError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, DetailView
 from django_filters.views import FilterView
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.buttons_delete import (
-    button_delete_category,
-    button_delete_type_operation,
+from hasta_la_vista_money.custom_mixin import (
+    CustomNoPermissionMixin,
+    DeleteCategoryMixin,
 )
-from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.income.forms import AddCategoryIncomeForm, IncomeForm
 from hasta_la_vista_money.income.models import Income, IncomeType
 
@@ -48,7 +48,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                 },
             )
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):  # noqa: WPS210
         categories = IncomeType.objects.filter(user=request.user).all()
         income_form = IncomeForm(request.POST)
         add_category_income_form = AddCategoryIncomeForm(request.POST)
@@ -67,6 +67,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                 account_balance.save()
                 income.user = request.user
                 income.save()
+                messages.success(request, 'Операция дохода успешно добавлена!')
                 return redirect(reverse_lazy(self.success_url))
 
         elif add_category_income_form.is_valid():
@@ -108,13 +109,22 @@ class IncomeDeleteView(DetailView, DeleteView):
             return super().form_valid(form)
 
 
-class DeleteIncomeCategoryView(DetailView, DeleteView):
+class DeleteIncomeCategoryView(DeleteCategoryMixin):
     model = IncomeType
     template_name = 'income/income.html'
     context_object_name = 'category_incomes'
     no_permission_url = reverse_lazy('login')
     success_url = reverse_lazy('income:list')
 
-    def form_valid(self, form):
-        messages.success(self.request, 'Категория дохода успешно удалена!')
-        return super().form_valid(form)
+    def get_success_message(self):
+        return 'Категория дохода успешно удалена!'
+
+    def get_error_message(self):
+        return 'Категория не может быть удалена, так как связана с одним из пунктом дохода'  # noqa: E501
+
+    def delete_category(self):
+        try:
+            self.object.delete()
+            return True
+        except ProtectedError:
+            return False
