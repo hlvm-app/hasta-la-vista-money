@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
+from django.views.generic import DeleteView, DetailView
 from django_filters.views import FilterView
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.buttons_delete import (
@@ -47,24 +48,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                 },
             )
 
-    def post(self, request, *args, **kwargs):  # noqa: WPS210
-        if 'delete_income_button' in request.POST:
-            income_id = request.POST.get('income_id')
-            button_delete_type_operation(
-                model=Income,
-                request=request,
-                object_id=income_id,
-                url=self.success_url,
-            )
-        if 'delete_category_income_button' in request.POST:
-            category_id = request.POST.get('category_income_id')
-            button_delete_category(
-                model=IncomeType,
-                request=request,
-                object_id=category_id,
-                url=self.success_url,
-            )
-
+    def post(self, request, *args, **kwargs):
         categories = IncomeType.objects.filter(user=request.user).all()
         income_form = IncomeForm(request.POST)
         add_category_income_form = AddCategoryIncomeForm(request.POST)
@@ -102,3 +86,30 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                     'income_form': income_form,
                 },
             )
+
+
+class IncomeDeleteView(DeleteView, DetailView):
+    model = Income
+    template_name = 'income/income.html'
+    context_object_name = 'incomes'
+    no_permission_url = reverse_lazy('login')
+    success_url = reverse_lazy('income:list')
+
+    def form_valid(self, form):
+        income = self.get_object()
+        account = income.account
+        amount = income.amount
+        account_balance = get_object_or_404(Account, id=account.id)
+
+        if account_balance.user == self.request.user:
+            account_balance.balance -= amount
+            account_balance.save()
+            return super().form_valid(form)
+
+
+class IncomeCategoryDeleteView(DeleteView, DetailView):
+    model = IncomeType
+    template_name = 'income/income.html'
+    context_object_name = 'category_incomes'
+    no_permission_url = reverse_lazy('login')
+    success_url = reverse_lazy('income:list')

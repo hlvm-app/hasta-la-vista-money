@@ -1,15 +1,13 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import Count, Sum
+from django.db.models import Count, Sum, F
 from django.db.models.functions import TruncMonth
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DeleteView, DetailView
+from django.views.generic.edit import FormMixin
+
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.buttons_delete import (
-    button_delete_category,
-    button_delete_type_operation,
-)
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.expense.forms import AddCategoryForm, AddExpenseForm
 from hasta_la_vista_money.expense.models import Expense, ExpenseType
@@ -73,24 +71,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 },
             )
 
-    def post(self, request, *args, **kwargs):  # noqa: WPS210
-        if 'delete_expense_button' in request.POST:
-            expense_id = request.POST.get('expense_id')
-            button_delete_type_operation(
-                model=Expense,
-                request=request,
-                object_id=expense_id,
-                url=self.success_url,
-            )
-        if 'delete_category_expense_button' in request.POST:
-            category_id = request.POST.get('category_expense_id')
-            button_delete_category(
-                model=ExpenseType,
-                request=request,
-                object_id=category_id,
-                url=self.success_url,
-            )
-
+    def post(self, request, *args, **kwargs):
         categories = ExpenseType.objects.filter(user=request.user).all()
         add_expense_form = AddExpenseForm(request.POST)
         add_category_form = AddCategoryForm(request.POST)
@@ -122,3 +103,42 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                     'add_expense_form': add_expense_form,
                 },
             )
+
+
+class DeleteExpenseView(DetailView, DeleteView):
+    model = Expense
+    template_name = 'expense/expense.html'
+    context_object_name = 'expense'
+    no_permission_url = reverse_lazy('login')
+    success_url = reverse_lazy('expense:list')
+
+    def form_valid(self, form):
+        expense = self.get_object()
+        account = expense.account
+        amount = expense.amount
+        account_balance = get_object_or_404(Account, id=account.id)
+
+        if account_balance.user == self.request.user:
+            account_balance.balance += amount
+            account_balance.save()
+            return super().form_valid(form)
+
+    # def delete(self, request, *args, **kwargs):
+    #     expense = self.get_object()
+    #     account = expense.account
+    #     amount = expense.amount
+    #     account_balance = get_object_or_404(Account, id=account.id)
+    #
+    #     if account_balance.user == request.user:
+    #         account_balance.balance = F('balance') + amount
+    #         account_balance.save()
+    #         messages.success(request, 'Доходная операция успешно удалена!')
+    #         return super().delete(request, *args, **kwargs)
+
+
+class DeleteCategoryExpenseView(DeleteView, DetailView):
+    model = ExpenseType
+    template_name = 'expense/expense.html'
+    context_object_name = 'expense'
+    no_permission_url = reverse_lazy('login')
+    success_url = reverse_lazy('expense:list')
