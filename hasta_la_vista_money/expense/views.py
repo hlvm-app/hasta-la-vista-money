@@ -7,8 +7,8 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.buttons_delete import (
-    button_delete_category_expense,
-    button_delete_expenses,
+    button_delete_category,
+    button_delete_type_operation,
 )
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.expense.forms import AddCategoryForm, AddExpenseForm
@@ -76,7 +76,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
     def post(self, request, *args, **kwargs):  # noqa: WPS210
         if 'delete_expense_button' in request.POST:
             expense_id = request.POST.get('expense_id')
-            button_delete_expenses(
+            button_delete_type_operation(
                 model=Expense,
                 request=request,
                 object_id=expense_id,
@@ -84,7 +84,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             )
         if 'delete_category_expense_button' in request.POST:
             category_id = request.POST.get('category_expense_id')
-            button_delete_category_expense(
+            button_delete_category(
                 model=ExpenseType,
                 request=request,
                 object_id=category_id,
@@ -101,7 +101,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             account = add_expense_form.cleaned_data.get('account')
             account_balance = get_object_or_404(Account, id=account.id)
             if account_balance.user == request.user:
-                account_balance.balance += amount
+                account_balance.balance -= amount
                 account_balance.save()
                 expense.user = request.user
                 expense.save()

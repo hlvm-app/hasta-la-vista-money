@@ -5,8 +5,8 @@ from django.urls import reverse_lazy
 from django_filters.views import FilterView
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.buttons_delete import (
-    button_delete_category_income,
-    button_delete_income,
+    button_delete_category,
+    button_delete_type_operation,
 )
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.income.forms import AddCategoryIncomeForm, IncomeForm
@@ -50,7 +50,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
     def post(self, request, *args, **kwargs):  # noqa: WPS210
         if 'delete_income_button' in request.POST:
             income_id = request.POST.get('income_id')
-            button_delete_income(
+            button_delete_type_operation(
                 model=Income,
                 request=request,
                 object_id=income_id,
@@ -58,7 +58,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
             )
         if 'delete_category_income_button' in request.POST:
             category_id = request.POST.get('category_income_id')
-            button_delete_category_income(
+            button_delete_category(
                 model=IncomeType,
                 request=request,
                 object_id=category_id,
