@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views.generic import TemplateView
-from hasta_la_vista_money.users.views import LoginUser
+from hasta_la_vista_money.users.views import IndexView, LoginUser
 
 urlpatterns = [
     re_path(
@@ -12,7 +12,7 @@ urlpatterns = [
         ),
         name='list',
     ),
-    path('', TemplateView.as_view(template_name='index.html'), name='index'),
+    path('', IndexView.as_view(), name='index'),
     path(
         'login/',
         LoginUser.as_view(

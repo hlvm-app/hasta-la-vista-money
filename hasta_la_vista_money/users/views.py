@@ -1,11 +1,21 @@
 from django.contrib.auth.views import LoginView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, TemplateView
 from hasta_la_vista_money.constants import MessageOnSite
 from hasta_la_vista_money.users.forms import RegisterUserForm, UserLoginForm
 from hasta_la_vista_money.users.models import User
+
+
+class IndexView(TemplateView):
+    template_name = 'index.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('applications:list')
+        return super().dispatch(request, *args, **kwargs)
 
 
 class ListUsers(ListView):
