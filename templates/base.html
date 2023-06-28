@@ -19,16 +19,17 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    {% block head %}
+    <title>{% block title %}{% endblock %} - Hasta La Vista, Money!</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Базовый шаблон</title>
     <link rel="shortcut icon" href="{% static 'img/favicon/favicon.png' %}" type="image/x-icon">
     <link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/bootstrap-icons.min.css' %}">
     <script nonce="{{request.csp_nonce}}" src="{% static 'js/jquery-3.6.3.min.js' %}"></script>
     <link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/style.css' %}">
     <link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/style_mobile.css' %}">
-
+    {% endblock %}
 </head>
 <body>
     <div class="min-vh-100 bg-success bg-gradient">
