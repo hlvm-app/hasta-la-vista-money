@@ -2,9 +2,8 @@
 {% load i18n %}
 {% load django_bootstrap5 %}
 
-
+{% block title %}{% translate 'Главная страница сайта' %}{% endblock %}
 {% block content %}
-    <title>{% translate 'Главная страница сайта' %}</title>
     <div class="container d-flex min-vh-100 flex-column justify-content-center align-items-center">
         <h1 class="text-light">Hasta La Vista, Money!</h1>
         <a class="btn btn-success" href="{% url 'login' %}">Войти</a>
