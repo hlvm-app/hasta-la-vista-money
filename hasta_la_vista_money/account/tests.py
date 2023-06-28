@@ -2,6 +2,8 @@ from django.test import TestCase
 from django.urls import reverse_lazy
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import HTTPStatus
+from hasta_la_vista_money.expense.models import Expense
+from hasta_la_vista_money.income.models import Income
 from hasta_la_vista_money.users.models import User
 
 BALANCE_TEST = 250000
@@ -9,12 +11,21 @@ BALANCE_TEST = 250000
 
 class TestAccount(TestCase):
 
-    fixtures = ['users.yaml', 'account.yaml']
+    fixtures = [
+        'users.yaml',
+        'account.yaml',
+        'expense.yaml',
+        'expense_cat.yaml',
+        'income.yaml',
+        'income_cat.yaml',
+    ]
 
     def setUp(self) -> None:
         self.user = User.objects.get(pk=1)
         self.account1 = Account.objects.get(pk=1)
         self.account2 = Account.objects.get(pk=2)
+        self.expense = Expense.objects.get(pk=1)
+        self.income = Income.objects.get(pk=1)
 
     def test_account_list(self):
         self.client.force_login(self.user)
@@ -48,5 +59,31 @@ class TestAccount(TestCase):
         url = reverse_lazy(
             'applications:delete_account', args=(self.account2.pk, ),
         )
+
         response = self.client.post(url, follow=True)
         self.assertRedirects(response, '/applications/')
+
+    def test_delete_account_exist_expense(self):
+        self.client.force_login(self.user)
+        url1 = reverse_lazy('expense:list')
+
+        url2 = reverse_lazy(
+            'applications:delete_account', args=(self.account1.pk,),
+        )
+
+        new_expense = {
+            'user': self.user,
+            'account': self.account1,
+            'category': 'Банковский платёж',
+            'date': '20/12/2023 15:30',
+            'amount': '15000.00',
+        }
+        response = self.client.post(url1, data=new_expense)
+        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+
+        expense_exists = Expense.objects.filter(account=self.account1).exists()
+        self.assertTrue(expense_exists)
+
+        response = self.client.post(url2, follow=True)
+        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+        self.assertTrue(Account.objects.filter(pk=self.account1.pk).exists())
