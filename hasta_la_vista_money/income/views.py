@@ -32,7 +32,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
             income_form.fields['account'].queryset = Account.objects.filter(
                 user=request.user,
             )
-            sort_by_month = Income.objects.filter(
+            income_by_month = Income.objects.filter(
                 user=request.user,
             ).order_by('-date')
 
@@ -44,7 +44,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                 {
                     'add_category_income_form': add_category_income_form,
                     'categories': categories,
-                    'income_by_month': sort_by_month,
+                    'income_by_month': income_by_month,
                     'income_form': income_form,
                 },
             )

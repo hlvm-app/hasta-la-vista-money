@@ -102,8 +102,8 @@
                     {% for receipt in receipt_info_by_month %}
                         <tr>
                             <td class="col-3">{{ receipt.month | date:"F Y" }}</td>
-                            <td class="col-1">{{ receipt.count }}</td>
-                            <td class="col-1">{{ receipt.total_amount | comma }}</td>
+                            <td class="col-2">{{ receipt.count }}</td>
+                            <td class="col-2">{{ receipt.total_amount | comma }}</td>
                             <td class="col-3">{{ receipt.account__name_account }}</td>
                         </tr>
                     {% endfor %}
@@ -122,7 +122,7 @@
                         {% for expense in expenses %}
                             <tr>
                                 <td>{{ expense.category__name }}</td>
-                                <td>{{ expense.date }}</td>
+                                <td>{{ expense.date | date:'F Y'}}</td>
                                 <td>{{ expense.amount | comma }}</td>
                                 <td>{{ expense.account__name_account }}</td>
                                 <td class="position-relative">
