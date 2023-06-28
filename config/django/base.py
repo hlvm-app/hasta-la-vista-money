@@ -231,7 +231,7 @@ LANGUAGES = (
 BOOTSTRAP_DATEPICKER_PLUS = {
     'options': {
         'locale': 'ru',
-    }
+    },
 }
 
 DATETIME_INPUT_FORMATS = ['%d-%m-%Y %H:%M']
