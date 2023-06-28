@@ -5,8 +5,8 @@ from hasta_la_vista_money.constants import HTTPStatus
 from hasta_la_vista_money.expense.models import Expense, ExpenseType
 from hasta_la_vista_money.users.models import User
 
-
 TEST_AMOUNT = 15000
+
 
 class TestExpense(TestCase):
 
