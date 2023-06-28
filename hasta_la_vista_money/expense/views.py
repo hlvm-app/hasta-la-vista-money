@@ -94,7 +94,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             category_form = add_category_form.save(commit=False)
             category_form.user = request.user
             category_form.save()
-            messages.success(request, 'Категория добавлена!')
+            messages.success(request, 'Категория расхода успешно добавлена!')
             return redirect(self.success_url)
         else:
             return render(
@@ -132,7 +132,7 @@ class DeleteExpenseCategoryView(DeleteCategoryMixin):
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
 
     def get_success_message(self):
-        return 'Категория дохода успешно удалена!'
+        return 'Категория расхода успешно удалена!'
 
     def get_error_message(self):
         return 'Категория не может быть удалена, так как связана с одним из пунктом расхода'  # noqa: E501
