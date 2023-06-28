@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import ProtectedError, Count, Sum
+from django.db.models import Count, ProtectedError, Sum
 from django.db.models.functions import TruncMonth
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
