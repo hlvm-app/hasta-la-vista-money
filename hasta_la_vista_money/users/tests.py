@@ -1,9 +1,10 @@
-from django.test import TestCase, Client
+from django.test import Client, TestCase
 from django.urls import reverse_lazy
 from faker import Faker
-
 from hasta_la_vista_money.constants import HTTPStatus
 from hasta_la_vista_money.users.models import User
+
+LENGTH_PASSWORD = 12
 
 
 class TestUser(TestCase):
@@ -25,7 +26,7 @@ class TestUser(TestCase):
         username = self.faker.user_name()
         first_name = self.faker.first_name()
         last_name = self.faker.last_name()
-        set_password = self.faker.password(length=12)
+        set_password = self.faker.password(length=LENGTH_PASSWORD)
         new_user = {
             'first_name': first_name,
             'last_name': last_name,
