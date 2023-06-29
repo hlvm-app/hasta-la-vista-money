@@ -2,14 +2,14 @@
 {% load i18n %}
 {% load django_bootstrap5 %}
 
-
+{% block title %}{% translate 'Страница входа' %}{% endblock %}
 {% block content %}
-    <title>{% translate 'Вход' %}</title>
     <div class="container d-flex min-vh-100 flex-column justify-content-center align-items-center">
-        <form method="post" class="text-light">
+
+        <form method="post" class="form text-light">
             {% csrf_token %}
             <p class="my-4">
-                {% bootstrap_form form  %}
+                {% bootstrap_form form %}
             </p>
             <div class="row align-items-center justify-content-center">
                 <div class="row justify-content-center align-items-center">
@@ -17,8 +17,10 @@
                 </div>
             </div>
         </form>
-        {% if is_authenticated %}
-            <a href="{% url 'users:registration' %}">{% translate 'Регистрация' %}</a>
+        {% if not user.is_authenticated %}
+            <p class='text-light'>Ещё не зарегистрированы? Тогда нажимайте кнопку:</p>
+            <a class="btn btn-warning" href="{% url 'users:registration' %}">{% translate 'Регистрация' %}</a>
+        {% elif not user.last_login %}
         {% endif %}
     </div>
 
