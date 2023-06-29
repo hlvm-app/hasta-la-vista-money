@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Sum
 from django.shortcuts import render
@@ -19,73 +21,86 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
     no_permission_url = reverse_lazy('login')
     success_url = reverse_lazy('reports:list')
 
-    @classmethod
-    def format_month_year(cls, dt):
-        month_number = dt.month
-        month_name = list(MONTH_NUMBERS.keys())[
-            list(MONTH_NUMBERS.values()).index(month_number)
-        ]
-        year = dt.year
-        return f'{month_name} {year}'
-
-    @classmethod
-    def get_month_total_amount_income(cls, request):
-        return Income.objects.filter(
-            user=request.user,
-        ).values('date', 'account').annotate(
-            total_amount=Sum('amount'),
-        )
-
-    @classmethod
-    def get_month_total_amount_expense(cls, request):
-        return Expense.objects.filter(
-            user=request.user,
-        ).values('date', 'account').annotate(
-            total_amount=Sum('amount'),
-        )
-
-    @classmethod
-    def get_list_months_year(cls):
-        months_year = []
-        for month in range(  # noqa: WPS352
-            NumberMonthOfYear.NUMBER_FIRST_MONTH_YEAR.value,
-            NumberMonthOfYear.NUMBER_TWELFTH_MONTH_YEAR.value + 1,
-        ):
-            month_name = MONTH_NAMES.get(month, 'Неизвестно')
-            months_year.append(f'{month_name} {CURRENT_YEAR}')
-
-        # Сортировка списка месяцев
-        months_year.sort(
-            key=lambda months: MONTH_NUMBERS.get(months.split()[0], 0),
-        )
-        return months_year
-
     def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            income_amounts = {
-                self.format_month_year(income_dict['date']):
-                    income_dict['total_amount']
-                for income_dict in self.get_month_total_amount_income(request)
-            }
+        dataset = Expense.objects.filter(user=request.user).values(
+            'date').annotate(total_amount=Sum('amount')).order_by('date')
 
-            expense_amounts = {
-                self.format_month_year(expense_dict['date']):
-                    expense_dict['total_amount']
-                for expense_dict in self.get_month_total_amount_expense(request)
-            }
+        income_dataset = Income.objects.filter(user=request.user).values(
+            'date').annotate(total_amount=Sum('amount')).order_by('date')
+        print(income_dataset)
+        dates = []
+        amounts = []
+        income_dates = []
+        income_amounts = []
 
-            # Создание списков сумм доходов/чеков в правильном порядке
-            income_amounts = [
-                float(income_amounts.get(month_year, 0))
-                for month_year in self.get_list_months_year()
-            ]
+        for data in dataset:
+            dates.append(data['date'].strftime('%Y-%m-%d'))
+            amounts.append(float(data['total_amount']))
 
-            expense_amounts = [
-                float(expense_amounts.get(month_year, 0))
-                for month_year in self.get_list_months_year()
-            ]
+        for data in income_dataset:
+            income_dates.append(data['date'].strftime('%Y-%m-%d'))
+            income_amounts.append(float(data['total_amount']))
 
-            return render(request, self.template_name, {
-                'income_amounts': income_amounts,
-                'expense_amounts': expense_amounts,
-            })
+        unique_dates = []
+        unique_amounts = []
+
+
+        # Объединение сумм по уникальным датам
+        for i, date in enumerate(dates):
+            if date not in unique_dates:
+                unique_dates.append(date)
+                unique_amounts.append(amounts[i])
+            else:
+                index = unique_dates.index(date)
+                unique_amounts[index] += amounts[i]
+
+        unique_income_dates = []
+        unique_income_amounts = []
+        print(unique_income_amounts)
+        print(income_amounts)
+
+        for i, date in enumerate(income_dates):
+            if date not in unique_income_dates:
+                unique_income_dates.append(date)
+                unique_income_amounts.append(income_amounts[i])
+            else:
+                index = unique_income_dates.index(date)
+                unique_income_amounts[index] += income_amounts[i]
+
+        chart = {
+            'chart': {'type': 'line'},
+            'title': {'text': 'Статистика по расходам и доходам'},
+            'xAxis': [
+                {'categories': unique_dates,
+                 'title': {'text': 'Дата (расходы)'}},
+                {'categories': unique_income_dates,
+                 'title': {'text': 'Дата (доходы)'}}
+            ],
+            'yAxis': {'title': {'text': 'Сумма'}},
+            'series': [
+                {
+                    'name': 'Расходы',
+                    'data': unique_amounts,
+                    'color': 'red',
+                    'xAxis': 0
+                    # Указываем, что данные для этой серии относятся к первой оси X
+                },
+                {
+                    'name': 'Доходы',
+                    'data': unique_income_amounts,
+                    'color': 'green',
+                    'xAxis': 1
+                    # Указываем, что данные для этой серии относятся ко второй оси X
+                }
+            ],
+            'credits': {
+                'enabled': False
+            },
+            'exporting': {
+                'enabled': False
+            },
+        }
+
+        dump = json.dumps(chart)
+
+        return render(request, self.template_name, {'chart': dump})
