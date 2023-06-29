@@ -100,6 +100,7 @@ CSP_INCLUDE_NONCE_IN = ['script-src', 'style-src', 'img-src', 'font-src']
 CSP_DEFAULT_SRC = (
     "'self'",
     'https://money.pavlovteam.ru',
+    'https://code.highcharts.com',
 )
 
 CSP_SCRIPT_SRC = (
@@ -108,12 +109,14 @@ CSP_SCRIPT_SRC = (
     'https://money.pavlovteam.ru',
     'https://cdn.jsdelivr.net',
     'https://code.jquery.com',
+    'https://code.highcharts.com',
 )
 
 CSP_STYLE_SRC = (
     "'self'",
     'https://cdn.jsdelivr.net',
     'https://money.pavlovteam.ru',
+    'https://code.highcharts.com',
 )
 
 CSP_IMG_SRC = ("'self'", 'data:', 'https://money.pavlovteam.ru')
