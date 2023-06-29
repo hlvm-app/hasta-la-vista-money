@@ -31,8 +31,7 @@
     <link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/style_mobile.css' %}">
     {% endblock %}
 </head>
-<body>
-    <div class="min-vh-100 bg-success bg-gradient">
+<body class="bg-success bg-gradient">
         {% if user.is_authenticated %}
             {% include 'header.html' %}
             <div class="container text-center">
@@ -51,10 +50,6 @@
         {% endif %}
         {% block content %}
         {% endblock %}
-
-    </div>
-
-
     <script nonce="{{request.csp_nonce}}" src="{% static 'js/script.js' %}"></script>
 
 </body>
