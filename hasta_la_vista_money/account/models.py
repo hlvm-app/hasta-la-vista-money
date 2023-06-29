@@ -22,3 +22,30 @@ class Account(models.Model):
 
     def __str__(self):
         return self.name_account
+
+    def transfer_money(self, to_account, amount):
+        if amount <= self.balance:
+            self.balance -= amount  # noqa: WPS601
+            to_account.balance += amount
+            self.save()
+            to_account.save()
+            return True
+        return False
+
+
+class TransferMoneyLog(models.Model):
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    from_account = models.ForeignKey(
+        Account, related_name='from_account', on_delete=models.PROTECT,
+    )
+    to_account = models.ForeignKey(
+        Account, related_name='to_account', on_delete=models.PROTECT,
+    )
+    amount = models.DecimalField(
+        max_digits=NumericParameter.TWENTY.value,
+        decimal_places=NumericParameter.TWO.value,
+    )
+    exchange_date = models.DateTimeField()
+
+    def __str__(self):
+        return f'Перевод со счёта {self.from_account} на счёт {self.to_account}'

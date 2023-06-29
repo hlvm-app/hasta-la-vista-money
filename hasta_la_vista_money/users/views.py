@@ -42,7 +42,7 @@ class LogoutUser(LogoutView, SuccessMessageMixin):
         messages.add_message(
             request,
             messages.SUCCESS,
-            'Вы успешно вышли из своей учётной записи!'
+            'Вы успешно вышли из своей учётной записи!',
         )
         return super().dispatch(request, *args, **kwargs)
 

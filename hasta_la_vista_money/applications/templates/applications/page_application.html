@@ -26,6 +26,26 @@
                 </div>
             </div>
         </div>
+        <div id="exchange-account" class="modal fade" >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            Обменять
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {{ transfer_money_form.media }}
+                        <form class="form" method="post">
+                            {% csrf_token %}
+                            {% bootstrap_form transfer_money_form layout='horizontal' %}
+                            {% bootstrap_button 'Обмен' %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-xl-12 d-flex justify-content-end mt-5 pe-5">
                 <div class="account pos bg-light border border-primary border-2 rounded-4">
