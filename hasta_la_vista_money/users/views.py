@@ -1,4 +1,5 @@
-from django.contrib.auth.views import LoginView
+from django.contrib import messages
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -35,6 +36,17 @@ class LoginUser(SuccessMessageMixin, LoginView):
         context = super().get_context_data(**kwargs)
         context['button_text'] = _('Войти')
         return context
+
+
+class LogoutUser(LogoutView, SuccessMessageMixin):
+
+    def dispatch(self, request, *args, **kwargs):
+        messages.add_message(
+            request,
+            messages.SUCCESS,
+            'Вы успешно вышли из своей учётной записи!'
+        )
+        return super().dispatch(request, *args, **kwargs)
 
 
 class CreateUser(SuccessMessageMixin, CreateView):
