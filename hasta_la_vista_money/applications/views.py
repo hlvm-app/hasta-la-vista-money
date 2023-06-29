@@ -1,3 +1,5 @@
+from operator import itemgetter
+
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count, ProtectedError, Sum
@@ -50,15 +52,27 @@ class PageApplication(
                 'amount',
             ).order_by('-date')
 
-            income_by_month = Income.objects.filter(
+            income = Income.objects.filter(
                 user=self.request.user,
+            ).values(
+                'id',
+                'date',
+                'account__name_account',
+                'category__name',
+                'amount',
             ).order_by('-date')
+
+            income_expense = sorted(
+                list(expenses) + list(income),
+                key=itemgetter('date'),
+                reverse=True,
+            )
 
             context['accounts'] = accounts
             context['add_account_form'] = AddAccountForm()
             context['receipt_info_by_month'] = receipt_info_by_month
-            context['expenses'] = expenses
-            context['income_by_month'] = income_by_month
+            context['income_expense'] = income_expense
+            context['income_by_month'] = income
         return context
 
     def post(self, request, *args, **kwargs):

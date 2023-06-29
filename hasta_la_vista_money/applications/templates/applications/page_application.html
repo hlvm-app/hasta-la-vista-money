@@ -93,46 +93,24 @@
             </div>
             <div class="col-xl-4 mt-5">
                 <table class="table caption-top table-expense table-hover align-middle text-center text-light table-bordered" aria-label="table expense">
-                    <caption class="text-danger">Статистика по расходам</caption>
+                    <caption class="text-danger">Статистика по расходам и доходам</caption>
                     <tr>
                         <th>Категория</th>
                         <th>Дата</th>
                         <th>Сумма</th>
                         <th>Счёт</th>
                     </tr>
-                    {% for expense in expenses %}
+                    {% for item in income_expense %}
                         <tr>
-                            <td>{{ expense.category__name }}</td>
-                            <td>{{ expense.date | date:'F Y' }}</td>
-                            <td>{{ expense.amount | comma }}</td>
-                            <td>{{ expense.account__name_account }}</td>
+                            <td>{{ item.category__name }}</td>
+                            <td>{{ item.date | date:'F Y' }}</td>
+                            <td>{{ item.amount | comma }}</td>
+                            <td>{{ item.account__name_account }}</td>
                         </tr>
                     {% endfor %}
                 </table>
             </div>
             <!-- /.col-xl-4 -->
-            <div class="col-xl-4 mt-5">
-                <table class="table caption-top table-hover text-center align-middle table-bordered border-length align-middle mb-0 text-light" aria-label="table income">
-                    <caption class="text-danger">Статистика по доходам</caption>
-                    <thead>
-                        <tr>
-                            <th class="col-2">Категория дохода</th>
-                            <th class="col-2">Период</th>
-                            <th class="col-2">Сумма</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for income in income_by_month %}
-                            <tr>
-                                <td class="col-2">{{ income.category }}</td>
-                                <td class="col-2">{{ income.date | date:"F Y" }}</td>
-                                <td class="col-2">{{ income.amount | comma }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <!-- /.offset-xl-2 col-xl-4 -->
         </div>
         <!-- /.row -->
     </div>
