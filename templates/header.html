@@ -4,7 +4,7 @@
 
     {% block content %}
 
-    <div class="row d-flex align-items-center">
+    <div class="row d-flex position-relative align-items-center">
             <div class="m-4 col-xl-3">
                 <a href="{% url 'applications:list' %}">
                     <img src="{%  static 'img/logo/logo.png' %}" alt="Логотип">
@@ -23,6 +23,13 @@
             <div class="col-xl-1">
                 <a class="mt-3 text-light btn btn-outline-info btn-sm text-decoration-none" href="{% url 'reports:list' %}">Отчёты</a>
             </div>
+            <div class="position-absolute top-0 translate_middle who-login">
+                <p>Вы вошли как {{ user.first_name }} {{ user.last_name }}. Ваш логин: {{ user.username }}   </p>
+                <form action="/logout/" class="form">
+                    <button type="submit" class="position-absolute button-exit end-0 top-0 btn btn-danger btn-small" value="{% url 'logout' %}">Выход</button>
+                </form>
 
+            </div>
+            <!-- /.position-absolute who-login -->
         </div>
     {% endblock %}
