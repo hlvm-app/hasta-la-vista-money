@@ -17,11 +17,9 @@
                 </div>
             </div>
         </form>
-        {% if not user.is_authenticated %}
-            <p class='text-light'>Ещё не зарегистрированы? Тогда нажимайте кнопку:</p>
-            <a class="btn btn-warning" href="{% url 'users:registration' %}">{% translate 'Регистрация' %}</a>
-        {% elif not user.last_login %}
-        {% endif %}
+        <p class='text-light'>Ещё не зарегистрированы? Тогда нажимайте кнопку:</p>
+        <a class="btn btn-warning" href="{% url 'users:registration' %}">{% translate 'Регистрация' %}</a>
+
     </div>
 
 {% endblock %}
