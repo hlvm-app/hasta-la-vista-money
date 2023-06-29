@@ -1,7 +1,8 @@
+from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views.generic import TemplateView
-from hasta_la_vista_money.users.views import IndexView, LoginUser
+from hasta_la_vista_money.users.views import IndexView, LoginUser, LogoutUser
 
 urlpatterns = [
     re_path(
@@ -19,6 +20,12 @@ urlpatterns = [
             redirect_authenticated_user=True,
         ),
         name='login',
+    ),
+    path(
+        'logout/',
+        LogoutUser.as_view(),
+        {'next_page': settings.LOGOUT_REDIRECT_URL},
+        name='logout'
     ),
     path(
         'applications/',
