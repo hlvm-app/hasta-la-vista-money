@@ -39,6 +39,16 @@
                 {% bootstrap_messages  %}
             </div>
         {% endif %}
+        {% if user.is_registrated %}
+            {% include 'header.html' %}
+            <div class="container text-center">
+                {% bootstrap_messages  %}
+            </div>
+        {% elif not user.last_login %}
+            <div class="container text-center">
+                {% bootstrap_messages  %}
+            </div>
+        {% endif %}
         {% block content %}
         {% endblock %}
 
