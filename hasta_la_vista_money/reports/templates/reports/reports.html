@@ -6,26 +6,16 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xl-6">
-                <div class="chart-container mt-5 bg-dark">
-                    <h4 class="text-center text-light">Доходы и расходы по месяцам</h4>
-                    <canvas id="income_expense_by_months_charts_line"></canvas>
-                </div>
+                <div id="container-chart"></div>
             </div>
-            <div class="col-xl-6">
-                <div class="chart-container mt-5 bg-dark">
-                    <h4 class="text-center text-light">Доходы и расходы по месяцам</h4>
-                    <canvas id="income_expense_by_months_charts_bar"></canvas>
-                </div>
-            </div>
+            <!-- /.col-xl-6 -->
         </div>
+        <!-- /.row -->
     </div>
+    <!-- /.container-fluid -->
 
-
-
+    <script nonce="{{request.csp_nonce}}" src="https://code.highcharts.com/highcharts.js"></script>
     <script nonce="{{request.csp_nonce}}">
-        const incomeExpense = {
-            incomeAmounts: {{ income_amounts | safe }},
-            expenseAmounts: {{ expense_amounts | safe }}
-        };
+        Highcharts.chart('container-chart', {{ chart|safe }})
     </script>
 {% endblock %}
