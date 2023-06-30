@@ -39,7 +39,7 @@
                         {{ transfer_money_form.media }}
                         <form class="form" method="post">
                             {% csrf_token %}
-                            {% bootstrap_form transfer_money_form layout='horizontal' %}
+                            {% bootstrap_form transfer_money_form layout='horizontal' horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
                             {% bootstrap_button 'Обмен' %}
                         </form>
                     </div>
