@@ -26,7 +26,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="shortcut icon" href="{% static 'img/favicon/favicon.png' %}" type="image/x-icon">
     <link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/bootstrap-icons.min.css' %}">
-    <script nonce="{{request.csp_nonce}}" src="{% static 'js/jquery-3.6.3.min.js' %}"></script>
+    <script nonce="{{request.csp_nonce}}" src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
     <link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/style.css' %}">
     <link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/style_mobile.css' %}">
     {% endblock %}
@@ -50,6 +50,7 @@
         {% endif %}
         {% block content %}
         {% endblock %}
+
     <script nonce="{{request.csp_nonce}}" src="{% static 'js/script.js' %}"></script>
 
 </body>
