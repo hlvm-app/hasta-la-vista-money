@@ -34,12 +34,12 @@ class Account(models.Model):
 
 
 class TransferMoneyLog(models.Model):
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     from_account = models.ForeignKey(
-        Account, related_name='from_account', on_delete=models.PROTECT,
+        Account, related_name='from_account', on_delete=models.CASCADE,
     )
     to_account = models.ForeignKey(
-        Account, related_name='to_account', on_delete=models.PROTECT,
+        Account, related_name='to_account', on_delete=models.CASCADE,
     )
     amount = models.DecimalField(
         max_digits=NumericParameter.TWENTY.value,
