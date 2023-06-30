@@ -33,7 +33,7 @@ class TransferMoneyAccountForm(Form):
     )
     exchange_date = DateTimeField(
         label='Дата перевода:',
-        widget=DateTimePickerInput()
+        widget=DateTimePickerInput(),
     )
 
     def __init__(self, user, *args, **kwargs):
