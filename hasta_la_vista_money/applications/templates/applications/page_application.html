@@ -9,8 +9,11 @@
     <div class="container-fluid">
         {% if transfer_money_form.errors %}
             {% for error in transfer_money_form.non_field_errors %}
-                <div class="alert alert-danger text-center alert-dismissible fade show">
-                    {{ error|escape }}
+                <div class="container text-center">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ error|escape }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 </div>
             {% endfor %}
         {% endif %}
