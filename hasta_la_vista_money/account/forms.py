@@ -41,8 +41,8 @@ class TransferMoneyAccountForm(Form):
         self.fields['from_account'].queryset = Account.objects.filter(user=user)
         self.fields['to_account'].queryset = Account.objects.filter(user=user)
 
-    def clean_to_account(self):
-        cleaned_data = super().clean_to_account()
+    def clean(self):
+        cleaned_data = super().clean()
         from_account = cleaned_data['from_account']
         to_account = cleaned_data['to_account']
 
