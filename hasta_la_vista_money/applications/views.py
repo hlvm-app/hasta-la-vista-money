@@ -138,8 +138,10 @@ class PageApplication(
                 return redirect(reverse_lazy(self.success_url))
 
         elif transfer_money_form.is_valid():
-            transfer_log = transfer_money_form.save()
+            transfer_log = transfer_money_form.save(commit=False)
             if transfer_log is not None:
+                transfer_log.user = request.user
+                transfer_log.save()
                 return redirect(self.success_url)
             transfer_money_form.add_error(None, 'Недостаточно средств!')
 
