@@ -7,6 +7,13 @@
 
 {% block content %}
     <div class="container-fluid">
+        {% if transfer_money_form.errors %}
+            {% for error in transfer_money_form.non_field_errors %}
+                <div class="alert alert-danger text-center alert-dismissible fade show">
+                    {{ error|escape }}
+                </div>
+            {% endfor %}
+        {% endif %}
         <div id="add-account" class="modal fade" >
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -31,7 +38,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">
-                            Обменять
+                            Перевод со счёта на счёт
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -40,7 +47,7 @@
                         <form class="form" method="post">
                             {% csrf_token %}
                             {% bootstrap_form transfer_money_form layout='horizontal' horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
-                            {% bootstrap_button 'Обмен' %}
+                            {% bootstrap_button 'Перевести' %}
                         </form>
                     </div>
                 </div>
