@@ -48,8 +48,7 @@ class TransferMoneyAccountForm(Form):
 
         if from_account == to_account:
             raise ValidationError(
-                'Вы не можете переводить с одинакового счёта',
-                code='invalid',
+                'Нельзя переводить со счёта списания на счёт списания! Попробуйте ещё раз!',
             )
 
         return cleaned_data
@@ -59,6 +58,8 @@ class TransferMoneyAccountForm(Form):
         to_account = self.cleaned_data['to_account']
         amount = self.cleaned_data['amount']
         exchange_date = self.cleaned_data['exchange_date']
+        print(from_account)
+        print(to_account)
 
         if from_account.transfer_money(to_account, amount):
             return TransferMoneyLog.objects.create(
