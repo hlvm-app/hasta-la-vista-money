@@ -5,8 +5,8 @@
 {% block title %}{% translate 'Страница входа' %}{% endblock %}
 {% block content %}
     <div class="container d-flex min-vh-100 flex-column justify-content-center align-items-center">
-        <h1 class="text-light">Hasta La Vista, Money!</h1>
-        <p class="text-light">Проект домашней бухгалтерии</p>
+        <h1 class="text-light text-uppercase">Hasta La Vista, Money!</h1>
+        <p class="text-light">Удобная домашняя бухгалтерия. Управляй финансами семьи грамотно!</p>
         <form method="post" class="form text-light">
             {% csrf_token %}
             <p class="my-4">
@@ -18,7 +18,8 @@
                 </div>
             </div>
         </form>
-        <p class='text-light'>Ещё не зарегистрированы? Тогда нажимайте кнопку:</p>
+        <p class='text-light'>Ещё не зарегистрированы?</p>
+        <p class='text-light'>Тогда нажимайте кнопку:</p>
         <a class="btn btn-primary text-light" href="{% url 'users:registration' %}">{% translate 'Регистрация' %}</a>
 
     </div>
