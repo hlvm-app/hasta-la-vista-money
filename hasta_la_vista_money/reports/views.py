@@ -67,7 +67,7 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 unique_amounts.append(amounts[data_index])
             else:
                 index = unique_dates.index(date)
-                unique_amounts[data_index] += amounts[index]
+                unique_amounts[index] += amounts[index]
 
         return unique_dates, unique_amounts
 
