@@ -4,6 +4,7 @@ from django.db.models import ProtectedError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, DetailView, UpdateView
+from django.views.generic.edit import DeletionMixin
 from django_filters.views import FilterView
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import SuccessUrlView, TemplateHTMLView
@@ -93,7 +94,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
 class ChangeIncomeView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
-    UpdateView
+    UpdateView,
 ):
     model = Income
     template_name = 'income/change_income.html'
@@ -111,7 +112,7 @@ class ChangeIncomeView(
         )
 
 
-class DeleteIncomeView(DetailView, DeleteView):
+class DeleteIncomeView(DeleteView, DeletionMixin):
     model = Income
     template_name = TemplateHTMLView.INCOME_TEMPLATE.value
     context_object_name = 'incomes'

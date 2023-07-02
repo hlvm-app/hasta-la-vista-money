@@ -11,7 +11,7 @@
                 <form class="form" method="post">
                     {% csrf_token %}
                     {% bootstrap_form income_form layout='horizontal' horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
-                    {% bootstrap_button button_text_create_income button_type="submit" button_class="change-income btn btn-primary"  %}
+                    {% bootstrap_button button_text_change button_type="submit" button_class="change-income btn btn-primary"  %}
                     <a class="btn btn-warning text-light position-absolute end-0" href="{% url 'income:list' %}">Вернуться назад</a>
                 </form>
             </div>

@@ -4,8 +4,12 @@ from django.db.models import Count, ProtectedError, Sum
 from django.db.models.functions import TruncMonth
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, DetailView, TemplateView, \
-    UpdateView
+from django.views.generic import (
+    DeleteView,
+    DetailView,
+    TemplateView,
+    UpdateView,
+)
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import SuccessUrlView, TemplateHTMLView
 from hasta_la_vista_money.custom_mixin import (
@@ -112,7 +116,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
 class ChangeExpenseView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
-    UpdateView
+    UpdateView,
 ):
     model = Expense
     template_name = 'expense/change_expense.html'

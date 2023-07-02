@@ -44,7 +44,7 @@ class TestExpense(TestCase):
     def test_expense_delete(self):
         self.client.force_login(self.user)
 
-        url = reverse_lazy('expense:delete_expense', args=(self.expense.pk, ))
+        url = reverse_lazy('expense:delete', args=(self.expense.pk, ))
 
         response = self.client.post(url, follow=True)
         self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
