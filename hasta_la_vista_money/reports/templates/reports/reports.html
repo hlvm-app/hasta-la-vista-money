@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% load django_bootstrap5 %}
 {% load static %}
+
+{% block title %}{% translate 'Отчёты' %}{% endblock %}
 {% block content %}
-    <title>Отчёты</title>
     <div class="container-fluid">
         <div class="row">
             <div class="col-xl-6">
