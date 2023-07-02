@@ -31,7 +31,7 @@
     <link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/style_mobile.css' %}">
     {% endblock %}
 </head>
-<body class="bg-success bg-gradient{% block extra_body_classes %}{% endblock %}" {% block extra_body_styles %}{% endblock %}>
+<body class="bg-success bg-gradient">
         {% if user.is_authenticated %}
             {% include 'header.html' %}
             <div class="container text-center">
