@@ -10,7 +10,6 @@ urlpatterns = [
         '<int:pk>',
         DeleteAccountView.as_view(),
         name='delete_account',
-
     ),
     path(
         '<int:pk>/change',

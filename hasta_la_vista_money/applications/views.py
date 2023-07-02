@@ -6,7 +6,7 @@ from django.db.models import Count, ProtectedError, Sum
 from django.db.models.functions import TruncMonth
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, UpdateView, TemplateView
+from django.views.generic import DeleteView, TemplateView, UpdateView
 from hasta_la_vista_money.account.forms import (
     AddAccountForm,
     TransferMoneyAccountForm,
@@ -147,7 +147,7 @@ class PageApplication(
 class ChangeAccountView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
-    UpdateView
+    UpdateView,
 ):
     model = Account
     form_class = AddAccountForm
@@ -161,7 +161,7 @@ class ChangeAccountView(
         return render(
             request,
             self.template_name,
-            {'add_account_form': account_form}
+            {'add_account_form': account_form},
         )
 
 
