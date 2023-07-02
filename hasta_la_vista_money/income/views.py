@@ -3,7 +3,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import ProtectedError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, DetailView, UpdateView
+from django.views.generic import DeleteView, UpdateView
 from django.views.generic.edit import DeletionMixin
 from django_filters.views import FilterView
 from hasta_la_vista_money.account.models import Account
