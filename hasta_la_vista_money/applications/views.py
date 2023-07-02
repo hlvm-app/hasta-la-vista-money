@@ -31,45 +31,57 @@ class PageApplication(
     no_permission_url = reverse_lazy('login')
     success_url = 'applications:list'
 
+    @classmethod
+    def collect_info_receipt(cls, request):
+        return Receipt.objects.filter(
+            user=request.user,
+        ).annotate(
+            month=TruncMonth('receipt_date'),
+        ).values(
+            'month',
+            'account__name_account',
+        ).annotate(
+            count=Count('id'),
+            total_amount=Sum('total_sum'),
+        ).order_by('-month')
+
+    @classmethod
+    def collect_info_income_expense(cls, request):
+        expenses = Expense.objects.filter(user=request.user).values(
+            'id',
+            'date',
+            'account__name_account',
+            'category__name',
+            'amount',
+        ).order_by('-date')
+
+        income = Income.objects.filter(
+            user=request.user,
+        ).values(
+            'id',
+            'date',
+            'account__name_account',
+            'category__name',
+            'amount',
+        ).order_by('-date')
+
+        income_expense = sorted(
+            list(expenses) + list(income),
+            key=itemgetter('date'),
+            reverse=True,
+        )
+        return income_expense
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             accounts = Account.objects.filter(user=self.request.user)
-            receipt_info_by_month = Receipt.objects.filter(
-                user=self.request.user,
-            ).annotate(
-                month=TruncMonth('receipt_date'),
-            ).values(
-                'month',
-                'account__name_account',
-            ).annotate(
-                count=Count('id'),
-                total_amount=Sum('total_sum'),
-            ).order_by('-month')
 
-            expenses = Expense.objects.filter(user=self.request.user).values(
-                'id',
-                'date',
-                'account__name_account',
-                'category__name',
-                'amount',
-            ).order_by('-date')
-
-            income = Income.objects.filter(
-                user=self.request.user,
-            ).values(
-                'id',
-                'date',
-                'account__name_account',
-                'category__name',
-                'amount',
-            ).order_by('-date')
-
-            income_expense = sorted(
-                list(expenses) + list(income),
-                key=itemgetter('date'),
-                reverse=True,
+            receipt_info_by_month = self.collect_info_receipt(
+                request=self.request
             )
+
+            income_expense = self.collect_info_income_expense(self.request.user)
 
             initial_form_data = {
                 'from_account': accounts.first(),
@@ -84,48 +96,18 @@ class PageApplication(
             )
             context['receipt_info_by_month'] = receipt_info_by_month
             context['income_expense'] = income_expense
-            context['income_by_month'] = income
         return context
 
     def post(self, request, *args, **kwargs):
-
-        receipt_info_by_month = Receipt.objects.filter(
-            user=self.request.user,
-        ).annotate(
-            month=TruncMonth('receipt_date'),
-        ).values(
-            'month',
-            'account__name_account',
-        ).annotate(
-            count=Count('id'),
-            total_amount=Sum('total_sum'),
-        ).order_by('-month')
-
-        expenses = Expense.objects.filter(user=self.request.user).values(
-            'id',
-            'date',
-            'account__name_account',
-            'category__name',
-            'amount',
-        ).order_by('-date')
-
-        income = Income.objects.filter(
-            user=self.request.user,
-        ).values(
-            'id',
-            'date',
-            'account__name_account',
-            'category__name',
-            'amount',
-        ).order_by('-date')
-
-        income_expense = sorted(
-            list(expenses) + list(income),
-            key=itemgetter('date'),
-            reverse=True,
-        )
         accounts = Account.objects.filter(user=self.request.user).all()
         account_form = AddAccountForm(request.POST)
+
+        receipt_info_by_month = self.collect_info_receipt(
+            request=self.request
+        )
+
+        income_expense = self.collect_info_income_expense(self.request.user)
+
         transfer_money_form = TransferMoneyAccountForm(
             user=request.user, data=request.POST,
         )
