@@ -5,6 +5,8 @@ let removeButton = document.querySelector("#remove-form")
 let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
 
 window.onload = onClickRemoveObject;
+window.onload = exchangeAccountShow;
+window.onload = buttonClose;
 
 let formNum = productForm.length-1
 addButton.addEventListener('click', addForm)
@@ -137,5 +139,30 @@ function onClickRemoveObject() {
                 event.preventDefault()
             }
         });
+    });
+}
+
+
+function exchangeAccountShow() {
+    const exchangeAccountElement = document.getElementById('exchange-account');
+    const bodyElement = document.body;
+
+    if (exchangeAccountElement.classList.contains('show')) {
+        exchangeAccountElement.style.display = 'block';
+        exchangeAccountElement.ariaModal = 'true'
+        exchangeAccountElement.role = 'dialog'
+        bodyElement.classList.add('modal-open')
+        bodyElement.style.overflow = 'hidden';
+        bodyElement.style.paddingRight = '0';
+    }
+
+    document.addEventListener('click', function(event) {
+        if (event.target.matches('[data-bs-dismiss="modal"]')) {
+            exchangeAccountElement.style.display = 'none';
+            exchangeAccountElement.setAttribute('aria-modal', 'false');
+            bodyElement.classList.remove('modal-open');
+            bodyElement.style.overflow = 'auto';
+            bodyElement.style.paddingRight = '0';
+        }
     });
 }

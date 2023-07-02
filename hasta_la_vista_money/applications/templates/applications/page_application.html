@@ -4,19 +4,8 @@
 {% load comma %}
 
 {% block title %}{% translate 'Страница приложений' %}{% endblock %}
-
 {% block content %}
     <div class="container-fluid">
-        {% if transfer_money_form.errors %}
-            {% for error in transfer_money_form.non_field_errors %}
-                <div class="container text-center">
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        {{ error|escape }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                </div>
-            {% endfor %}
-        {% endif %}
         <div id="add-account" class="modal fade" >
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -36,7 +25,7 @@
                 </div>
             </div>
         </div>
-        <div id="exchange-account" class="modal fade" >
+        <div id="exchange-account" class="modal fade {% if transfer_money_form.errors %}show{% endif %}">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -47,7 +36,7 @@
                     </div>
                     <div class="modal-body">
                         {{ transfer_money_form.media }}
-                        <form class="form" method="post">
+                        <form id="exchange-account-form" class="form" method="post">
                             {% csrf_token %}
                             {% bootstrap_form transfer_money_form layout='horizontal' horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
                             {% bootstrap_button 'Перевести' %}
