@@ -4,7 +4,8 @@ from django.db.models import Count, ProtectedError, Sum
 from django.db.models.functions import TruncMonth
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, DetailView, TemplateView
+from django.views.generic import DeleteView, DetailView, TemplateView, \
+    UpdateView
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import SuccessUrlView, TemplateHTMLView
 from hasta_la_vista_money.custom_mixin import (
@@ -106,6 +107,28 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                     'add_expense_form': add_expense_form,
                 },
             )
+
+
+class ChangeExpenseView(
+    CustomNoPermissionMixin,
+    SuccessMessageMixin,
+    UpdateView
+):
+    model = Expense
+    template_name = 'expense/change_expense.html'
+    form_class = AddExpenseForm
+    no_permission_url = reverse_lazy('login')
+    success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
+
+    def get(self, request, *args, **kwargs):
+        expense = self.get_object()
+        add_expense_form = AddExpenseForm(instance=expense)
+
+        return render(
+            request,
+            self.template_name,
+            {'add_expense_form': add_expense_form},
+        )
 
 
 class DeleteExpenseView(DetailView, DeleteView):
