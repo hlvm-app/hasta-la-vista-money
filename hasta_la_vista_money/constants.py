@@ -50,6 +50,7 @@ class MessageOnSite(Enum):
         'Нельзя переводить со счёта списания на счёт списания!',
         'Выберите другой счёт для начисления!',
     ))
+    SUCCESS_MESSAGE_CHANGED_ACCOUNT = 'Счёт успешно изменён'
 
 
 class TelegramMessage(Enum):
