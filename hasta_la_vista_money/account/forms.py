@@ -8,7 +8,7 @@ from django.forms import (
     ValidationError,
 )
 from hasta_la_vista_money.account.models import Account, TransferMoneyLog
-from hasta_la_vista_money.constants import NumericParameter, MessageOnSite
+from hasta_la_vista_money.constants import MessageOnSite, NumericParameter
 
 
 class AddAccountForm(ModelForm):
@@ -58,8 +58,6 @@ class TransferMoneyAccountForm(Form):
         to_account = self.cleaned_data['to_account']
         amount = self.cleaned_data['amount']
         exchange_date = self.cleaned_data['exchange_date']
-        print(from_account)
-        print(to_account)
 
         if from_account.transfer_money(to_account, amount):
             return TransferMoneyLog.objects.create(

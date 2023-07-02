@@ -65,12 +65,11 @@ class PageApplication(
             'amount',
         ).order_by('-date')
 
-        income_expense = sorted(
+        return sorted(
             list(expenses) + list(income),
             key=itemgetter('date'),
             reverse=True,
         )
-        return income_expense
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -78,11 +77,11 @@ class PageApplication(
             accounts = Account.objects.filter(user=self.request.user)
 
             receipt_info_by_month = self.collect_info_receipt(
-                user=self.request.user
+                user=self.request.user,
             )
 
             income_expense = self.collect_info_income_expense(
-                user=self.request.user
+                user=self.request.user,
             )
 
             initial_form_data = {
@@ -105,11 +104,11 @@ class PageApplication(
         account_form = AddAccountForm(request.POST)
 
         receipt_info_by_month = self.collect_info_receipt(
-            user=self.request.user
+            user=self.request.user,
         )
 
         income_expense = self.collect_info_income_expense(
-            user=self.request.user
+            user=self.request.user,
         )
 
         transfer_money_form = TransferMoneyAccountForm(
