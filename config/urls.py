@@ -65,6 +65,13 @@ urlpatterns = [
         name='bot',
     ),
     path(
+        'account/',
+        include(
+            'hasta_la_vista_money.account.urls', namespace='account',
+        ),
+        name='account',
+    ),
+    path(
         'reports',
         include('hasta_la_vista_money.reports.urls', namespace='reports'),
         name='reports',
