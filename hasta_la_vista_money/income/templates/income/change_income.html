@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load i18n %}
+
+{% block title %}{% translate 'Изменить доходную операцию' %}{% endblock %}
+{% block content %}
+    <div class="container position-relative">
+        <div class="row">
+            <div class="col-xl-6 position-absolute top-0 mt-5 start-50 translate-middle-x text-light">
+                {{ income_form.media }}
+                <form class="form" method="post">
+                    {% csrf_token %}
+                    {% bootstrap_form income_form layout='horizontal' horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
+                    {% bootstrap_button button_text_create_income button_type="submit" button_class="change-income btn btn-primary"  %}
+                    <a class="btn btn-warning text-light position-absolute end-0" href="{% url 'income:list' %}">Вернуться назад</a>
+                </form>
+            </div>
+            <!-- /.col-xl-12 d-flex justify-content-center -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+{% endblock %}

@@ -3,7 +3,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import ProtectedError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, DetailView
+from django.views.generic import DeleteView, DetailView, UpdateView
 from django_filters.views import FilterView
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import SuccessUrlView, TemplateHTMLView
@@ -88,6 +88,26 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                     'income_form': income_form,
                 },
             )
+
+
+class IncomeChangeView(
+    CustomNoPermissionMixin,
+    SuccessMessageMixin,
+    UpdateView
+):
+    model = Income
+    template_name = 'income/change_income.html'
+    no_permission_url = reverse_lazy('login')
+    success_url = SuccessUrlView.INCOME_URL.value
+
+    def get(self, request, *args, **kwargs):
+        income = self.get_object()
+        income_form = IncomeForm(instance=income)
+        return render(
+            request,
+            self.template_name,
+            {'income_form': income_form},
+        )
 
 
 class IncomeDeleteView(DetailView, DeleteView):
