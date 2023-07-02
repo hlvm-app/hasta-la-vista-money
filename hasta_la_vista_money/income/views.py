@@ -90,15 +90,16 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
             )
 
 
-class IncomeChangeView(
+class ChangeIncomeView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
     UpdateView
 ):
     model = Income
     template_name = 'income/change_income.html'
+    form_class = IncomeForm
     no_permission_url = reverse_lazy('login')
-    success_url = SuccessUrlView.INCOME_URL.value
+    success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)
 
     def get(self, request, *args, **kwargs):
         income = self.get_object()
@@ -110,7 +111,7 @@ class IncomeChangeView(
         )
 
 
-class IncomeDeleteView(DetailView, DeleteView):
+class DeleteIncomeView(DetailView, DeleteView):
     model = Income
     template_name = TemplateHTMLView.INCOME_TEMPLATE.value
     context_object_name = 'incomes'
