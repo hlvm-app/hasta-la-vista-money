@@ -6,7 +6,6 @@ let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
 
 window.onload = onClickRemoveObject;
 window.onload = exchangeAccountShow;
-window.onload = buttonClose;
 
 let formNum = productForm.length-1
 addButton.addEventListener('click', addForm)
