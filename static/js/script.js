@@ -4,8 +4,10 @@ let addButton = document.querySelector("#add-form")
 let removeButton = document.querySelector("#remove-form")
 let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
 
-window.onload = onClickRemoveObject;
-window.onload = exchangeAccountShow;
+window.onload = function () {
+    onClickRemoveObject();
+    exchangeAccountShow();
+}
 
 let formNum = productForm.length-1
 addButton.addEventListener('click', addForm)
@@ -129,19 +131,6 @@ const formCheck = document.querySelector('.form-check');
 formCheck.closest('.row').style.display = 'none';
 
 
-function onClickRemoveObject() {
-    const removeButton = document.querySelectorAll('.remove-object-button')
-    removeButton.forEach((button) => {
-        button.addEventListener('click', (event) => {
-            const confirmed_button_category = confirm('Вы уверены?')
-            if (!confirmed_button_category) {
-                event.preventDefault()
-            }
-        });
-    });
-}
-
-
 function exchangeAccountShow() {
     const exchangeAccountElement = document.getElementById('exchange-account');
     const bodyElement = document.body;
@@ -163,5 +152,17 @@ function exchangeAccountShow() {
             bodyElement.style.overflow = 'auto';
             bodyElement.style.paddingRight = '0';
         }
+    });
+}
+
+function onClickRemoveObject() {
+    const removeObjectButton = document.querySelectorAll('.remove-object-button')
+    removeObjectButton.forEach((button) => {
+        button.addEventListener('click', (event) => {
+            const confirmed_button_category = confirm('Вы уверены?')
+            if (!confirmed_button_category) {
+                event.preventDefault()
+            }
+        });
     });
 }
