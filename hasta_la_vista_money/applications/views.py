@@ -32,9 +32,9 @@ class PageApplication(
     success_url = 'applications:list'
 
     @classmethod
-    def collect_info_receipt(cls, request):
+    def collect_info_receipt(cls, user):
         return Receipt.objects.filter(
-            user=request.user,
+            user=user,
         ).annotate(
             month=TruncMonth('receipt_date'),
         ).values(
@@ -46,8 +46,8 @@ class PageApplication(
         ).order_by('-month')
 
     @classmethod
-    def collect_info_income_expense(cls, request):
-        expenses = Expense.objects.filter(user=request.user).values(
+    def collect_info_income_expense(cls, user):
+        expenses = Expense.objects.filter(user=user).values(
             'id',
             'date',
             'account__name_account',
@@ -56,7 +56,7 @@ class PageApplication(
         ).order_by('-date')
 
         income = Income.objects.filter(
-            user=request.user,
+            user=user,
         ).values(
             'id',
             'date',
@@ -78,10 +78,12 @@ class PageApplication(
             accounts = Account.objects.filter(user=self.request.user)
 
             receipt_info_by_month = self.collect_info_receipt(
-                request=self.request
+                user=self.request.user
             )
 
-            income_expense = self.collect_info_income_expense(self.request.user)
+            income_expense = self.collect_info_income_expense(
+                user=self.request.user
+            )
 
             initial_form_data = {
                 'from_account': accounts.first(),
@@ -103,10 +105,12 @@ class PageApplication(
         account_form = AddAccountForm(request.POST)
 
         receipt_info_by_month = self.collect_info_receipt(
-            request=self.request
+            user=self.request.user
         )
 
-        income_expense = self.collect_info_income_expense(self.request.user)
+        income_expense = self.collect_info_income_expense(
+            user=self.request.user
+        )
 
         transfer_money_form = TransferMoneyAccountForm(
             user=request.user, data=request.POST,
