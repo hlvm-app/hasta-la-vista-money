@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load i18n %}
+
+{% block title %}{% translate 'Изменить счёт' %}{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12 mt-5 text-light d-flex justify-content-center">
+                <form class="form" method="post">
+                    {% csrf_token %}
+                    {% bootstrap_form add_account_form layout='horizontal' horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
+                    <div class="wrapper-button-change-account position-relative">
+                        {% bootstrap_button 'Изменить счёт' %}
+                        <a class="btn btn-warning text-light position-absolute end-0" href="{% url 'applications:list' %}">Вернуться назад</a>
+                    </div>
+
+                </form>
+            </div>
+            <!-- /.col-xl-12 d-flex justify-content-center -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+{% endblock %}
