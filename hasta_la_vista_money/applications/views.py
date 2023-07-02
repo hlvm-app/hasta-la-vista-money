@@ -6,12 +6,13 @@ from django.db.models import Count, ProtectedError, Sum
 from django.db.models.functions import TruncMonth
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, TemplateView
+from django.views.generic import DeleteView, UpdateView, TemplateView
 from hasta_la_vista_money.account.forms import (
     AddAccountForm,
     TransferMoneyAccountForm,
 )
 from hasta_la_vista_money.account.models import Account
+from hasta_la_vista_money.constants import MessageOnSite
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.expense.models import Expense
 from hasta_la_vista_money.income.models import Income
@@ -140,6 +141,27 @@ class PageApplication(
                 'receipt_info_by_month': receipt_info_by_month,
                 'transfer_money_form': transfer_money_form,
             },
+        )
+
+
+class ChangeAccountView(
+    CustomNoPermissionMixin,
+    SuccessMessageMixin,
+    UpdateView
+):
+    model = Account
+    form_class = AddAccountForm
+    template_name = 'account/change_account.html'
+    success_url = reverse_lazy('applications:list')
+    success_message = MessageOnSite.SUCCESS_MESSAGE_CHANGED_ACCOUNT.value
+
+    def get(self, request, *args, **kwargs):
+        account = self.get_object()
+        account_form = AddAccountForm(instance=account)
+        return render(
+            request,
+            self.template_name,
+            {'add_account_form': account_form}
         )
 
 
