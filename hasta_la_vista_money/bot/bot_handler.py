@@ -31,7 +31,7 @@ def handle_auth(message):
 
     if user and user.check_password(password):
         check_existing_telegram_user(
-            message, existing_telegram_user, telegram_username, user
+            message, existing_telegram_user, telegram_username, user,
         )
     bot_admin.reply_to(
         message, TelegramMessage.INVALID_USERNAME_PASSWORD.value,
@@ -39,7 +39,7 @@ def handle_auth(message):
 
 
 def check_existing_telegram_user(
-        message, existing_telegram_user, telegram_username, user
+    message, existing_telegram_user, telegram_username, user,
 ):
     if existing_telegram_user:
         authenticated_user(message, existing_telegram_user)
