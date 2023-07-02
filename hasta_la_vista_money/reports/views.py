@@ -36,58 +36,48 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         return expense_dataset, income_dataset
 
     @classmethod
-    def transform_data_expense(cls, expense_dataset):
-        expense_dates = []
-        expense_amounts = []
+    def transform_data(cls, dataset):
+        dates = []
+        amounts = []
 
-        for expense_date_amount in expense_dataset:
-            expense_dates.append(
-                expense_date_amount['date'].strftime('%Y-%m-%d'),
+        for date_amount in dataset:
+            dates.append(
+                date_amount['date'].strftime('%Y-%m-%d'),
             )
-            expense_amounts.append(float(expense_date_amount['total_amount']))
+            amounts.append(float(date_amount['total_amount']))
 
-        return expense_dates, expense_amounts
+        return dates, amounts
+
+    @classmethod
+    def transform_data_expense(cls, expense_dataset):
+        return cls.transform_data(expense_dataset)
 
     @classmethod
     def transform_data_income(cls, income_dataset):
+        return cls.transform_data(income_dataset)
 
-        income_dates = []
-        income_amounts = []
+    @classmethod
+    def unique_data(cls, dates, amounts):
+        unique_dates = []
+        unique_amounts = []
 
-        for income_date_amount in income_dataset:
-            income_dates.append(income_date_amount['date'].strftime('%Y-%m-%d'))
-            income_amounts.append(float(income_date_amount['total_amount']))
+        for data_index, date in enumerate(dates):
+            if date not in unique_dates:
+                unique_dates.append(date)
+                unique_amounts.append(amounts[data_index])
+            else:
+                index = unique_dates.index(date)
+                unique_amounts[data_index] += amounts[index]
 
-        return income_dates, income_amounts
+        return unique_dates, unique_amounts
 
     @classmethod
     def unique_expense_data(cls, expense_dates, expense_amounts):
-        unique_expense_dates = []
-        unique_expense_amounts = []
-
-        for expense_index, expense_date in enumerate(expense_dates):
-            if expense_date not in unique_expense_dates:
-                unique_expense_dates.append(expense_date)
-                unique_expense_amounts.append(expense_amounts[expense_index])
-            else:
-                index = unique_expense_dates.index(expense_date)
-                unique_expense_amounts[index] += expense_amounts[expense_index]
-
-        return unique_expense_dates, unique_expense_amounts
+        return cls.unique_data(expense_dates, expense_amounts)
 
     @classmethod
     def unique_income_data(cls, income_dates, income_amounts):
-        unique_income_dates = []
-        unique_income_amounts = []
-
-        for income_index, income_date in enumerate(income_dates):
-            if income_date not in unique_income_dates:
-                unique_income_dates.append(income_date)
-                unique_income_amounts.append(income_amounts[income_index])
-            else:
-                index = unique_income_dates.index(income_date)
-                unique_income_amounts[index] += income_amounts[income_index]
-        return unique_income_dates, unique_income_amounts
+        return cls.unique_data(income_dates, income_amounts)
 
     def get(self, request, *args, **kwargs):  # noqa: WPS210 C901
 
