@@ -18,7 +18,7 @@ def handle_start(message):
     bot_admin.register_next_step_handler(message, handle_auth)
 
 
-def handle_auth(message):  # noqa: WPS210
+def handle_auth(message):
     auth_data = message.text.split(':')
     if len(auth_data) != 2:
         bot_admin.reply_to(message, TelegramMessage.INCORRECT_FORMAT.value)
@@ -27,19 +27,24 @@ def handle_auth(message):  # noqa: WPS210
     username, password = map(str, auth_data)
     user = User.objects.filter(username=username).first()
     telegram_username = message.from_user.username
-    existing_telegram_user = TelegramUser.objects.filter(
-        user=user,
-    ).first()
+    existing_telegram_user = TelegramUser.objects.filter(user=user).first()
 
     if user and user.check_password(password):
-        if existing_telegram_user:
-            authenticated_user(message, existing_telegram_user)
-        else:
-            create_telegram_user(message, telegram_username, user)
-    else:
-        bot_admin.reply_to(
-            message, TelegramMessage.INVALID_USERNAME_PASSWORD.value,
+        check_existing_telegram_user(
+            message, existing_telegram_user, telegram_username, user
         )
+    bot_admin.reply_to(
+        message, TelegramMessage.INVALID_USERNAME_PASSWORD.value,
+    )
+
+
+def check_existing_telegram_user(
+        message, existing_telegram_user, telegram_username, user
+):
+    if existing_telegram_user:
+        authenticated_user(message, existing_telegram_user)
+    else:
+        create_telegram_user(message, telegram_username, user)
 
 
 def authenticated_user(message, existing_telegram_user):
