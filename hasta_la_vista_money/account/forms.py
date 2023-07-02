@@ -8,7 +8,7 @@ from django.forms import (
     ValidationError,
 )
 from hasta_la_vista_money.account.models import Account, TransferMoneyLog
-from hasta_la_vista_money.constants import NumericParameter
+from hasta_la_vista_money.constants import NumericParameter, MessageOnSite
 
 
 class AddAccountForm(ModelForm):
@@ -48,7 +48,7 @@ class TransferMoneyAccountForm(Form):
 
         if from_account == to_account:
             raise ValidationError(
-                'Нельзя переводить со счёта списания на счёт списания! Попробуйте ещё раз!',
+                MessageOnSite.ANOTHER_ACCRUAL_ACCOUNT.value,
             )
 
         return cleaned_data

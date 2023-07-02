@@ -43,9 +43,13 @@ class ReceiptConstants(Enum):
 class MessageOnSite(Enum):
     SUCCESS_MESSAGE_LOGIN = 'Вы успешно авторизовались!'
     SUCCESS_MESSAGE_REGISTRATION = 'Регистрация прошла успешно!'
-    SUCCESS_MESSAGE_CREATE_RECEIPT = (
+    SUCCESS_MESSAGE_CREATE_RECEIPT = ''.join(
         'Чек был успешно добавлен в базу данных!',
     )
+    ANOTHER_ACCRUAL_ACCOUNT = ' '.join((
+        'Нельзя переводить со счёта списания на счёт списания!',
+        'Выберите другой счёт для начисления!'
+    ))
 
 
 class TelegramMessage(Enum):
