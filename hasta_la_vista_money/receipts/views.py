@@ -2,12 +2,16 @@ from typing import Any, Dict
 
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import ProtectedError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView
+from django.views.generic import DeleteView, DetailView, TemplateView
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.buttons_delete import button_delete_receipt
-from hasta_la_vista_money.constants import ReceiptConstants
+from hasta_la_vista_money.constants import (
+    ReceiptConstants,
+    SuccessUrlView,
+    TemplateHTMLView,
+)
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.receipts.forms import (
     CustomerForm,
@@ -93,12 +97,6 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         )
 
     def post(self, request, *args, **kwargs) -> Dict[str, Any]:
-        if 'delete_receipt_button' in request.POST:
-            receipt_id = request.POST.get('receipt_id')
-            button_delete_receipt(
-                Receipt, request, receipt_id, self.success_url,
-            )
-
         receipts = Receipt.objects.filter(user=request.user).all()
         seller_form = CustomerForm(request.user, request.POST)
         receipt_form = ReceiptForm(request.POST)
@@ -135,3 +133,33 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 'product_formset': product_formset,
             },
         )
+
+
+class ReceiptDeleteView(DetailView, DeleteView):
+    model = Receipt
+    template_name = TemplateHTMLView.RECEIPT_TEMPLATE.value
+    context_object_name = 'receipts'
+    no_permission_url = reverse_lazy('login')
+    success_url = SuccessUrlView.RECEIPT_URL.value
+
+    def form_valid(self, form):
+        receipt = self.get_object()
+        account = receipt.account
+        amount = receipt.total_sum
+        account_balance = get_object_or_404(Account, id=account.id)
+
+        try:
+            if account_balance.user == self.request.user:
+                account_balance.balance += amount
+                account_balance.save()
+
+                for product in receipt.product.all():
+                    product.delete()
+                receipt.customer.delete()
+
+                receipt.delete()
+                messages.success(self.request, 'Чек успешно удалён!')
+                return redirect(reverse_lazy(self.success_url))
+        except ProtectedError:
+            messages.error(self.request, 'Чек не может быть удалён!')
+            return redirect(reverse_lazy(self.success_url))
