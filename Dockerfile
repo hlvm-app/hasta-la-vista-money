@@ -15,3 +15,6 @@ COPY . /app/
 
 RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt && pip install --no-cache-dir "poetry==$POETRY_VERSION"
 RUN apk --no-cache add make
+RUN locale-gen ru_RU.UTF-8
+ENV LANG ru_RU.UTF-8
+ENV LC_ALL ru_RU.UTF-8
