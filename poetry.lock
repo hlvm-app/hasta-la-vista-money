@@ -7,6 +7,14 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "annotated-types"
+version = "0.5.0"
+description = "Reusable constraint types to use with typing.Annotated"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
 name = "asgiref"
 version = "3.7.2"
 description = "ASGI specs, helper code, and adapters"
@@ -214,7 +222,7 @@ typing-extensions = ">=3.10.0.0"
 
 [[package]]
 name = "django"
-version = "4.2.2"
+version = "4.2.3"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
 category = "main"
 optional = false
@@ -231,7 +239,7 @@ bcrypt = ["bcrypt"]
 
 [[package]]
 name = "django-bootstrap-datepicker-plus"
-version = "5.0.3"
+version = "5.0.4"
 description = "Bootstrap3/Bootstrap4/Bootstrap5 DatePickerInput, TimePickerInput, DateTimePickerInput, MonthPickerInput, YearPickerInput"
 category = "main"
 optional = false
@@ -297,7 +305,7 @@ python-versions = "*"
 
 [[package]]
 name = "faker"
-version = "18.10.1"
+version = "18.11.2"
 description = "Faker is a Python package that generates fake data for you."
 category = "dev"
 optional = false
@@ -710,7 +718,7 @@ python-versions = ">=3.9"
 
 [[package]]
 name = "opencv-python"
-version = "4.7.0.72"
+version = "4.8.0.74"
 description = "Wrapper package for OpenCV python bindings."
 category = "main"
 optional = false
@@ -721,7 +729,7 @@ numpy = [
     {version = ">=1.21.0", markers = "python_version <= \"3.9\" and platform_system == \"Darwin\" and platform_machine == \"arm64\""},
     {version = ">=1.21.2", markers = "python_version >= \"3.10\""},
     {version = ">=1.21.4", markers = "python_version >= \"3.10\" and platform_system == \"Darwin\""},
-    {version = ">=1.22.0", markers = "python_version >= \"3.11\""},
+    {version = ">=1.23.5", markers = "python_version >= \"3.11\""},
     {version = ">=1.19.3", markers = "python_version >= \"3.6\" and platform_system == \"Linux\" and platform_machine == \"aarch64\" or python_version >= \"3.9\""},
     {version = ">=1.17.0", markers = "python_version >= \"3.7\""},
     {version = ">=1.17.3", markers = "python_version >= \"3.8\""},
@@ -819,7 +827,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "pydantic"
-version = "1.10.9"
+version = "1.10.10"
 description = "Data validation and settings management using python type hints"
 category = "main"
 optional = false
@@ -831,6 +839,33 @@ typing-extensions = ">=4.2.0"
 [package.extras]
 dotenv = ["python-dotenv (>=0.10.4)"]
 email = ["email-validator (>=1.0.3)"]
+
+[[package]]
+name = "pydantic"
+version = "2.0"
+description = "Data validation using Python type hints"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+annotated-types = ">=0.4.0"
+pydantic-core = "2.0.1"
+typing-extensions = ">=4.6.1"
+
+[package.extras]
+email = ["email-validator (>=2.0.0)"]
+
+[[package]]
+name = "pydantic-core"
+version = "2.0.1"
+description = ""
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+typing-extensions = {version = ">=4.6.0", markers = "platform_python_implementation != \"PyPy\""}
 
 [[package]]
 name = "pydocstyle"
@@ -1271,7 +1306,7 @@ python-versions = "*"
 
 [[package]]
 name = "typing-extensions"
-version = "4.6.3"
+version = "4.7.1"
 description = "Backported and Experimental Type Hints for Python 3.7+"
 category = "main"
 optional = false
@@ -1371,6 +1406,7 @@ content-hash = "9d70c9f708af915abc65b08b8c2abd3fb84b43e70f6f5b4dae8dcf3e6002a55f
 
 [metadata.files]
 alabaster = []
+annotated-types = []
 asgiref = []
 astor = []
 attrs = []
@@ -1441,6 +1477,7 @@ pyasn1-modules = []
 pycodestyle = []
 pycparser = []
 pydantic = []
+pydantic-core = []
 pydocstyle = []
 pyflakes = []
 pygments = []
