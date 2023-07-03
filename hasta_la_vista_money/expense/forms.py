@@ -1,3 +1,7 @@
+import datetime
+
+from django.utils import timezone
+
 from bootstrap_datepicker_plus.widgets import DateTimePickerInput
 from config.django.forms import BaseForm
 from django.utils.translation import gettext_lazy as _
@@ -20,6 +24,8 @@ class AddExpenseForm(BaseForm):
                 options={
                     'format': 'DD/MM/YYYY HH:mm',
                     'showTodayButton': True,
+                    'showClose': True,
+                    'maxDate': (datetime.datetime.today()).strftime('%d/%m/%Y'),
                 },
             ),
         }
