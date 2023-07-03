@@ -25,7 +25,6 @@ class AddExpenseForm(BaseForm):
                     'format': 'DD/MM/YYYY HH:mm',
                     'showTodayButton': True,
                     'showClose': True,
-                    'maxDate': (datetime.datetime.today()).strftime('%d/%m/%Y'),
                 },
             ),
         }
