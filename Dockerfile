@@ -6,7 +6,8 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1 \
     POETRY_VERSION=1.4.0
 
-# set work directory
+USER user
+
 WORKDIR /app
 
 COPY requirements.txt /app/
