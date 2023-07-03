@@ -10,6 +10,7 @@ WORKDIR /app
 
 COPY . .
 
+RUN apt-get clean && apt-get update && apt-get install -y locales
 RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir "poetry==$POETRY_VERSION"
 RUN apk --no-cache add make
 RUN locale-gen ru_RU.UTF-8
