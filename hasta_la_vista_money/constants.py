@@ -111,6 +111,7 @@ class SessionCookie(Enum):
     SESSION_COOKIE_AGE = 1209600
 
 
+TODAY = datetime.datetime.today()
 CURRENT_YEAR = datetime.date.today().year
 
 
