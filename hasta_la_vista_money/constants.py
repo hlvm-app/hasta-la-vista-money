@@ -54,50 +54,58 @@ class MessageOnSite(Enum):
 
 
 class TelegramMessage(Enum):
-    SAFE_LOGIN_PASSWORD = ''.join((
-        'Ваш логин и пароль был удалены для обеспечения сохранности ',
-        'конфиденциальных данных!',
-    ))
+    SAFE_LOGIN_PASSWORD = ''.join(
+        (
+            'Ваш логин и пароль был удалены для обеспечения сохранности ',
+            'конфиденциальных данных!',
+        ),
+    )
     ALREADY_LOGGING_LINK_ACCOUNT = ''.join(
         (
             'Вы уже авторизованы и связаны с этим аккаунтом.\n',
             SAFE_LOGIN_PASSWORD,
-         )
-
+        ),
     )
+
     ALREADY_LINK_ANOTHER_ACCOUNT = ''.join(
         (
             'Ваш аккаунт уже связан с другим Telegram аккаунтом.\n',
             SAFE_LOGIN_PASSWORD,
-        )
-
+        ),
     )
+
     AUTHORIZATION_SUCCESSFUL = ''.join(
         (
             'Авторизация прошла успешно. Вы привязаны к своему аккаунту.\n',
             SAFE_LOGIN_PASSWORD,
-        )
-
-    )
-    INVALID_USERNAME_PASSWORD = ''.join((
-        'Неверный логин или пароль. Попробуйте ещё раз.\n',
-        SAFE_LOGIN_PASSWORD,
+        ),
     )
 
+    INVALID_USERNAME_PASSWORD = ''.join(
+        (
+            'Неверный логин или пароль. Попробуйте ещё раз.\n',
+            SAFE_LOGIN_PASSWORD,
+        ),
     )
+
     INCORRECT_FORMAT = ''.join(
         (
             'Некорректный формат. Повторите ввод логина и пароля.\n',
             SAFE_LOGIN_PASSWORD,
-        )
+        ),
     )
-    REQUIRED_AUTHORIZATION = ''.join((
-        'Требуется авторизация.\n',
-        'Введите логин и пароль в формате: логин:пароль',
-    ))
+
+    REQUIRED_AUTHORIZATION = ''.join(
+        (
+            'Требуется авторизация.\n',
+            'Введите логин и пароль в формате: логин:пароль',
+        ),
+    )
+
     ACCEPTED_FORMAT_JSON = (
         'Принимаются файлы JSON, текст по формату и фотографии QR-кодов',
     )
+
     NOT_CREATE_ACCOUNT = 'Не создан счёт! Сначала создайте счёт на сайте!'
     ERROR_DATABASE_RECORD = 'Ошибка записи в базу данных!'
 
