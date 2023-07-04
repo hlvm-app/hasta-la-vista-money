@@ -54,19 +54,43 @@ class MessageOnSite(Enum):
 
 
 class TelegramMessage(Enum):
-    ALREADY_LOGGING_LINK_ACCOUNT = (
-        'Вы уже авторизованы и связаны с этим аккаунтом.',
+    SAFE_LOGIN_PASSWORD = ''.join((
+        'Ваш логин и пароль был удалены для обеспечения сохранности ',
+        'конфиденциальных данных!',
+    ))
+    ALREADY_LOGGING_LINK_ACCOUNT = ''.join(
+        (
+            'Вы уже авторизованы и связаны с этим аккаунтом.\n',
+            SAFE_LOGIN_PASSWORD,
+         )
+
     )
-    ALREADY_LINK_ANOTHER_ACCOUNT = (
-        'Ваш аккаунт уже связан с другим Telegram аккаунтом.',
+    ALREADY_LINK_ANOTHER_ACCOUNT = ''.join(
+        (
+            'Ваш аккаунт уже связан с другим Telegram аккаунтом.\n',
+            SAFE_LOGIN_PASSWORD,
+        )
+
     )
-    AUTHORIZATION_SUCCESSFUL = (
-        'Авторизация прошла успешно. Вы привязаны к своему аккаунту.',
+    AUTHORIZATION_SUCCESSFUL = ''.join(
+        (
+            'Авторизация прошла успешно. Вы привязаны к своему аккаунту.\n',
+            SAFE_LOGIN_PASSWORD,
+        )
+
     )
-    INVALID_USERNAME_PASSWORD = (
-        'Неверный логин или пароль. Попробуйте ещё раз.',
+    INVALID_USERNAME_PASSWORD = ''.join((
+        'Неверный логин или пароль. Попробуйте ещё раз.\n',
+        SAFE_LOGIN_PASSWORD,
     )
-    INCORRECT_FORMAT = 'Некорректный формат. Повторите ввод логина и пароля.'
+
+    )
+    INCORRECT_FORMAT = ''.join(
+        (
+            'Некорректный формат. Повторите ввод логина и пароля.\n',
+            SAFE_LOGIN_PASSWORD,
+        )
+    )
     REQUIRED_AUTHORIZATION = ''.join((
         'Требуется авторизация.\n',
         'Введите логин и пароль в формате: логин:пароль',
