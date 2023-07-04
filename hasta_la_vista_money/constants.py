@@ -100,6 +100,10 @@ class NumericParameter(Enum):
     ONE_HUNDRED_FIFTY = 150
     TWO_HUNDRED = 200
     TWO_HUNDRED_FIFTY = 250
+    DAY_MINUS_HOUR = 23
+    MINUTE_MINUS_ONE = 59
+    SECOND_MINUS_ONE = 59
+    TODAY_MINUS_FIVE_YEARS = 23
 
 
 class ResponseText(Enum):
