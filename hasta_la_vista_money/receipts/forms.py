@@ -1,8 +1,5 @@
-import datetime
-
 import django_filters
-from bootstrap_datepicker_plus.widgets import DateTimePickerInput
-from config.django.forms import BaseForm
+from config.django.forms import BaseForm, DateTimePickerWidgetForm
 from django.forms import (
     BooleanField,
     CharField,
@@ -13,8 +10,6 @@ from django.forms import (
     formset_factory,
 )
 from django.utils.translation import gettext_lazy as _
-
-from hasta_la_vista_money import constants
 from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
 
 
@@ -190,20 +185,7 @@ class ReceiptForm(BaseForm):
             'total_sum',
         ]
         widgets = {
-            'receipt_date': DateTimePickerInput(
-                options={
-                    'format': 'DD/MM/YYYY HH:mm',
-                    'showTodayButton': True,
-                    'minDate': (
-                            constants.TODAY.replace(
-                                month=1, day=1, year=constants.TODAY.year - 1
-                            ) - datetime.timedelta(days=1826)
-                    ).strftime('%d/%m/%Y %H:%M'),
-                    'maxDate': constants.TODAY.replace(
-                        hour=23, minute=59, second=59
-                    )
-                },
-            ),
+            'receipt_date': DateTimePickerWidgetForm,
         }
 
     products = ProductFormSet()
