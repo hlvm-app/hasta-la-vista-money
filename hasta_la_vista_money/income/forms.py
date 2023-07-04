@@ -1,3 +1,5 @@
+import datetime
+
 from bootstrap_datepicker_plus.widgets import DateTimePickerInput
 from config.django.forms import BaseForm
 from django.utils.translation import gettext_lazy as _
@@ -22,6 +24,10 @@ class IncomeForm(BaseForm):
                 options={
                     'format': 'DD/MM/YYYY HH:ss',
                     'showTodayButton': True,
+                    'minDate': (datetime.datetime.today() - datetime.timedelta(
+                        days=1850
+                    )),
+                    'maxDate': datetime.datetime.today(),
                 },
             ),
         }

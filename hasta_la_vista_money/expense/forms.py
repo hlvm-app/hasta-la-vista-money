@@ -25,6 +25,10 @@ class AddExpenseForm(BaseForm):
                     'format': 'DD/MM/YYYY HH:mm',
                     'showTodayButton': True,
                     'showClose': True,
+                    'minDate': (datetime.datetime.today() - datetime.timedelta(
+                        days=1850
+                    )),
+                    'maxDate': datetime.datetime.today(),
                 },
             ),
         }
