@@ -37,19 +37,18 @@ ALLOWED_HOSTS = os.environ.get(
     'ALLOWED_HOSTS',
 ) else ['localhost', '127.0.0.1']
 
-
 CSRF_TRUSTED_ORIGINS = os.environ.get(
     'CSRF_TRUSTED_ORIGINS',
 ).split(',') if os.environ.get(
     'CSRF_TRUSTED_ORIGINS',
 ) else ['https://127.0.0.1']
 
-
 # Application definition
 
 INSTALLED_APPS = [
     'bootstrap_datepicker_plus',
     'csp',
+    'debug_toolbar',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -81,6 +80,7 @@ LOGIN_URL = '/login/'
 LOGOUT_REDIRECT_URL = '/login'
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -93,7 +93,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 ]
-
 
 CSP_INCLUDE_NONCE_IN = ['script-src', 'style-src', 'img-src', 'font-src']
 
@@ -263,6 +262,31 @@ STATICFILES_DIRS = (
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+INTERNAL_IPS = [
+    os.environ.get(
+        'LOCAL_IPS',
+    ).split(',') if os.environ.get(
+        'LOCAL_IPS',
+    ) else 'localhost', '127.0.0.1',
+]
+
+
+DEBUG_TOOLBAR_PANELS = [
+    'debug_toolbar.panels.history.HistoryPanel',
+    'debug_toolbar.panels.versions.VersionsPanel',
+    'debug_toolbar.panels.timer.TimerPanel',
+    'debug_toolbar.panels.settings.SettingsPanel',
+    'debug_toolbar.panels.headers.HeadersPanel',
+    'debug_toolbar.panels.request.RequestPanel',
+    'debug_toolbar.panels.sql.SQLPanel',
+    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+    'debug_toolbar.panels.templates.TemplatesPanel',
+    'debug_toolbar.panels.cache.CachePanel',
+    'debug_toolbar.panels.signals.SignalsPanel',
+    'debug_toolbar.panels.redirects.RedirectsPanel',
+    'debug_toolbar.panels.profiling.ProfilingPanel',
+]
 
 if os.environ.get('ACCESS_TOKEN') is not None:
     ROLLBAR = {
