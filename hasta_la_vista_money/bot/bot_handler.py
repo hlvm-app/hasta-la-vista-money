@@ -33,9 +33,11 @@ def handle_auth(message):
         check_existing_telegram_user(
             message, existing_telegram_user, telegram_username, user,
         )
-    bot_admin.reply_to(
-        message, TelegramMessage.INVALID_USERNAME_PASSWORD.value,
-    )
+    else:
+        bot_admin.reply_to(
+            message, TelegramMessage.INVALID_USERNAME_PASSWORD.value,
+        )
+        bot_admin.delete_message(message.from_user.id, message.message_id)
 
 
 def check_existing_telegram_user(
@@ -49,15 +51,17 @@ def check_existing_telegram_user(
 
 def authenticated_user(message, existing_telegram_user):
     if existing_telegram_user.telegram_id == message.from_user.id:
-        bot_admin.reply_to(
-            message,
+        bot_admin.send_message(
+            message.chat.id,
             TelegramMessage.ALREADY_LOGGING_LINK_ACCOUNT.value,
         )
+        bot_admin.delete_message(message.from_user.id, message.message_id)
     else:
-        bot_admin.reply_to(
-            message,
+        bot_admin.send_message(
+            message.chat.id,
             TelegramMessage.ALREADY_LINK_ANOTHER_ACCOUNT.value,
         )
+        bot_admin.delete_message(message.from_user.id, message.message_id)
 
 
 def create_telegram_user(message, telegram_username, user):
@@ -69,6 +73,7 @@ def create_telegram_user(message, telegram_username, user):
     bot_admin.reply_to(
         message, TelegramMessage.AUTHORIZATION_SUCCESSFUL.value,
     )
+    bot_admin.delete_message(message.from_user.id, message.message_id)
 
 
 @bot_admin.message_handler(commands=['select_account'])
