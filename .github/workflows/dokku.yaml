@@ -11,9 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Cloning repo
+      uses: actions/checkout@v3
       with:
-          fetch-depth: 0
+        fetch-depth: 0
 
     - name: Push to dokku
       uses: dokku/github-action@master
