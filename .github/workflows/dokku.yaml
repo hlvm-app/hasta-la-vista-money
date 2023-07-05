@@ -22,3 +22,4 @@ jobs:
         git_remote_url: 'ssh://dokku@${{ secrets.SSH_HOST }}:${{ secrets.SSH_PORT }}/hlvm'
         ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
         git_push_flags: '--force'
+        trace: '1'
