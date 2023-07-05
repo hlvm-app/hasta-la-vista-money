@@ -4,8 +4,9 @@ name: hasta-la-vista-money
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  - push
+  push:
+    branches:
+      - main
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -33,6 +34,7 @@ jobs:
       - uses: actions/setup-python@v4.6.0
         with:
           python-version: '3.10.6'
+          fetch-depth: 0
 
 
       # Runs a single command using the runners shell
@@ -66,3 +68,8 @@ jobs:
         with:
           coverageCommand: make coverage
           debug: true
+      - name: Push to dokku
+        uses: dokku/github-action@master
+        with:
+          git_remote_url: ${{ secrets.SSH_REMOTE_HOST }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
