@@ -68,8 +68,3 @@ jobs:
         with:
           coverageCommand: make coverage
           debug: true
-      - name: Push to dokku
-        uses: dokku/github-action@master
-        with:
-          git_remote_url: ${{ secrets.SSH_REMOTE_HOST }}
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
