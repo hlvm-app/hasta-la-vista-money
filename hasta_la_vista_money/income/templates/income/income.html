@@ -15,7 +15,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">
-                            Добавить доход
+                            Добавить новый доход
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -58,7 +58,12 @@
                         </ul>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" data-bs-target="#add-category-income" data-bs-toggle="modal" data-bs-dismiss="modal">Добавить категорию</button>
+                        <button class="btn btn-primary" data-bs-target="#add-category-income" data-bs-toggle="modal" data-bs-dismiss="modal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"></path>
+                            </svg>
+                            Добавить категорию
+                        </button>
                     </div>
                 </div>
             </div>
@@ -90,10 +95,15 @@
                     <table class="table table-hover text-center align-middle table-bordered border-warning align-middle mb-0 text-light">
                         <thead>
                             <tr>
-                                <th class="col-2">Категория дохода</th>
-                                <th class="col-2">Период</th>
-                                <th class="col-2">Сумма</th>
-                                <th class="col-1"><button type="button" class="button-add-form-income btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#add-income">Добавить новый доход</button></th>
+                                <th class="col-1">Категория дохода</th>
+                                <th class="col-1">Период</th>
+                                <th class="col-1">Сумма</th>
+                                <th class="col-2"><button type="button" class="button-add-form-income btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#add-income">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up-arrow" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z"></path>
+                                    </svg>
+                                    Добавить новый доход
+                                </button></th>
                             </tr>
                         </thead>
                         <tbody>
