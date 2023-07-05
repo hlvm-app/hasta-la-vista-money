@@ -1,0 +1,22 @@
+name: Dokku
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+          fetch-depth: 0
+
+    - name: Push to dokku
+      uses: dokku/github-action@master
+      with:
+        git_remote_url: ${{ secrets.SSH_REMOTE_HOST }}
+        ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
