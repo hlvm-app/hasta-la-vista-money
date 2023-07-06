@@ -56,14 +56,6 @@
                     Отчёты
                 </a>
             </div>
-            <div class="position-absolute top-0 translate_middle who-login">
-                <p>Вы вошли как {{ user.first_name }} {{ user.last_name }}. Ваш логин: {{ user.username }}   </p>
-                <form action="/logout/" class="form">
-                    <button type="submit" class="position-absolute button-exit end-0 top-0 btn btn-danger btn-small" value="{% url 'logout' %}">Выход</button>
-                </form>
-
-            </div>
-            <!-- /.position-absolute who-login -->
         </div>
     </div>
     {% endblock %}
