@@ -95,12 +95,6 @@ html, body {
     font-size: 13px;
 }
 
-.open-modal-categories-expense-button {
-    position: absolute;
-    top: .5rem;
-    right: -15rem;
-}
-
 .open-modal-categories-income-button {
     position: absolute;
     top: .9rem;
