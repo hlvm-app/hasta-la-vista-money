@@ -33,8 +33,15 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
             income_form.fields['account'].queryset = Account.objects.filter(
                 user=request.user,
             )
+
             income_by_month = Income.objects.filter(
                 user=request.user,
+            ).values(
+                'id',
+                'date',
+                'account__name_account',
+                'category__name',
+                'amount',
             ).order_by('-date')
 
             categories = IncomeType.objects.filter(user=request.user).all()
