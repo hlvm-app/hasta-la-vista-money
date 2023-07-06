@@ -5,9 +5,7 @@
     {% block content %}
     <div class="row who-login d-flex justify-content-between">
         <div class="col-xl-4 text-xl-start">
-            <form action="/logout/" class="form button-exit">
-                <p>Вы вошли как {{ user.first_name }} {{ user.last_name }}. Ваш логин: {{ user.username }}</p>
-            </form>
+            <p>Вы вошли как {{ user.first_name }} {{ user.last_name }}. Ваш логин: {{ user.username }}</p>
         </div>
         <div class="col-xl-1">
             <form action="/logout/" class="form text-xl-end button-exit">
@@ -19,7 +17,7 @@
             
             <div class="m-4 col-3">
                 <a href="{% url 'applications:list' %}">
-                    <img src="{%  static 'img/logo/logo.png' %}" alt="Логотип">
+                    <img class="logo w-100" src="{%  static 'img/logo/logo.png' %}" alt="Логотип">
                 </a>
 
             </div>
