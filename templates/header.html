@@ -3,8 +3,20 @@
 {% load static %}
 
     {% block content %}
-
+    <div class="row who-login d-flex justify-content-between">
+        <div class="col-xl-4 text-xl-start">
+            <form action="/logout/" class="form button-exit">
+                <p>Вы вошли как {{ user.first_name }} {{ user.last_name }}. Ваш логин: {{ user.username }}</p>
+            </form>
+        </div>
+        <div class="col-xl-1">
+            <form action="/logout/" class="form text-xl-end button-exit">
+                <button class="btn btn-danger btn-sm" type="submit" value="/logout/">Выход</button>
+            </form>
+        </div>
+    </div>
     <div class="row d-flex position-relative justify-content-evenly align-items-center">
+            
             <div class="m-4 col-3">
                 <a href="{% url 'applications:list' %}">
                     <img src="{%  static 'img/logo/logo.png' %}" alt="Логотип">
