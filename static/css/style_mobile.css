@@ -2,6 +2,11 @@
     .receipt tr, h4 {
         font-size: calc(1.250rem + -2vw);
     }
+    .who-login {
+        margin-left: 0;
+        font-size: .8rem;
+        height: 2rem;
+    }
     .remove-button {
         right: 5%;
     }
