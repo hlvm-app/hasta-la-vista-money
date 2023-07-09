@@ -7,6 +7,7 @@ let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
 window.onload = function () {
     onClickRemoveObject();
     exchangeAccountShow();
+    closeMessage();
 }
 
 let formNum = productForm.length-1
@@ -165,4 +166,13 @@ function onClickRemoveObject() {
             }
         });
     });
+}
+
+function closeMessage() {
+    console.log('work?')
+    window.setTimeout(function() {
+        $(".alert").fadeTo(400, 0).slideUp(400, function(){
+            $(this).remove();
+        });
+    }, 4000);
 }
