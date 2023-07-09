@@ -19,11 +19,17 @@
     .logo {
         margin-top: auto;
     }
+    .account {
+        font-size: 1rem;
+    }
 
 
 }
 @media (min-width: 768px) and (max-width: 991px) {
     .remove-button {
         right: 2%;
+    }
+    .logo {
+        margin-top: auto;
     }
 }
