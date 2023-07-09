@@ -30,7 +30,7 @@
     <link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/styles.css' %}">
     {% endblock %}
 </head>
-<body class="bg-success bg-gradient">
+<body class="background">
         {% if user.is_authenticated %}
             {% include 'header.html' %}
             <div class="container text-center">
