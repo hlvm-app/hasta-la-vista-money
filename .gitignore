@@ -132,6 +132,7 @@ dist/
 downloads/
 staticfiles/
 eggs/
+node_modules/
 .eggs/
 lib/
 lib64/
