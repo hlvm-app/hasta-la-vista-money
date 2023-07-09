@@ -169,7 +169,6 @@ function onClickRemoveObject() {
 }
 
 function closeMessage() {
-    console.log('work?')
     window.setTimeout(function() {
         $(".alert").fadeTo(400, 0).slideUp(400, function(){
             $(this).remove();
