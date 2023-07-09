@@ -95,8 +95,10 @@ form {
     right: -15rem;
 }
 
-.form-registration .form-text {
-    color: #f8f9fb;
+.form-registration {
+    .form-text {
+        color: #f8f9fb;
+    }
 }
 
 
