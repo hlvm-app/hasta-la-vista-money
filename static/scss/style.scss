@@ -4,7 +4,15 @@ html, body {
     overflow-x: hidden;
 }
 
-form {
+.table-buttons form {
+    margin: 0;
+}
+
+.logo {
+    margin-top: -1rem;
+}
+
+.button-exit {
     margin: 0;
 }
 
@@ -101,6 +109,9 @@ form {
     }
 }
 
+.navbar-nav {
+    margin: 0 auto;
+}
 
 @import "buttons";
 @import "mobile";
