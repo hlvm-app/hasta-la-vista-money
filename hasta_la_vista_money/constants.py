@@ -52,14 +52,14 @@ class MessageOnSite(Enum):
     ))
     SUCCESS_MESSAGE_CHANGED_ACCOUNT = 'Счёт успешно изменён!'
     SUCCESS_MESSAGE_CHANGED_PROFILE = 'Профиль успешно обновлён!'
-    SUCCESS_MESSAGE_CHANGED_PASSWORD = 'Новый пароль успешно установлен!'
+    SUCCESS_MESSAGE_CHANGED_PASSWORD = 'Новый пароль успешно установлен!'  # noqa: E501 S105
     SUCCESS_MESSAGE_LOGOUT = 'Вы успешно вышли из своей учётной записи!'
     SUCCESS_MESSAGE_SET_PASSWORD = ''.join(
         (
             'Пароли хранятся в зашифрованном виде, ',
             'поэтому нет возможности посмотреть ваш пароль, ',
             'но вы можете установить новый на вкладке "Установить пароль"',
-        )
+        ),
     )
     SUCCESS_CATEGORY_ADDED = 'Категория добавлена!'
     SUCCESS_INCOME_ADDED = 'Операция дохода успешно добавлена!'
@@ -69,7 +69,7 @@ class MessageOnSite(Enum):
         (
             'Категория не может быть удалена, ',
             'так как связана с одним из пунктом дохода',
-        )
+        ),
     )
 
 
