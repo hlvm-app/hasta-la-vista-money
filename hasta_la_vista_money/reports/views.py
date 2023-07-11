@@ -8,7 +8,10 @@ from django.views.generic import TemplateView
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.expense.models import Expense
 from hasta_la_vista_money.income.models import Income
-from hasta_la_vista_money.users.forms import UpdateUserPasswordForm
+from hasta_la_vista_money.users.forms import (
+    UpdateUserForm,
+    UpdateUserPasswordForm,
+)
 
 
 class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
@@ -135,6 +138,7 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
 
         dump = json.dumps(chart)
 
+        update_user_form = UpdateUserForm(instance=self.request.user)
         update_pass_user_form = UpdateUserPasswordForm(user=request.user)
 
         return render(
@@ -142,6 +146,7 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             self.template_name,
             {
                 'chart': dump,
+                'update_user_form': update_user_form,
                 'update_pass_user_form': update_pass_user_form,
             },
         )
