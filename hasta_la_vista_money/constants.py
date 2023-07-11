@@ -50,7 +50,27 @@ class MessageOnSite(Enum):
         'Нельзя переводить со счёта списания на счёт списания!',
         'Выберите другой счёт для начисления!',
     ))
-    SUCCESS_MESSAGE_CHANGED_ACCOUNT = 'Счёт успешно изменён'
+    SUCCESS_MESSAGE_CHANGED_ACCOUNT = 'Счёт успешно изменён!'
+    SUCCESS_MESSAGE_CHANGED_PROFILE = 'Профиль успешно обновлён!'
+    SUCCESS_MESSAGE_CHANGED_PASSWORD = 'Новый пароль успешно установлен!'
+    SUCCESS_MESSAGE_LOGOUT = 'Вы успешно вышли из своей учётной записи!'
+    SUCCESS_MESSAGE_SET_PASSWORD = ''.join(
+        (
+            'Пароли хранятся в зашифрованном виде, ',
+            'поэтому нет возможности посмотреть ваш пароль, ',
+            'но вы можете установить новый на вкладке "Установить пароль"',
+        )
+    )
+    SUCCESS_CATEGORY_ADDED = 'Категория добавлена!'
+    SUCCESS_INCOME_ADDED = 'Операция дохода успешно добавлена!'
+    SUCCESS_INCOME_DELETED = 'Операция дохода успешно удалена!'
+    SUCCESS_CATEGORY_INCOME_DELETED = 'Категория дохода успешно удалена!'
+    ACCESS_DENIED_DELETE_CATEGORY_INCOME = ''.join(
+        (
+            'Категория не может быть удалена, ',
+            'так как связана с одним из пунктом дохода',
+        )
+    )
 
 
 class TelegramMessage(Enum):
