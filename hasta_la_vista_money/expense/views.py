@@ -19,6 +19,7 @@ from hasta_la_vista_money.custom_mixin import (
 from hasta_la_vista_money.expense.forms import AddCategoryForm, AddExpenseForm
 from hasta_la_vista_money.expense.models import Expense, ExpenseType
 from hasta_la_vista_money.receipts.models import Receipt
+from hasta_la_vista_money.users.forms import UpdateUserPasswordForm
 
 
 class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
@@ -66,6 +67,8 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
 
             categories = ExpenseType.objects.filter(user=request.user).all()
 
+            update_pass_user_form = UpdateUserPasswordForm(user=request.user)
+
             return render(
                 request,
                 self.template_name,
@@ -75,6 +78,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                     'receipt_info_by_month': receipt_info_by_month,
                     'expenses': expenses,
                     'add_expense_form': add_expense_form,
+                    'update_pass_user_form': update_pass_user_form,
                 },
             )
 
@@ -82,6 +86,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         categories = ExpenseType.objects.filter(user=request.user).all()
         add_expense_form = AddExpenseForm(request.POST)
         add_category_form = AddCategoryForm(request.POST)
+        update_pass_user_form = UpdateUserPasswordForm(request.POST)
 
         if add_expense_form.is_valid():
             expense = add_expense_form.save(commit=False)
@@ -109,6 +114,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                     'add_category_form': add_category_form,
                     'categories': categories,
                     'add_expense_form': add_expense_form,
+                    'update_pass_user_form': update_pass_user_form,
                 },
             )
 

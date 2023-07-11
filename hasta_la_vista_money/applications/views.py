@@ -17,6 +17,10 @@ from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.expense.models import Expense
 from hasta_la_vista_money.income.models import Income
 from hasta_la_vista_money.receipts.models import Receipt
+from hasta_la_vista_money.users.forms import (
+    UpdateUserForm,
+    UpdateUserPasswordForm,
+)
 
 
 class PageApplication(
@@ -90,6 +94,11 @@ class PageApplication(
                 'to_account': accounts.first(),
             }
 
+            update_user_form = UpdateUserForm(instance=self.request.user)
+            update_pass_user_form = UpdateUserPasswordForm(
+                user=self.request.user,
+            )
+
             context['accounts'] = accounts
             context['add_account_form'] = AddAccountForm()
             context['transfer_money_form'] = TransferMoneyAccountForm(
@@ -98,6 +107,8 @@ class PageApplication(
             )
             context['receipt_info_by_month'] = receipt_info_by_month
             context['income_expense'] = income_expense
+            context['update_user_form'] = update_user_form
+            context['update_pass_user_form'] = update_pass_user_form
         return context
 
     def post(self, request, *args, **kwargs):

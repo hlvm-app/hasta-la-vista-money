@@ -7,13 +7,18 @@ from django.views.generic import DeleteView, UpdateView
 from django.views.generic.edit import DeletionMixin
 from django_filters.views import FilterView
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.constants import SuccessUrlView, TemplateHTMLView
+from hasta_la_vista_money.constants import (
+    MessageOnSite,
+    SuccessUrlView,
+    TemplateHTMLView,
+)
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
     DeleteCategoryMixin,
 )
 from hasta_la_vista_money.income.forms import AddCategoryIncomeForm, IncomeForm
 from hasta_la_vista_money.income.models import Income, IncomeType
+from hasta_la_vista_money.users.forms import UpdateUserPasswordForm
 
 
 class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
@@ -45,6 +50,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
             ).order_by('-date')
 
             categories = IncomeType.objects.filter(user=request.user).all()
+            update_pass_user_form = UpdateUserPasswordForm(user=request.user)
 
             return render(
                 request,
@@ -54,6 +60,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                     'categories': categories,
                     'income_by_month': income_by_month,
                     'income_form': income_form,
+                    'update_pass_user_form': update_pass_user_form,
                 },
             )
 
@@ -64,6 +71,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
         sort_by_month = Income.objects.filter(
             user=request.user,
         ).order_by('-date')
+        update_pass_user_form = UpdateUserPasswordForm(request.POST)
 
         if income_form.is_valid():
             income = income_form.save(commit=False)
@@ -76,14 +84,18 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                 account_balance.save()
                 income.user = request.user
                 income.save()
-                messages.success(request, 'Операция дохода успешно добавлена!')
+                messages.success(
+                    request, MessageOnSite.SUCCESS_INCOME_ADDED.value,
+                )
                 return redirect(reverse_lazy(self.success_url))
 
         elif add_category_income_form.is_valid():
             category_form = add_category_income_form.save(commit=False)
             category_form.user = request.user
             category_form.save()
-            messages.success(request, 'Категория добавлена!')
+            messages.success(
+                request, MessageOnSite.SUCCESS_CATEGORY_ADDED.value,
+            )
             return redirect(self.success_url)
         else:
             return render(
@@ -94,6 +106,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                     'categories': categories,
                     'income_by_month': sort_by_month,
                     'income_form': income_form,
+                    'update_pass_user_form': update_pass_user_form,
                 },
             )
 
@@ -135,7 +148,9 @@ class DeleteIncomeView(DeleteView, DeletionMixin):
         if account_balance.user == self.request.user:
             account_balance.balance -= amount
             account_balance.save()
-            messages.success(self.request, 'Операция дохода успешно удалена!')
+            messages.success(
+                self.request, MessageOnSite.SUCCESS_INCOME_DELETED.value,
+            )
             return super().form_valid(form)
 
 
@@ -143,10 +158,10 @@ class DeleteIncomeCategoryView(DeleteCategoryMixin):
     success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)
 
     def get_success_message(self):
-        return 'Категория дохода успешно удалена!'
+        return MessageOnSite.SUCCESS_CATEGORY_INCOME_DELETED.value
 
     def get_error_message(self):
-        return 'Категория не может быть удалена, так как связана с одним из пунктом дохода'  # noqa: E501
+        return MessageOnSite.ACCESS_DENIED_DELETE_CATEGORY_INCOME.value
 
     def delete_category(self):
         try:

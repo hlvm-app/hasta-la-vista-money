@@ -19,6 +19,7 @@ from hasta_la_vista_money.receipts.forms import (
     ReceiptForm,
 )
 from hasta_la_vista_money.receipts.models import Customer, Receipt
+from hasta_la_vista_money.users.forms import UpdateUserPasswordForm
 
 
 class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
@@ -44,6 +45,8 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 user=request.user,
             ).order_by('-receipt_date')
 
+            update_pass_user_form = UpdateUserPasswordForm(user=request.user)
+
             return render(
                 request,
                 self.template_name,
@@ -52,6 +55,7 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                     'seller_form': seller_form,
                     'receipt_form': receipt_form,
                     'product_formset': product_formset,
+                    'update_pass_user_form': update_pass_user_form,
                 },
             )
 
@@ -101,6 +105,7 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         seller_form = CustomerForm(request.user, request.POST)
         receipt_form = ReceiptForm(request.POST)
         product_formset = ProductFormSet(request.POST)
+        update_pass_user_form = UpdateUserPasswordForm(request.POST)
 
         valid_form = (
             receipt_form.is_valid() and
@@ -131,6 +136,7 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 'seller_form': seller_form,
                 'receipt_form': receipt_form,
                 'product_formset': product_formset,
+                'update_pass_user_form': update_pass_user_form,
             },
         )
 
