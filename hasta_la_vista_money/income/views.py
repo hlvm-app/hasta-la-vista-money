@@ -18,10 +18,6 @@ from hasta_la_vista_money.custom_mixin import (
 )
 from hasta_la_vista_money.income.forms import AddCategoryIncomeForm, IncomeForm
 from hasta_la_vista_money.income.models import Income, IncomeType
-from hasta_la_vista_money.users.forms import (
-    UpdateUserForm,
-    UpdateUserPasswordForm,
-)
 
 
 class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
@@ -53,8 +49,6 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
             ).order_by('-date')
 
             categories = IncomeType.objects.filter(user=request.user).all()
-            update_user_form = UpdateUserForm(instance=self.request.user)
-            update_pass_user_form = UpdateUserPasswordForm(user=request.user)
 
             return render(
                 request,
@@ -64,8 +58,6 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                     'categories': categories,
                     'income_by_month': income_by_month,
                     'income_form': income_form,
-                    'update_user_form': update_user_form,
-                    'update_pass_user_form': update_pass_user_form,
                 },
             )
 
@@ -76,7 +68,6 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
         sort_by_month = Income.objects.filter(
             user=request.user,
         ).order_by('-date')
-        update_pass_user_form = UpdateUserPasswordForm(request.POST)
 
         if income_form.is_valid():
             income = income_form.save(commit=False)
@@ -111,7 +102,6 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                     'categories': categories,
                     'income_by_month': sort_by_month,
                     'income_form': income_form,
-                    'update_pass_user_form': update_pass_user_form,
                 },
             )
 
