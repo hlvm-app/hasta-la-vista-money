@@ -54,7 +54,7 @@ class MessageOnSite(Enum):
     SUCCESS_MESSAGE_CHANGED_PROFILE = 'Профиль успешно обновлён!'
     SUCCESS_MESSAGE_CHANGED_PASSWORD = 'Новый пароль успешно установлен!'  # noqa: E501 S105
     SUCCESS_MESSAGE_LOGOUT = 'Вы успешно вышли из своей учётной записи!'
-    SUCCESS_MESSAGE_SET_PASSWORD = ''.join(
+    HELP_TEXT_PASSWORD = ''.join(
         (
             'Пароли хранятся в зашифрованном виде, ',
             'поэтому нет возможности посмотреть ваш пароль, ',
