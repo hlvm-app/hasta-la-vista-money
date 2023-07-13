@@ -1,10 +1,10 @@
 from django.contrib.auth.forms import (
     AuthenticationForm,
+    PasswordChangeForm,
     ReadOnlyPasswordHashField,
-    SetPasswordForm,
-    UserChangeForm,
     UserCreationForm,
 )
+from django.forms import ModelForm
 from hasta_la_vista_money.constants import MessageOnSite
 from hasta_la_vista_money.users.models import User
 
@@ -23,10 +23,10 @@ class RegisterUserForm(UserCreationForm):
         ]
 
 
-class UpdateUserForm(UserChangeForm):
+class UpdateUserForm(ModelForm):
     password = ReadOnlyPasswordHashField(
         label='',
-        help_text=MessageOnSite.SUCCESS_MESSAGE_SET_PASSWORD.value,
+        help_text=MessageOnSite.HELP_TEXT_PASSWORD.value,
     )
 
     class Meta:
@@ -36,6 +36,6 @@ class UpdateUserForm(UserChangeForm):
         ]
 
 
-class UpdateUserPasswordForm(SetPasswordForm):
+class UpdateUserPasswordForm(PasswordChangeForm):
     class Meta:
         model = User
