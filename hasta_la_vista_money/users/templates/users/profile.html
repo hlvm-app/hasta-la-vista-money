@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% translate 'Личный кабинет пользователя ' %}{{ user.username }}{% endblock %}
+{% block content %}
+	<div class="container">
+		<div class="row mt-5">
+			<div class="col-xl-12">
+				<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#profile">
+					Изменить данные пользователя {{ user.username }}
+				</button>
+			</div>
+
+			<div id="profile" class="modal fade{% if user_update.errors %} show{% endif %}{% if user_update_pass_form.errors %} show{% endif %}">
+		        <div class="modal-dialog modal-xl modal-sm modal-md modal-dialog-centered">
+		            <div class="modal-content">
+		                <div class="modal-header">
+		                    <h5 class="modal-title">
+		                        Личный кабинет
+		                    </h5>
+		                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		                </div>
+		                <div class="modal-body">
+		                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+		                      <li class="nav-item" role="presentation">
+								<button class="nav-link active" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal-info" type="button" role="tab" aria-controls="personal-info" aria-selected="true">Персональная информация</button>
+		                      </li>
+		                      <li class="nav-item" role="presentation">
+		                        <button class="nav-link" id="change-password-tab" data-bs-toggle="tab" data-bs-target="#change-password" type="button" role="tab" aria-controls="change password" aria-selected="false">Установить новый пароль</button>
+		                      </li>
+		                    </ul>
+		                    <div class="tab-content" id="myTabContent">
+								<div class="tab-pane fade active show {% if user_update.errors %} show active{% endif %}" id="personal-info" role="tabpanel" aria-labelledby="personal-tab">
+									<form class="m-2" method="POST" action="{% url 'users:update_user' user.id %}">
+										{% csrf_token %}
+										{% if user_update %}
+			                                {% bootstrap_form user_update %}
+			                            {% endif %}
+										<button type="submit" class="btn btn-primary">Сохранить</button>
+									</form>
+								</div>
+								<div class="tab-pane fade {% if user_update_pass_form.errors %}show active{% endif %}" id="change-password" role="tabpanel" aria-labelledby="change-password-tab">
+									<form class="m-2" method="POST" action="{% url 'users:change_password' user.id %}">
+								        {% csrf_token %}
+										{% if user_update_pass_form %}
+								            {% bootstrap_form user_update_pass_form %}
+										{% endif %}
+								        <button type="submit" class="btn btn-primary">Установить пароль</button>
+								    </form>
+								</div>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+			</div>
+		</div>
+	</div>
+	<!-- /.container -->
+{% endblock %}
