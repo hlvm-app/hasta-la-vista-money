@@ -4,11 +4,11 @@ let addButton = document.querySelector("#add-form")
 let removeButton = document.querySelector("#remove-form")
 let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
 
-window.onload = function () {
+document.addEventListener('DOMContentLoaded', function() {
     onClickRemoveObject();
     exchangeAccountShow();
     closeMessage();
-}
+});
 
 let formNum = productForm.length-1
 addButton.addEventListener('click', addForm)
