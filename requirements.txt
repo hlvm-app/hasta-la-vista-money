@@ -6,7 +6,7 @@ cffi==1.15.1; python_full_version >= "3.7.1" and python_version >= "3.6"
 channels==4.0.0; python_version >= "3.7"
 charset-normalizer==3.1.0; python_full_version >= "3.7.0" and python_version >= "3.7"
 constantly==15.1.0; python_full_version >= "3.7.1"
-cryptography==41.0.0; python_full_version >= "3.7.1" and python_version >= "3.6"
+cryptography==41.0.2; python_full_version >= "3.7.1" and python_version >= "3.6"
 dj-database-url==2.0.0
 django-bootstrap5==23.1; python_version >= "3.7"
 django-csp==3.7
