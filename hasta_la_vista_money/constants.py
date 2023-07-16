@@ -47,8 +47,7 @@ class MessageOnSite(Enum):
         'Чек был успешно добавлен в базу данных!',
     )
     ANOTHER_ACCRUAL_ACCOUNT = ' '.join((
-        'Нельзя переводить со счёта списания на счёт списания!',
-        'Выберите другой счёт для начисления!',
+        'Нельзя выбирать одинаковые счета для перевода.',
     ))
     SUCCESS_MESSAGE_CHANGED_ACCOUNT = 'Счёт успешно изменён!'
     SUCCESS_MESSAGE_CHANGED_PROFILE = 'Профиль успешно обновлён!'
@@ -71,6 +70,8 @@ class MessageOnSite(Enum):
             'так как связана с одним из пунктом дохода',
         ),
     )
+    SUCCESS_MESSAGE_TRANSFER_MONEY = 'Средства успешно переведены'
+    SUCCESS_MESSAGE_INSUFFICIENT_FUNDS = 'Недостаточно средств'
 
 
 class TelegramMessage(Enum):
