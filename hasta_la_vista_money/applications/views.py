@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count, ProtectedError, Sum
 from django.db.models.functions import TruncMonth
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, TemplateView, UpdateView
@@ -112,24 +113,12 @@ class PageApplication(
             user=self.request.user,
         )
 
-        transfer_money_form = TransferMoneyAccountForm(
-            user=request.user, data=request.POST,
-        )
-
         if account_form.is_valid():
             add_account = account_form.save(commit=False)
             if request.user.is_authenticated:
                 add_account.user = request.user
                 add_account.save()
                 return redirect(reverse_lazy(self.success_url))
-
-        elif transfer_money_form.is_valid():
-            transfer_log = transfer_money_form.save(commit=False)
-            if transfer_log is not None:
-                transfer_log.user = request.user
-                transfer_log.save()
-                return redirect(self.success_url)
-            transfer_money_form.add_error(None, 'Недостаточно средств!')
 
         return render(
             request,
@@ -139,7 +128,6 @@ class PageApplication(
                 'income_expense': income_expense,
                 'add_account_form': account_form,
                 'receipt_info_by_month': receipt_info_by_month,
-                'transfer_money_form': transfer_money_form,
             },
         )
 
@@ -163,6 +151,40 @@ class ChangeAccountView(
             self.template_name,
             {'add_account_form': account_form},
         )
+
+
+class TransferMoneyAccountView(
+    CustomNoPermissionMixin,
+    SuccessMessageMixin,
+    UpdateView
+):
+    model = Account
+    template_name = 'applications/page_application.html'
+    form_class = TransferMoneyAccountForm
+    success_message = MessageOnSite.SUCCESS_MESSAGE_TRANSFER_MONEY.value
+
+    def post(self, request, *args, **kwargs):
+        transfer_money_form = TransferMoneyAccountForm(
+            user=request.user, data=request.POST,
+        )
+
+        valid_form = (
+            transfer_money_form.is_valid() and
+            request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+        )
+        if valid_form:
+            transfer_log = transfer_money_form.save(commit=False)
+
+            if transfer_log is not None:
+                transfer_log.user = request.user
+                transfer_log.save()
+                messages.success(request, self.success_message)
+            response_data = {'success': True}
+        else:
+            response_data = {
+                'success': False, 'errors': transfer_money_form.errors,
+            }
+        return JsonResponse(response_data)
 
 
 class DeleteAccountView(DeleteView):

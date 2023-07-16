@@ -25,7 +25,23 @@
                 </div>
             </div>
         </div>
-        <div id="exchange-account" class="modal fade {% if transfer_money_form.errors %}show{% endif %}">
+        <div class="modal fade"  id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="errorModalLabel">Ошибка</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p id="error-message"></p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+					</div>
+				</div>
+			</div>
+		</div>
+        <div id="exchange-account" class="ajax-modal modal fade {% if transfer_money_form.errors %}show{% endif %}">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -35,10 +51,22 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        {{ transfer_money_form.media }}
-                        <form id="exchange-account-form" class="form" method="post">
+						{{ transfer_money_form.media }}
+                        <form id="exchange-account-form" class="ajax-form form" method="post" action="{% url 'account:transfer_money' %}">
                             {% csrf_token %}
-                            {% bootstrap_form transfer_money_form layout='horizontal' horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
+	                        {% if transfer_money_form %}
+						        {% for field in transfer_money_form %}
+							        {{ field.errors }}
+						            <div class="form-group{% if field.errors %} has-error{% endif %}">
+						                {% bootstrap_field field %}
+						                {% if field.errors %}
+						                    {% for error in field.errors %}
+						                        <p class="help-block">{{ error }}</p>
+						                    {% endfor %}
+						                {% endif %}
+						            </div>
+						        {% endfor %}
+						    {% endif %}
                             {% bootstrap_button 'Перевести' %}
                         </form>
                     </div>
