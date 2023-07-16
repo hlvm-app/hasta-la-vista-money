@@ -1,7 +1,8 @@
 from django.urls import path
 from hasta_la_vista_money.applications.views import (
     ChangeAccountView,
-    DeleteAccountView, TransferMoneyAccountView,
+    DeleteAccountView,
+    TransferMoneyAccountView,
 )
 
 app_name = 'account'
@@ -19,6 +20,6 @@ urlpatterns = [
     path(
         'transfer-money/',
         TransferMoneyAccountView.as_view(),
-        name='transfer_money'
-    )
+        name='transfer_money',
+    ),
 ]

@@ -5,7 +5,6 @@ from django.forms import (
     Form,
     ModelChoiceField,
     ModelForm,
-    ValidationError,
 )
 from hasta_la_vista_money.account.models import Account, TransferMoneyLog
 from hasta_la_vista_money.constants import MessageOnSite, NumericParameter

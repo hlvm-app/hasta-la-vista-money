@@ -156,7 +156,7 @@ class ChangeAccountView(
 class TransferMoneyAccountView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
-    UpdateView
+    UpdateView,
 ):
     model = Account
     template_name = 'applications/page_application.html'
