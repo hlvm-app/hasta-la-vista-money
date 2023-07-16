@@ -12,7 +12,6 @@ $(document).ready(function() {
                     location.reload()
                 } else {
                     const errors = response.errors
-                    console.log(errors)
                     if (errors) {
                         form.find('.has-error').removeClass('has-error'); // Удаляем класс has-error у всех полей формы
                         form.find('.help-block').remove(); // Удаляем все предыдущие сообщения об ошибках
