@@ -43,12 +43,19 @@ class TransferMoneyAccountForm(Form):
 
     def clean(self):
         cleaned_data = super().clean()
-        from_account = cleaned_data['from_account']
-        to_account = cleaned_data['to_account']
+        from_account = cleaned_data.get('from_account')
+        to_account = cleaned_data.get('to_account')
+        amount = cleaned_data.get('amount')
 
-        if from_account == to_account:
-            raise ValidationError(
+        if from_account and to_account and from_account == to_account:
+            self.add_error(
+                'to_account',
                 MessageOnSite.ANOTHER_ACCRUAL_ACCOUNT.value,
+            )
+        if from_account and amount and amount > from_account.balance:
+            self.add_error(
+                'from_account',
+                MessageOnSite.SUCCESS_MESSAGE_INSUFFICIENT_FUNDS.value,
             )
 
         return cleaned_data
