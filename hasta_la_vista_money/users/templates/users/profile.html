@@ -12,8 +12,24 @@
 					Изменить данные пользователя {{ user.username }}
 				</button>
 			</div>
+			<div class="modal fade"  id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="errorModalLabel">Ошибка</h5>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+			      <div class="modal-body">
+			        <p id="error-message"></p>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
 
-			<div id="profile" class="modal fade{% if user_update.errors %} show{% endif %}{% if user_update_pass_form.errors %} show{% endif %}">
+			<div id="profile" class="ajax-modal modal fade">
 		        <div class="modal-dialog modal-xl modal-sm modal-md modal-dialog-centered">
 		            <div class="modal-content">
 		                <div class="modal-header">
@@ -32,22 +48,40 @@
 		                      </li>
 		                    </ul>
 		                    <div class="tab-content" id="myTabContent">
-								<div class="tab-pane fade active show {% if user_update.errors %} show active{% endif %}" id="personal-info" role="tabpanel" aria-labelledby="personal-tab">
-									<form class="m-2" method="POST" action="{% url 'users:update_user' user.id %}">
+								<div class="tab-pane fade active show" id="personal-info" role="tabpanel" aria-labelledby="personal-tab">
+									<form class="ajax-form m-2" method="POST" action="{% url 'users:update_user' user.id %}">
 										{% csrf_token %}
 										{% if user_update %}
-			                                {% bootstrap_form user_update %}
-			                            {% endif %}
+									        {% for field in user_update %}
+									            <div class="form-group {% if field.errors %} has-error{% endif %}">
+									                {% bootstrap_field field %}
+									                {% if field.errors %}
+									                    {% for error in field.errors %}
+									                        <p class="help-block">{{ error }}</p>
+									                    {% endfor %}
+									                {% endif %}
+									            </div>
+									        {% endfor %}
+									    {% endif %}
 										<button type="submit" class="btn btn-primary">Сохранить</button>
 									</form>
 								</div>
-								<div class="tab-pane fade {% if user_update_pass_form.errors %}show active{% endif %}" id="change-password" role="tabpanel" aria-labelledby="change-password-tab">
-									<form class="m-2" method="POST" action="{% url 'users:change_password' user.id %}">
+								<div class="tab-pane fade" id="change-password" role="tabpanel" aria-labelledby="change-password-tab">
+									<form class="ajax-form m-2" method="POST" action="{% url 'users:change_password' user.id %}">
 								        {% csrf_token %}
 										{% if user_update_pass_form %}
-								            {% bootstrap_form user_update_pass_form %}
+								            {% for field in user_update_pass_form %}
+									            <div class="form-group {% if field.errors %} has-error{% endif %}">
+									                {% bootstrap_field field %}
+									                {% if field.errors %}
+									                    {% for error in field.errors %}
+									                        <p class="help-block">{{ error }}</p>
+									                    {% endfor %}
+									                {% endif %}
+									            </div>
+									        {% endfor %}
 										{% endif %}
-								        <button type="submit" class="btn btn-primary">Установить пароль</button>
+								        <button type="submit" class="btn btn-primary">Изменить пароль</button>
 								    </form>
 								</div>
 		                    </div>

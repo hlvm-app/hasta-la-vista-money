@@ -1,6 +1,5 @@
 from django.contrib.auth.forms import (
     AuthenticationForm,
-    PasswordChangeForm,
     ReadOnlyPasswordHashField,
     UserCreationForm,
 )
@@ -34,8 +33,3 @@ class UpdateUserForm(ModelForm):
         fields = [
             'first_name', 'last_name', 'username',
         ]
-
-
-class UpdateUserPasswordForm(PasswordChangeForm):
-    class Meta:
-        model = User

@@ -1,7 +1,10 @@
 from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import redirect, render
+from django.http import JsonResponse
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, TemplateView, UpdateView
@@ -9,7 +12,6 @@ from hasta_la_vista_money.constants import MessageOnSite
 from hasta_la_vista_money.users.forms import (
     RegisterUserForm,
     UpdateUserForm,
-    UpdateUserPasswordForm,
     UserLoginForm,
 )
 from hasta_la_vista_money.users.models import User
@@ -31,7 +33,7 @@ class ListUsers(TemplateView):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             user_update = UpdateUserForm(instance=self.request.user)
-            user_update_pass_form = UpdateUserPasswordForm(
+            user_update_pass_form = PasswordChangeForm(
                 user=self.request.user,
             )
             context['user_update'] = user_update
@@ -87,24 +89,30 @@ class UpdateUserView(SuccessMessageMixin, UpdateView):
         user = self.kwargs['pk']
         return reverse_lazy('users:profile', kwargs={'pk': user})
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.instance = self.request.user
+        return form
+
     def post(self, request, *args, **kwargs):
-        user_update = UpdateUserForm(request.POST)
-        if user_update.is_valid():
-            user_update.save()
-            return redirect(self.get_success_url())
-        return render(
-            request,
-            self.template_name,
-            {
-                'user_update': user_update,
-            },
+        user_update = self.get_form()
+        valid_form = (
+            user_update.is_valid() and
+            request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
         )
+        if valid_form:
+            user_update.save()
+            messages.success(request, self.success_message)
+            response_data = {'success': True}
+        else:
+            response_data = {'success': False, 'errors': user_update.errors}
+        return JsonResponse(response_data)
 
 
 class UpdateUserPasswordView(SuccessMessageMixin, PasswordChangeView):
     model = User
     template_name = 'users/profile.html'
-    form_class = UpdateUserPasswordForm
+    form_class = PasswordChangeForm
     success_message = MessageOnSite.SUCCESS_MESSAGE_CHANGED_PASSWORD.value
 
     def get_success_url(self):
@@ -112,15 +120,20 @@ class UpdateUserPasswordView(SuccessMessageMixin, PasswordChangeView):
         return reverse_lazy('users:profile', kwargs={'pk': user})
 
     def post(self, request, *args, **kwargs):
-        user_update_pass_form = UpdateUserPasswordForm(request.POST)
-
-        if user_update_pass_form.is_valid():
-            user_update_pass_form.save()
-            return redirect(self.get_success_url())
-        return render(
-            request,
-            self.template_name,
-            {
-                'user_update_pass_form': user_update_pass_form,
-            },
+        user_update_pass_form = PasswordChangeForm(
+            data=request.POST, user=request.user,
         )
+        valid_form = (
+            user_update_pass_form.is_valid() and
+            request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+        )
+        if valid_form:
+            user_update_pass_form.save()
+            update_session_auth_hash(request, user_update_pass_form.user)
+            messages.success(request, self.success_message)
+            response_data = {'success': True}
+        else:
+            response_data = {
+                'success': False, 'errors': user_update_pass_form.errors,
+            }
+        return JsonResponse(response_data)
