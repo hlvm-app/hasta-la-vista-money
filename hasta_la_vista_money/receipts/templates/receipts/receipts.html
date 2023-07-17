@@ -54,7 +54,7 @@
                 </button>
             </div>
             {% for receipt in receipts %}
-            <div class="receipt bg-light position-relative rounded-3 m-1 shadow-lg">
+            <div class="receipt bg-light position-relative rounded-3 m-1 shadow">
                 <form class="form-remove-receipt-button" action="{% url 'receipts:delete' receipt.id %}" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="receipt_id" value="{{ receipt.id }}">
