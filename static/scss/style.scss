@@ -113,5 +113,9 @@ html, body {
     border-color: #ffffff;
 }
 
+caption {
+    text-shadow:#000000 0px -3px 13px;
+}
+
 @import "buttons";
 @import "mobile";
