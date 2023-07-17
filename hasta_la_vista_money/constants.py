@@ -129,6 +129,7 @@ class TelegramMessage(Enum):
 
     NOT_CREATE_ACCOUNT = 'Не создан счёт! Сначала создайте счёт на сайте!'
     ERROR_DATABASE_RECORD = 'Ошибка записи в базу данных!'
+    ALREADY_LOGGED = 'Вы уже авторизованы!'
 
 
 class HTTPStatus(Enum):

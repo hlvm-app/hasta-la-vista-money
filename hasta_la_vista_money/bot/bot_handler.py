@@ -12,10 +12,21 @@ from telebot import types
 
 @bot_admin.message_handler(commands=['auth'])
 def handle_start(message):
-    bot_admin.send_message(
-        message.chat.id, TelegramMessage.REQUIRED_AUTHORIZATION.value,
-    )
-    bot_admin.register_next_step_handler(message, handle_auth)
+    telegram_username = message.from_user.username
+
+    check_telegram_username = TelegramUser.objects.filter(
+        username=telegram_username,
+    ).first()
+
+    if check_telegram_username:
+        bot_admin.send_message(
+            message.chat.id, TelegramMessage.ALREADY_LOGGED.value,
+        )
+    else:
+        bot_admin.send_message(
+            message.chat.id, TelegramMessage.REQUIRED_AUTHORIZATION.value,
+        )
+        bot_admin.register_next_step_handler(message, handle_auth)
 
 
 def handle_auth(message):
