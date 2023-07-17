@@ -7,7 +7,6 @@ let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
 document.addEventListener('DOMContentLoaded', function() {
     onClickRemoveObject();
     exchangeAccountShow();
-    closeMessage();
 });
 
 let formNum = productForm.length-1
