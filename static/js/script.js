@@ -7,6 +7,11 @@ let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
 document.addEventListener('DOMContentLoaded', function() {
     onClickRemoveObject();
     exchangeAccountShow();
+    window.setTimeout(function() {
+        $(".alert").fadeTo(400, 0).slideUp(400, function(){
+            $(this).remove();
+        });
+    }, 4000);
 });
 
 let formNum = productForm.length-1
