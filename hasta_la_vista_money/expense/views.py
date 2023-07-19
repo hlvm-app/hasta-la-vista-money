@@ -91,15 +91,14 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             category_form.save()
             messages.success(request, 'Категория расхода успешно добавлена!')
             return redirect(self.success_url)
-        else:
-            return render(
-                request,
-                self.template_name,
-                {
-                    'add_category_form': add_category_form,
-                    'categories': categories,
-                },
-            )
+        return render(
+            request,
+            self.template_name,
+            {
+                'add_category_form': add_category_form,
+                'categories': categories,
+            },
+        )
 
 
 class CreateExpenseView(
@@ -130,7 +129,7 @@ class CreateExpenseView(
                 response_data = {'success': True}
         else:
             response_data = {
-                'success': False, 'errors': add_expense_form.errors
+                'success': False, 'errors': add_expense_form.errors,
             }
         return JsonResponse(response_data)
 

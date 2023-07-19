@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, UpdateView
-from django.views.generic.edit import DeletionMixin, CreateView
+from django.views.generic.edit import CreateView, DeletionMixin
 from django_filters.views import FilterView
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import (
@@ -74,15 +74,14 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                 request, MessageOnSite.SUCCESS_CATEGORY_ADDED.value,
             )
             return redirect(self.success_url)
-        else:
-            return render(
-                request,
-                self.template_name,
-                {
-                    'add_category_income_form': add_category_income_form,
-                    'categories': categories,
-                },
-            )
+        return render(
+            request,
+            self.template_name,
+            {
+                'add_category_income_form': add_category_income_form,
+                'categories': categories,
+            },
+        )
 
 
 class CreateIncomeView(
@@ -117,7 +116,7 @@ class CreateIncomeView(
                 response_data = {'success': True}
         else:
             response_data = {
-                'success': False, 'errors': income_form.errors
+                'success': False, 'errors': income_form.errors,
             }
         return JsonResponse(response_data)
 
