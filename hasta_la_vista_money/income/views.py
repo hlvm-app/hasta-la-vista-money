@@ -65,9 +65,6 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
     def post(self, request, *args, **kwargs):  # noqa: WPS210
         categories = IncomeType.objects.filter(user=request.user).all()
         add_category_income_form = AddCategoryIncomeForm(request.POST)
-        sort_by_month = Income.objects.filter(
-            user=request.user,
-        ).order_by('-date')
 
         if add_category_income_form.is_valid():
             category_form = add_category_income_form.save(commit=False)
@@ -84,7 +81,6 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                 {
                     'add_category_income_form': add_category_income_form,
                     'categories': categories,
-                    'income_by_month': sort_by_month,
                 },
             )
 

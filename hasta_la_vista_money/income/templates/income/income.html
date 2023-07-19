@@ -37,11 +37,22 @@
                     </div>
                     <div class="modal-body">
                         {{ income_form.media }}
-                        <form class="form ajax-form" method="post" action="{% url 'income:create' %}">
-                            {% csrf_token %}
-                            {% bootstrap_form income_form layout='horizontal' horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
-                            {% bootstrap_button button_text_create_income button_class="btn btn-primary"  %}
-                        </form>
+                        <form class="ajax-form m-2" method="POST" action="{% url 'income:create' %}">
+							{% csrf_token %}
+							{% if income_form %}
+						        {% for field in income_form %}
+						            <div class="form-group {% if field.errors %} has-error{% endif %}">
+						                {% bootstrap_field field %}
+						                {% if field.errors %}
+						                    {% for error in field.errors %}
+						                        <p class="help-block">{{ error }}</p>
+						                    {% endfor %}
+						                {% endif %}
+						            </div>
+						        {% endfor %}
+						    {% endif %}
+							<button type="submit" class="btn btn-primary">Добавить</button>
+						</form>
                     </div>
                 </div>
             </div>
