@@ -10,23 +10,7 @@
 
 {% block content %}
     <div class="container-fluid">
-        <div class="modal fade"  id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title" id="errorModalLabel">Ошибка</h5>
-		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-		      </div>
-		      <div class="modal-body">
-		        <p id="error-message"></p>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-        <div id="add-receipt" class="modal modal-lg fade ajax-modal" >
+        <div id="add-receipt" class="modal modal-lg fade" >
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -37,33 +21,11 @@
                     </div>
                     <div class="modal-body">
                         {{ receipt_form.media }}
-                        <form id='form-create-receipt' method="post" class="ajax-form" action="{% url 'receipts:create' %}">
+                        <form id='form-create-receipt' method="post">
                             {% csrf_token %}
-	                            <div class="p-3 border">
-	                                {% if seller_form %}
-								        {% for field in seller_form %}
-								            <div class="form-group {% if field.errors %} has-error{% endif %}">
-								                {% bootstrap_field field layout="horizontal" horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
-								                {% if field.errors %}
-								                    {% for error in field.errors %}
-								                        <p class="help-block">{{ error }}</p>
-								                    {% endfor %}
-								                {% endif %}
-								            </div>
-								        {% endfor %}
-								    {% endif %}
-                                {% if receipt_form %}
-							        {% for field in receipt_form %}
-							            <div class="form-group {% if field.errors %} has-error{% endif %}">
-							                {% bootstrap_field field layout="horizontal" horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
-							                {% if field.errors %}
-							                    {% for error in field.errors %}
-							                        <p class="help-block">{{ error }}</p>
-							                    {% endfor %}
-							                {% endif %}
-							            </div>
-							        {% endfor %}
-							    {% endif %}
+                            <div class="p-3 border">
+                                {% bootstrap_form seller_form layout="horizontal" horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
+                                {% bootstrap_form receipt_form layout="horizontal"  horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8'%}
                             </div>
                             {{ product_formset.management_form }}
                             {% for product_form in product_formset %}
@@ -73,7 +35,7 @@
                             {% endfor %}
                             {% bootstrap_button button_text_add_product id="add-form" button_type="button" button_class="add-product-btn btn btn-outline-warning"  %}
                             {% bootstrap_button button_text_remove_receipt id="remove-form" button_type="button" button_class="remove-product-btn btn btn-outline-danger"  %}
-                            {% bootstrap_button add_new_seller_btn id="add-new-seller-btn" button_type="button" button_class="btn btn-outline-info"  %}
+                            {% bootstrap_button add_new_seller_btn id="add-new-seller-btn" button_type="submit" button_class="btn btn-outline-info"  %}
                             {% bootstrap_button button_text_create_receipt button_type="submit" button_class="add-receipt-btn mx-auto btn btn-outline-primary"  %}
                         </form>
                     </div>
