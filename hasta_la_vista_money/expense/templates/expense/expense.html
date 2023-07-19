@@ -9,7 +9,23 @@
 {% block title %}{% translate 'Информация о расходах' %}{% endblock %}
 {% block content %}
     <div class="container-fluid">
-        <div id="add-expense" class="modal fade" >
+        <div class="modal fade"  id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="errorModalLabel">Ошибка</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		        <p id="error-message"></p>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+        <div id="add-expense" class="ajax-modal modal fade" >
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -20,11 +36,22 @@
                     </div>
                     <div class="modal-body">
                         {{ add_expense_form.media }}
-                        <form class="form" method="post">
-                            {% csrf_token %}
-                            {% bootstrap_form add_expense_form layout='horizontal' horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
-                            {% bootstrap_button button_text_create_expense button_class="add-expense btn btn-primary"  %}
-                        </form>
+                        <form class="ajax-form m-2" method="POST" action="{% url 'expense:create' %}">
+							{% csrf_token %}
+							{% if add_expense_form %}
+						        {% for field in add_expense_form %}
+						            <div class="form-group {% if field.errors %} has-error{% endif %}">
+						                {% bootstrap_field field %}
+						                {% if field.errors %}
+						                    {% for error in field.errors %}
+						                        <p class="help-block">{{ error }}</p>
+						                    {% endfor %}
+						                {% endif %}
+						            </div>
+						        {% endfor %}
+						    {% endif %}
+							<button type="submit" class="btn btn-primary">Добавить</button>
+						</form>
                     </div>
                 </div>
             </div>

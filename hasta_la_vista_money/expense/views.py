@@ -2,9 +2,11 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count, ProtectedError, Sum
 from django.db.models.functions import TruncMonth
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import (
+    CreateView,
     DeleteView,
     DetailView,
     TemplateView,
@@ -80,22 +82,10 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):  # noqa: WPS210
         categories = ExpenseType.objects.filter(user=request.user).all()
-        add_expense_form = AddExpenseForm(request.POST)
+
         add_category_form = AddCategoryForm(request.POST)
 
-        if add_expense_form.is_valid():
-            expense = add_expense_form.save(commit=False)
-            amount = add_expense_form.cleaned_data.get('amount')
-            account = add_expense_form.cleaned_data.get('account')
-            account_balance = get_object_or_404(Account, id=account.id)
-            if account_balance.user == request.user:
-                account_balance.balance -= amount
-                account_balance.save()
-                expense.user = request.user
-                expense.save()
-                messages.success(request, 'Операция расхода успешно добавлена!')
-                return redirect(self.success_url)
-        elif add_category_form.is_valid():
+        if add_category_form.is_valid():
             category_form = add_category_form.save(commit=False)
             category_form.user = request.user
             category_form.save()
@@ -108,9 +98,41 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 {
                     'add_category_form': add_category_form,
                     'categories': categories,
-                    'add_expense_form': add_expense_form,
                 },
             )
+
+
+class CreateExpenseView(
+    CustomNoPermissionMixin,
+    SuccessMessageMixin,
+    CreateView,
+):
+    model = Expense
+    template_name = TemplateHTMLView.EXPENSE_TEMPLATE.value
+    no_permission_url = reverse_lazy('login')
+    form_class = AddExpenseForm
+    success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
+
+    def post(self, request, *args, **kwargs):
+        add_expense_form = AddExpenseForm(request.POST)
+        response_data = {}
+        if add_expense_form.is_valid():
+            expense = add_expense_form.save(commit=False)
+            amount = add_expense_form.cleaned_data.get('amount')
+            account = add_expense_form.cleaned_data.get('account')
+            account_balance = get_object_or_404(Account, id=account.id)
+            if account_balance.user == request.user:
+                account_balance.balance -= amount
+                account_balance.save()
+                expense.user = request.user
+                expense.save()
+                messages.success(request, 'Операция расхода успешно добавлена!')
+                response_data = {'success': True}
+        else:
+            response_data = {
+                'success': False, 'errors': add_expense_form.errors
+            }
+        return JsonResponse(response_data)
 
 
 class ChangeExpenseView(
