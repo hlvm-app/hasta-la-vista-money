@@ -188,7 +188,7 @@ class ReceiptForm(BaseForm):
             'receipt_date': DateTimePickerWidgetForm,
             'total_sum': NumberInput(
                 attrs={'class': 'total-sum', 'readonly': True},
-            )
+            ),
         }
 
     products = ProductFormSet()

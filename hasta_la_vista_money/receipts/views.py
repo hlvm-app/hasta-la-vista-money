@@ -1,18 +1,21 @@
-from typing import Any, Dict
-
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import ProtectedError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, DetailView, TemplateView, \
-    CreateView
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    TemplateView,
+)
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import (
+    MessageOnSite,
     ReceiptConstants,
     SuccessUrlView,
-    TemplateHTMLView, MessageOnSite,
+    TemplateHTMLView,
 )
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.receipts.forms import (
