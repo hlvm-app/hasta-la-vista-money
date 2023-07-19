@@ -1,10 +1,11 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import ProtectedError
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, UpdateView
-from django.views.generic.edit import DeletionMixin
+from django.views.generic.edit import DeletionMixin, CreateView
 from django_filters.views import FilterView
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import (
@@ -63,29 +64,12 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
 
     def post(self, request, *args, **kwargs):  # noqa: WPS210
         categories = IncomeType.objects.filter(user=request.user).all()
-        income_form = IncomeForm(request.POST)
         add_category_income_form = AddCategoryIncomeForm(request.POST)
         sort_by_month = Income.objects.filter(
             user=request.user,
         ).order_by('-date')
 
-        if income_form.is_valid():
-            income = income_form.save(commit=False)
-            amount = income_form.cleaned_data.get('amount')
-            account = income_form.cleaned_data.get('account')
-            account_balance = get_object_or_404(Account, id=account.id)
-
-            if account_balance.user == request.user:
-                account_balance.balance += amount
-                account_balance.save()
-                income.user = request.user
-                income.save()
-                messages.success(
-                    request, MessageOnSite.SUCCESS_INCOME_ADDED.value,
-                )
-                return redirect(reverse_lazy(self.success_url))
-
-        elif add_category_income_form.is_valid():
+        if add_category_income_form.is_valid():
             category_form = add_category_income_form.save(commit=False)
             category_form.user = request.user
             category_form.save()
@@ -101,9 +85,45 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                     'add_category_income_form': add_category_income_form,
                     'categories': categories,
                     'income_by_month': sort_by_month,
-                    'income_form': income_form,
                 },
             )
+
+
+class CreateIncomeView(
+    CustomNoPermissionMixin,
+    SuccessMessageMixin,
+    CreateView,
+):
+    model = Income
+    template_name = TemplateHTMLView.INCOME_TEMPLATE.value
+    no_permission_url = reverse_lazy('login')
+    form_class = IncomeForm
+    success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)
+
+    def post(self, request, *args, **kwargs):
+        income_form = IncomeForm(request.POST)
+        response_data = {}
+
+        if income_form.is_valid():
+            income = income_form.save(commit=False)
+            amount = income_form.cleaned_data.get('amount')
+            account = income_form.cleaned_data.get('account')
+            account_balance = get_object_or_404(Account, id=account.id)
+
+            if account_balance.user == request.user:
+                account_balance.balance += amount
+                account_balance.save()
+                income.user = request.user
+                income.save()
+                messages.success(
+                    request, MessageOnSite.SUCCESS_INCOME_ADDED.value,
+                )
+                response_data = {'success': True}
+        else:
+            response_data = {
+                'success': False, 'errors': income_form.errors
+            }
+        return JsonResponse(response_data)
 
 
 class ChangeIncomeView(
