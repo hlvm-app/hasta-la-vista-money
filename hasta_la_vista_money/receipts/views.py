@@ -3,14 +3,16 @@ from typing import Any, Dict
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import ProtectedError
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, DetailView, TemplateView
+from django.views.generic import DeleteView, DetailView, TemplateView, \
+    CreateView
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import (
     ReceiptConstants,
     SuccessUrlView,
-    TemplateHTMLView,
+    TemplateHTMLView, MessageOnSite,
 )
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.receipts.forms import (
@@ -55,6 +57,14 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 },
             )
 
+
+class CreateReceiptView(SuccessMessageMixin, CreateView):
+    template_name = 'receipts/receipts.html'
+    model = Receipt
+    context_object_name = 'receipts'
+    no_permission_url = reverse_lazy('login')
+    success_url = 'receipts:list'
+
     @classmethod
     def get_or_create_seller(cls, request, seller_form):
         existing_seller = Customer.objects.filter(user=request.user)
@@ -96,11 +106,12 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             user=request.user, number_receipt=number_receipt,
         )
 
-    def post(self, request, *args, **kwargs) -> Dict[str, Any]:
-        receipts = Receipt.objects.filter(user=request.user).all()
+    def post(self, request, *args, **kwargs) -> JsonResponse:
         seller_form = CustomerForm(request.user, request.POST)
         receipt_form = ReceiptForm(request.POST)
         product_formset = ProductFormSet(request.POST)
+
+        response_data = {}
 
         valid_form = (
             receipt_form.is_valid() and
@@ -121,18 +132,15 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                     product_formset,
                     seller[0],
                 )
-                return redirect(reverse_lazy(self.success_url))
-
-        return render(
-            request,
-            self.template_name,
-            {
-                'receipts': receipts,
-                'seller_form': seller_form,
-                'receipt_form': receipt_form,
-                'product_formset': product_formset,
-            },
-        )
+                messages.success(
+                    request, MessageOnSite.SUCCESS_MESSAGE_CREATE_RECEIPT.value,
+                )
+                response_data = {'success': True}
+        else:
+            response_data = {
+                'success': False, 'errors': receipt_form.errors,
+            }
+        return JsonResponse(response_data)
 
 
 class ReceiptDeleteView(DetailView, DeleteView):

@@ -10,7 +10,23 @@
 
 {% block content %}
     <div class="container-fluid">
-        <div id="add-receipt" class="modal modal-lg fade" >
+        <div class="modal fade"  id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="errorModalLabel">Ошибка</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		        <p id="error-message"></p>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+        <div id="add-receipt" class="modal modal-lg fade ajax-modal" >
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -21,11 +37,33 @@
                     </div>
                     <div class="modal-body">
                         {{ receipt_form.media }}
-                        <form id='form-create-receipt' method="post">
+                        <form id='form-create-receipt' method="post" class="ajax-form" action="{% url 'receipts:create' %}">
                             {% csrf_token %}
-                            <div class="p-3 border">
-                                {% bootstrap_form seller_form layout="horizontal" horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
-                                {% bootstrap_form receipt_form layout="horizontal"  horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8'%}
+	                            <div class="p-3 border">
+	                                {% if seller_form %}
+								        {% for field in seller_form %}
+								            <div class="form-group {% if field.errors %} has-error{% endif %}">
+								                {% bootstrap_field field layout="horizontal" horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
+								                {% if field.errors %}
+								                    {% for error in field.errors %}
+								                        <p class="help-block">{{ error }}</p>
+								                    {% endfor %}
+								                {% endif %}
+								            </div>
+								        {% endfor %}
+								    {% endif %}
+                                {% if receipt_form %}
+							        {% for field in receipt_form %}
+							            <div class="form-group {% if field.errors %} has-error{% endif %}">
+							                {% bootstrap_field field layout="horizontal" horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
+							                {% if field.errors %}
+							                    {% for error in field.errors %}
+							                        <p class="help-block">{{ error }}</p>
+							                    {% endfor %}
+							                {% endif %}
+							            </div>
+							        {% endfor %}
+							    {% endif %}
                             </div>
                             {{ product_formset.management_form }}
                             {% for product_form in product_formset %}
