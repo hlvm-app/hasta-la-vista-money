@@ -41,27 +41,14 @@ html, body {
 }
 
 .add-receipt-btn {
-    position: fixed;
-    top: 44%;
-    right: 2%;
-    padding: .3rem 3.7rem;
-}
-
-.add-product-btn {
-    position: fixed;
-    top: 50%;
-    right: 2%;
+    float: right;
 }
 
 #add-new-seller-btn {
-    position: fixed;
-    top: 15%;
-    right: 2%;
+    position: absolute;
+    top: 7rem;
+    right: -14.5rem;
     padding: .3rem .6rem;
-}
-
-.remove-product-btn {
-    float: right;
 }
 
 .wrapper-table-income {

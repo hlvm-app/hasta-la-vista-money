@@ -10,7 +10,7 @@
 
 {% block content %}
     <div class="container-fluid">
-        <div id="add-receipt" class="modal fade" >
+        <div id="add-receipt" class="modal modal-lg fade" >
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -34,9 +34,9 @@
                             </div>
                             {% endfor %}
                             {% bootstrap_button button_text_add_product id="add-form" button_type="button" button_class="add-product-btn btn btn-outline-warning"  %}
+                            {% bootstrap_button button_text_remove_receipt id="remove-form" button_type="button" button_class="remove-product-btn btn btn-outline-danger"  %}
                             {% bootstrap_button add_new_seller_btn id="add-new-seller-btn" button_type="button" button_class="btn btn-outline-info"  %}
-                            {% bootstrap_button button_text_create_receipt button_type="submit" button_class="add-receipt-btn btn btn-outline-primary"  %}
-                            {% bootstrap_button button_text_remove_receipt id="remove-form" button_type="button" button_class="remove-product-btn mt-1 btn btn-outline-danger"  %}
+                            {% bootstrap_button button_text_create_receipt button_type="submit" button_class="add-receipt-btn mx-auto btn btn-outline-primary"  %}
                         </form>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
     <div class="container">
         <div class="row mt-5 justify-content-center">
             <div class="text-end p-0">
-                <button type="button" class="add-receipt-button btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#add-receipt">
+                <button type="button" class="add-receipt-button btn btn-danger" data-bs-toggle="modal" data-bs-target="#add-receipt">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"></path>
                     </svg>
