@@ -10,16 +10,16 @@
     </div>
 	<nav class="navbar navbar-expand-lg navbar-light">
 	    <div class="container-fluid">
-	        <a class="navbar-brand ms-4" href="{% url 'applications:list' %}">
+	        <a class="navbar-brand ms-4 p-0" href="{% url 'applications:list' %}">
 		        <span class="logo">Hasta La Vista, Money!</span>
 	        </a>
 	        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 	            <span class="navbar-toggler-icon"></span>
 	        </button>
-	        <div class="collapse navbar-collapse" id="navbarNav">
+	        <div class="collapse navbar-collapse pt-3" id="navbarNav">
 	            <ul class="navbar-nav justify-content-between flex-row">
 	                <li class="nav-item me-2 my-xl-2 my-2 text-center text-md-end">
-	                    <a class="btn btn-outline-primary btn-border-white text-light d-flex align-items-center" href="{% url 'receipts:list' %}">
+	                    <a class="btn btn-outline-primary btn-border-white text-light d-flex align-items-center shadow" href="{% url 'receipts:list' %}">
 	                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-receipt" viewBox="0 0 16 16">
 	                            <path d="M1.92.506a.5.5 0 0 1 .434.14L3 1.293l.646-.647a.5.5 0 0 1 .708 0L5 1.293l.646-.647a.5.5 0 0 1 .708 0L7 1.293l.646-.647a.5.5 0 0 1 .708 0L9 1.293l.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .801.13l.5 1A.5.5 0 0 1 15 2v12a.5.5 0 0 1-.053.224l-.5 1a.5.5 0 0 1-.8.13L13 14.707l-.646.647a.5.5 0 0 1-.708 0L11 14.707l-.646.647a.5.5 0 0 1-.708 0L9 14.707l-.646.647a.5.5 0 0 1-.708 0L7 14.707l-.646.647a.5.5 0 0 1-.708 0L5 14.707l-.646.647a.5.5 0 0 1-.708 0L3 14.707l-.646.647a.5.5 0 0 1-.801-.13l-.5-1A.5.5 0 0 1 1 14V2a.5.5 0 0 1 .053-.224l.5-1a.5.5 0 0 1 .367-.27zm.217 1.338L2 2.118v11.764l.137.274.51-.51a.5.5 0 0 1 .707 0l.646.647.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.509.509.137-.274V2.118l-.137-.274-.51.51a.5.5 0 0 1-.707 0L12 1.707l-.646.647a.5.5 0 0 1-.708 0L10 1.707l-.646.647a.5.5 0 0 1-.708 0L8 1.707l-.646.647a.5.5 0 0 1-.708 0L6 1.707l-.646.647a.5.5 0 0 1-.708 0L4 1.707l-.646.647a.5.5 0 0 1-.708 0l-.509-.51z"></path>
 	                            <path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm8-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z"></path>
@@ -28,7 +28,7 @@
 	                    </a>
 	                </li>
 	                <li class="nav-item ms-xl-5 my-xl-2 my-2 text-center text-md-end">
-	                    <a class="btn text-light btn-border-white btn-outline-warning d-flex align-items-center" href="{% url 'income:list' %}">
+	                    <a class="btn text-light btn-border-white btn-outline-warning d-flex align-items-center shadow" href="{% url 'income:list' %}">
 	                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up-arrow" viewBox="0 0 16 16">
 	                            <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z"></path>
 	                        </svg>
@@ -36,7 +36,7 @@
 	                    </a>
 	                </li>
 	                <li class="nav-item ms-xl-5 my-xl-2 my-2 text-center text-md-end">
-	                    <a class="btn btn-border-white btn-outline-dark text-light d-flex align-items-center" href="{% url 'expense:list' %}">
+	                    <a class="btn btn-border-white btn-outline-dark text-light d-flex align-items-center shadow" href="{% url 'expense:list' %}">
 	                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-down-arrow" viewBox="0 0 16 16">
 	                            <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm10 11.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 0-1 0v2.6l-3.613-4.417a.5.5 0 0 0-.74-.037L7.06 8.233 3.404 3.206a.5.5 0 0 0-.808.588l4 5.5a.5.5 0 0 0 .758.06l2.609-2.61L13.445 11H10.5a.5.5 0 0 0-.5.5Z"></path>
 	                        </svg>
@@ -44,7 +44,7 @@
 	                    </a>
 	                </li>
 	                <li class="nav-item ms-xl-5 me-xl-5 my-xl-2 my-2 text-md-end">
-	                    <a class="btn btn-border-white btn-outline-info text-light d-flex align-items-center" href="{% url 'reports:list' %}">
+	                    <a class="btn btn-border-white btn-outline-info text-light d-flex align-items-center shadow" href="{% url 'reports:list' %}">
 	                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-table" viewBox="0 0 16 16">
 	                            <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z"></path>
 	                        </svg>
@@ -53,7 +53,7 @@
 	                </li>
 	                <li class="nav-item ms-xl-5 my-xl-2 my-2 text-center text-md-end" data-bs-title="Выход">
 	                    <form action="/logout/" class="form button-exit">
-	                        <button class="btn btn-border-white btn-outline-danger text-light d-flex align-items-center" type="submit" value="/logout/">
+	                        <button class="btn btn-border-white btn-outline-danger text-light d-flex align-items-center shadow" type="submit" value="/logout/">
 		                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-square" viewBox="0 0 16 16">
 									<path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm11.5 5.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"></path>
 								</svg>
@@ -62,7 +62,7 @@
 	                    </form>
 	                </li>
                     <li class="nav-item ms-xl-5 my-xl-3 my-2 text-center text-md-end">
-                        <a class="btn btn-banana btn-sm" href="{% url 'users:profile' user.id %}">
+                        <a class="btn btn-banana btn-sm shadow" href="{% url 'users:profile' user.id %}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
                                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"></path>
                             </svg>

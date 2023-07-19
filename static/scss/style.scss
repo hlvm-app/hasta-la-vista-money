@@ -2,8 +2,6 @@ html, body {
     width: 100%;
     height: 100%;
     overflow-x: hidden;
-    background: rgb(0,102,186);
-    background: linear-gradient(90deg, rgba(0,102,186,1) 0%, rgba(2,107,190,1) 49%, rgba(0,102,186,1) 100%);
 }
 
 .table-buttons form {
@@ -11,7 +9,8 @@ html, body {
 }
 
 .logo {
-    color: #2dd76c;
+    padding-top: 0;
+    color: #ffffff;
     text-shadow: rgb(0, 0, 0) 2px 2px 3px;
     font-family: 'Gloria Hallelujah', sans-serif;
     font-size: 3.5rem;
