@@ -31,33 +31,33 @@
     <link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/bootstrap-icons.min.css' %}">
 	<link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/styles.css' %}">
     <script nonce="{{request.csp_nonce}}" src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
-	<script nonce="{{request.csp_nonce}}" src="{% static 'js/script.js' %}"></script>
-    <script nonce="{{request.csp_nonce}}" src="{% static 'js/errors_form.js' %}"></script>
-    <script nonce="{{request.csp_nonce}}" src="{% static 'js/active_link_menu.js' %}"></script>
+
 
     {% endblock %}
 </head>
 <body class="bg-success">
-        {% if user.is_authenticated %}
-            {% include 'header.html' %}
-            <div class="container text-center">
-                {% bootstrap_messages  %}
-            </div>
-        {% endif %}
-        {% if user.is_registrated %}
-            {% include 'header.html' %}
-            <div class="container text-center">
-                {% bootstrap_messages  %}
-            </div>
-        {% elif not user.last_login %}
-            <div class="container text-center">
-                {% bootstrap_messages  %}
-            </div>
-        {% endif %}
-        {% block content %}
-        {% endblock %}
+    {% if user.is_authenticated %}
+        {% include 'header.html' %}
+        <div class="container text-center">
+            {% bootstrap_messages  %}
+        </div>
+    {% endif %}
+    {% if user.is_registrated %}
+        {% include 'header.html' %}
+        <div class="container text-center">
+            {% bootstrap_messages  %}
+        </div>
+    {% elif not user.last_login %}
+        <div class="container text-center">
+            {% bootstrap_messages  %}
+        </div>
+    {% endif %}
+    {% block content %}
+    {% endblock %}
 
-
+	<script nonce="{{request.csp_nonce}}" src="{% static 'js/script.js' %}"></script>
+    <script nonce="{{request.csp_nonce}}" src="{% static 'js/errors_form.js' %}"></script>
+    <script nonce="{{request.csp_nonce}}" src="{% static 'js/active_link_menu.js' %}"></script>
 </body>
 </html>
 
