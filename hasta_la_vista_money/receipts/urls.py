@@ -1,8 +1,5 @@
 from django.urls import path
-from hasta_la_vista_money.receipts.views import (
-    ReceiptDeleteView,
-    ReceiptView,
-)
+from hasta_la_vista_money.receipts.views import ReceiptDeleteView, ReceiptView
 
 app_name = 'receipts'
 urlpatterns = [
