@@ -10,6 +10,7 @@ $(document).ready(function() {
                 if (response.success) {
                     // Обработка успешного ответа
                     location.reload()
+                    form[0].reset()
                 } else {
                     const errors = response.errors
                     if (errors) {
