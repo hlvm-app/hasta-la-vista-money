@@ -1,11 +1,6 @@
 import django_filters
 from config.django.forms import BaseForm, DateTimePickerWidgetForm
-from django.forms import (
-    CharField,
-    NumberInput,
-    formset_factory,
-    TextInput,
-)
+from django.forms import CharField, NumberInput, TextInput, formset_factory
 from django.utils.translation import gettext_lazy as _
 from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
 
@@ -44,6 +39,7 @@ class ReceiptFilter(django_filters.FilterSet):
 
 class CustomerForm(BaseForm):
     """Класс формы продавца."""
+
     retail_place_address = CharField(
         label='Адрес места покупки',
         widget=TextInput(attrs={'placeholder': 'Поле может быть пустым'}),
