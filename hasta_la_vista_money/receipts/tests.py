@@ -30,7 +30,7 @@ class TestReceipt(TestCase):
 
     def test_receipt_create(self):
         self.client.force_login(self.user)
-        url = reverse_lazy('receipts:list')
+        url = reverse_lazy('receipts:create')
 
         new_customer = {
             'user': self.user,
