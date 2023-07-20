@@ -181,7 +181,7 @@ toml = ["tomli"]
 
 [[package]]
 name = "cryptography"
-version = "41.0.1"
+version = "41.0.2"
 description = "cryptography is a package which provides cryptographic recipes and primitives to Python developers."
 category = "main"
 optional = false
@@ -238,17 +238,6 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
-name = "django-appconf"
-version = "1.0.5"
-description = "A helper class for handling configuration defaults of packaged apps gracefully."
-category = "main"
-optional = false
-python-versions = ">=3.6"
-
-[package.dependencies]
-django = "*"
-
-[[package]]
 name = "django-bootstrap-datepicker-plus"
 version = "5.0.4"
 description = "Bootstrap3/Bootstrap4/Bootstrap5 DatePickerInput, TimePickerInput, DateTimePickerInput, MonthPickerInput, YearPickerInput"
@@ -271,19 +260,6 @@ python-versions = ">=3.7"
 
 [package.dependencies]
 django = ">=3.2"
-
-[[package]]
-name = "django-compressor"
-version = "4.4"
-description = "('Compresses linked and inline JavaScript or CSS into single cached files.',)"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-django-appconf = ">=1.0.3"
-rcssmin = "1.1.1"
-rjsmin = "1.2.1"
 
 [[package]]
 name = "django-csp"
@@ -341,11 +317,11 @@ python-versions = "*"
 
 [[package]]
 name = "faker"
-version = "18.13.0"
+version = "19.1.0"
 description = "Faker is a Python package that generates fake data for you."
 category = "dev"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 
 [package.dependencies]
 python-dateutil = ">=2.4"
@@ -388,7 +364,7 @@ flake8 = ">5"
 
 [[package]]
 name = "flake8-bugbear"
-version = "23.6.5"
+version = "23.7.10"
 description = "A plugin for flake8 finding likely bugs and design problems in your program. Contains warnings that don't belong in pyflakes and pycodestyle."
 category = "dev"
 optional = false
@@ -414,11 +390,11 @@ flake8 = ">=2"
 
 [[package]]
 name = "flake8-comprehensions"
-version = "3.13.0"
+version = "3.14.0"
 description = "A flake8 plugin to help you write better list/set/dict comprehensions."
 category = "dev"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 
 [package.dependencies]
 flake8 = ">=3.0,<3.2.0 || >3.2.0"
@@ -540,7 +516,7 @@ smmap = ">=3.0.1,<6"
 
 [[package]]
 name = "gitpython"
-version = "3.1.31"
+version = "3.1.32"
 description = "GitPython is a Python library used to interact with Git repositories"
 category = "dev"
 optional = false
@@ -746,7 +722,7 @@ testing-docutils = ["pygments", "pytest (>=7,<8)", "pytest-param-files (>=0.3.4,
 
 [[package]]
 name = "numpy"
-version = "1.25.0"
+version = "1.25.1"
 description = "Fundamental package for array computing in Python"
 category = "main"
 optional = false
@@ -863,7 +839,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "pydantic"
-version = "2.0.2"
+version = "2.0.3"
 description = "Data validation using Python type hints"
 category = "main"
 optional = false
@@ -871,7 +847,7 @@ python-versions = ">=3.7"
 
 [package.dependencies]
 annotated-types = ">=0.4.0"
-pydantic-core = "2.1.2"
+pydantic-core = "2.3.0"
 typing-extensions = ">=4.6.1"
 
 [package.extras]
@@ -879,7 +855,7 @@ email = ["email-validator (>=2.0.0)"]
 
 [[package]]
 name = "pydantic-core"
-version = "2.1.2"
+version = "2.3.0"
 description = ""
 category = "main"
 optional = false
@@ -983,7 +959,7 @@ cli = ["click (>=5.0)"]
 
 [[package]]
 name = "pyyaml"
-version = "6.0"
+version = "6.0.1"
 description = "YAML parser and emitter for Python"
 category = "main"
 optional = false
@@ -999,14 +975,6 @@ python-versions = "*"
 
 [package.extras]
 scripts = ["Pillow (>=3.2.0)"]
-
-[[package]]
-name = "rcssmin"
-version = "1.1.1"
-description = "CSS Minifier"
-category = "main"
-optional = false
-python-versions = "*"
 
 [[package]]
 name = "requests"
@@ -1051,14 +1019,6 @@ pygments = ">=2.13.0,<3.0.0"
 
 [package.extras]
 jupyter = ["ipywidgets (>=7.5.1,<9)"]
-
-[[package]]
-name = "rjsmin"
-version = "1.2.1"
-description = "Javascript Minifier"
-category = "main"
-optional = false
-python-versions = "*"
 
 [[package]]
 name = "rollbar"
@@ -1359,7 +1319,7 @@ python-versions = ">=2"
 
 [[package]]
 name = "urllib3"
-version = "2.0.3"
+version = "2.0.4"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 category = "main"
 optional = false
@@ -1413,7 +1373,7 @@ brotli = ["brotli"]
 
 [[package]]
 name = "zipp"
-version = "3.16.0"
+version = "3.16.2"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 category = "dev"
 optional = false
@@ -1421,7 +1381,7 @@ python-versions = ">=3.8"
 
 [package.extras]
 docs = ["sphinx (>=3.5)", "jaraco.packaging (>=9.3)", "rst.linker (>=1.9)", "furo", "sphinx-lint", "jaraco.tidelift (>=1.4)"]
-testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-ruff", "jaraco.itertools", "jaraco.functools", "more-itertools", "big-o", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)"]
+testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-ruff", "jaraco.itertools", "jaraco.functools", "more-itertools", "big-o", "pytest-ignore-flaky", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)"]
 
 [[package]]
 name = "zope.interface"
@@ -1439,7 +1399,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<4"
-content-hash = "d525a1807c824a672a2789f07dfea801a7ffe342e762adebf6f946e567c0c4c2"
+content-hash = "9a01de37d5fae1fa3738e62a8713b629d02e3395a0e554728d34d5c5212ca6c5"
 
 [metadata.files]
 alabaster = []
@@ -1462,10 +1422,8 @@ cryptography = []
 darglint = []
 dj-database-url = []
 django = []
-django-appconf = []
 django-bootstrap-datepicker-plus = []
 django-bootstrap5 = []
-django-compressor = []
 django-csp = []
 django-debug-toolbar = []
 django-filter = []
@@ -1527,11 +1485,9 @@ python-dateutil = []
 python-dotenv = []
 pyyaml = []
 pyzbar = []
-rcssmin = []
 requests = []
 restructuredtext-lint = []
 rich = []
-rjsmin = []
 rollbar = []
 service-identity = []
 six = []

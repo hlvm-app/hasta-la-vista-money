@@ -28,17 +28,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="shortcut icon" href="{% static 'img/favicon/favicon.png' %}" type="image/x-icon">
-	{% load compress %}
-	{% compress css %}
-	    <link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/bootstrap-icons.min.css' %}">
-		<link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/styles.css' %}">
-	{% endcompress %}
-	{% compress js %}
-	    <script nonce="{{request.csp_nonce}}" src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
-		<script nonce="{{request.csp_nonce}}" src="{% static 'js/script.js' %}"></script>
-	    <script nonce="{{request.csp_nonce}}" src="{% static 'js/errors_form.js' %}"></script>
-	    <script nonce="{{request.csp_nonce}}" src="{% static 'js/active_link_menu.js' %}"></script>
-	{% endcompress %}
+    <link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/bootstrap-icons.min.css' %}">
+	<link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script nonce="{{request.csp_nonce}}" src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
+	<script nonce="{{request.csp_nonce}}" src="{% static 'js/script.js' %}"></script>
+    <script nonce="{{request.csp_nonce}}" src="{% static 'js/errors_form.js' %}"></script>
+    <script nonce="{{request.csp_nonce}}" src="{% static 'js/active_link_menu.js' %}"></script>
 
     {% endblock %}
 </head>
