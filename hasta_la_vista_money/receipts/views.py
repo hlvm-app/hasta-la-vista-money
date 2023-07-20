@@ -1,13 +1,18 @@
-from typing import Any, Dict
-
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import ProtectedError
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, DetailView, TemplateView
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    TemplateView,
+)
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import (
+    MessageOnSite,
     ReceiptConstants,
     SuccessUrlView,
     TemplateHTMLView,
@@ -55,8 +60,19 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 },
             )
 
-    @classmethod
-    def get_or_create_seller(cls, request, seller_form):
+
+class CreateReceiptView(SuccessMessageMixin, CreateView):
+    model = Receipt
+    template_name = 'receipts/receipts.html'
+    form_class = ReceiptForm
+    success_message = MessageOnSite.SUCCESS_MESSAGE_CREATE_RECEIPT.value
+
+    def __init__(self, *args, **kwargs):
+        self.request = None
+        super().__init__(*args, **kwargs)
+
+    @staticmethod
+    def get_or_create_seller(request, seller_form):
         existing_seller = Customer.objects.filter(user=request.user)
         new_seller = seller_form.cleaned_data.get('new_seller')
         if existing_seller:
@@ -70,8 +86,8 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             seller = None
         return seller
 
-    @classmethod
-    def create_receipt(cls, request, receipt_form, product_formset, seller):
+    @staticmethod
+    def create_receipt(request, receipt_form, product_formset, seller):
         receipt = receipt_form.save(commit=False)
         total_sum = receipt.total_sum
         account = receipt.account
@@ -89,50 +105,59 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 receipt.product.add(product)
             return receipt
 
-    @classmethod
-    def check_exist_receipt(cls, request, receipt_form):
+    @staticmethod
+    def check_exist_receipt(request, receipt_form):
         number_receipt = receipt_form.cleaned_data.get('number_receipt')
         return Receipt.objects.filter(
             user=request.user, number_receipt=number_receipt,
         )
 
-    def post(self, request, *args, **kwargs) -> Dict[str, Any]:
-        receipts = Receipt.objects.filter(user=request.user).all()
-        seller_form = CustomerForm(request.user, request.POST)
-        receipt_form = ReceiptForm(request.POST)
-        product_formset = ProductFormSet(request.POST)
+    def setup(self, request, *args, **kwargs):
+        self.request = request
+        super().setup(request, *args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['seller_form'] = CustomerForm(user=self.request.user)
+        context['product_formset'] = ProductFormSet()
+        return context
+
+    def form_valid(self, form):
+        seller_form = CustomerForm(self.request.user, self.request.POST)
+        product_formset = ProductFormSet(self.request.POST)
+        response_data = {}
         valid_form = (
-            receipt_form.is_valid() and
-            product_formset.is_valid() and
-            seller_form.is_valid()
+            form.is_valid() and
+            seller_form.is_valid() and
+            product_formset.is_valid()
         )
         if valid_form:
-            seller = self.get_or_create_seller(request, seller_form)
-            number_receipt = self.check_exist_receipt(request, receipt_form)
+            seller = self.get_or_create_seller(self.request, seller_form)
+            number_receipt = self.check_exist_receipt(self.request, form)
             if number_receipt:
                 messages.error(
-                    request, ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
+                    self.request, ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
                 )
             elif seller:
                 self.create_receipt(
-                    request,
-                    receipt_form,
+                    self.request,
+                    form,
                     product_formset,
                     seller[0],
                 )
-                return redirect(reverse_lazy(self.success_url))
+                messages.success(
+                    self.request,
+                    MessageOnSite.SUCCESS_MESSAGE_CREATE_RECEIPT.value,
+                )
+                response_data = {'success': True}
+        else:
+            response_data = {
+                'success': False, 'errors': form.errors,
+            }
+        return JsonResponse(response_data)
 
-        return render(
-            request,
-            self.template_name,
-            {
-                'receipts': receipts,
-                'seller_form': seller_form,
-                'receipt_form': receipt_form,
-                'product_formset': product_formset,
-            },
-        )
+    def get_success_url(self):
+        return reverse_lazy('receipts:list')
 
 
 class ReceiptDeleteView(DetailView, DeleteView):
