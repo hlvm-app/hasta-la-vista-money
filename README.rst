@@ -12,8 +12,8 @@
 .. image:: https://img.shields.io/badge/style-wemake-000000.svg
    :target: https://github.com/wemake-services/wemake-python-styleguide
 
-.. image:: https://www.codefactor.io/repository/github/turtleold/hlvm/badge
-   :target: https://www.codefactor.io/repository/github/turtleold/hlvm
+.. image:: https://www.codefactor.io/repository/github/turtleold/hasta-la-vista-money/badge
+   :target: https://www.codefactor.io/repository/github/turtleold/hasta-la-vista-money
    :alt: CodeFactor
 
 
