@@ -238,6 +238,17 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-appconf"
+version = "1.0.5"
+description = "A helper class for handling configuration defaults of packaged apps gracefully."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+django = "*"
+
+[[package]]
 name = "django-bootstrap-datepicker-plus"
 version = "5.0.4"
 description = "Bootstrap3/Bootstrap4/Bootstrap5 DatePickerInput, TimePickerInput, DateTimePickerInput, MonthPickerInput, YearPickerInput"
@@ -260,6 +271,19 @@ python-versions = ">=3.7"
 
 [package.dependencies]
 django = ">=3.2"
+
+[[package]]
+name = "django-compressor"
+version = "4.4"
+description = "('Compresses linked and inline JavaScript or CSS into single cached files.',)"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+django-appconf = ">=1.0.3"
+rcssmin = "1.1.1"
+rjsmin = "1.2.1"
 
 [[package]]
 name = "django-csp"
@@ -977,6 +1001,14 @@ python-versions = "*"
 scripts = ["Pillow (>=3.2.0)"]
 
 [[package]]
+name = "rcssmin"
+version = "1.1.1"
+description = "CSS Minifier"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "requests"
 version = "2.31.0"
 description = "Python HTTP for Humans."
@@ -1021,6 +1053,14 @@ pygments = ">=2.13.0,<3.0.0"
 jupyter = ["ipywidgets (>=7.5.1,<9)"]
 
 [[package]]
+name = "rjsmin"
+version = "1.2.1"
+description = "Javascript Minifier"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "rollbar"
 version = "0.16.3"
 description = "Easy and powerful exception tracking with Rollbar. Send messages and exceptions with arbitrary context, get back aggregates, and debug production issues quickly."
@@ -1031,14 +1071,6 @@ python-versions = "*"
 [package.dependencies]
 requests = {version = ">=0.12.1", markers = "python_version >= \"3.6\""}
 six = ">=1.9.0"
-
-[[package]]
-name = "sass"
-version = "2.3"
-description = "Python bindings for libsass"
-category = "dev"
-optional = false
-python-versions = "*"
 
 [[package]]
 name = "service-identity"
@@ -1407,7 +1439,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<4"
-content-hash = "86ee9d0066acad08fbb9521b27ddfbda100cf75b87c95c00d98eee243a3f6868"
+content-hash = "d525a1807c824a672a2789f07dfea801a7ffe342e762adebf6f946e567c0c4c2"
 
 [metadata.files]
 alabaster = []
@@ -1430,8 +1462,10 @@ cryptography = []
 darglint = []
 dj-database-url = []
 django = []
+django-appconf = []
 django-bootstrap-datepicker-plus = []
 django-bootstrap5 = []
+django-compressor = []
 django-csp = []
 django-debug-toolbar = []
 django-filter = []
@@ -1493,11 +1527,12 @@ python-dateutil = []
 python-dotenv = []
 pyyaml = []
 pyzbar = []
+rcssmin = []
 requests = []
 restructuredtext-lint = []
 rich = []
+rjsmin = []
 rollbar = []
-sass = []
 service-identity = []
 six = []
 smmap = []
