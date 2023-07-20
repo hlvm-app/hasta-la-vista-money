@@ -32,13 +32,6 @@ class TestReceipt(TestCase):
         self.client.force_login(self.user)
         url = reverse_lazy('receipts:create')
 
-        new_customer = {
-            'user': self.user,
-            'name_seller': 'Продавец',
-            'retail_place_address': 'Город',
-            'retail_place': 'Место',
-        }
-
         new_product = {
             'user': self.user,
             'product_name': 'Яблоко',
@@ -56,19 +49,13 @@ class TestReceipt(TestCase):
             'number_receipt': 111,
             'operation_type': 1,
             'total_sum': 10,
-            'customer': new_customer,
+            'customer': 'ООО Рога и Копыта',
             'product': new_product,
         }
 
-        response_customer = self.client.post(
-            url, data=new_customer, follow=True,
-        )
         response_product = self.client.post(url, data=new_product, follow=True)
         response_receipt = self.client.post(url, data=new_receipt, follow=True)
 
-        self.assertEqual(
-            response_customer.status_code, HTTPStatus.SUCCESS_CODE.value,
-        )
         self.assertEqual(
             response_product.status_code, HTTPStatus.SUCCESS_CODE.value,
         )

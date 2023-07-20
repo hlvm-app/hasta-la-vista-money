@@ -1,13 +1,10 @@
 import django_filters
 from config.django.forms import BaseForm, DateTimePickerWidgetForm
 from django.forms import (
-    BooleanField,
     CharField,
-    ModelChoiceField,
     NumberInput,
-    Select,
-    ValidationError,
     formset_factory,
+    TextInput,
 )
 from django.utils.translation import gettext_lazy as _
 from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
@@ -47,98 +44,26 @@ class ReceiptFilter(django_filters.FilterSet):
 
 class CustomerForm(BaseForm):
     """Класс формы продавца."""
-
-    labels = {
-        'existing_seller': _('Продавец'),
-        'new_seller': _('Новый продавец'),
-    }
-    existing_seller = ModelChoiceField(
-        queryset=Customer.objects.distinct(
-            'name_seller',
-        ).order_by(
-            'name_seller',
-        ),
-        required=False,
-        widget=Select(attrs={
-            'id': 'id_existing_seller',
-        }),
+    retail_place_address = CharField(
+        label='Адрес места покупки',
+        widget=TextInput(attrs={'placeholder': 'Поле может быть пустым'}),
     )
-    new_seller = CharField(
-        required=False,
-    )
-    add_new_seller = BooleanField(
-        required=False,
-        initial=False,
+    retail_place = CharField(
+        label='Имя продавца',
+        widget=TextInput(attrs={'placeholder': 'Поле может быть пустым'}),
     )
 
     class Meta:
         model = Customer
-        fields = ['existing_seller', 'new_seller', 'add_new_seller']
+        fields = ['name_seller', 'retail_place_address', 'retail_place']
+        labels = {
+            'name_seller': 'Имя продавца',
+        }
 
-    def __init__(self, user, *args, **kwargs):
-        """
-        Инициализирующий класс-конструктор.
-
-        Сначала мы инициализируем поле существующего продавца со значением None.
-        Потом добавляем в начало выпадающего списка нужные поля и выводим
-        список существующих продавцов.
-        """
-        self.user = user
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        existing_seller_field = self.fields['existing_seller']
-        existing_seller_field.initial = None
-        existing_seller_field.queryset = Customer.objects.filter(
-            user=user,
-        ).distinct(
-            'name_seller',
-        ).order_by(
-            'name_seller',
-        )
-        existing_seller_field.widget.attrs['id'] = 'id_existing_seller'
-        existing_seller_field.choices = [(
-            '--', '-------',
-        ), (
-            'other', 'Другой продавец',
-        )] + list(existing_seller_field.choices)[1:]
-
-    def clean(self):
-        """
-        Переопределение метода для дополнительной валидации формы.
-
-        :return cleaned_data: Очищенные данные.
-        """
-        cleaned_data = super().clean()
-        existing_seller = cleaned_data.get('existing_seller')
-        new_seller = cleaned_data.get('new_seller')
-        add_new_seller = cleaned_data.get('add_new_seller')
-        if not existing_seller and not new_seller and not add_new_seller:
-            raise ValidationError(
-                _(
-                    'Пожалуйста, выберите существующего продавца или добавьте '
-                    'нового.',  # noqa: WPS326
-                ),
-            )
-        if existing_seller and new_seller:
-            raise ValidationError(
-                _(
-                    'Пожалуйста, выберите только один вариант: '
-                    'существующего продавца или ввод нового.',  # noqa: WPS326
-                ),
-            )
-        if add_new_seller and not new_seller:
-            raise ValidationError(
-                _(
-                    'Пожалуйста, введите название нового продавца.',
-                ),
-            )
-        if add_new_seller and new_seller:
-            new_customer = Customer(
-                user=self.user,
-                name_seller=new_seller,
-            )
-            new_customer.save()
-            new_customer.delete()
-        return cleaned_data
+        self.fields['retail_place_address'].required = False
+        self.fields['retail_place'].required = False
 
 
 class ProductForm(BaseForm):
@@ -178,6 +103,7 @@ class ReceiptForm(BaseForm):
     class Meta:
         model = Receipt
         fields = [
+            'customer',
             'account',
             'receipt_date',
             'number_receipt',

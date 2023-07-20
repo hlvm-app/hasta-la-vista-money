@@ -18,12 +18,11 @@ class Customer(models.Model):
     name_seller = models.CharField(max_length=255)  # noqa: WPS432
     retail_place_address = models.CharField(
         default='Нет данных',
-        null=True,
+        blank=True,
         max_length=1000,
     )
     retail_place = models.CharField(
         default='Нет данных',
-        null=True,
         blank=True,
         max_length=1000,
     )

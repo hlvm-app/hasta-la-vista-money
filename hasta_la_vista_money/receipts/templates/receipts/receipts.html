@@ -11,6 +11,36 @@
 {% block content %}
     <div class="container-fluid">
         {% include 'error_modal.html' %}
+        <div id="add-customer" class="modal fade ajax-modal" >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            Добавить нового продавца
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="ajax-form m-2" method="POST" action="{% url 'receipts:create_customer' %}">
+							{% csrf_token %}
+							{% if seller_form %}
+							        {% for field in seller_form %}
+							            <div class="form-group {% if field.errors %} has-error{% endif %}">
+							                {% bootstrap_field field layout="horizontal" horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
+							                {% if field.errors %}
+							                    {% for error in field.errors %}
+							                        <p class="help-block">{{ error }}</p>
+							                    {% endfor %}
+							                {% endif %}
+							            </div>
+							        {% endfor %}
+							    {% endif %}
+							<button type="submit" class="btn btn-primary">Добавить</button>
+						</form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="add-receipt" class="modal modal-lg fade ajax-modal" >
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -25,18 +55,6 @@
                         <form id='form-create-receipt' method="post" class="ajax-form" action="{% url 'receipts:create' %}">
                             {% csrf_token %}
                             <div class="p-3 border">
-	                            {% if seller_form %}
-							        {% for field in seller_form %}
-							            <div class="form-group {% if field.errors %} has-error{% endif %}">
-							                {% bootstrap_field field layout="horizontal" horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
-							                {% if field.errors %}
-							                    {% for error in field.errors %}
-							                        <p class="help-block">{{ error }}</p>
-							                    {% endfor %}
-							                {% endif %}
-							            </div>
-							        {% endfor %}
-							    {% endif %}
                                 {% if receipt_form %}
 							        {% for field in receipt_form %}
 							            <div class="form-group {% if field.errors %} has-error{% endif %}">
@@ -65,7 +83,6 @@
 						    {% endif %}
                             {% bootstrap_button button_text_add_product id="add-form" button_type="button" button_class="add-product-btn btn btn-outline-warning"  %}
                             {% bootstrap_button button_text_remove_receipt id="remove-form" button_type="button" button_class="remove-product-btn btn btn-outline-danger"  %}
-                            {% bootstrap_button add_new_seller_btn id="add-new-seller-btn" button_type="submit" button_class="btn btn-outline-info"  %}
                             {% bootstrap_button button_text_create_receipt button_type="submit" button_class="add-receipt-btn mx-auto btn btn-outline-primary"  %}
                         </form>
                     </div>
@@ -76,6 +93,12 @@
     <div class="container">
         <div class="row mt-5 justify-content-center">
             <div class="text-end p-0">
+	            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#add-customer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"></path>
+                    </svg>
+                    Добавить нового продавца
+                </button>
                 <button type="button" class="add-receipt-button btn btn-danger" data-bs-toggle="modal" data-bs-target="#add-receipt">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"></path>

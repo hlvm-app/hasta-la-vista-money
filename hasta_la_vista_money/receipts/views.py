@@ -37,9 +37,8 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            existing_sellers = Customer.objects.filter(user=request.user)
-            seller_form = CustomerForm(user=request.user)
-            seller_form.fields['existing_seller'].queryset = existing_sellers
+            seller_form = CustomerForm()
+
             receipt_form = ReceiptForm()
             receipt_form.fields['account'].queryset = Account.objects.filter(
                 user=request.user,
@@ -61,6 +60,32 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             )
 
 
+class CreateCustomerView(SuccessMessageMixin, CreateView):
+    model = Customer
+    template_name = 'receipts/receipts.html'
+    form_class = CustomerForm
+
+    def post(self, request, *args, **kwargs):
+        seller_form = CustomerForm(request.POST)
+        if seller_form.is_valid():
+            customer = seller_form.save(commit=False)
+            customer.user = request.user
+            customer.save()
+            messages.success(
+                self.request,
+                MessageOnSite.SUCCESS_MESSAGE_CREATE_CUSTOMER.value,
+            )
+            response_data = {'success': True}
+        else:
+            response_data = {
+                'success': False, 'errors': seller_form.errors,
+            }
+        return JsonResponse(response_data)
+
+    def get_success_url(self):
+        return reverse_lazy('receipts:list')
+
+
 class CreateReceiptView(SuccessMessageMixin, CreateView):
     model = Receipt
     template_name = 'receipts/receipts.html'
@@ -72,22 +97,7 @@ class CreateReceiptView(SuccessMessageMixin, CreateView):
         super().__init__(*args, **kwargs)
 
     @staticmethod
-    def get_or_create_seller(request, seller_form):
-        existing_seller = Customer.objects.filter(user=request.user)
-        new_seller = seller_form.cleaned_data.get('new_seller')
-        if existing_seller:
-            seller = existing_seller
-        elif new_seller:
-            seller = Customer.objects.create(
-                user=request.user,
-                name_seller=new_seller,
-            )
-        else:
-            seller = None
-        return seller
-
-    @staticmethod
-    def create_receipt(request, receipt_form, product_formset, seller):
+    def create_receipt(request, receipt_form, product_formset):
         receipt = receipt_form.save(commit=False)
         total_sum = receipt.total_sum
         account = receipt.account
@@ -96,7 +106,6 @@ class CreateReceiptView(SuccessMessageMixin, CreateView):
             account_balance.balance -= total_sum
             account_balance.save()
             receipt.user = request.user
-            receipt.customer = seller
             receipt.save()
             for product_form in product_formset:
                 product = product_form.save(commit=False)
@@ -118,32 +127,27 @@ class CreateReceiptView(SuccessMessageMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['seller_form'] = CustomerForm(user=self.request.user)
         context['product_formset'] = ProductFormSet()
         return context
 
     def form_valid(self, form):
-        seller_form = CustomerForm(self.request.user, self.request.POST)
         product_formset = ProductFormSet(self.request.POST)
         response_data = {}
         valid_form = (
             form.is_valid() and
-            seller_form.is_valid() and
             product_formset.is_valid()
         )
         if valid_form:
-            seller = self.get_or_create_seller(self.request, seller_form)
             number_receipt = self.check_exist_receipt(self.request, form)
             if number_receipt:
                 messages.error(
                     self.request, ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
                 )
-            elif seller:
+            else:
                 self.create_receipt(
                     self.request,
                     form,
                     product_formset,
-                    seller[0],
                 )
                 messages.success(
                     self.request,
