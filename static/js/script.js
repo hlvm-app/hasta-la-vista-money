@@ -4,6 +4,7 @@ let addButton = document.querySelector("#add-form")
 let removeButton = document.querySelector("#remove-form")
 let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
 
+
 document.addEventListener('DOMContentLoaded', function() {
     onClickRemoveObject();
     exchangeAccountShow();
@@ -51,33 +52,6 @@ function removeForm(e) {
 
 }
 
-
-function toggleNewSellerField() {
-
-    const existingSeller = document.getElementById('id_existing_seller');
-    const newSeller = document.getElementById('form-create-receipt').getElementsByClassName('row')[1];
-    const addNewSellerBtn = document.getElementById('add-new-seller-btn');
-    const addNewSellerCheckBox = document.getElementById('id_add_new_seller');
-
-    if (existingSeller.value === 'other') {
-        newSeller.style.display = 'flex';
-        addNewSellerBtn.style.display = 'block';
-        addNewSellerCheckBox.checked = true;
-    } else {
-        newSeller.style.display = 'none';
-        addNewSellerBtn.style.display = 'none'
-        addNewSellerCheckBox.checked = false;
-    }
-}
-
-$(document).ready(function() {
-  toggleNewSellerField();
-  $('#id_existing_seller').on('change', function() {
-    toggleNewSellerField();
-  });
-});
-
-
 function amountUpdate() {
     let formInputs = container.querySelectorAll('.form-product');
     formInputs.forEach( formInput => {
@@ -99,26 +73,25 @@ productForm.forEach(form => {
 });
 
 
-function totalSum() {
+function calculateTotalSum() {
+    let totalSumInput = document.getElementById('id_total_sum');
+    let amountInputs = document.querySelectorAll('.amount');
     let total_sum = 0;
-    let formInputs = container.querySelectorAll('.form-product');  
-    let totalSumInput = document.querySelector('.total-sum');
-    formInputs.forEach(formInput => {  
-        let amountInputs = formInput.querySelectorAll('.amount');
-        amountInputs.forEach(amountInput => { 
-            if (amountInput) {  
-                total_sum += parseFloat(amountInput.value);
-            }  
-        }); 
-    });  
-    totalSumInput.value = total_sum.toFixed(2);
-} 
 
-container.addEventListener('click', function(event) {
-  if (event.target.matches('.amount[readonly]') || event.target.matches('.total-sum[readonly]')) {
-    totalSum();
+    amountInputs.forEach(amountInput => {
+      total_sum += parseFloat(amountInput.value);
+    });
+
+    totalSumInput.value = total_sum.toFixed(2);
   }
-});
+
+document.getElementById('form-create-receipt').addEventListener('input', calculateTotalSum);
+
+// container.addEventListener('click', function(event) {
+//   if (event.target.matches('.amount[readonly]') || event.target.matches('.total-sum[readonly]')) {
+//     totalSum();
+//   }
+// });
 
 const addNewSellerBtn = document.getElementById('add-new-seller-btn');
 addNewSellerBtn.addEventListener('click', () => {
