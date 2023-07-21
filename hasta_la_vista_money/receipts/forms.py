@@ -39,7 +39,7 @@ class ReceiptFilter(django_filters.FilterSet):
 
 class CustomerForm(BaseForm):
     """Класс формы продавца."""
-
+    name_seller = CharField(label='Имя продавца')
     retail_place_address = CharField(
         label='Адрес места покупки',
         widget=TextInput(attrs={'placeholder': 'Поле может быть пустым'}),
@@ -52,9 +52,6 @@ class CustomerForm(BaseForm):
     class Meta:
         model = Customer
         fields = ['name_seller', 'retail_place_address', 'retail_place']
-        labels = {
-            'name_seller': 'Имя продавца',
-        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
