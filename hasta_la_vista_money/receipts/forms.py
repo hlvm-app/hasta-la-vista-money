@@ -45,7 +45,7 @@ class CustomerForm(BaseForm):
         widget=TextInput(attrs={'placeholder': 'Поле может быть пустым'}),
     )
     retail_place = CharField(
-        label='Имя продавца',
+        label='Название магазина',
         widget=TextInput(attrs={'placeholder': 'Поле может быть пустым'}),
     )
 
