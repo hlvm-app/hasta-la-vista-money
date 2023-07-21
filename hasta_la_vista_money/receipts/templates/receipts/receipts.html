@@ -93,13 +93,13 @@
     <div class="container">
         <div class="row mt-5">
             <div class="text-end p-0 d-flex justify-content-end">
-	            <button type="button" class="d-flex align-items-center btn btn-info m-2" data-bs-toggle="modal" data-bs-target="#add-customer">
+	            <button type="button" class="d-flex align-items-center btn btn-info m-xl-2 m-1" data-bs-toggle="modal" data-bs-target="#add-customer">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"></path>
                     </svg>
                     Добавить нового продавца
                 </button>
-                <button type="button" class="d-flex align-items-center add-receipt-button btn btn-danger m-2" data-bs-toggle="modal" data-bs-target="#add-receipt">
+                <button type="button" class="d-flex align-items-center add-receipt-button btn btn-danger m-xl-2 m-1" data-bs-toggle="modal" data-bs-target="#add-receipt">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"></path>
                     </svg>
@@ -107,7 +107,7 @@
                 </button>
             </div>
             {% for receipt in receipts %}
-            <div class="receipt bg-light position-relative rounded-3 m-1 shadow">
+            <div class="receipt mx-auto bg-light position-relative rounded-3 m-1 shadow">
                 <form class="form-remove-receipt-button" action="{% url 'receipts:delete' receipt.id %}" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="receipt_id" value="{{ receipt.id }}">
@@ -118,31 +118,31 @@
                     </button>
                 </form>
 
-                <table class="table table-borderless" aria-label="table receipts">
-                  <thead>
-                      <tr>
-                          <th class="col-xl-6"><h4>Продавец: {{ receipt.customer.name_seller }}</h4></th>
-                          <th class="col-xl-2">Дата и время:<br>{{ receipt.receipt_date | date:"d.m.Y H:i" }}</th>
-                          <th class="col-xl-2">Итоговая сумма:<br>{{ receipt.total_sum | comma }}</th>
-                      </tr>
-                      <tr>
-                          <th>Наименование товара</th>
-                          <th>Цена</th>
-                          <th>Количество</th>
-                          <th>Сумма</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                    {% for product in receipt.product.all %}
-                    <tr>
-                      <td>{{ product.product_name }}</td>
-                      <td>{{ product.price | comma }}</td>
-                      <td>{{ product.quantity }}</td>
-                      <td>{{ product.amount | comma }}</td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
+                <table class="table table-sm table-borderless" aria-label="table receipts">
+					<thead>
+						<tr>
+							<th scope="col" class="col-xl-6">Продавец: {{ receipt.customer.name_seller }}</th>
+							<th scope="col" class="col-xl-2">Дата и время:<br>{{ receipt.receipt_date | date:"d.m.Y H:i" }}</th>
+							<th scope="col" class="col-xl-2">Итоговая сумма:<br>{{ receipt.total_sum | comma }}</th>
+						</tr>
+						<tr>
+							<th scope="row">Наименование товара</th>
+							<th scope="col">Цена</th>
+							<th scope="col">Количество</th>
+							<th scope="col">Сумма</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for product in receipt.product.all %}
+							<tr>
+								<th scope="row">{{ product.product_name }}</th>
+								<td >{{ product.price | comma }}</td>
+								<td >{{ product.quantity }}</td>
+								<td >{{ product.amount | comma }}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
             </div>
             {% endfor %}
         </div>
