@@ -89,6 +89,7 @@ class ReceiptForm(BaseForm):
     """Форма для внесения данных по чеку."""
 
     labels = {
+        'customer': _('Имя продавца'),
         'account': _('Счёт'),
         'receipt_date': _('Дата и время чека'),
         'number_receipt': _('Номер документа'),
