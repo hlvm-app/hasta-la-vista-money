@@ -56,6 +56,7 @@ class Receipt(models.Model):
         related_name='customer',
     )
     product = models.ManyToManyField('Product', related_name='product')
+    manual = models.BooleanField(null=True)
 
     def datetime(self):
         return self.receipt_date
