@@ -214,15 +214,25 @@ class ReceiptParser:
                 self.receipt = ReceiptDataWriter.create_receipt(receipt_data)
                 self.parse_products()
                 bot_admin.send_message(
-                    chat_id, ReceiptConstants.RECEIPT_BE_ADDED.value,
+                    chat_id,
+                    ReceiptConstants.RECEIPT_BE_ADDED.value,
                 )
         except IntegrityError as integrity_error:
             if 'account' in str(integrity_error):
-                logger.error(TelegramMessage.NOT_CREATE_ACCOUNT.value)
+                bot_admin.send_message(
+                    chat_id,
+                    TelegramMessage.NOT_CREATE_ACCOUNT.value,
+                )
             else:
-                logger.error(TelegramMessage.ERROR_DATABASE_RECORD.value)
+                bot_admin.send_message(
+                    chat_id,
+                    TelegramMessage.ERROR_DATABASE_RECORD.value,
+                )
         except Http404:
-            logger.error(TelegramMessage.NOT_CREATE_ACCOUNT.value)
+            bot_admin.send_message(
+                chat_id,
+                TelegramMessage.NOT_CREATE_ACCOUNT.value,
+            )
 
     def parse(self, chat_id: int) -> None:
         """
