@@ -109,6 +109,7 @@ class ReceiptCreateView(SuccessMessageMixin, CreateView):
             account_balance.balance -= total_sum
             account_balance.save()
             receipt.user = request.user
+            receipt.manual = True
             receipt.save()
             for product_form in product_formset:
                 product = product_form.save(commit=False)
