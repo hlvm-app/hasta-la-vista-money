@@ -39,6 +39,7 @@ class ReceiptFilter(django_filters.FilterSet):
 
 class CustomerForm(BaseForm):
     """Класс формы продавца."""
+
     name_seller = CharField(label='Имя продавца')
     retail_place_address = CharField(
         label='Адрес места покупки',
