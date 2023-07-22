@@ -101,7 +101,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         )
 
 
-class CreateExpenseView(
+class ExpenseCreateView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
     CreateView,
@@ -134,7 +134,7 @@ class CreateExpenseView(
         return JsonResponse(response_data)
 
 
-class ChangeExpenseView(
+class ExpenseUpdateView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
     UpdateView,
@@ -156,7 +156,7 @@ class ChangeExpenseView(
         )
 
 
-class DeleteExpenseView(DetailView, DeleteView):
+class ExpenseDeleteView(DetailView, DeleteView):
     model = Expense
     template_name = TemplateHTMLView.EXPENSE_TEMPLATE.value
     context_object_name = 'expense'
@@ -176,7 +176,7 @@ class DeleteExpenseView(DetailView, DeleteView):
             return super().form_valid(form)
 
 
-class DeleteExpenseCategoryView(DeleteCategoryMixin):
+class ExpenseCategoryDeleteView(DeleteCategoryMixin):
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
 
     def get_success_message(self):

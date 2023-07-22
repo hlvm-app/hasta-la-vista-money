@@ -63,7 +63,7 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             )
 
 
-class CreateCustomerView(SuccessMessageMixin, CreateView):
+class CustomerCreateView(SuccessMessageMixin, CreateView):
     model = Customer
     template_name = 'receipts/receipts.html'
     form_class = CustomerForm
@@ -89,7 +89,7 @@ class CreateCustomerView(SuccessMessageMixin, CreateView):
         return reverse_lazy('receipts:list')
 
 
-class CreateReceiptView(SuccessMessageMixin, CreateView):
+class ReceiptCreateView(SuccessMessageMixin, CreateView):
     model = Receipt
     template_name = 'receipts/receipts.html'
     form_class = ReceiptForm
