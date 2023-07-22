@@ -43,6 +43,9 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             receipt_form.fields['account'].queryset = Account.objects.filter(
                 user=request.user,
             )
+            receipt_form.fields['customer'].queryset = Customer.objects.filter(
+                user=request.user,
+            ).distinct('customer')
             product_formset = ProductFormSet()
             receipts = Receipt.objects.filter(
                 user=request.user,
