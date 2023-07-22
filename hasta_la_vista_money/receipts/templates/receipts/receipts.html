@@ -135,7 +135,7 @@
 					<tbody>
 						{% for product in receipt.product.all %}
 							<tr>
-								<th scope="row">{{ product.product_name }}</th>
+								<th scope="row" class="fw-normal">{{ product.product_name }}</th>
 								<td >{{ product.price | comma }}</td>
 								<td >{{ product.quantity }}</td>
 								<td >{{ product.amount | comma }}</td>
