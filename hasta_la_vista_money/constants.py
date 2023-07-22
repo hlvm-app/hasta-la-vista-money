@@ -134,7 +134,7 @@ class TelegramMessage(Enum):
         (
             'Не выбран счёт! ',
             'Сначала выберите его используя команду /select_account',
-        )
+        ),
     )
     ERROR_DATABASE_RECORD = 'Ошибка записи в базу данных!'
     ALREADY_LOGGED = 'Вы уже авторизованы!'
