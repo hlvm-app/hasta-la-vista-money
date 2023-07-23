@@ -97,7 +97,7 @@
         </div>
         <div class="row mt-2 justify-content-start">
             <div class="col-xl-3 pt-5">
-                <table class="table table-hover text-center justify-content-center table-bordered text-light shadow" aria-label="table about receipts">
+                <table class="table table-hover text-center justify-content-center table-bordered text-light align-middle shadow" aria-label="table about receipts">
                     <tr>
                         <th>
                             Период
@@ -116,7 +116,7 @@
                         <tr>
                             <td class="col-3">{{ receipt.month | date:"F Y" }}</td>
                             <td class="col-2">{{ receipt.count }}</td>
-                            <td class="col-2">{{ receipt.total_amount | comma }}</td>
+                            <td class="col-2 text-nowrap">{{ receipt.total_amount | comma }}</td>
                             <td class="col-3 text-nowrap">{{ receipt.account__name_account }}</td>
                         </tr>
                     {% endfor %}
@@ -150,7 +150,7 @@
                             <tr>
                                 <td>{{ expense.category__name }}</td>
                                 <td>{{ expense.date | date:'F Y'}}</td>
-                                <td>{{ expense.amount | comma }}</td>
+                                <td class="text-nowrap">{{ expense.amount | comma }}</td>
                                 <td>{{ expense.account__name_account }}</td>
                                 <td class="d-flex justify-content-center align-items-center table-buttons">
                                     <a href="{% url 'expense:change' expense.id %}" class="change-object-button btn btn-info border-0 btn-sm me-1">
