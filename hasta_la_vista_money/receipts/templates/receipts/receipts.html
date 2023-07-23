@@ -103,12 +103,12 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"></path>
                     </svg>
-                    Добавить чек
+                    Добавить чек вручную по наименованиям
                 </button>
             </div>
             {% for receipt in receipts %}
             <div class="receipt mx-auto bg-light position-relative rounded-3 m-1 shadow">
-                <form class="form-remove-receipt-button" action="{% url 'receipts:delete' receipt.id %}" method="post">
+                <form class="form-remove-receipt-button m-0" action="{% url 'receipts:delete' receipt.id %}" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="receipt_id" value="{{ receipt.id }}">
                     <button class="remove-object-button position-absolute top-50 end-0 translate-middle mr-5 mt-1 btn btn-outline-danger border-0 btn-small" data-nonce="{{request.csp_nonce}}" type="submit" name="delete_receipt_button">
@@ -121,7 +121,7 @@
                 <table class="table table-sm table-borderless" aria-label="table receipts">
 					<thead>
 						<tr>
-							<th scope="col" class="col-xl-6">Продавец: {{ receipt.customer.name_seller }}</th>
+							<th scope="col" class="col-xl-7 fs-4 align-middle">Продавец: {{ receipt.customer.name_seller }}</th>
 							<th scope="col" class="col-xl-2">Дата и время:<br>{{ receipt.receipt_date | date:"d.m.Y H:i" }}</th>
 							<th scope="col" class="col-xl-2">Итоговая сумма:<br>{{ receipt.total_sum | comma }}</th>
 						</tr>
