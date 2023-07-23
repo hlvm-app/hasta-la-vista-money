@@ -4,10 +4,10 @@ from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.users.models import User
 
 OPERATION_TYPES = (
-    (1, _('Приход')),
-    (2, _('Возврат прихода')),
-    (3, _('Расход')),
-    (4, _('Возврат расхода')),
+    (1, _('Покупка')),
+    (2, _('Возврат средств за покупку')),
+    (3, _('Продажа\\Выигрыш')),
+    (4, _('Возврат выигрыша или продажи')),
 )
 
 
@@ -19,11 +19,13 @@ class Customer(models.Model):
     retail_place_address = models.CharField(
         default='Нет данных',
         blank=True,
+        null=True,
         max_length=1000,
     )
     retail_place = models.CharField(
         default='Нет данных',
         blank=True,
+        null=True,
         max_length=1000,
     )
 
