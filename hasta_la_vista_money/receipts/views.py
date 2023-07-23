@@ -47,7 +47,10 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 user=request.user,
             ).distinct('customer')
             product_formset = ProductFormSet()
-            receipts = Receipt.objects.filter(
+
+            receipts = Receipt.objects.prefetch_related(
+                'customer', 'product'
+            ).filter(
                 user=request.user,
             ).order_by('-receipt_date')
 
