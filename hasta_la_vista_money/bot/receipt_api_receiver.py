@@ -74,6 +74,8 @@ class ReceiptApiReceiver:
 
         Если не удалось получить идентификатор, вызывает исключение ValueError.
 
+        Raises:
+            ValueError: Ошибка переданного значения
         """
         client_secret = [
             env
