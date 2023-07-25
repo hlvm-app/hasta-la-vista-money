@@ -18,7 +18,13 @@ bot_admin.add_callback_query_handler(handle_select_account)
 
 
 @csrf_exempt
-def webhooks(request):
+def webhooks(request) -> HttpResponse:
+    """
+    Функция принятия сообщений от телеграм сервера (бота).
+
+    :param request:
+    :return: HttpResponse
+    """
     if request.method == 'POST':
         json_data = json.loads(request.body)
         try:
