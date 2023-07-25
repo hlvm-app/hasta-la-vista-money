@@ -1,5 +1,5 @@
 function setActiveNavLink() {
-    const navLinks = document.querySelectorAll('.nav-link'); // Получаем все элементы с классом "nav-link"
+    const navLinks = document.querySelectorAll('a.nav-link'); // Получаем все элементы с классом "nav-link"
     const currentURL = window.location.href; // Получаем текущий URL страницы
 
     navLinks.forEach(link => {
