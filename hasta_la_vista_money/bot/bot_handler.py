@@ -12,6 +12,12 @@ from telebot import types
 
 @bot_admin.message_handler(commands=['auth'])
 def handle_start(message):
+    """
+    Обработка команды /auth.
+
+    :param message:
+    :return:
+    """
     telegram_username = message.from_user.username
 
     check_telegram_username = TelegramUser.objects.filter(
@@ -30,6 +36,12 @@ def handle_start(message):
 
 
 def handle_auth(message):
+    """
+    Обработка логина и пароля от сайта для авторизации в боте.
+
+    :param message:
+    :return:
+    """
     auth_data = message.text.split(':')
     if len(auth_data) != 2:
         bot_admin.reply_to(message, TelegramMessage.INCORRECT_FORMAT.value)
@@ -54,6 +66,19 @@ def handle_auth(message):
 def check_existing_telegram_user(
     message, existing_telegram_user, telegram_username, user,
 ):
+    """
+    Проверка существования телеграм пользователя в базе данных.
+
+    Если пользователь существует, то отправляется сообщение пользователю
+    о том, что пользователь уже авторизован. В ином случае, создает запись
+    в базе данных.
+
+    :param message:
+    :param existing_telegram_user:
+    :param telegram_username:
+    :param user:
+    :return:
+    """
     if existing_telegram_user:
         authenticated_user(message, existing_telegram_user)
     else:
@@ -61,6 +86,13 @@ def check_existing_telegram_user(
 
 
 def authenticated_user(message, existing_telegram_user):
+    """
+    Функция для проверки, авторизован ли пользователь в боте.
+
+    :param message:
+    :param existing_telegram_user:
+    :return:
+    """
     if existing_telegram_user.telegram_id == message.from_user.id:
         bot_admin.send_message(
             message.chat.id,
@@ -76,6 +108,14 @@ def authenticated_user(message, existing_telegram_user):
 
 
 def create_telegram_user(message, telegram_username, user):
+    """
+    Создание записи в базе данных с данными о телеграм пользователе.
+
+    :param message:
+    :param telegram_username:
+    :param user:
+    :return:
+    """
     TelegramUser.objects.create(
         user=user,
         username=telegram_username,
@@ -89,6 +129,12 @@ def create_telegram_user(message, telegram_username, user):
 
 @bot_admin.message_handler(commands=['select_account'])
 def select_account(message):  # noqa: C812 WPS210
+    """
+    Выбор счёта пользователем.
+
+    :param message:
+    :return:
+    """
     telegram_user_id = message.from_user.id
 
     telegram_user = TelegramUser.objects.filter(
@@ -117,6 +163,12 @@ def select_account(message):  # noqa: C812 WPS210
     'select_account_',
 ))
 def handle_select_account(call):
+    """
+    Обработка выбора счёта пользователем.
+
+    :param call:
+    :return:
+    """
     account_id = int(call.data.split('_')[2])
     account = Account.objects.filter(id=account_id).first()
     if account:
@@ -138,6 +190,12 @@ def handle_select_account(call):
 
 @bot_admin.message_handler(content_types=['text', 'document', 'photo'])
 def handle_receipt(message):
+    """
+    Проверка того, зарегистрированный ли пользователь пишет боту.
+
+    :param message:
+    :return:
+    """
     telegram_user_id = message.from_user.id
 
     telegram_user = TelegramUser.objects.filter(
@@ -151,6 +209,14 @@ def handle_receipt(message):
 
 
 def telegram_content_type(message, user, account):
+    """
+    Обработка сообщений по типу контента от пользователя.
+
+    :param message:
+    :param user:
+    :param account:
+    :return:
+    """
     if message.content_type == 'text':
         handle_receipt_text(message, bot_admin, user, account)
     elif message.content_type == 'photo':
