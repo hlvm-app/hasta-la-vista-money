@@ -87,53 +87,6 @@ function calculateTotalSum() {
 
 document.getElementById('form-create-receipt').addEventListener('input', calculateTotalSum);
 
-// container.addEventListener('click', function(event) {
-//   if (event.target.matches('.amount[readonly]') || event.target.matches('.total-sum[readonly]')) {
-//     totalSum();
-//   }
-// });
-
-const addNewSellerBtn = document.getElementById('add-new-seller-btn');
-addNewSellerBtn.addEventListener('click', () => {
-    const existingSellerField = document.querySelector('#id_existing_seller');
-    existingSellerField.value = '--';
-    existingSellerField.disabled = true;
-
-    const newSellerField = document.querySelector('#id_new_seller');
-    newSellerField.required = true;
-    newSellerField.disabled = false;
-
-    addNewSellerBtn.style.display = 'none';
-});
-
-const formCheck = document.querySelector('.form-check');
-formCheck.closest('.row').style.display = 'none';
-
-
-function exchangeAccountShow() {
-    const exchangeAccountElement = document.getElementById('exchange-account');
-    const bodyElement = document.body;
-
-    if (exchangeAccountElement.classList.contains('show')) {
-        exchangeAccountElement.style.display = 'block';
-        exchangeAccountElement.ariaModal = 'true'
-        exchangeAccountElement.role = 'dialog'
-        bodyElement.classList.add('modal-open')
-        bodyElement.style.overflow = 'hidden';
-        bodyElement.style.paddingRight = '0';
-    }
-
-    document.addEventListener('click', function(event) {
-        if (event.target.matches('[data-bs-dismiss="modal"]')) {
-            exchangeAccountElement.style.display = 'none';
-            exchangeAccountElement.setAttribute('aria-modal', 'false');
-            bodyElement.classList.remove('modal-open');
-            bodyElement.style.overflow = 'auto';
-            bodyElement.style.paddingRight = '0';
-        }
-    });
-}
-
 function onClickRemoveObject() {
     const removeObjectButton = document.querySelectorAll('.remove-object-button')
     removeObjectButton.forEach((button) => {
