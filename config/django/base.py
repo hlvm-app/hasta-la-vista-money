@@ -48,7 +48,6 @@ CSRF_TRUSTED_ORIGINS = os.environ.get(
 INSTALLED_APPS = [
     'bootstrap_datepicker_plus',
     'csp',
-    'debug_toolbar',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -69,7 +68,14 @@ INSTALLED_APPS = [
     'hasta_la_vista_money.users',
     'hasta_la_vista_money.templatags.thousand_comma',
     'locale',
+    
 ]
+
+if DEBUG:
+    INSTALLED_APPS += (
+        'debug_toolbar',
+    )
+        
 
 AUTH_USER_MODEL = 'users.User'
 
