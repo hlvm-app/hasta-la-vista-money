@@ -77,5 +77,9 @@ urlpatterns = [
         name='reports',
     ),
     path('adminushka/', admin.site.urls),
-    path('__debug__/', include('debug_toolbar.urls')),
+    
 ]
+if settings.DEBUG:
+    urlpatterns += (
+        path('__debug__/', include('debug_toolbar.urls')),
+    )
