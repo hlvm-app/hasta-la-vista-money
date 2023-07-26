@@ -7,6 +7,7 @@ from hasta_la_vista_money.income.models import Income
 from hasta_la_vista_money.users.models import User
 
 BALANCE_TEST = 250000
+NEW_BALANCE_TEST = 450000
 
 
 class TestAccount(TestCase):
@@ -53,6 +54,23 @@ class TestAccount(TestCase):
         )
         self.assertEqual(created_account.balance, BALANCE_TEST)
         self.assertEqual(created_account.currency, 'RU')
+
+    def test_update_account(self):
+        self.client.force_login(self.user)
+        url = reverse_lazy('account:change', args=(self.account1.pk,))
+        update_account = {
+            'user': self.user,
+            'name_account': 'Основной счёт',
+            'balance': NEW_BALANCE_TEST,
+            'currency': 'RU',
+        }
+        response = self.client.post(url, update_account, follow=True)
+        self.assertEqual(
+            Account.objects.get(pk=self.account1.pk), self.account1,
+        )
+        self.assertRedirects(
+            response, '/applications/', status_code=HTTPStatus.REDIRECTS.value,
+        )
 
     def test_account_delete(self):
         self.client.force_login(self.user)
