@@ -1,6 +1,6 @@
 import os
 
-from .base import *  # noqa
+from .base import *  # NOQA
 
 INTERNAL_IPS = [
     os.environ.get(
