@@ -68,14 +68,14 @@ INSTALLED_APPS = [
     'hasta_la_vista_money.users',
     'hasta_la_vista_money.templatags.thousand_comma',
     'locale',
-    
 ]
+
 
 if DEBUG:
     INSTALLED_APPS += (
         'debug_toolbar',
     )
-        
+
 
 AUTH_USER_MODEL = 'users.User'
 
