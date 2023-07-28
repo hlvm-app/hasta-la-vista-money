@@ -55,6 +55,9 @@ jobs:
       - name: Run makemigrations
         run: python manage.py makemigrations
 
+      - name: Run check
+        run: python manage.py check
+
       - name: Run migrations
         run: python manage.py migrate
 
