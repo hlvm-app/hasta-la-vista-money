@@ -1,3 +1,4 @@
+django-axes==6.0.5
 asgiref==3.6.0; python_version >= "3.8"
 attrs==23.1.0; python_version >= "3.7" and python_full_version >= "3.7.1"
 automat==22.10.0; python_full_version >= "3.7.1"
@@ -46,4 +47,3 @@ setuptools>=67.7.2
 pyzbar==0.1.9
 django-bootstrap-datepicker-plus==5.0.3
 django-debug-toolbar >= 4.1.0
-django-axes==6.0.5
