@@ -167,12 +167,12 @@ class IncomeUpdateView(
                 income.save()
                 messages.success(request, 'Операция дохода успешно обновлена!')
                 return redirect(self.success_url)
-            else:
-                return render(
-                    request,
-                    self.template_name,
-                    {'income_form': income_form},
-                )
+        else:
+            return render(
+                request,
+                self.template_name,
+                {'income_form': income_form},
+            )
 
 
 
