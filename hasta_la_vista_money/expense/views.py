@@ -155,6 +155,40 @@ class ExpenseUpdateView(
             {'add_expense_form': add_expense_form},
         )
 
+    def post(self, request, *args, **kwargs):
+        add_expense_form = AddExpenseForm(request.POST)
+
+        if add_expense_form.is_valid():
+            expense_id = kwargs.get('pk')
+            if expense_id:
+                expense = get_object_or_404(Expense, id=expense_id)
+            else:
+                expense = add_expense_form.save(commit=False)
+
+            amount = add_expense_form.cleaned_data.get('amount')
+            account = add_expense_form.cleaned_data.get('account')
+            account_balance = get_object_or_404(Account, id=account.id)
+
+            if account_balance.user == request.user:
+                if expense_id:
+                    old_amount = expense.amount
+                    account_balance.balance += old_amount
+                account_balance.balance -= amount
+                account_balance.save()
+
+                expense.user = request.user
+                expense.amount = amount
+                expense.save()
+
+                messages.success(request, 'Операция расхода успешно обновлена!')
+                return redirect(self.success_url)
+        else:
+            return render(
+                request,
+                self.template_name,
+                {'add_expense_form': add_expense_form},
+            )
+
 
 class ExpenseDeleteView(DetailView, DeleteView):
     model = Expense
