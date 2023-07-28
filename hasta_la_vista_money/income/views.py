@@ -141,6 +141,40 @@ class IncomeUpdateView(
             {'income_form': income_form},
         )
 
+    def post(self, request, *args, **kwargs):
+        income_form = IncomeForm(request.POST)
+
+        if income_form.is_valid():
+            income_id = self.get_object().id
+            if income_id:
+                income = get_object_or_404(Income, id=income_id)
+            else:
+                income = income_form.save(commit=False)
+
+            amount = income_form.cleaned_data.get('amount')
+            account = income_form.cleaned_data.get('account')
+            account_balance = get_object_or_404(Account, id=account.id)
+
+            if account_balance.user == request.user:
+                if income_id:
+                    old_amount = income.amount
+                    account_balance.balance -= old_amount
+                account_balance.balance += amount
+                account_balance.save()
+
+                income.user = request.user
+                income.amount = amount
+                income.save()
+                messages.success(request, 'Операция дохода успешно обновлена!')
+                return redirect(self.success_url)
+            else:
+                return render(
+                    request,
+                    self.template_name,
+                    {'income_form': income_form},
+                )
+
+
 
 class IncomeDeleteView(DeleteView, DeletionMixin):
     model = Income
