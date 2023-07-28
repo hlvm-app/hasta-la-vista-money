@@ -175,7 +175,6 @@ class IncomeUpdateView(
             )
 
 
-
 class IncomeDeleteView(DeleteView, DeletionMixin):
     model = Income
     template_name = TemplateHTMLView.INCOME_TEMPLATE.value
