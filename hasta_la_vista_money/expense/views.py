@@ -159,7 +159,7 @@ class ExpenseUpdateView(
         add_expense_form = AddExpenseForm(request.POST)
 
         if add_expense_form.is_valid():
-            expense_id = kwargs.get('pk')
+            expense_id = self.get_object().id
             if expense_id:
                 expense = get_object_or_404(Expense, id=expense_id)
             else:
