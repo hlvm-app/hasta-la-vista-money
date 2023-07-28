@@ -1,4 +1,4 @@
-django-axes==6.0.4
+django-axes>=6.0;
 asgiref==3.6.0; python_version >= "3.8"
 attrs==23.1.0; python_version >= "3.7" and python_full_version >= "3.7.1"
 automat==22.10.0; python_full_version >= "3.7.1"
