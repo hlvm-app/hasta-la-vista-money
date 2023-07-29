@@ -13,7 +13,11 @@ from django.views.generic import (
     UpdateView,
 )
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.constants import SuccessUrlView, TemplateHTMLView
+from hasta_la_vista_money.constants import (
+    MessageOnSite,
+    SuccessUrlView,
+    TemplateHTMLView,
+)
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
     DeleteCategoryMixin,
@@ -89,7 +93,10 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             category_form = add_category_form.save(commit=False)
             category_form.user = request.user
             category_form.save()
-            messages.success(request, 'Категория расхода успешно добавлена!')
+            messages.success(
+                request,
+                MessageOnSite.SUCCESS_CATEGORY_ADDED.value,
+            )
             return redirect(self.success_url)
         return render(
             request,
@@ -125,7 +132,10 @@ class ExpenseCreateView(
                 account_balance.save()
                 expense.user = request.user
                 expense.save()
-                messages.success(request, 'Операция расхода успешно добавлена!')
+                messages.success(
+                    request,
+                    MessageOnSite.SUCCESS_EXPENSE_ADDED.value,
+                )
                 response_data = {'success': True}
         else:
             response_data = {
@@ -155,39 +165,34 @@ class ExpenseUpdateView(
             {'add_expense_form': add_expense_form},
         )
 
-    def post(self, request, *args, **kwargs):
-        add_expense_form = AddExpenseForm(request.POST)
+    def form_valid(self, form):
 
-        if add_expense_form.is_valid():
-            expense_id = self.get_object().id
-            if expense_id:
-                expense = get_object_or_404(Expense, id=expense_id)
-            else:
-                expense = add_expense_form.save(commit=False)
-
-            amount = add_expense_form.cleaned_data.get('amount')
-            account = add_expense_form.cleaned_data.get('account')
-            account_balance = get_object_or_404(Account, id=account.id)
-
-            if account_balance.user == request.user:
-                if expense_id:
-                    old_amount = expense.amount
-                    account_balance.balance += old_amount
-                account_balance.balance -= amount
-                account_balance.save()
-
-                expense.user = request.user
-                expense.amount = amount
-                expense.save()
-
-                messages.success(request, 'Операция расхода успешно обновлена!')
-                return redirect(self.success_url)
+        expense_id = self.get_object().id
+        if expense_id:
+            expense = get_object_or_404(Expense, id=expense_id)
         else:
-            return render(
-                request,
-                self.template_name,
-                {'add_expense_form': add_expense_form},
+            expense = form.save(commit=False)
+
+        amount = form.cleaned_data.get('amount')
+        account = form.cleaned_data.get('account')
+        account_balance = get_object_or_404(Account, id=account.id)
+
+        if account_balance.user == self.request.user:
+            if expense_id:
+                old_amount = expense.amount
+                account_balance.balance += old_amount
+            account_balance.balance -= amount
+            account_balance.save()
+
+            expense.user = self.request.user
+            expense.amount = amount
+            expense.save()
+
+            messages.success(
+                self.request,
+                MessageOnSite.SUCCESS_EXPENSE_UPDATE.value,
             )
+            return super().form_valid(form)
 
 
 class ExpenseDeleteView(DetailView, DeleteView):
@@ -206,7 +211,10 @@ class ExpenseDeleteView(DetailView, DeleteView):
         if account_balance.user == self.request.user:
             account_balance.balance += amount
             account_balance.save()
-            messages.success(self.request, 'Операция расхода успешно удалена!')
+            messages.success(
+                self.request,
+                MessageOnSite.SUCCESS_EXPENSE_DELETED.value,
+            )
             return super().form_valid(form)
 
 
@@ -214,10 +222,10 @@ class ExpenseCategoryDeleteView(DeleteCategoryMixin):
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
 
     def get_success_message(self):
-        return 'Категория расхода успешно удалена!'
+        return MessageOnSite.SUCCESS_CATEGORY_EXPENSE_DELETED.value
 
     def get_error_message(self):
-        return 'Категория не может быть удалена, так как связана с одним из пунктом расхода'  # noqa: E501
+        return MessageOnSite.ACCESS_DENIED_DELETE_CATEGORY_EXPENSE.value
 
     def delete_category(self):
         try:
