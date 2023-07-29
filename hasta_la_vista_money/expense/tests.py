@@ -1,7 +1,8 @@
-from django.test import Client, TestCase
+from django.test import TestCase
 from django.urls import reverse_lazy
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import HTTPStatus
+from hasta_la_vista_money.expense.forms import AddExpenseForm
 from hasta_la_vista_money.expense.models import Expense, ExpenseType
 from hasta_la_vista_money.users.models import User
 
@@ -16,7 +17,6 @@ class TestExpense(TestCase):
     ]
 
     def setUp(self) -> None:
-        self.client = Client()
         self.user = User.objects.get(pk=1)
         self.account = Account.objects.get(pk=1)
         self.expense = Expense.objects.get(pk=1)
@@ -36,7 +36,7 @@ class TestExpense(TestCase):
             'user': self.user,
             'account': self.account,
             'category': self.expense_type,
-            'date': '20/12/2023 15:30',
+            'date': '2023/12/20 15:30:00',
             'amount': TEST_AMOUNT,
         }
 
@@ -46,17 +46,21 @@ class TestExpense(TestCase):
     def test_expense_update(self):
         self.client.force_login(user=self.user)
         url = reverse_lazy('expense:change', kwargs={'pk': self.expense.id})
-
         update_expense = {
-            'user': self.user,
-            'account': self.account,
-            'category': self.expense_type,
-            'date': '30/06/2023 22:31:54',
+            'account': self.account.id,
+            'category': self.expense_type.id,
+            'date': '2023-06-30 22:31:54',
             'amount': NEW_TEST_AMOUNT,
         }
 
-        response = self.client.post(url, update_expense)
-        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+        form = AddExpenseForm(data=update_expense)
+        self.assertTrue(form.is_valid())
+
+        response = self.client.post(url, form.data)
+        self.assertEqual(response.status_code, HTTPStatus.REDIRECTS.value)
+
+        updated_expense = Expense.objects.get(pk=self.expense.id)
+        self.assertEqual(updated_expense.amount, NEW_TEST_AMOUNT)
 
     def test_expense_delete(self):
         self.client.force_login(self.user)
