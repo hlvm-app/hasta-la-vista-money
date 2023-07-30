@@ -1,6 +1,4 @@
 import decimal
-from dataclasses import dataclass
-from typing import Any
 
 from django.db import IntegrityError
 from django.http import Http404
@@ -9,9 +7,15 @@ from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.json_parse import JsonParser
 from hasta_la_vista_money.bot.log_config import logger
+from hasta_la_vista_money.bot.receipt_data_classes import (
+    CustomerData,
+    ProductData,
+    ReceiptData,
+    ReceiptDataWriter,
+)
 from hasta_la_vista_money.bot.services import convert_date_time, convert_number
 from hasta_la_vista_money.constants import ReceiptConstants, TelegramMessage
-from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
+from hasta_la_vista_money.receipts.models import Receipt
 
 
 class ReceiptParser:
@@ -149,6 +153,22 @@ class ReceiptParser:
                 f'Ошибка записи продавца в базу данных: {integrity_error}',
             )
 
+    def extract_receipt_info(self):
+        receipt_date = convert_date_time(self.parser.parse_json(
+            self.json_data, ReceiptConstants.RECEIPT_DATE_TIME.value,
+        ))
+        number_receipt = self.parser.parse_json(
+            self.json_data, ReceiptConstants.NUMBER_RECEIPT.value,
+        )
+
+        operation_type = self.parser.parse_json(
+            self.json_data, ReceiptConstants.OPERATION_TYPE.value,
+        )
+        total_sum = convert_number(self.parser.parse_json(
+            self.json_data, ReceiptConstants.TOTAL_SUM.value,
+        ))
+        return receipt_date, number_receipt, operation_type, total_sum
+
     def parse_receipt(self, chat_id: int) -> None:  # noqa: WPS231 C901 WPS210 WPS213 E501
         """
         Метод класса для парсинга основной информации о чеке.
@@ -166,19 +186,12 @@ class ReceiptParser:
 
         """
         try:
-            receipt_date = convert_date_time(self.parser.parse_json(
-                self.json_data, ReceiptConstants.RECEIPT_DATE_TIME.value,
-            ))
-            number_receipt = self.parser.parse_json(
-                self.json_data, ReceiptConstants.NUMBER_RECEIPT.value,
-            )
-
-            operation_type = self.parser.parse_json(
-                self.json_data, ReceiptConstants.OPERATION_TYPE.value,
-            )
-            total_sum = convert_number(self.parser.parse_json(
-                self.json_data, ReceiptConstants.TOTAL_SUM.value,
-            ))
+            (
+                receipt_date,
+                number_receipt,
+                operation_type,
+                total_sum,
+            ) = self.extract_receipt_info()
 
             if operation_type in {2, 3}:
                 total_sum = -total_sum
@@ -245,68 +258,3 @@ class ReceiptParser:
 
         """
         self.parse_receipt(chat_id)
-
-
-@dataclass
-class ProductData:
-    user: str
-    product_name: str
-    price: float
-    quantity: int
-    amount: float
-    nds_type: int
-    nds_sum: float
-
-
-@dataclass
-class CustomerData:
-    user: str
-    name_seller: str
-    retail_place_address: str
-    retail_place: str
-
-
-@dataclass
-class ReceiptData:
-    user: str
-    account: Any
-    receipt_date: str
-    number_receipt: int
-    operation_type: int
-    total_sum: float
-    customer: str
-
-
-class ReceiptDataWriter:
-    @classmethod
-    def create_product(cls, product_data: ProductData):
-        return Product.objects.create(
-            user=product_data.user,
-            product_name=product_data.product_name,
-            price=product_data.price,
-            quantity=product_data.quantity,
-            amount=product_data.amount,
-            nds_type=product_data.nds_type,
-            nds_sum=product_data.nds_sum,
-        )
-
-    @classmethod
-    def create_customer(cls, customer_data: CustomerData):
-        return Customer.objects.create(
-            user=customer_data.user,
-            name_seller=customer_data.name_seller,
-            retail_place_address=customer_data.retail_place_address,
-            retail_place=customer_data.retail_place,
-        )
-
-    @classmethod
-    def create_receipt(cls, receipt_data: ReceiptData):
-        return Receipt.objects.create(
-            user=receipt_data.user,
-            account=receipt_data.account,
-            receipt_date=receipt_data.receipt_date,
-            number_receipt=receipt_data.number_receipt,
-            operation_type=receipt_data.operation_type,
-            total_sum=receipt_data.total_sum,
-            customer=receipt_data.customer,
-        )
