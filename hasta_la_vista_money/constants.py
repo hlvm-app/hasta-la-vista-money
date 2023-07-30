@@ -66,6 +66,7 @@ class MessageOnSite(Enum):
     SUCCESS_CATEGORY_ADDED = 'Категория добавлена!'
     SUCCESS_EXPENSE_ADDED = 'Операция расхода успешно добавлена!'
     SUCCESS_INCOME_ADDED = 'Операция дохода успешно добавлена!'
+    SUCCESS_INCOME_UPDATE = 'Операция дохода успешно обновлена!'
     SUCCESS_EXPENSE_UPDATE = 'Операция расхода успешно обновлена!'
     SUCCESS_EXPENSE_DELETED = 'Операция расхода успешно удалена!'
     SUCCESS_INCOME_DELETED = 'Операция дохода успешно удалена!'
