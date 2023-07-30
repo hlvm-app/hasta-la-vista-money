@@ -153,22 +153,6 @@ class ReceiptParser:
                 f'Ошибка записи продавца в базу данных: {integrity_error}',
             )
 
-    def extract_receipt_info(self):
-        receipt_date = convert_date_time(self.parser.parse_json(
-            self.json_data, ReceiptConstants.RECEIPT_DATE_TIME.value,
-        ))
-        number_receipt = self.parser.parse_json(
-            self.json_data, ReceiptConstants.NUMBER_RECEIPT.value,
-        )
-
-        operation_type = self.parser.parse_json(
-            self.json_data, ReceiptConstants.OPERATION_TYPE.value,
-        )
-        total_sum = convert_number(self.parser.parse_json(
-            self.json_data, ReceiptConstants.TOTAL_SUM.value,
-        ))
-        return receipt_date, number_receipt, operation_type, total_sum
-
     def parse_receipt(self, chat_id: int) -> None:  # noqa: WPS231 C901 WPS210 WPS213 E501
         """
         Метод класса для парсинга основной информации о чеке.
@@ -204,47 +188,85 @@ class ReceiptParser:
             if 'query' in self.json_data and number_receipt is None:
                 logger.error(ReceiptConstants.RECEIPT_NOT_ACCEPTED.value)
                 return
-            elif check_number_receipt:
+
+            if check_number_receipt:
                 bot_admin.send_message(
                     chat_id, ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
                 )
-                return
             else:
-                self.parse_customer()
-                account_balance = get_object_or_404(Account, id=self.account)
-                if account_balance.user == self.user:
-                    account_balance.balance -= decimal.Decimal(total_sum)
-                    account_balance.save()
-                receipt_data = ReceiptData(
-                    user=self.user,
-                    account=account_balance,
-                    receipt_date=receipt_date,
-                    number_receipt=number_receipt,
-                    operation_type=operation_type,
-                    total_sum=total_sum,
-                    customer=self.customer,
+                self.process_receipt_data(
+                    chat_id,
+                    receipt_date,
+                    number_receipt,
+                    operation_type,
+                    total_sum,
                 )
-                self.receipt = ReceiptDataWriter.create_receipt(receipt_data)
-                self.parse_products()
                 bot_admin.send_message(
                     chat_id,
                     ReceiptConstants.RECEIPT_BE_ADDED.value,
                 )
         except IntegrityError as integrity_error:
-            if 'account' in str(integrity_error):
-                bot_admin.send_message(
-                    chat_id,
-                    TelegramMessage.NOT_CREATE_ACCOUNT.value,
-                )
-            else:
-                bot_admin.send_message(
-                    chat_id,
-                    TelegramMessage.ERROR_DATABASE_RECORD.value,
-                )
+            self.handle_integrity_error(
+                chat_id=chat_id,
+                integrity_error=integrity_error,
+            )
         except Http404:
             bot_admin.send_message(
                 chat_id,
                 TelegramMessage.NOT_CREATE_ACCOUNT.value,
+            )
+
+    def extract_receipt_info(self):
+        receipt_date = convert_date_time(self.parser.parse_json(
+            self.json_data, ReceiptConstants.RECEIPT_DATE_TIME.value,
+        ))
+        number_receipt = self.parser.parse_json(
+            self.json_data, ReceiptConstants.NUMBER_RECEIPT.value,
+        )
+
+        operation_type = self.parser.parse_json(
+            self.json_data, ReceiptConstants.OPERATION_TYPE.value,
+        )
+        total_sum = convert_number(self.parser.parse_json(
+            self.json_data, ReceiptConstants.TOTAL_SUM.value,
+        ))
+        return receipt_date, number_receipt, operation_type, total_sum
+
+    def process_receipt_data(
+        self,
+        receipt_date,
+        number_receipt,
+        operation_type,
+        total_sum,
+    ):
+        self.parse_customer()
+        account_balance = get_object_or_404(Account, id=self.account)
+        if account_balance.user == self.user:
+            account_balance.balance -= decimal.Decimal(total_sum)
+            account_balance.save()
+        receipt_data = ReceiptData(
+            user=self.user,
+            account=account_balance,
+            receipt_date=receipt_date,
+            number_receipt=number_receipt,
+            operation_type=operation_type,
+            total_sum=total_sum,
+            customer=self.customer,
+        )
+        self.receipt = ReceiptDataWriter.create_receipt(receipt_data)
+        self.parse_products()
+
+    @classmethod
+    def handle_integrity_error(cls, chat_id, integrity_error):
+        if 'account' in str(integrity_error):
+            bot_admin.send_message(
+                chat_id,
+                TelegramMessage.NOT_CREATE_ACCOUNT.value,
+            )
+        else:
+            bot_admin.send_message(
+                chat_id,
+                TelegramMessage.ERROR_DATABASE_RECORD.value,
             )
 
     def parse(self, chat_id: int) -> None:
