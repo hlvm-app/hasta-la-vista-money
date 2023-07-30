@@ -2,6 +2,7 @@ from django.test import Client, TestCase
 from django.urls import reverse_lazy
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import HTTPStatus
+from hasta_la_vista_money.income.forms import IncomeForm
 from hasta_la_vista_money.income.models import Income, IncomeType
 from hasta_la_vista_money.users.models import User
 
@@ -48,18 +49,20 @@ class TestIncome(TestCase):
         url = reverse_lazy('income:change', args=(self.income.pk,))
         update_expense = {
             'user': self.user,
-            'category': self.income_type,
-            'account': self.account,
-            'date': '15/02/2023 15:30',
+            'category': self.income_type.id,
+            'account': self.account.id,
+            'date': '2023-06-30 22:31:54',
             'amount': NEW_TEST_AMOUNT,
         }
 
-        response = self.client.post(url, update_expense)
+        form = IncomeForm(data=update_expense)
+        self.assertTrue(form.is_valid())
 
-        self.assertEqual(
-            Income.objects.get(pk=self.income.pk), self.income,
-        )
-        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+        response = self.client.post(url, form.data)
+        self.assertEqual(response.status_code, HTTPStatus.REDIRECTS.value)
+
+        updated_expense = Income.objects.get(pk=self.income.id)
+        self.assertEqual(updated_expense.amount, NEW_TEST_AMOUNT)
 
     def test_income_delete(self):
         self.client.force_login(self.user)
