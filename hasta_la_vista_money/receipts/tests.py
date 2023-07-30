@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.urls import reverse_lazy
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import HTTPStatus
+from hasta_la_vista_money.receipts.forms import ReceiptForm
 from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
 from hasta_la_vista_money.users.models import User
 
@@ -32,7 +33,7 @@ class TestReceipt(TestCase):
         self.client.force_login(self.user)
         url = reverse_lazy('receipts:create')
 
-        new_product = {
+        new_product_data = {
             'user': self.user,
             'product_name': 'Яблоко',
             'price': 10,
@@ -42,23 +43,31 @@ class TestReceipt(TestCase):
             'nds_sum': 1.3,
         }
 
-        new_receipt = {
+        new_product = Product.objects.create(**new_product_data)
+
+        new_customer_data = {
+            'user': self.user,
+            'name_seller': 'ООО Рога и Копыта'
+        }
+
+        new_customer = Customer.objects.create(**new_customer_data)
+
+        new_receipt_data = {
             'user': self.user,
             'account': self.account,
-            'receipt_date': '28/06/2023 21:24',
+            'receipt_date': '2023-06-28 21:24',
             'number_receipt': 111,
             'operation_type': 1,
             'total_sum': 10,
-            'customer': 'ООО Рога и Копыта',
-            'product': new_product,
+            'customer': new_customer,
         }
+        new_receipt = Receipt.objects.create(**new_receipt_data)
+        new_receipt.product.add(new_product)
 
-        response_product = self.client.post(url, data=new_product, follow=True)
-        response_receipt = self.client.post(url, data=new_receipt, follow=True)
+        form_receipt = ReceiptForm(data=new_receipt_data)
+        self.assertTrue(form_receipt.is_valid())
 
-        self.assertEqual(
-            response_product.status_code, HTTPStatus.SUCCESS_CODE.value,
-        )
+        response_receipt = self.client.post(url, data=form_receipt.data)
         self.assertEqual(
             response_receipt.status_code, HTTPStatus.SUCCESS_CODE.value,
         )
