@@ -9,6 +9,7 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, TemplateView, UpdateView
 from hasta_la_vista_money.constants import MessageOnSite
+from hasta_la_vista_money.custom_mixin import CustomSuccessMessageUserMixin
 from hasta_la_vista_money.users.forms import (
     RegisterUserForm,
     UpdateUserForm,
@@ -79,15 +80,15 @@ class CreateUser(SuccessMessageMixin, CreateView):
         return context
 
 
-class UpdateUserView(SuccessMessageMixin, UpdateView):
+class UpdateUserView(
+    CustomSuccessMessageUserMixin,
+    SuccessMessageMixin,
+    UpdateView,
+):
     model = User
     template_name = 'users/profile.html'
     form_class = UpdateUserForm
     success_message = MessageOnSite.SUCCESS_MESSAGE_CHANGED_PROFILE.value
-
-    def get_success_url(self):
-        user = self.kwargs['pk']
-        return reverse_lazy('users:profile', kwargs={'pk': user})
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -109,15 +110,15 @@ class UpdateUserView(SuccessMessageMixin, UpdateView):
         return JsonResponse(response_data)
 
 
-class UpdateUserPasswordView(SuccessMessageMixin, PasswordChangeView):
+class UpdateUserPasswordView(
+    CustomSuccessMessageUserMixin,
+    SuccessMessageMixin,
+    PasswordChangeView,
+):
     model = User
     template_name = 'users/profile.html'
     form_class = PasswordChangeForm
     success_message = MessageOnSite.SUCCESS_MESSAGE_CHANGED_PASSWORD.value
-
-    def get_success_url(self):
-        user = self.kwargs['pk']
-        return reverse_lazy('users:profile', kwargs={'pk': user})
 
     def post(self, request, *args, **kwargs):
         user_update_pass_form = PasswordChangeForm(

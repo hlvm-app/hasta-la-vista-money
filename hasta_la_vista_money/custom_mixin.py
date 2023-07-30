@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from django.views.generic import DeleteView, DetailView
 
 
@@ -37,3 +38,12 @@ class DeleteCategoryMixin(DetailView, DeleteView):
 
     def delete_category(self):
         raise NotImplementedError('Subclasses must implement delete_category()')
+
+
+class CustomSuccessMessageUserMixin:
+    def __init__(self):
+        self.kwargs = None
+
+    def get_success_url(self):
+        user = self.kwargs['pk']
+        return reverse_lazy('users:profile', kwargs={'pk': user})
