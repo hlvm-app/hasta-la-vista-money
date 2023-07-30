@@ -168,6 +168,7 @@ class IncomeUpdateView(
             )
             return super().form_valid(form)
 
+
 class IncomeDeleteView(DeleteView, DeletionMixin):
     model = Income
     template_name = TemplateHTMLView.INCOME_TEMPLATE.value

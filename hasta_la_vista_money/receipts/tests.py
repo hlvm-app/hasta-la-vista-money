@@ -47,7 +47,7 @@ class TestReceipt(TestCase):
 
         new_customer_data = {
             'user': self.user,
-            'name_seller': 'ООО Рога и Копыта'
+            'name_seller': 'ООО Рога и Копыта',
         }
 
         new_customer = Customer.objects.create(**new_customer_data)
