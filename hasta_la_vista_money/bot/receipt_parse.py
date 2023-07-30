@@ -195,7 +195,6 @@ class ReceiptParser:
                 )
             else:
                 self.process_receipt_data(
-                    chat_id,
                     receipt_date,
                     number_receipt,
                     operation_type,
