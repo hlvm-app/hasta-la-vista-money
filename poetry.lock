@@ -238,6 +238,20 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-axes"
+version = "6.0.5"
+description = "Keep track of failed login attempts in Django-powered sites."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+django = ">=3.2"
+
+[package.extras]
+ipware = ["django-ipware (>=3)"]
+
+[[package]]
 name = "django-bootstrap-datepicker-plus"
 version = "5.0.4"
 description = "Bootstrap3/Bootstrap4/Bootstrap5 DatePickerInput, TimePickerInput, DateTimePickerInput, MonthPickerInput, YearPickerInput"
@@ -1399,7 +1413,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<4"
-content-hash = "9a01de37d5fae1fa3738e62a8713b629d02e3395a0e554728d34d5c5212ca6c5"
+content-hash = "b41cbd45aa9b04e1bae7cf9ffdb0e9f6c8ef73b120bc82b612490f912ae1cab2"
 
 [metadata.files]
 alabaster = []
@@ -1422,6 +1436,7 @@ cryptography = []
 darglint = []
 dj-database-url = []
 django = []
+django-axes = []
 django-bootstrap-datepicker-plus = []
 django-bootstrap5 = []
 django-csp = []
