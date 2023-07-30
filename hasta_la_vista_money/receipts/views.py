@@ -45,7 +45,8 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             )
             receipt_form.fields['customer'].queryset = Customer.objects.filter(
                 user=request.user,
-            ).distinct('customer')
+            ).distinct('name_seller')
+
             product_formset = ProductFormSet()
 
             receipts = Receipt.objects.prefetch_related(
@@ -103,7 +104,7 @@ class ReceiptCreateView(SuccessMessageMixin, CreateView):
         super().__init__(*args, **kwargs)
 
     @staticmethod
-    def create_receipt(request, receipt_form, product_formset):
+    def create_receipt(request, receipt_form, product_formset, customer):
         receipt = receipt_form.save(commit=False)
         total_sum = receipt.total_sum
         account = receipt.account
@@ -112,6 +113,7 @@ class ReceiptCreateView(SuccessMessageMixin, CreateView):
             account_balance.balance -= total_sum
             account_balance.save()
             receipt.user = request.user
+            receipt.customer = customer
             receipt.manual = True
             receipt.save()
             for product_form in product_formset:
@@ -151,10 +153,12 @@ class ReceiptCreateView(SuccessMessageMixin, CreateView):
                     self.request, ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
                 )
             else:
+                customer = form.cleaned_data.get('customer')
                 self.create_receipt(
                     self.request,
                     form,
                     product_formset,
+                    customer,
                 )
                 messages.success(
                     self.request,
