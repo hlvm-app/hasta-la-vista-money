@@ -17,7 +17,6 @@ class TestIncome(TestCase):
     ]
 
     def setUp(self) -> None:
-        self.client = Client()
         self.user = User.objects.get(pk=1)
         self.account = Account.objects.get(pk=1)
         self.income = Income.objects.get(pk=1)
@@ -31,17 +30,20 @@ class TestIncome(TestCase):
     def test_income_create(self):
         self.client.force_login(self.user)
 
-        url = reverse_lazy('income:list')
+        url = reverse_lazy('income:create')
 
         new_income = {
             'user': self.user,
             'account': self.account,
             'category': self.income_type,
-            'date': '20/12/2023 15:30',
+            'date': '2023-12-20 15:30',
             'amount': TEST_AMOUNT,
         }
 
-        response = self.client.post(url, data=new_income, follow=True)
+        form = IncomeForm(data=new_income)
+        self.assertTrue(form.is_valid())
+
+        response = self.client.post(url, data=form.data, follow=True)
         self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
 
     def test_income_update(self):
