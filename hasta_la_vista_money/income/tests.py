@@ -73,3 +73,26 @@ class TestIncome(TestCase):
 
         response = self.client.post(url, follow=True)
         self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+
+    def test_category_income_create(self):
+        self.client.force_login(self.user)
+
+        url = reverse_lazy('income:create_category')
+
+        new_category = {
+            'user': self.user,
+            'name': 'Аванс'
+        }
+
+        response = self.client.post(url, data=new_category, follow=True)
+        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+
+    def test_category_income_delete(self):
+        self.client.force_login(self.user)
+
+        url = reverse_lazy(
+            'income:delete_category_income', args=(self.income.pk, ),
+        )
+
+        response = self.client.post(url, follow=True)
+        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
