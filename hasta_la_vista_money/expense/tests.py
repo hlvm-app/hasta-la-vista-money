@@ -30,13 +30,13 @@ class TestExpense(TestCase):
     def test_expense_create(self):
         self.client.force_login(self.user)
 
-        url = reverse_lazy('expense:list')
+        url = reverse_lazy('expense:create')
 
         new_expense = {
             'user': self.user,
             'account': self.account,
             'category': self.expense_type,
-            'date': '2023/12/20 15:30:00',
+            'date': '2023-12-20 15:30',
             'amount': TEST_AMOUNT,
         }
 
@@ -66,6 +66,29 @@ class TestExpense(TestCase):
         self.client.force_login(self.user)
 
         url = reverse_lazy('expense:delete', args=(self.expense.pk, ))
+
+        response = self.client.post(url, follow=True)
+        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+
+    def test_category_expense_create(self):
+        self.client.force_login(self.user)
+
+        url = reverse_lazy('expense:create_category')
+
+        new_category = {
+            'user': self.user,
+            'name': 'Аванс'
+        }
+
+        response = self.client.post(url, data=new_category, follow=True)
+        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+
+    def test_category_expense_delete(self):
+        self.client.force_login(self.user)
+
+        url = reverse_lazy(
+            'expense:delete_category_expense', args=(self.expense.pk, ),
+        )
 
         response = self.client.post(url, follow=True)
         self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
