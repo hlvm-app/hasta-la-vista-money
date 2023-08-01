@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import ProtectedError
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, UpdateView
 from django.views.generic.edit import CreateView, DeletionMixin
@@ -16,6 +16,7 @@ from hasta_la_vista_money.constants import (
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
     DeleteCategoryMixin,
+    ExpenseIncomeFormValidCreateMixin,
 )
 from hasta_la_vista_money.income.forms import AddCategoryIncomeForm, IncomeForm
 from hasta_la_vista_money.income.models import Income, IncomeType
@@ -61,27 +62,6 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                     'income_form': income_form,
                 },
             )
-
-    def post(self, request, *args, **kwargs):  # noqa: WPS210
-        categories = IncomeType.objects.filter(user=request.user).all()
-        add_category_income_form = AddCategoryIncomeForm(request.POST)
-
-        if add_category_income_form.is_valid():
-            category_form = add_category_income_form.save(commit=False)
-            category_form.user = request.user
-            category_form.save()
-            messages.success(
-                request, MessageOnSite.SUCCESS_CATEGORY_ADDED.value,
-            )
-            return redirect(self.success_url)
-        return render(
-            request,
-            self.template_name,
-            {
-                'add_category_income_form': add_category_income_form,
-                'categories': categories,
-            },
-        )
 
 
 class IncomeCreateView(
@@ -191,18 +171,13 @@ class IncomeDeleteView(DeleteView, DeletionMixin):
             return super().form_valid(form)
 
 
-class IncomeCategoryDeleteView(DeleteCategoryMixin):
+class IncomeCategoryCreateView(ExpenseIncomeFormValidCreateMixin):
+    model = IncomeType
+    template_name = TemplateHTMLView.INCOME_TEMPLATE.value
     success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)
+    form_class = AddCategoryIncomeForm
 
-    def get_success_message(self):
-        return MessageOnSite.SUCCESS_CATEGORY_INCOME_DELETED.value
 
-    def get_error_message(self):
-        return MessageOnSite.ACCESS_DENIED_DELETE_CATEGORY_INCOME.value
-
-    def delete_category(self):
-        try:
-            self.object.delete()
-            return True
-        except ProtectedError:
-            return False
+class IncomeCategoryDeleteView(DeleteCategoryMixin):
+    model = IncomeType
+    success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)

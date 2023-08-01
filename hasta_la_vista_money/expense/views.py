@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import Count, ProtectedError, Sum
+from django.db.models import Count, Sum
 from django.db.models.functions import TruncMonth
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -21,6 +21,7 @@ from hasta_la_vista_money.constants import (
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
     DeleteCategoryMixin,
+    ExpenseIncomeFormValidCreateMixin,
 )
 from hasta_la_vista_money.expense.forms import AddCategoryForm, AddExpenseForm
 from hasta_la_vista_money.expense.models import Expense, ExpenseType
@@ -218,18 +219,13 @@ class ExpenseDeleteView(DetailView, DeleteView):
             return super().form_valid(form)
 
 
+class IncomeCategoryCreateView(ExpenseIncomeFormValidCreateMixin):
+    model = ExpenseType
+    template_name = TemplateHTMLView.INCOME_TEMPLATE.value
+    success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)
+    form_class = AddExpenseForm
+
+
 class ExpenseCategoryDeleteView(DeleteCategoryMixin):
+    model = ExpenseType
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
-
-    def get_success_message(self):
-        return MessageOnSite.SUCCESS_CATEGORY_EXPENSE_DELETED.value
-
-    def get_error_message(self):
-        return MessageOnSite.ACCESS_DENIED_DELETE_CATEGORY_EXPENSE.value
-
-    def delete_category(self):
-        try:
-            self.object.delete()
-            return True
-        except ProtectedError:
-            return False
