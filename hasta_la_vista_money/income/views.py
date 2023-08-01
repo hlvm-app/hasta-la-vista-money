@@ -75,6 +75,11 @@ class IncomeCreateView(
     form_class = IncomeForm
     success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.helper.form_action = reverse_lazy('income:create')
+        return form
+
     def post(self, request, *args, **kwargs):
         income_form = IncomeForm(request.POST)
         response_data = {}
