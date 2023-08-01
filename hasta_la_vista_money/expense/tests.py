@@ -77,7 +77,7 @@ class TestExpense(TestCase):
 
         new_category = {
             'user': self.user,
-            'name': 'ЖКХ'
+            'name': 'ЖКХ',
         }
 
         response = self.client.post(url, data=new_category, follow=True)

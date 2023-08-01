@@ -1,4 +1,4 @@
-from django.test import Client, TestCase
+from django.test import TestCase
 from django.urls import reverse_lazy
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import HTTPStatus
@@ -81,7 +81,7 @@ class TestIncome(TestCase):
 
         new_category = {
             'user': self.user,
-            'name': 'Аванс'
+            'name': 'Аванс',
         }
 
         response = self.client.post(url, data=new_category, follow=True)
