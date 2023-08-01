@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, TemplateView, UpdateView
 from hasta_la_vista_money.constants import MessageOnSite
-from hasta_la_vista_money.custom_mixin import CustomSuccessMessageUserMixin
+from hasta_la_vista_money.custom_mixin import CustomSuccessURLUserMixin
 from hasta_la_vista_money.users.forms import (
     RegisterUserForm,
     UpdateUserForm,
@@ -81,7 +81,7 @@ class CreateUser(SuccessMessageMixin, CreateView):
 
 
 class UpdateUserView(
-    CustomSuccessMessageUserMixin,
+    CustomSuccessURLUserMixin,
     SuccessMessageMixin,
     UpdateView,
 ):
@@ -111,7 +111,7 @@ class UpdateUserView(
 
 
 class UpdateUserPasswordView(
-    CustomSuccessMessageUserMixin,
+    CustomSuccessURLUserMixin,
     SuccessMessageMixin,
     PasswordChangeView,
 ):
