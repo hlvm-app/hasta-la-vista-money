@@ -90,7 +90,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="form" method="post">
+                        <form class="form" method="post" action="{% url 'income:create_category' %}">
                             {% csrf_token %}
                             {% bootstrap_form add_category_income_form %}
                             {% bootstrap_button button_add_category button_type="submit" button_class='add-category-income btn btn-primary' %}
