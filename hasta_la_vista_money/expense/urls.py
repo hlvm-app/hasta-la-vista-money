@@ -1,5 +1,6 @@
 from django.urls import path
 from hasta_la_vista_money.expense.views import (
+    ExpenseCategoryCreateView,
     ExpenseCategoryDeleteView,
     ExpenseCreateView,
     ExpenseDeleteView,
@@ -17,5 +18,10 @@ urlpatterns = [
         'category/<int:pk>/',
         ExpenseCategoryDeleteView.as_view(),
         name='delete_category_expense',
+    ),
+    path(
+        'create/category/',
+        ExpenseCategoryCreateView.as_view(),
+        name='create_category',
     ),
 ]
