@@ -70,18 +70,11 @@ class MessageOnSite(Enum):
     SUCCESS_EXPENSE_UPDATE = 'Операция расхода успешно обновлена!'
     SUCCESS_EXPENSE_DELETED = 'Операция расхода успешно удалена!'
     SUCCESS_INCOME_DELETED = 'Операция дохода успешно удалена!'
-    SUCCESS_CATEGORY_INCOME_DELETED = 'Категория дохода успешно удалена!'
-    SUCCESS_CATEGORY_EXPENSE_DELETED = 'Категория расхода успешно удалена!'
-    ACCESS_DENIED_DELETE_CATEGORY_INCOME = ''.join(
+    SUCCESS_CATEGORY_DELETED = 'Категория успешно удалена!'
+    ACCESS_DENIED_DELETE_CATEGORY = ''.join(
         (
             'Категория не может быть удалена, ',
-            'так как связана с одним из пунктом дохода',
-        ),
-    )
-    ACCESS_DENIED_DELETE_CATEGORY_EXPENSE = ''.join(
-        (
-            'Категория не может быть удалена, ',
-            'так как связана с одним из пунктом расхода',
+            'так как связана с доходом или расходом',
         ),
     )
     SUCCESS_MESSAGE_TRANSFER_MONEY = 'Средства успешно переведены'
