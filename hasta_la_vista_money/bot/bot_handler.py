@@ -127,8 +127,23 @@ def create_telegram_user(message, telegram_username, user):
     bot_admin.delete_message(message.from_user.id, message.message_id)
 
 
+def check_account_exist(user):
+    accounts = Account.objects.filter(user=user)
+    if accounts.exists():
+        markup = types.InlineKeyboardMarkup()
+        for account in accounts:
+            button = types.InlineKeyboardButton(
+                text=account.name_account,
+                callback_data=f'select_account_{account.id}',
+            )
+            markup.add(button)
+        bot_admin.reply_to(message, 'Выберете счёт:', reply_markup=markup)
+    else:
+        bot_admin.reply_to(message, 'У вас нет доступных счетов.')
+
+
 @bot_admin.message_handler(commands=['select_account'])
-def select_account(message):  # noqa: C812 WPS210
+def select_account(message):
     """
     Выбор счёта пользователем.
 
@@ -143,18 +158,7 @@ def select_account(message):  # noqa: C812 WPS210
 
     if telegram_user:
         user = telegram_user.user
-        accounts = Account.objects.filter(user=user)
-        if accounts.exists():
-            markup = types.InlineKeyboardMarkup()
-            for account in accounts:
-                button = types.InlineKeyboardButton(
-                    text=account.name_account,
-                    callback_data=f'select_account_{account.id}',
-                )
-                markup.add(button)
-            bot_admin.reply_to(message, 'Выберете счёт:', reply_markup=markup)
-        else:
-            bot_admin.reply_to(message, 'У вас нет доступных счетов.')
+        check_account_exist(user)
     else:
         bot_admin.reply_to(message, 'Вы не авторизованы.')
 
