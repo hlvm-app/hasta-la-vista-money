@@ -127,7 +127,14 @@ def create_telegram_user(message, telegram_username, user):
     bot_admin.delete_message(message.from_user.id, message.message_id)
 
 
-def check_account_exist(user):
+def check_account_exist(user, message):
+    """
+    Проверка существования счёта.
+
+    :param user:
+    :param message:
+    :return:
+    """
     accounts = Account.objects.filter(user=user)
     if accounts.exists():
         markup = types.InlineKeyboardMarkup()
@@ -158,7 +165,7 @@ def select_account(message):
 
     if telegram_user:
         user = telegram_user.user
-        check_account_exist(user)
+        check_account_exist(user, message)
     else:
         bot_admin.reply_to(message, 'Вы не авторизованы.')
 
