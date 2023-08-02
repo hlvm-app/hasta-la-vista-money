@@ -16,6 +16,7 @@ from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
     DeleteCategoryMixin,
     ExpenseIncomeFormValidCreateMixin,
+    UpdateViewMixin,
 )
 from hasta_la_vista_money.income.forms import AddCategoryIncomeForm, IncomeForm
 from hasta_la_vista_money.income.models import Income, IncomeType
@@ -109,6 +110,7 @@ class IncomeUpdateView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
     UpdateView,
+    UpdateViewMixin,
 ):
     model = Income
     template_name = 'income/change_income.html'
@@ -117,13 +119,7 @@ class IncomeUpdateView(
     success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)
 
     def get(self, request, *args, **kwargs):
-        income = self.get_object()
-        income_form = IncomeForm(instance=income)
-        return render(
-            request,
-            self.template_name,
-            {'income_form': income_form},
-        )
+        return self.get_update_form(self.form_class, 'income_form')
 
     def form_valid(self, form):
         income_id = self.get_object().id

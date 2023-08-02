@@ -22,6 +22,7 @@ from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
     DeleteCategoryMixin,
     ExpenseIncomeFormValidCreateMixin,
+    UpdateViewMixin,
 )
 from hasta_la_vista_money.expense.forms import AddCategoryForm, AddExpenseForm
 from hasta_la_vista_money.expense.models import Expense, ExpenseType
@@ -149,6 +150,7 @@ class ExpenseUpdateView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
     UpdateView,
+    UpdateViewMixin,
 ):
     model = Expense
     template_name = 'expense/change_expense.html'
@@ -157,13 +159,8 @@ class ExpenseUpdateView(
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
 
     def get(self, request, *args, **kwargs):
-        expense = self.get_object()
-        add_expense_form = AddExpenseForm(instance=expense)
-
-        return render(
-            request,
-            self.template_name,
-            {'add_expense_form': add_expense_form},
+        return self.get_update_form(
+            self.form_class, 'add_expense_form',
         )
 
     def form_valid(self, form):

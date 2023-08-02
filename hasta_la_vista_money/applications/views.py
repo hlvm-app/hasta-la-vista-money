@@ -14,7 +14,10 @@ from hasta_la_vista_money.account.forms import (
 )
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import MessageOnSite
-from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
+from hasta_la_vista_money.custom_mixin import (
+    CustomNoPermissionMixin,
+    UpdateViewMixin,
+)
 from hasta_la_vista_money.expense.models import Expense
 from hasta_la_vista_money.income.models import Income
 from hasta_la_vista_money.receipts.models import Receipt
@@ -136,6 +139,7 @@ class ChangeAccountView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
     UpdateView,
+    UpdateViewMixin,
 ):
     model = Account
     form_class = AddAccountForm
@@ -144,12 +148,8 @@ class ChangeAccountView(
     success_message = MessageOnSite.SUCCESS_MESSAGE_CHANGED_ACCOUNT.value
 
     def get(self, request, *args, **kwargs):
-        account = self.get_object()
-        account_form = AddAccountForm(instance=account)
-        return render(
-            request,
-            self.template_name,
-            {'add_account_form': account_form},
+        return self.get_update_form(
+            self.form_class, 'add_account_form',
         )
 
 

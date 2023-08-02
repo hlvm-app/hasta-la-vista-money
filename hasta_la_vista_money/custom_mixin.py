@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import ProtectedError
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView
 from hasta_la_vista_money.constants import MessageOnSite
@@ -59,3 +59,19 @@ class ExpenseIncomeFormValidCreateMixin(CreateView):
             self.request, MessageOnSite.SUCCESS_CATEGORY_ADDED.value,
         )
         return super().form_valid(form)
+
+
+class UpdateViewMixin:
+
+    def __init__(self):
+        self.template_name = None
+        self.request = None
+
+    def get_update_form(self, form_class=None, form_name=None):
+        model = self.get_object()
+        form = form_class(instance=model)
+        return render(
+            self.request,
+            self.template_name,
+            {form_name: form},
+        )
