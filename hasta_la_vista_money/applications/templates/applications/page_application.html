@@ -74,8 +74,55 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xl-12 d-flex justify-content-end mt-5 pe-xl-5">
-                <div class="account bg-light border shadow border-2 rounded-4 p-2">
+	    <div class="col-xl-3 mt-3">
+                <table class="table table-sm caption-top table-hover text-center justify-content-center table-bordered text-light shadow" aria-label="table about receipts">
+                    <caption class='text-light fst-italic'>Статистика по чекам</caption>
+                    <tr>
+                        <th>
+                            Период
+                        </th>
+                        <th>
+                            Количество чеков
+                        </th>
+                        <th>
+                            Сумма
+                        </th>
+                        <th>
+                            Счёт
+                        </th>
+                    </tr>
+                    {% for receipt in receipt_info_by_month %}
+                        <tr>
+                            <td class="col-3 text-nowrap">{{ receipt.month | date:"F Y" }}</td>
+                            <td class="col-2 text-nowrap">{{ receipt.count }}</td>
+                            <td class="col-3 text-nowrap">{{ receipt.total_amount | comma }}</td>
+                            <td class="col-3 text-nowrap">{{ receipt.account__name_account }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="col-xl-4 mt-3">
+                <table class="table table-sm caption-top table-expense table-hover align-middle text-center text-light table-bordered shadow" aria-label="table expense">
+                    <caption class="text-light fst-italic">Статистика по расходам и доходам</caption>
+                    <tr>
+                        <th>Категория</th>
+                        <th>Дата</th>
+                        <th>Сумма</th>
+                        <th>Счёт</th>
+                    </tr>
+                    {% for item in income_expense %}
+                        <tr>
+                            <td class="text-nowrap">{{ item.category__name }}</td>
+                            <td class="text-nowrap">{{ item.date | date:'F Y' }}</td>
+                            <td class="text-nowrap">{{ item.amount | comma }}</td>
+                            <td class="text-nowrap">{{ item.account__name_account }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <!-- /.col-xl-4 -->
+            <div class="col-xl-5 d-flex justify-content-end mt-5 pe-xl-5">
+                <div class="account bg-light overflow-auto border shadow border-2 rounded-4 pb-3 pt-1">
                     <table class="table table-sm text-center table-hover mb-0 table-borderless" aria-label="table account">
                         <thead>
                             <tr class="align-middle">
@@ -125,55 +172,5 @@
                 </div>
             </div>
         </div>
-        <div class="row d-flex justify-content-center">
-            <div class="col-xl-3 mt-5">
-                <table class="table table-sm caption-top table-hover text-center justify-content-center table-bordered text-light shadow" aria-label="table about receipts">
-                    <caption class='text-light fst-italic'>Статистика по чекам</caption>
-                    <tr>
-                        <th>
-                            Период
-                        </th>
-                        <th>
-                            Количество чеков
-                        </th>
-                        <th>
-                            Сумма
-                        </th>
-                        <th>
-                            Счёт
-                        </th>
-                    </tr>
-                    {% for receipt in receipt_info_by_month %}
-                        <tr>
-                            <td class="col-3 text-nowrap">{{ receipt.month | date:"F Y" }}</td>
-                            <td class="col-2 text-nowrap">{{ receipt.count }}</td>
-                            <td class="col-3 text-nowrap">{{ receipt.total_amount | comma }}</td>
-                            <td class="col-3 text-nowrap">{{ receipt.account__name_account }}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </div>
-            <div class="col-xl-4 mt-5">
-                <table class="table table-sm caption-top table-expense table-hover align-middle text-center text-light table-bordered shadow" aria-label="table expense">
-                    <caption class="text-light fst-italic">Статистика по расходам и доходам</caption>
-                    <tr>
-                        <th>Категория</th>
-                        <th>Дата</th>
-                        <th>Сумма</th>
-                        <th>Счёт</th>
-                    </tr>
-                    {% for item in income_expense %}
-                        <tr>
-                            <td class="text-nowrap">{{ item.category__name }}</td>
-                            <td class="text-nowrap">{{ item.date | date:'F Y' }}</td>
-                            <td class="text-nowrap">{{ item.amount | comma }}</td>
-                            <td class="text-nowrap">{{ item.account__name_account }}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </div>
-            <!-- /.col-xl-4 -->
-        </div>
-        <!-- /.row -->
     </div>
 {% endblock %}
