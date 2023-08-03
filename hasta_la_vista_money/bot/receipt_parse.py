@@ -191,7 +191,8 @@ class ReceiptParser:
 
             if check_number_receipt:
                 bot_admin.send_message(
-                    chat_id, ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
+                    chat_id,
+                    ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
                 )
             else:
                 self.process_receipt_data(
