@@ -21,15 +21,10 @@ def convert_date_time(date_time: Union[str, int]) -> Union[str, None]:
         if date_time is None:
             return None
         if isinstance(date_time, str):
-            if ':' in date_time and 'T' in date_time:
-                dt = datetime.datetime.strptime(date_time, '%Y-%m-%dT%H:%M:%S')
-                return dt.strftime('%Y-%m-%d %H:%M')
-            elif ':' not in date_time:
-                dt = datetime.datetime.strptime(date_time, '%Y%m%dT%H%M%S')
-                return dt.strftime('%Y-%m-%d %H:%M')
-            elif 'T' not in date_time:
-                dt = datetime.datetime.strptime(date_time, '%Y-%m-%d %H:%M:%S')
-                return dt.strftime('%Y%m%dT%H%M%S')
+            dt = datetime.datetime.strptime(
+                date_time, '%Y-%m-%dT%H:%M:%S',
+            )
+            return dt.strftime('%Y-%m-%d %H:%M')
         dt = datetime.datetime.fromtimestamp(int(date_time))
         return f'{dt:%Y-%m-%d %H:%M}'
     except TypeError as error:
