@@ -108,7 +108,7 @@ class ReceiptApiReceiver:
                 url,
                 json=payload,
                 headers=headers,
-                timeout=10
+                timeout=10,
             )
             self._session_id = response.json()['sessionId']
         except (
