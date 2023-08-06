@@ -195,7 +195,6 @@ class ReceiptDeleteView(DetailView, DeleteView):
 
                 for product in receipt.product.all():
                     product.delete()
-                receipt.customer.delete()
 
                 receipt.delete()
                 messages.success(self.request, 'Чек успешно удалён!')
