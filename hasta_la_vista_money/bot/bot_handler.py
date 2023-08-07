@@ -193,7 +193,7 @@ def handle_select_account(call):
             to_pin = bot_admin.send_message(
                 call.message.chat.id, f'Выбран счёт: {account.name_account}',
             )
-            bot_admin.pin_chat_message(call.message.chat.id, to_pin.message.id)
+            bot_admin.pin_chat_message(call.message.chat.id, to_pin.id)
         else:
             bot_admin.send_message(
                 call.message.chat.id, 'Ошибка: счёт не найден.',
