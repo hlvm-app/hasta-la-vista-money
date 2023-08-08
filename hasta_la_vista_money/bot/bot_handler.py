@@ -185,27 +185,22 @@ def handle_select_account(call):
     :param call:
     :return:
     """
+    telegram_user_id = call.from_user.id
+    telegram_user = check_telegram_user(telegram_user_id)
     account_id = int(call.data.split('_')[2])
-    account = Account.objects.filter(id=account_id).first()
-    if account:
-        telegram_user_id = call.from_user.id
-        telegram_user = check_telegram_user(telegram_user_id)
-        telegram_user.selected_account_id = account_id
-        telegram_user.save()
-        bot_admin.unpin_all_chat_messages(chat_id=call.message.chat.id)
-        pinned_message = bot_admin.send_message(
-            chat_id=call.message.chat.id,
-            text=f'Выбран счёт: {account.name_account}',
-        )
-        bot_admin.pin_chat_message(
-            chat_id=call.message.chat.id,
-            message_id=pinned_message.message_id,
-            disable_notification=True,
-        )
-    else:
-        bot_admin.send_message(
-            call.message.chat.id, 'Ошибка: счёт не найден.',
-        )
+    telegram_user.selected_account_id = account_id
+    telegram_user.save()
+    
+    bot_admin.unpin_all_chat_messages(chat_id=call.message.chat.id)
+    pinned_message = bot_admin.send_message(
+        chat_id=call.message.chat.id,
+        text=f'Выбран счёт: {account.name_account}',
+    )
+    bot_admin.pin_chat_message(
+        chat_id=call.message.chat.id,
+        message_id=pinned_message.message_id,
+        disable_notification=True,
+    )
 
 
 @bot_admin.message_handler(content_types=['text', 'document', 'photo'])
