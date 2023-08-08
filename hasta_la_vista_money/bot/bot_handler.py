@@ -154,7 +154,6 @@ def check_account_exist(user):
     Проверка существования счёта.
 
     :param user:
-    :param message:
     :return:
     """
     return Account.objects.filter(user=user).exists()
@@ -218,7 +217,7 @@ def select_account(message):
 
 
 @bot_admin.callback_query_handler(
-    func=lambda call: call.data.startswith(
+    func=lambda call: call.data and call.data.startswith(
         'select_account_',
     ),
 )
