@@ -130,7 +130,7 @@ def create_telegram_user(message, telegram_username, user):
 def check_telegram_user(telegram_user_id):
     return TelegramUser.objects.filter(
         telegram_id=telegram_user_id,
-    ).exists()
+    ).first()
 
 
 def check_account_exist(user):
