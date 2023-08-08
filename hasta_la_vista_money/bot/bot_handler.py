@@ -192,6 +192,7 @@ def handle_select_account(call):
     telegram_user.save()
     
     bot_admin.unpin_all_chat_messages(chat_id=call.message.chat.id)
+    account = Account.objects.filter(id=account_id).first()
     pinned_message = bot_admin.send_message(
         chat_id=call.message.chat.id,
         text=f'Выбран счёт: {account.name_account}',
