@@ -190,11 +190,16 @@ def handle_select_account(call):
         ).first()
         telegram_user.selected_account_id = account_id
         telegram_user.save()
-        bot_admin.unpin_all_chat_messages(call.message.chat.id)
-        to_pin = bot_admin.send_message(
-            call.message.chat.id, f'Выбран счёт: {account.name_account}',
+        bot_admin.unpin_all_chat_messages(chat_id=call.message.chat.id)
+        pinned_message = bot_admin.send_message(
+            chat_id=call.message.chat.id,
+            text=f'Выбран счёт: {account.name_account}',
         )
-        bot_admin.pin_chat_message(call.message.chat.id, to_pin.message_id)
+        bot_admin.pin_chat_message(
+            chat_id=call.message.chat.id,
+            message_id=pinned_message.message_id,
+            disable_notification=True,
+        )
     else:
         bot_admin.send_message(
             call.message.chat.id, 'Ошибка: счёт не найден.',
