@@ -34,8 +34,6 @@ def webhooks(request) -> HttpResponse:
                 ResponseText.SUCCESS_WEBHOOKS.value,
                 status=HTTPStatus.SUCCESS_CODE.value,
             )
-        except TypeError:
-            ...
         except Exception as error:
             logger.error(error)
 
