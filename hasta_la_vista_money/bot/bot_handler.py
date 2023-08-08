@@ -26,11 +26,13 @@ def handle_start(message):
 
     if check_telegram_username:
         bot_admin.send_message(
-            message.chat.id, TelegramMessage.ALREADY_LOGGED.value,
+            message.chat.id,
+            TelegramMessage.ALREADY_LOGGED.value,
         )
     else:
         bot_admin.send_message(
-            message.chat.id, TelegramMessage.REQUIRED_AUTHORIZATION.value,
+            message.chat.id,
+            TelegramMessage.REQUIRED_AUTHORIZATION.value,
         )
         bot_admin.register_next_step_handler(message, handle_auth)
 
@@ -54,17 +56,24 @@ def handle_auth(message):
 
     if user and user.check_password(password):
         check_existing_telegram_user(
-            message, existing_telegram_user, telegram_username, user,
+            message,
+            existing_telegram_user,
+            telegram_username,
+            user,
         )
     else:
         bot_admin.reply_to(
-            message, TelegramMessage.INVALID_USERNAME_PASSWORD.value,
+            message,
+            TelegramMessage.INVALID_USERNAME_PASSWORD.value,
         )
         bot_admin.delete_message(message.from_user.id, message.message_id)
 
 
 def check_existing_telegram_user(
-    message, existing_telegram_user, telegram_username, user,
+    message,
+    existing_telegram_user,
+    telegram_username,
+    user,
 ):
     """
     Проверка существования телеграм пользователя в базе данных.
@@ -122,12 +131,19 @@ def create_telegram_user(message, telegram_username, user):
         telegram_id=message.from_user.id,
     )
     bot_admin.reply_to(
-        message, TelegramMessage.AUTHORIZATION_SUCCESSFUL.value,
+        message,
+        TelegramMessage.AUTHORIZATION_SUCCESSFUL.value,
     )
     bot_admin.delete_message(message.from_user.id, message.message_id)
 
 
 def check_telegram_user(telegram_user_id):
+    """
+    Проверка существования телеграм пользователя в базе.
+
+    :param telegram_user_id:
+    :return:
+    """
     return TelegramUser.objects.filter(
         telegram_id=telegram_user_id,
     ).first()
@@ -145,6 +161,12 @@ def check_account_exist(user):
 
 
 def create_buttons_with_account(user):
+    """
+    Функция создания кнопок со счетами.
+
+    :param user:
+    :return:
+    """
     accounts = Account.objects.filter(user=user)
     markup = types.InlineKeyboardMarkup()
     for account in accounts:
@@ -154,6 +176,26 @@ def create_buttons_with_account(user):
         )
         markup.add(button)
     return markup
+
+
+def pin_message(call, account):
+    """
+    Функция закрепления сообщения.
+
+    :param call:
+    :param account:
+    :return:
+    """
+    bot_admin.unpin_all_chat_messages(chat_id=call.message.chat.id)
+    pinned_message = bot_admin.send_message(
+        chat_id=call.message.chat.id,
+        text=f'Выбран счёт: {account.name_account}',
+    )
+    bot_admin.pin_chat_message(
+        chat_id=call.message.chat.id,
+        message_id=pinned_message.id,
+        disable_notification=True,
+    )
 
 
 @bot_admin.message_handler(commands=['select_account'])
@@ -175,9 +217,11 @@ def select_account(message):
         bot_admin.reply_to(message, 'У вас нет доступных счетов.')
 
 
-@bot_admin.callback_query_handler(func=lambda call: call.data.startswith(
-    'select_account_',
-))
+@bot_admin.callback_query_handler(
+    func=lambda call: call.data.startswith(
+        'select_account_',
+    ),
+)
 def handle_select_account(call):
     """
     Обработка выбора счёта пользователем.
@@ -192,19 +236,6 @@ def handle_select_account(call):
     telegram_user.save()
     account = Account.objects.filter(id=account_id).first()
     pin_message(call, account)
-    
-
-def pin_message(call, account):
-    bot_admin.unpin_all_chat_messages(chat_id=call.message.chat.id)
-    pinned_message = bot_admin.send_message(
-        chat_id=call.message.chat.id,
-        text=f'Выбран счёт: {account.name_account}',
-    )
-    bot_admin.pin_chat_message(
-        chat_id=call.message.chat.id,
-        message_id=pinned_message.message_id,
-        disable_notification=True,
-    )
 
 
 @bot_admin.message_handler(content_types=['text', 'document', 'photo'])
