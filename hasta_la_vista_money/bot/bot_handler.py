@@ -217,7 +217,7 @@ def select_account(message):
 
 
 @bot_admin.callback_query_handler(
-    func=lambda call: call.data and call.data.startswith(
+    func=lambda call: call.data.startswith(
         'select_account_',
     ),
 )
