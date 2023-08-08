@@ -1,5 +1,5 @@
 from django.core.management import BaseCommand
-from hasta_la_vista_money.bot.bot_handler import bot_admin
+from hasta_la_vista_money.bot.config_bot import bot_admin
 
 
 class Command(BaseCommand):
@@ -22,4 +22,10 @@ class Command(BaseCommand):
         :param options:
         :return: None
         """
-        bot_admin.polling(none_stop=True, skip_pending=False)
+        try:
+            bot_admin.infinity_polling(none_stop=True, skip_pending=False)
+        except TypeError:
+            # Заглушка нужна для того, чтобы не выводилась ошибка
+            # TypeError: 'function' object is not subscriptable
+            # так как чат с ботом не является супергруппой.
+            ...  # noqa: WPS428
