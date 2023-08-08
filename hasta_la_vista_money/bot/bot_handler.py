@@ -136,7 +136,18 @@ def check_account_exist(user):
     :return:
     """
     return Account.objects.filter(user=user).exists()
-        
+
+
+def create_buttons_with_account(user):
+    accounts = Account.objects.filter(user=user)
+    markup = types.InlineKeyboardMarkup()
+    for account in accounts:
+        button = types.InlineKeyboardButton(
+            text=account.name_account,
+            callback_data=f'select_account_{account.id}',
+        )
+        markup.add(button)
+    return markup
 
 
 @bot_admin.message_handler(commands=['select_account'])
@@ -154,13 +165,7 @@ def select_account(message):
     ).first()
     user = telegram_user.user
     if telegram_user and check_account_exist(user):
-        markup = types.InlineKeyboardMarkup()
-        for account in accounts:
-            button = types.InlineKeyboardButton(
-                text=account.name_account,
-                callback_data=f'select_account_{account.id}',
-            )
-            markup.add(button)
+        markup = create_buttons_with_account(user)
         bot_admin.reply_to(message, 'Выберете счёт:', reply_markup=markup)
     else:
         bot_admin.reply_to(message, 'У вас нет доступных счетов.')
