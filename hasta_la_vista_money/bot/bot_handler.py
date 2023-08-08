@@ -127,7 +127,7 @@ def create_telegram_user(message, telegram_username, user):
     bot_admin.delete_message(message.from_user.id, message.message_id)
 
 
-def check_account_exist(user, message):
+def check_account_exist(user):
     """
     Проверка существования счёта.
 
@@ -135,18 +135,8 @@ def check_account_exist(user, message):
     :param message:
     :return:
     """
-    accounts = Account.objects.filter(user=user)
-    if accounts.exists():
-        markup = types.InlineKeyboardMarkup()
-        for account in accounts:
-            button = types.InlineKeyboardButton(
-                text=account.name_account,
-                callback_data=f'select_account_{account.id}',
-            )
-            markup.add(button)
-        bot_admin.reply_to(message, 'Выберете счёт:', reply_markup=markup)
-    else:
-        bot_admin.reply_to(message, 'У вас нет доступных счетов.')
+    return Account.objects.filter(user=user).exists()
+        
 
 
 @bot_admin.message_handler(commands=['select_account'])
@@ -162,12 +152,18 @@ def select_account(message):
     telegram_user = TelegramUser.objects.filter(
         telegram_id=telegram_user_id,
     ).first()
-
-    if telegram_user:
-        user = telegram_user.user
-        check_account_exist(user, message)
+    user = telegram_user.user
+    if telegram_user and check_account_exist(user):
+        markup = types.InlineKeyboardMarkup()
+        for account in accounts:
+            button = types.InlineKeyboardButton(
+                text=account.name_account,
+                callback_data=f'select_account_{account.id}',
+            )
+            markup.add(button)
+        bot_admin.reply_to(message, 'Выберете счёт:', reply_markup=markup)
     else:
-        bot_admin.reply_to(message, 'Вы не авторизованы.')
+        bot_admin.reply_to(message, 'У вас нет доступных счетов.')
 
 
 @bot_admin.callback_query_handler(func=lambda call: call.data.startswith(
@@ -187,18 +183,17 @@ def handle_select_account(call):
         telegram_user = TelegramUser.objects.filter(
             telegram_id=telegram_user_id,
         ).first()
-        if telegram_user:
-            telegram_user.selected_account_id = account_id
-            telegram_user.save()
-            bot_admin.unpin_all_chat_messages(call.message.chat.id)
-            to_pin = bot_admin.send_message(
-                call.message.chat.id, f'Выбран счёт: {account.name_account}',
-            )
-            bot_admin.pin_chat_message(call.message.chat.id, to_pin.message_id)
-        else:
-            bot_admin.send_message(
-                call.message.chat.id, 'Ошибка: счёт не найден.',
-            )
+        telegram_user.selected_account_id = account_id
+        telegram_user.save()
+        bot_admin.unpin_all_chat_messages(call.message.chat.id)
+        to_pin = bot_admin.send_message(
+            call.message.chat.id, f'Выбран счёт: {account.name_account}',
+        )
+        bot_admin.pin_chat_message(call.message.chat.id, to_pin.message_id)
+    else:
+        bot_admin.send_message(
+            call.message.chat.id, 'Ошибка: счёт не найден.',
+        )
 
 
 @bot_admin.message_handler(content_types=['text', 'document', 'photo'])
