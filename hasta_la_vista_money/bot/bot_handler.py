@@ -127,6 +127,12 @@ def create_telegram_user(message, telegram_username, user):
     bot_admin.delete_message(message.from_user.id, message.message_id)
 
 
+def check_telegram_user(telegram_user_id):
+    return TelegramUser.objects.filter(
+        telegram_id=telegram_user_id,
+    ).exists()
+
+
 def check_account_exist(user):
     """
     Проверка существования счёта.
@@ -160,9 +166,7 @@ def select_account(message):
     """
     telegram_user_id = message.from_user.id
 
-    telegram_user = TelegramUser.objects.filter(
-        telegram_id=telegram_user_id,
-    ).first()
+    telegram_user = check_telegram_user(telegram_user_id)
     user = telegram_user.user
     if telegram_user and check_account_exist(user):
         markup = create_buttons_with_account(user)
@@ -185,9 +189,7 @@ def handle_select_account(call):
     account = Account.objects.filter(id=account_id).first()
     if account:
         telegram_user_id = call.from_user.id
-        telegram_user = TelegramUser.objects.filter(
-            telegram_id=telegram_user_id,
-        ).first()
+        telegram_user = check_telegram_user(telegram_user_id)
         telegram_user.selected_account_id = account_id
         telegram_user.save()
         bot_admin.unpin_all_chat_messages(chat_id=call.message.chat.id)
@@ -216,9 +218,7 @@ def handle_receipt(message):
     """
     telegram_user_id = message.from_user.id
 
-    telegram_user = TelegramUser.objects.filter(
-        telegram_id=telegram_user_id,
-    ).first()
+    telegram_user = check_telegram_user(telegram_user_id)
 
     if telegram_user:
         user = telegram_user.user
