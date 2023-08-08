@@ -73,12 +73,6 @@ INSTALLED_APPS = [
 ]
 
 
-if DEBUG:
-    INSTALLED_APPS += (
-        'debug_toolbar',
-    )
-
-
 AUTH_USER_MODEL = 'users.User'
 
 LOGIN_REDIRECT_URL = '/'
