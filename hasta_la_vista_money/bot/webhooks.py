@@ -34,6 +34,11 @@ def webhooks(request) -> HttpResponse:
                 ResponseText.SUCCESS_WEBHOOKS.value,
                 status=HTTPStatus.SUCCESS_CODE.value,
             )
+        except TypeError:
+            # Скрываем ошибку 'function' object is not subscriptable.
+            # Закрепление сообщения в личной переписке
+            # пользователя с ботом не поддерживается телеграмом.
+            pass  # noqa: WPS420
         except Exception as error:
             logger.error(error)
 
