@@ -7,6 +7,9 @@ from hasta_la_vista_money.bot.bot_handler import (
     handle_select_account,
     handle_start,
 )
+from hasta_la_vista_money.bot.process_manual_receipt import (
+    start_process_add_manual_receipt,
+)
 from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.log_config import logger
 from hasta_la_vista_money.constants import HTTPStatus, ResponseText
