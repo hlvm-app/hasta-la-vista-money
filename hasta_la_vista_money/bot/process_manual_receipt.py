@@ -1,6 +1,5 @@
 from hasta_la_vista_money.bot.bot_handler import check_telegram_user
 from hasta_la_vista_money.bot.config_bot import bot_admin
-from hasta_la_vista_money.users.models import TelegramUser
 
 dictionary_string_from_qrcode = {}
 
