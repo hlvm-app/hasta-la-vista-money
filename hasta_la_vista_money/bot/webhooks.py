@@ -37,7 +37,7 @@ def webhooks(request) -> HttpResponse:
         except TypeError:
             # Скрываем ошибку 'function' object is not subscriptable.
             # Закрепление сообщения в личной переписке
-            # пользователя с ботом не поддерживается телеграмом.
+            # пользователя с ботом не поддерживается телеграмом. Но работает :)
             pass  # noqa: WPS420
         except Exception as error:
             logger.error(error)
