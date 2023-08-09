@@ -12,9 +12,15 @@ def start_process_add_manual_receipt(message):
     :param message:
     :return:
     """
-    telegram_username = message.from_user.username
-    existing_telegram_user = TelegramUser.objects.filter(
-        username=telegram_username,
-    ).first()
-    if existing_telegram_user:
-        bot_admin.send_message(message.chat.id, '')
+    telegram_user_id = message.from_user.id
+
+    telegram_user = check_telegram_user(telegram_user_id)
+
+    if telegram_user:
+        bot_admin.send_message(message.chat.id, 'Чтобы добавить чек используя данные с чека, введите поочередно - дату, ФД, ФП и номер чека. Сначала введите дату в формате ДД-ММ-ГГГГ ЧЧ:ММ')
+        bot_admin.register_next_step_handler(message, get_date_receipt)
+
+
+def get_date_receipt(message):
+    dictionary_string_from_qrcode['date'] = message.text
+    bot_admin.send_message(message.chat.id, dictionary_string_from_qrcode.items())
