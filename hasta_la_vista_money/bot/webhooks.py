@@ -14,6 +14,7 @@ from telebot import types
 
 bot_admin.add_message_handler(handle_receipt)
 bot_admin.add_message_handler(handle_start)
+bot_admin.add_message_handler(start_process_add_manual_receipt)
 bot_admin.add_callback_query_handler(handle_select_account)
 
 
