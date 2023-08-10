@@ -7,6 +7,7 @@ class Middleware(BaseMiddleware):
     def __init__(self):
         super().__init__()
         self.telegram_username = None
+        self.update_types = ['message']
 
 
     def pre_process(self, message, data):
