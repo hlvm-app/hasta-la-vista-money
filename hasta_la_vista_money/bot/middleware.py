@@ -3,7 +3,7 @@ from hasta_la_vista_money.users.models import TelegramUser
 from telebot.handler_backends import BaseMiddleware, CancelUpdate
 
 
-class Middleware(BaseMiddleware):
+class AccessMiddleware(BaseMiddleware):
 
     def __init__(self):
         super().__init__()
