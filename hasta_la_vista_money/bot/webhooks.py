@@ -2,10 +2,10 @@ import json
 
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from hasta_la_vista_money.bot.auth import handle_start
 from hasta_la_vista_money.bot.bot_handler import (
     handle_receipt,
     handle_select_account,
+    handle_start,
     start_process_add_manual_receipt,
 )
 from hasta_la_vista_money.bot.config_bot import bot_admin
