@@ -16,6 +16,6 @@ class AccessMiddleware(BaseMiddleware):
         ).first()
         bot_admin.send_message(message.chat.id, f'{message}{data}')
         if not self.telegram_username:
-            bot_admin.send_message(message.chat.id, 'Access Denied')
+            bot_admin.send_message(message.chat.id, 'У вас нет доступа к использованию бота, сначала надо авторизоваться - /auth')
             return CancelUpdate()
         return super().pre_process(message, data)
