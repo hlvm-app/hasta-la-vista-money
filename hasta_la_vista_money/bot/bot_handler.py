@@ -1,5 +1,10 @@
+import decimal
+
+from dateutil.parser import ParserError, parse
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.bot.config_bot import bot_admin
+from hasta_la_vista_money.bot.receipt_api_receiver import ReceiptApiReceiver
+from hasta_la_vista_money.bot.receipt_parse import ReceiptParser
 from hasta_la_vista_money.bot.receipt_parser_json import handle_receipt_json
 from hasta_la_vista_money.bot.receipt_parser_text import handle_receipt_text
 from hasta_la_vista_money.bot.receipt_parser_text_qrcode import (
@@ -51,14 +56,14 @@ def handle_auth(message):
 
     username, password = map(str, auth_data)
     user = User.objects.filter(username=username).first()
-    telegram_username = message.from_user.username
-    existing_telegram_user = TelegramUser.objects.filter(user=user).first()
+    telegram_user_id = message.from_user.id
+    existing_telegram_user = check_telegram_user(telegram_user_id)
 
     if user and user.check_password(password):
         check_existing_telegram_user(
             message,
             existing_telegram_user,
-            telegram_username,
+            telegram_user_id,
             user,
         )
     else:
@@ -156,7 +161,7 @@ def check_account_exist(user):
     :param user:
     :return:
     """
-    return Account.objects.filter(user=user).exists()
+    return Account.objects.filter(user=user).first()
 
 
 def create_buttons_with_account(user):
@@ -166,7 +171,7 @@ def create_buttons_with_account(user):
     :param user:
     :return:
     """
-    accounts = Account.objects.filter(user=user)
+    accounts = check_account_exist(user)
     markup = types.InlineKeyboardMarkup()
     for account in accounts:
         button = types.InlineKeyboardButton(
@@ -235,6 +240,105 @@ def handle_select_account(call):
     telegram_user.save()
     account = Account.objects.filter(id=account_id).first()
     pin_message(call, account)
+
+
+dictionary_string_from_qrcode = {}
+
+
+@bot_admin.message_handler(commands=['manual'])
+def start_process_add_manual_receipt(message):
+    """
+    Функция обработчик команды manual.
+
+    :param message:
+    :return:
+    """
+    bot_admin.send_message(
+        message.chat.id,
+        ''.join(
+            (
+                'Чтобы добавить чек используя данные с чека, ',
+                'введите поочередно - дату, ФД, ФП и номер чека. ',
+                'Сначала введите дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС',
+            ),
+        ),
+    )
+
+    bot_admin.register_next_step_handler(message, get_date_receipt)
+
+
+def get_date_receipt(message):
+    try:
+        date = parse(message.text)
+        dictionary_string_from_qrcode['date'] = f'{date:%Y%m%dT%H%M%S}'
+        bot_admin.send_message(message.chat.id, 'Введите сумму чека')
+        bot_admin.register_next_step_handler(message, get_amount_receipt)
+    except ParserError:
+        bot_admin.send_message(
+            message.chat.id,
+            'Неверный формат даты! Повторите ввод сначала /manual',
+        )
+
+
+def get_amount_receipt(message):
+    try:
+        amount_receipt = message.text
+        dictionary_string_from_qrcode['amount'] = decimal.Decimal(
+            amount_receipt,
+        )
+        bot_admin.send_message(message.chat.id, 'Введите номер ФН')
+        bot_admin.register_next_step_handler(message, get_fiscal_number_receipt)
+    except ValueError:
+        bot_admin.send_message(message.chat.id, 'Введите сумму!')
+
+
+def get_fiscal_number_receipt(message):
+    try:
+        fn_receipt = message.text
+        dictionary_string_from_qrcode['fn'] = int(fn_receipt)
+        bot_admin.send_message(message.chat.id, 'Введите номер ФД')
+        bot_admin.register_next_step_handler(message, get_fiscal_doc_receipt)
+    except ValueError:
+        bot_admin.send_message(message.chat.id, 'Введите корректный номер ФН!')
+
+
+def get_fiscal_doc_receipt(message):
+    try:
+        fd_receipt = message.text
+        dictionary_string_from_qrcode['fd'] = int(fd_receipt)
+        bot_admin.send_message(message.chat.id, 'Введите номер ФП')
+        bot_admin.register_next_step_handler(message, get_fp_receipt)
+    except ValueError:
+        bot_admin.send_message(message.chat.id, 'Введите корректный номер ФД!')
+
+
+def get_fp_receipt(message):
+    try:
+        fp_receipt = message.text
+        dictionary_string_from_qrcode['fp'] = int(fp_receipt)
+        telegram_user_id = message.from_user.id
+
+        telegram_user = check_telegram_user(telegram_user_id)
+
+        if telegram_user:
+            user = telegram_user.user
+            account = telegram_user.selected_account_id
+            client = ReceiptApiReceiver()
+            json_data = client.get_receipt(
+                ''.join(
+                    (
+                        f't={dictionary_string_from_qrcode["date"]}',
+                        f'&s={dictionary_string_from_qrcode["amount"]}',
+                        f'&fn={dictionary_string_from_qrcode["fn"]}',
+                        f'&i={dictionary_string_from_qrcode["fd"]}',
+                        f'&fp={dictionary_string_from_qrcode["fp"]}&n=1',
+                    ),
+                ),
+            )
+            parser = ReceiptParser(json_data, user, account)
+            parser.parse(message.chat.id)
+    except ValueError:
+        bot_admin.send_message(message.chat.id, 'Введите корректный номер ФП!')
 
 
 @bot_admin.message_handler(content_types=['text', 'document', 'photo'])
