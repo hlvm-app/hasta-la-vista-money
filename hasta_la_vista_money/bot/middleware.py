@@ -1,7 +1,7 @@
 from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.constants import TelegramMessage
 from hasta_la_vista_money.users.models import TelegramUser
-from telebot.handler_backends import BaseMiddleware, CancelUpdate
+from telebot.handler_backends import BaseMiddleware, SkipHandler
 
 
 class AccessMiddleware(BaseMiddleware):
@@ -14,18 +14,15 @@ class AccessMiddleware(BaseMiddleware):
         self.telegram_username = TelegramUser.objects.filter(
             telegram_id=message.from_user.id,
         ).first()
-
-        if message.text.startswith('/auth'):
+        if message.text and message.text == '/auth':
             return None
 
-        if not self.telegram_username:
+        if self.telegram_username is None and message.text:
             bot_admin.send_message(
                 message.chat.id,
                 TelegramMessage.ACCESS_DENIED.value,
             )
-            return CancelUpdate()
-        return data
+            return SkipHandler()
 
     def post_process(self, message, data, exception):  # noqa: WPS110
-        if exception:
-            bot_admin.send_message(message.chat.id, exception)
+        data['exception'] = exception
