@@ -49,12 +49,14 @@ class MessageOnSite(Enum):
     SUCCESS_MESSAGE_CREATE_CUSTOMER = ''.join(
         'Новый продавец успешно добавлен!',
     )
-    ANOTHER_ACCRUAL_ACCOUNT = ' '.join((
+    ANOTHER_ACCRUAL_ACCOUNT = ' '.join(
         'Нельзя выбирать одинаковые счета для перевода.',
-    ))
+    )
     SUCCESS_MESSAGE_CHANGED_ACCOUNT = 'Счёт успешно изменён!'
     SUCCESS_MESSAGE_CHANGED_PROFILE = 'Профиль успешно обновлён!'
-    SUCCESS_MESSAGE_CHANGED_PASSWORD = 'Новый пароль успешно установлен!'  # noqa: E501 S105
+    SUCCESS_MESSAGE_CHANGED_PASSWORD = (
+        'Новый пароль успешно установлен!'  # noqa: E501 S105
+    )
     SUCCESS_MESSAGE_LOGOUT = 'Вы успешно вышли из своей учётной записи!'
     HELP_TEXT_PASSWORD = ''.join(
         (
@@ -141,7 +143,13 @@ class TelegramMessage(Enum):
         ),
     )
     ERROR_DATABASE_RECORD = 'Ошибка записи в базу данных!'
-    ALREADY_LOGGED = 'Вы уже авторизованы!'
+    ALREADY_LOGGED = 'Вы уже авторизованы! Повторная авторизация не требуется!'
+    ACCESS_DENIED = ''.join(
+        (
+            'У вас нет доступа к использованию бота, ',
+            'сначала надо авторизоваться - /auth',
+        ),
+    )
 
 
 class HTTPStatus(Enum):
