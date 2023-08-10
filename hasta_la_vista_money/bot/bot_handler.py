@@ -52,11 +52,9 @@ def handle_auth(message):
 
     username, password = map(str, auth_data)
     user = User.objects.filter(username=username).first()
-    telegram_user_id = message.from_user.id
-    existing_telegram_user = check_telegram_user(message)
 
     if user and user.check_password(password):
-        check_existing_telegram_user(message)
+        check_existing_telegram_user(message, user)
     else:
         bot_admin.reply_to(
             message,
@@ -65,7 +63,7 @@ def handle_auth(message):
         bot_admin.delete_message(message.from_user.id, message.message_id)
 
 
-def check_existing_telegram_user(message):
+def check_existing_telegram_user(message, user):
     """
     Проверка существования телеграм пользователя в базе данных.
 
@@ -74,26 +72,23 @@ def check_existing_telegram_user(message):
     в базе данных.
 
     :param message:
-    :param existing_telegram_user:
-    :param telegram_username:
     :param user:
     :return:
     """
     if check_telegram_user(message):
-        authenticated_user(message, existing_telegram_user)
+        authenticated_user(message)
     else:
-        create_telegram_user(message, telegram_username, user)
+        create_telegram_user(message, user)
 
 
-def authenticated_user(message, existing_telegram_user):
+def authenticated_user(message):
     """
     Функция для проверки, авторизован ли пользователь в боте.
 
     :param message:
-    :param existing_telegram_user:
     :return:
     """
-    if existing_telegram_user.telegram_id == message.from_user.id:
+    if check_telegram_user(message):
         bot_admin.send_message(
             message.chat.id,
             TelegramMessage.ALREADY_LOGGING_LINK_ACCOUNT.value,
@@ -107,7 +102,7 @@ def authenticated_user(message, existing_telegram_user):
         bot_admin.delete_message(message.from_user.id, message.message_id)
 
 
-def create_telegram_user(message, telegram_username, user):
+def create_telegram_user(message, user):
     """
     Создание записи в базе данных с данными о телеграм пользователе.
 
@@ -118,7 +113,7 @@ def create_telegram_user(message, telegram_username, user):
     """
     TelegramUser.objects.create(
         user=user,
-        username=telegram_username,
+        username=message.from_user.username,
         telegram_id=message.from_user.id,
     )
     bot_admin.reply_to(
@@ -218,7 +213,7 @@ def handle_select_account(call):
     :param call:
     :return:
     """
-    telegram_user = check_telegram_user(message)
+    telegram_user = check_telegram_user(call)
     account_id = int(call.data.split('_')[2])
     telegram_user.selected_account_id = account_id
     telegram_user.save()
@@ -237,17 +232,19 @@ def start_process_add_manual_receipt(message):
     :param message:
     :return:
     """
-    bot_admin.send_message(
-        message.chat.id,
-        ''.join(
-            (
-                'Чтобы добавить чек используя данные с чека, ',
-                'введите поочередно - дату, ФД, ФП и номер чека. ',
-                'Сначала введите дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС',
+    telegram_user = check_telegram_user(message)
+    if telegram_user:
+        bot_admin.send_message(
+            message.chat.id,
+            ''.join(
+                (
+                    'Чтобы добавить чек используя данные с чека, ',
+                    'введите поочередно - дату, ФД, ФП и номер чека. ',
+                    'Сначала введите дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС',
+                ),
             ),
-        ),
-    )
-    bot_admin.register_next_step_handler(message, get_date_receipt)
+        )
+        bot_admin.register_next_step_handler(message, get_date_receipt)
 
 
 def get_date_receipt(message):
