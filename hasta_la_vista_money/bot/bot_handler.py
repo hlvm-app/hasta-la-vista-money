@@ -56,12 +56,7 @@ def handle_auth(message):
     existing_telegram_user = check_telegram_user(message)
 
     if user and user.check_password(password):
-        check_existing_telegram_user(
-            message,
-            existing_telegram_user,
-            telegram_user_id,
-            user,
-        )
+        check_existing_telegram_user(message)
     else:
         bot_admin.reply_to(
             message,
