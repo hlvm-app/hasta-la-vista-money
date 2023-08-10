@@ -139,7 +139,7 @@ def pin_message(call, account):
     )
     bot_admin.pin_chat_message(
         chat_id=call.message.chat.id,
-        message_id=pinned_message.id,
+        message_id=pinned_message.message_id,
         disable_notification=True,
     )
 
