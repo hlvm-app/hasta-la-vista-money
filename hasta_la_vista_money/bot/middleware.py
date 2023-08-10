@@ -14,6 +14,7 @@ class Middleware(BaseMiddleware):
         self.telegram_username = TelegramUser.objects.filter(
             telegram_id=message.from_user.id,
         ).first()
+        bot_admin.send_message(message.chat.id, self.telegram_username)
         if not self.telegram_username:
             bot_admin.send_message(message.chat.id, 'Access Denied')
             return CancelUpdate()
