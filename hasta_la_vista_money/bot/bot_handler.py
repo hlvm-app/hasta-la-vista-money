@@ -235,19 +235,17 @@ def start_process_add_manual_receipt(message):
     :param message:
     :return:
     """
-    telegram_user = check_telegram_user(message)
-    if telegram_user:
-        bot_admin.send_message(
-            message.chat.id,
-            ''.join(
-                (
-                    'Чтобы добавить чек используя данные с чека, ',
-                    'введите поочередно - дату, ФД, ФП и номер чека. ',
-                    'Сначала введите дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС',
-                ),
+    bot_admin.send_message(
+        message.chat.id,
+        ''.join(
+            (
+                'Чтобы добавить чек используя данные с чека, ',
+                'введите поочередно - дату, ФД, ФП и номер чека. ',
+                'Сначала введите дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС',
             ),
-        )
-        bot_admin.register_next_step_handler(message, get_date_receipt)
+        ),
+    )
+    bot_admin.register_next_step_handler(message, get_date_receipt)
 
 
 def get_date_receipt(message):
