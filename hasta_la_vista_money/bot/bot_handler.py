@@ -23,11 +23,7 @@ def handle_start(message):
     :param message:
     :return:
     """
-    telegram_username = message.from_user.username
-
-    check_telegram_username = TelegramUser.objects.filter(
-        username=telegram_username,
-    ).first()
+    check_telegram_username = check_telegram_user(message)
 
     if check_telegram_username:
         bot_admin.send_message(
@@ -57,7 +53,7 @@ def handle_auth(message):
     username, password = map(str, auth_data)
     user = User.objects.filter(username=username).first()
     telegram_user_id = message.from_user.id
-    existing_telegram_user = check_telegram_user(telegram_user_id)
+    existing_telegram_user = check_telegram_user(message)
 
     if user and user.check_password(password):
         check_existing_telegram_user(
@@ -74,12 +70,7 @@ def handle_auth(message):
         bot_admin.delete_message(message.from_user.id, message.message_id)
 
 
-def check_existing_telegram_user(
-    message,
-    existing_telegram_user,
-    telegram_username,
-    user,
-):
+def check_existing_telegram_user(message):
     """
     Проверка существования телеграм пользователя в базе данных.
 
@@ -93,7 +84,7 @@ def check_existing_telegram_user(
     :param user:
     :return:
     """
-    if existing_telegram_user:
+    if check_telegram_user(message):
         authenticated_user(message, existing_telegram_user)
     else:
         create_telegram_user(message, telegram_username, user)
@@ -142,13 +133,14 @@ def create_telegram_user(message, telegram_username, user):
     bot_admin.delete_message(message.from_user.id, message.message_id)
 
 
-def check_telegram_user(telegram_user_id):
+def check_telegram_user(message):
     """
     Проверка существования телеграм пользователя в базе.
 
     :param telegram_user_id:
     :return:
     """
+    telegram_user_id = message.from_user.id
     return TelegramUser.objects.filter(
         telegram_id=telegram_user_id,
     ).first()
@@ -210,9 +202,7 @@ def select_account(message):
     :param message:
     :return:
     """
-    telegram_user_id = message.from_user.id
-
-    telegram_user = check_telegram_user(telegram_user_id)
+    telegram_user = check_telegram_user(message)
     user = telegram_user.user
     if telegram_user and check_account_exist(user):
         markup = create_buttons_with_account(user)
@@ -233,8 +223,7 @@ def handle_select_account(call):
     :param call:
     :return:
     """
-    telegram_user_id = call.from_user.id
-    telegram_user = check_telegram_user(telegram_user_id)
+    telegram_user = check_telegram_user(message)
     account_id = int(call.data.split('_')[2])
     telegram_user.selected_account_id = account_id
     telegram_user.save()
@@ -263,7 +252,6 @@ def start_process_add_manual_receipt(message):
             ),
         ),
     )
-
     bot_admin.register_next_step_handler(message, get_date_receipt)
 
 
@@ -349,10 +337,7 @@ def handle_receipt(message):
     :param message:
     :return:
     """
-    telegram_user_id = message.from_user.id
-
-    telegram_user = check_telegram_user(telegram_user_id)
-
+    telegram_user = check_telegram_user(message)
     if telegram_user:
         user = telegram_user.user
         account = telegram_user.selected_account_id
