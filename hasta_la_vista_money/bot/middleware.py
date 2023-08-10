@@ -14,6 +14,9 @@ class AccessMiddleware(BaseMiddleware):
         self.telegram_username = TelegramUser.objects.filter(
             telegram_id=message.from_user.id,
         ).first()
+        if message.text.startswith('/auth'):
+            return super().pre_process(message, data)
+
         if not self.telegram_username:
             bot_admin.send_message(message.chat.id, 'У вас нет доступа к использованию бота, сначала надо авторизоваться - /auth')
             return CancelUpdate()
