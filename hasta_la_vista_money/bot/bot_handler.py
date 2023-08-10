@@ -2,7 +2,7 @@ import decimal
 
 from dateutil.parser import ParserError, parse
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.bot.middleware import bot_admin
+from hasta_la_vista_money.bot.middleware import Middleware, bot_admin
 from hasta_la_vista_money.bot.receipt_api_receiver import ReceiptApiReceiver
 from hasta_la_vista_money.bot.receipt_parse import ReceiptParser
 from hasta_la_vista_money.bot.receipt_parser_json import handle_receipt_json
@@ -13,6 +13,9 @@ from hasta_la_vista_money.bot.receipt_parser_text_qrcode import (
 from hasta_la_vista_money.constants import TelegramMessage
 from hasta_la_vista_money.users.models import TelegramUser, User
 from telebot import types
+
+
+bot_admin.setup_middleware(Middleware)
 
 
 @bot_admin.message_handler(commands=['auth'])
