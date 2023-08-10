@@ -26,6 +26,6 @@ class AccessMiddleware(BaseMiddleware):
             return CancelUpdate()
         return data
 
-    def post_process(self, message, data, exception):
+    def post_process(self, message, data, exception):  # noqa: WPS110
         if exception:
             bot_admin.send_message(message.chat.id, exception)
