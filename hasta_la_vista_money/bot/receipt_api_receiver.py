@@ -1,4 +1,3 @@
-import datetime
 import json
 import os
 
@@ -115,7 +114,7 @@ class ReceiptApiReceiver:
             requests.exceptions.ConnectionError,
             json.decoder.JSONDecodeError,
         ):
-            logger.error('Недоступен сервис авторизации.')
+            logger.error('Недоступен сервис авторизации. Попробуйте позже!')
 
     def get_receipt(self, qr: str) -> dict | None:
         """
@@ -134,28 +133,21 @@ class ReceiptApiReceiver:
         Если не удалось получить информацию, записывает сообщение об ошибке в
         лог.
         """
-        try:
-            ticket_id = self._get_receipt_id(qr)
-            url = f'https://{self.host}/v2/tickets/{ticket_id}'
-            headers = {
-                'Host': self.host,
-                'sessionId': self._session_id,
-                'Device-OS': self.device_os,
-                'clientVersion': self.client_version,
-                'Device-Id': self.device_id,
-                'Accept': self.accept,
-                'User-Agent': self.user_agent,
-                'Accept-Language': self.accept_language,
-            }
+        ticket_id = self._get_receipt_id(qr)
+        url = f'https://{self.host}/v2/tickets/{ticket_id}'
+        headers = {
+            'Host': self.host,
+            'sessionId': self._session_id,
+            'Device-OS': self.device_os,
+            'clientVersion': self.client_version,
+            'Device-Id': self.device_id,
+            'Accept': self.accept,
+            'User-Agent': self.user_agent,
+            'Accept-Language': self.accept_language,
+        }
 
-            resp = requests.get(url, headers=headers, timeout=10)
-            return resp.json()
-        except json.decoder.JSONDecodeError as json_error:
-            logger.error(
-                f'Ошибка обработки json: {json_error}\n'
-                f'Время возникновения исключения: '
-                f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S}',
-            )
+        resp = requests.get(url, headers=headers, timeout=10)
+        return resp.json()
 
     def _get_receipt_id(self, qr: str) -> str:
         """
