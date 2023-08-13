@@ -31,17 +31,25 @@ SECRET_KEY = os.getenv('SECRET_KEY', None)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'true').lower() in {'yes', '1', 'true'}
 
-ALLOWED_HOSTS = os.environ.get(
-    'ALLOWED_HOSTS',
-).split(',') if os.environ.get(
-    'ALLOWED_HOSTS',
-) else ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = (
+    os.environ.get(
+        'ALLOWED_HOSTS',
+    ).split(',')
+    if os.environ.get(
+        'ALLOWED_HOSTS',
+    )
+    else ['localhost', '127.0.0.1']
+)
 
-CSRF_TRUSTED_ORIGINS = os.environ.get(
-    'CSRF_TRUSTED_ORIGINS',
-).split(',') if os.environ.get(
-    'CSRF_TRUSTED_ORIGINS',
-) else ['https://127.0.0.1']
+CSRF_TRUSTED_ORIGINS = (
+    os.environ.get(
+        'CSRF_TRUSTED_ORIGINS',
+    ).split(',')
+    if os.environ.get(
+        'CSRF_TRUSTED_ORIGINS',
+    )
+    else ['https://127.0.0.1']
+)
 
 # Application definition
 
@@ -200,19 +208,19 @@ if os.getenv('DATABASE_URL'):
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation'
-                '.UserAttributeSimilarityValidator',
+        '.UserAttributeSimilarityValidator',
     },
     {
         'NAME': 'django.contrib.auth.password_validation'
-                '.MinimumLengthValidator',
+        '.MinimumLengthValidator',
     },
     {
         'NAME': 'django.contrib.auth.password_validation'
-                '.CommonPasswordValidator',
+        '.CommonPasswordValidator',
     },
     {
         'NAME': 'django.contrib.auth.password_validation'
-                '.NumericPasswordValidator',
+        '.NumericPasswordValidator',
     },
 ]
 
@@ -258,9 +266,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = os.path.join(BASE_DIR, 'static/')
 
 # Extra places for collectstatic to find static files.
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+STATICFILES_DIRS = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
