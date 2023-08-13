@@ -4,6 +4,8 @@ from hasta_la_vista_money.constants import NumericParameter
 
 
 class User(AbstractUser):
+    policy = models.BooleanField(null=True, unique=True)
+
     def __str__(self):
         return self.username
 

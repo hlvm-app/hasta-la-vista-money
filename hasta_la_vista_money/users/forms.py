@@ -3,7 +3,7 @@ from django.contrib.auth.forms import (
     ReadOnlyPasswordHashField,
     UserCreationForm,
 )
-from django.forms import ModelForm
+from django.forms import BooleanField, ModelForm
 from hasta_la_vista_money.constants import MessageOnSite
 from hasta_la_vista_money.users.models import User
 
@@ -15,11 +15,15 @@ class UserLoginForm(AuthenticationForm):
 
 
 class RegisterUserForm(UserCreationForm):
+    policy = BooleanField(label='Политика конфиденциальности', required=True)
+
     class Meta:
         model = User
         fields = [
             'first_name',
             'last_name',
+            'email',
+            'policy',
             'username',
             'password1',
             'password2',
