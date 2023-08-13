@@ -21,7 +21,7 @@ migrate:
 
 migrations:
 		@poetry run python manage.py makemigrations
-		
+
 install: .env
 		@poetry install
 
@@ -37,7 +37,7 @@ docker-start:
 
 gettext:
 		sudo apt install gettext -y
-		
+
 setup: migrations migrate staticfiles gettext transcompile
 		@echo Create a super user
 		@poetry run python manage.py createsuperuser
@@ -53,7 +53,7 @@ staticfiles:
 
 start:
 		@poetry run python manage.py runserver
-		
+
 secretkey:
 		@poetry run python -c 'from django.utils.crypto import get_random_string; print(get_random_string(40))'
 
@@ -64,4 +64,3 @@ coverage:
 		@poetry run coverage run manage.py test
 		@poetry run coverage xml
 		@poetry run coverage report
-
