@@ -1,6 +1,8 @@
 from django.urls import path
 from hasta_la_vista_money.users.views import (
     CreateUser,
+    CustomPasswordResetConfirmView,
+    ForgotPasswordView,
     ListUsers,
     UpdateUserPasswordView,
     UpdateUserView,
@@ -15,5 +17,15 @@ urlpatterns = [
         'change-password/<int:pk>/',
         UpdateUserPasswordView.as_view(),
         name='change_password',
+    ),
+    path(
+        'forgot-password/',
+        ForgotPasswordView.as_view(),
+        name='forgot-password',
+    ),
+    path(
+        'reset-password/<str:uidb64>/<str:token>/',
+        CustomPasswordResetConfirmView.as_view(),
+        name='custom-password-reset-confirm',
     ),
 ]
