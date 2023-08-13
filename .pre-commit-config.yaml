@@ -30,7 +30,7 @@ repos:
 
     -   id: flake8
         name: Check with Flake8
-        entry: flake8 hasta_la_vista_money
+        entry: flake8
         language: system
         pass_filenames: false
         types: [ python ]
