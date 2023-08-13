@@ -181,6 +181,7 @@ class ForgotPasswordView(TemplateView):
                         f'Привет, {telegram_user.username}!\n',
                         'Кто-то запросил сброс пароля ',
                         'для вашей учетной записи.\n',
+                        'Ссылка действует сутки.\n',
                         f'Для сброса пароля перейдите по ссылке: {reset_link}',
                     ),
                 )

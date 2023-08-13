@@ -282,3 +282,7 @@ if os.environ.get('ACCESS_TOKEN') is not None:
     }
 
     rollbar.init(**ROLLBAR)
+
+
+# Password reset timeout in seconds
+PASSWORD_RESET_TIMEOUT = 86400
