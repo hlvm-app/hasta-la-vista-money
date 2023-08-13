@@ -32,6 +32,10 @@ repos:
         name: Check with Flake8
         entry: flake8
         language: system
-        pass_filenames: false
         types: [ python ]
-        args: [--count, --exclude=migrations, .]
+
+    -   id: yesqa
+        name: yesqa
+        entry: yesqa
+        language: system
+        types: [ python ]
