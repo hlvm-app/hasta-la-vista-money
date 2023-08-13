@@ -3,7 +3,7 @@ from django.contrib.auth.forms import (
     ReadOnlyPasswordHashField,
     UserCreationForm,
 )
-from django.forms import BooleanField, ModelForm
+from django.forms import BooleanField, CharField, ModelForm, forms
 from hasta_la_vista_money.constants import MessageOnSite
 from hasta_la_vista_money.users.models import User
 
@@ -28,6 +28,10 @@ class RegisterUserForm(UserCreationForm):
             'password1',
             'password2',
         ]
+
+
+class ForgetPasswordForm(forms.Form):
+    username = CharField(label='Имя пользователя')
 
 
 class UpdateUserForm(ModelForm):
