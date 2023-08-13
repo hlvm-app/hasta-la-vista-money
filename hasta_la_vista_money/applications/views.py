@@ -38,37 +38,51 @@ class PageApplication(
 
     @classmethod
     def collect_info_receipt(cls, user):
-        return Receipt.objects.filter(
-            user=user,
-        ).annotate(
-            month=TruncMonth('receipt_date'),
-        ).values(
-            'month',
-            'account__name_account',
-        ).annotate(
-            count=Count('id'),
-            total_amount=Sum('total_sum'),
-        ).order_by('-month')
+        return (
+            Receipt.objects.filter(
+                user=user,
+            )
+            .annotate(
+                month=TruncMonth('receipt_date'),
+            )
+            .values(
+                'month',
+                'account__name_account',
+            )
+            .annotate(
+                count=Count('id'),
+                total_amount=Sum('total_sum'),
+            )
+            .order_by('-month')
+        )
 
     @classmethod
     def collect_info_income_expense(cls, user):
-        expenses = Expense.objects.filter(user=user).values(
-            'id',
-            'date',
-            'account__name_account',
-            'category__name',
-            'amount',
-        ).order_by('-date')
+        expenses = (
+            Expense.objects.filter(user=user)
+            .values(
+                'id',
+                'date',
+                'account__name_account',
+                'category__name',
+                'amount',
+            )
+            .order_by('-date')
+        )
 
-        income = Income.objects.filter(
-            user=user,
-        ).values(
-            'id',
-            'date',
-            'account__name_account',
-            'category__name',
-            'amount',
-        ).order_by('-date')
+        income = (
+            Income.objects.filter(
+                user=user,
+            )
+            .values(
+                'id',
+                'date',
+                'account__name_account',
+                'category__name',
+                'amount',
+            )
+            .order_by('-date')
+        )
 
         return sorted(
             list(expenses) + list(income),
@@ -149,7 +163,8 @@ class ChangeAccountView(
 
     def get(self, request, *args, **kwargs):
         return self.get_update_form(
-            self.form_class, 'add_account_form',
+            self.form_class,
+            'add_account_form',
         )
 
 
@@ -165,12 +180,13 @@ class TransferMoneyAccountView(
 
     def post(self, request, *args, **kwargs):
         transfer_money_form = TransferMoneyAccountForm(
-            user=request.user, data=request.POST,
+            user=request.user,
+            data=request.POST,
         )
 
         valid_form = (
-            transfer_money_form.is_valid() and
-            request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+            transfer_money_form.is_valid()
+            and request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
         )
         if valid_form:
             transfer_log = transfer_money_form.save(commit=False)
@@ -182,7 +198,8 @@ class TransferMoneyAccountView(
             response_data = {'success': True}
         else:
             response_data = {
-                'success': False, 'errors': transfer_money_form.errors,
+                'success': False,
+                'errors': transfer_money_form.errors,
             }
         return JsonResponse(response_data)
 

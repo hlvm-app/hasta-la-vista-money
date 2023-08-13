@@ -8,7 +8,6 @@ from hasta_la_vista_money.users.models import User
 
 
 class TestReceipt(TestCase):
-
     fixtures = [
         'users.yaml',
         'account.yaml',
@@ -69,7 +68,8 @@ class TestReceipt(TestCase):
 
         response_receipt = self.client.post(url, data=form_receipt.data)
         self.assertEqual(
-            response_receipt.status_code, HTTPStatus.SUCCESS_CODE.value,
+            response_receipt.status_code,
+            HTTPStatus.SUCCESS_CODE.value,
         )
 
     def test_receipt_delete(self):

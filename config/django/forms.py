@@ -25,7 +25,7 @@ class BaseForm(ModelForm):
     fields = []
     labels = {}
 
-    class Meta:  # noqa: 306
+    class Meta:  # : 306
         """Метакласс для базовой модели формы Django."""
 
         abstract = True
@@ -45,7 +45,8 @@ class BaseForm(ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields:  # noqa: 528
             self.fields[field].label = self.labels.get(
-                field, self.fields[field].label,
+                field,
+                self.fields[field].label,
             )
 
 
@@ -58,8 +59,11 @@ class DateTimePickerWidgetForm(DateTimePickerInput):
             'minDate',
             (
                 TODAY.replace(
-                    month=1, day=1, year=TODAY.year - 1,
-                ) - datetime.timedelta(
+                    month=1,
+                    day=1,
+                    year=TODAY.year - 1,
+                )
+                - datetime.timedelta(
                     days=NumericParameter.TODAY_MINUS_FIVE_YEARS.value,
                 )
             ).strftime('%d/%m/%Y %H:%M'),

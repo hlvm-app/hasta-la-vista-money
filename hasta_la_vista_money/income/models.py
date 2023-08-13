@@ -20,7 +20,8 @@ class Income(models.Model):
     category = models.ForeignKey(IncomeType, on_delete=models.PROTECT)
     date = models.DateTimeField()
     amount = models.DecimalField(
-        max_digits=NumericParameter.TWENTY.value, decimal_places=2,
+        max_digits=NumericParameter.TWENTY.value,
+        decimal_places=2,
     )
 
     def __str__(self):

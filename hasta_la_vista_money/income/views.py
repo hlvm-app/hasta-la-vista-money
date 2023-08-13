@@ -40,15 +40,19 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                 user=request.user,
             )
 
-            income_by_month = Income.objects.filter(
-                user=request.user,
-            ).values(
-                'id',
-                'date',
-                'account__name_account',
-                'category__name',
-                'amount',
-            ).order_by('-date')
+            income_by_month = (
+                Income.objects.filter(
+                    user=request.user,
+                )
+                .values(
+                    'id',
+                    'date',
+                    'account__name_account',
+                    'category__name',
+                    'amount',
+                )
+                .order_by('-date')
+            )
 
             categories = IncomeType.objects.filter(user=request.user).all()
 
@@ -96,12 +100,14 @@ class IncomeCreateView(
                 income.user = request.user
                 income.save()
                 messages.success(
-                    request, MessageOnSite.SUCCESS_INCOME_ADDED.value,
+                    request,
+                    MessageOnSite.SUCCESS_INCOME_ADDED.value,
                 )
                 response_data = {'success': True}
         else:
             response_data = {
-                'success': False, 'errors': income_form.errors,
+                'success': False,
+                'errors': income_form.errors,
             }
         return JsonResponse(response_data)
 
@@ -166,7 +172,8 @@ class IncomeDeleteView(DeleteView, DeletionMixin):
             account_balance.balance -= amount
             account_balance.save()
             messages.success(
-                self.request, MessageOnSite.SUCCESS_INCOME_DELETED.value,
+                self.request,
+                MessageOnSite.SUCCESS_INCOME_DELETED.value,
             )
             return super().form_valid(form)
 

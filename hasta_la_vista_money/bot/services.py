@@ -22,7 +22,8 @@ def convert_date_time(date_time: Union[str, int]) -> Union[str, None]:
             return None
         if isinstance(date_time, str):
             dt = datetime.datetime.strptime(
-                date_time, '%Y-%m-%dT%H:%M:%S',
+                date_time,
+                '%Y-%m-%dT%H:%M:%S',
             )
             return dt.strftime('%Y-%m-%d %H:%M')
         dt = datetime.datetime.fromtimestamp(int(date_time))

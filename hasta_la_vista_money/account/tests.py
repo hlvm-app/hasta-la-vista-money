@@ -11,7 +11,6 @@ NEW_BALANCE_TEST = 450000
 
 
 class TestAccount(TestCase):
-
     fixtures = [
         'users.yaml',
         'account.yaml',
@@ -66,16 +65,20 @@ class TestAccount(TestCase):
         }
         response = self.client.post(url, update_account, follow=True)
         self.assertEqual(
-            Account.objects.get(pk=self.account1.pk), self.account1,
+            Account.objects.get(pk=self.account1.pk),
+            self.account1,
         )
         self.assertRedirects(
-            response, '/applications/', status_code=HTTPStatus.REDIRECTS.value,
+            response,
+            '/applications/',
+            status_code=HTTPStatus.REDIRECTS.value,
         )
 
     def test_account_delete(self):
         self.client.force_login(self.user)
         url = reverse_lazy(
-            'account:delete_account', args=(self.account2.pk, ),
+            'account:delete_account',
+            args=(self.account2.pk,),
         )
 
         response = self.client.post(url, follow=True)
@@ -86,7 +89,8 @@ class TestAccount(TestCase):
         url1 = reverse_lazy('expense:list')
 
         url2 = reverse_lazy(
-            'account:delete_account', args=(self.account1.pk,),
+            'account:delete_account',
+            args=(self.account1.pk,),
         )
 
         new_expense = {

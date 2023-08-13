@@ -52,25 +52,35 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             ].queryset = Account.objects.filter(
                 user=request.user,
             )
-            receipt_info_by_month = Receipt.objects.filter(
-                user=request.user,
-            ).annotate(
-                month=TruncMonth('receipt_date'),
-            ).values(
-                'month',
-                'account__name_account',
-            ).annotate(
-                count=Count('id'),
-                total_amount=Sum('total_sum'),
-            ).order_by('-month')
+            receipt_info_by_month = (
+                Receipt.objects.filter(
+                    user=request.user,
+                )
+                .annotate(
+                    month=TruncMonth('receipt_date'),
+                )
+                .values(
+                    'month',
+                    'account__name_account',
+                )
+                .annotate(
+                    count=Count('id'),
+                    total_amount=Sum('total_sum'),
+                )
+                .order_by('-month')
+            )
 
-            expenses = Expense.objects.filter(user=request.user).values(
-                'id',
-                'date',
-                'account__name_account',
-                'category__name',
-                'amount',
-            ).order_by('-date')
+            expenses = (
+                Expense.objects.filter(user=request.user)
+                .values(
+                    'id',
+                    'date',
+                    'account__name_account',
+                    'category__name',
+                    'amount',
+                )
+                .order_by('-date')
+            )
 
             categories = ExpenseType.objects.filter(user=request.user).all()
 
@@ -86,7 +96,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 },
             )
 
-    def post(self, request, *args, **kwargs):  # noqa: WPS210
+    def post(self, request, *args, **kwargs):
         categories = ExpenseType.objects.filter(user=request.user).all()
 
         add_category_form = AddCategoryForm(request.POST)
@@ -141,7 +151,8 @@ class ExpenseCreateView(
                 response_data = {'success': True}
         else:
             response_data = {
-                'success': False, 'errors': add_expense_form.errors,
+                'success': False,
+                'errors': add_expense_form.errors,
             }
         return JsonResponse(response_data)
 
@@ -160,11 +171,11 @@ class ExpenseUpdateView(
 
     def get(self, request, *args, **kwargs):
         return self.get_update_form(
-            self.form_class, 'add_expense_form',
+            self.form_class,
+            'add_expense_form',
         )
 
     def form_valid(self, form):
-
         expense_id = self.get_object().id
         if expense_id:
             expense = get_object_or_404(Expense, id=expense_id)

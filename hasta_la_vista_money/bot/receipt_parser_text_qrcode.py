@@ -35,7 +35,8 @@ def handle_receipt_text_qrcode(message, bot, user, account):
         # Записываем байт-код картинки во вложенный файл и вносим данные
         # в переменную image_file.
         with tempfile.NamedTemporaryFile(
-            mode='w+b', suffix='.png',
+            mode='w+b',
+            suffix='.png',
         ) as image_file:
             image_file.write(byte_code)
             # Из image_file с помощью функции decode_qrcode получает

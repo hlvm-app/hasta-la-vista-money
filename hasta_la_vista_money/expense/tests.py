@@ -11,9 +11,11 @@ NEW_TEST_AMOUNT = 25000
 
 
 class TestExpense(TestCase):
-
     fixtures = [
-        'users.yaml', 'account.yaml', 'expense.yaml', 'expense_cat.yaml',
+        'users.yaml',
+        'account.yaml',
+        'expense.yaml',
+        'expense_cat.yaml',
     ]
 
     def setUp(self) -> None:
@@ -65,7 +67,7 @@ class TestExpense(TestCase):
     def test_expense_delete(self):
         self.client.force_login(self.user)
 
-        url = reverse_lazy('expense:delete', args=(self.expense.pk, ))
+        url = reverse_lazy('expense:delete', args=(self.expense.pk,))
 
         response = self.client.post(url, follow=True)
         self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
@@ -87,7 +89,8 @@ class TestExpense(TestCase):
         self.client.force_login(self.user)
 
         url = reverse_lazy(
-            'expense:delete_category_expense', args=(self.expense.pk, ),
+            'expense:delete_category_expense',
+            args=(self.expense.pk,),
         )
 
         response = self.client.post(url, follow=True)

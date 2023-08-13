@@ -27,12 +27,14 @@ class DeleteCategoryMixin(DeleteView):
             category = self.object
             category.delete()
             messages.success(
-                self.request, MessageOnSite.SUCCESS_CATEGORY_DELETED.value,
+                self.request,
+                MessageOnSite.SUCCESS_CATEGORY_DELETED.value,
             )
             return super().form_valid(form)
         except ProtectedError:
             messages.error(
-                self.request, MessageOnSite.ACCESS_DENIED_DELETE_CATEGORY.value,
+                self.request,
+                MessageOnSite.ACCESS_DENIED_DELETE_CATEGORY.value,
             )
             return redirect(self.success_url)
 
@@ -56,13 +58,13 @@ class ExpenseIncomeFormValidCreateMixin(CreateView):
         category_form.user = self.request.user
         category_form.save()
         messages.success(
-            self.request, MessageOnSite.SUCCESS_CATEGORY_ADDED.value,
+            self.request,
+            MessageOnSite.SUCCESS_CATEGORY_ADDED.value,
         )
         return super().form_valid(form)
 
 
 class UpdateViewMixin:
-
     def __init__(self):
         self.template_name = None
         self.request = None

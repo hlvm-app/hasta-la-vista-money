@@ -2,9 +2,7 @@ from django.db import models
 from hasta_la_vista_money.constants import NumericParameter
 from hasta_la_vista_money.users.models import User
 
-CURRENCY = (
-    ('RU', 'Российский рубль'),
-)
+CURRENCY = (('RU', 'Российский рубль'),)
 
 
 class Account(models.Model):
@@ -36,10 +34,14 @@ class Account(models.Model):
 class TransferMoneyLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     from_account = models.ForeignKey(
-        Account, related_name='from_account', on_delete=models.CASCADE,
+        Account,
+        related_name='from_account',
+        on_delete=models.CASCADE,
     )
     to_account = models.ForeignKey(
-        Account, related_name='to_account', on_delete=models.CASCADE,
+        Account,
+        related_name='to_account',
+        on_delete=models.CASCADE,
     )
     amount = models.DecimalField(
         max_digits=NumericParameter.TWENTY.value,

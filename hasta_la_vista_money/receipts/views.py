@@ -49,11 +49,16 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
 
             product_formset = ProductFormSet()
 
-            receipts = Receipt.objects.prefetch_related(
-                'customer', 'product',
-            ).filter(
-                user=request.user,
-            ).order_by('-receipt_date')
+            receipts = (
+                Receipt.objects.prefetch_related(
+                    'customer',
+                    'product',
+                )
+                .filter(
+                    user=request.user,
+                )
+                .order_by('-receipt_date')
+            )
 
             return render(
                 request,
@@ -85,7 +90,8 @@ class CustomerCreateView(SuccessMessageMixin, CreateView):
             response_data = {'success': True}
         else:
             response_data = {
-                'success': False, 'errors': seller_form.errors,
+                'success': False,
+                'errors': seller_form.errors,
             }
         return JsonResponse(response_data)
 
@@ -127,7 +133,8 @@ class ReceiptCreateView(SuccessMessageMixin, CreateView):
     def check_exist_receipt(request, receipt_form):
         number_receipt = receipt_form.cleaned_data.get('number_receipt')
         return Receipt.objects.filter(
-            user=request.user, number_receipt=number_receipt,
+            user=request.user,
+            number_receipt=number_receipt,
         )
 
     def setup(self, request, *args, **kwargs):
@@ -142,15 +149,13 @@ class ReceiptCreateView(SuccessMessageMixin, CreateView):
     def form_valid(self, form):
         product_formset = ProductFormSet(self.request.POST)
         response_data = {}
-        valid_form = (
-            form.is_valid() and
-            product_formset.is_valid()
-        )
+        valid_form = form.is_valid() and product_formset.is_valid()
         if valid_form:
             number_receipt = self.check_exist_receipt(self.request, form)
             if number_receipt:
                 messages.error(
-                    self.request, ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
+                    self.request,
+                    ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
                 )
             else:
                 customer = form.cleaned_data.get('customer')
@@ -167,7 +172,8 @@ class ReceiptCreateView(SuccessMessageMixin, CreateView):
                 response_data = {'success': True}
         else:
             response_data = {
-                'success': False, 'errors': form.errors,
+                'success': False,
+                'errors': form.errors,
             }
         return JsonResponse(response_data)
 

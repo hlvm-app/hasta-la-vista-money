@@ -31,7 +31,8 @@ def handle_receipt_json(message, bot, user, account):
     """
     if message.document.mime_type != 'application/json':
         bot.send_message(
-            message.chat.id, 'Файл должен быть только в формате JSON!',
+            message.chat.id,
+            'Файл должен быть только в формате JSON!',
         )
         return
     try:

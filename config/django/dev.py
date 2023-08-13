@@ -5,9 +5,11 @@ from .base import *  # NOQA
 INTERNAL_IPS = [
     os.environ.get(
         'LOCAL_IPS',
-    ) if os.environ.get(
+    )
+    if os.environ.get(
         'LOCAL_IPS',
-    ) else '127.0.0.1',
+    )
+    else '127.0.0.1',
 ]
 
 

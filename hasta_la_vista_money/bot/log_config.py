@@ -8,7 +8,6 @@ logger.setLevel(logging.ERROR)
 
 
 class TelegramLogsHandler(logging.Handler):
-
     def __init__(self, tg_bot, chat_id):
         super().__init__()
         self.chat_id = chat_id

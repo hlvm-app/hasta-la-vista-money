@@ -17,21 +17,31 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
 
     @classmethod
     def collect_datasets(cls, request):
-        expense_dataset = Expense.objects.filter(
-            user=request.user,
-        ).values(
-            'date',
-        ).annotate(
-            total_amount=Sum('amount'),
-        ).order_by('date')
+        expense_dataset = (
+            Expense.objects.filter(
+                user=request.user,
+            )
+            .values(
+                'date',
+            )
+            .annotate(
+                total_amount=Sum('amount'),
+            )
+            .order_by('date')
+        )
 
-        income_dataset = Income.objects.filter(
-            user=request.user,
-        ).values(
-            'date',
-        ).annotate(
-            total_amount=Sum('amount'),
-        ).order_by('date')
+        income_dataset = (
+            Income.objects.filter(
+                user=request.user,
+            )
+            .values(
+                'date',
+            )
+            .annotate(
+                total_amount=Sum('amount'),
+            )
+            .order_by('date')
+        )
 
         return expense_dataset, income_dataset
 
@@ -79,8 +89,7 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
     def unique_income_data(cls, income_dates, income_amounts):
         return cls.unique_data(income_dates, income_amounts)
 
-    def get(self, request, *args, **kwargs):  # noqa: WPS210 C901
-
+    def get(self, request, *args, **kwargs):  # noqa: WPS210
         expense_dataset, income_dataset = self.collect_datasets(request)
 
         expense_dates, expense_amounts = self.transform_data_expense(
@@ -91,23 +100,27 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         )
 
         unique_expense_dates, unique_expense_amounts = self.unique_expense_data(
-            expense_dates, expense_amounts,
+            expense_dates,
+            expense_amounts,
         )
 
         unique_income_dates, unique_income_amounts = self.unique_income_data(
-            income_dates, income_amounts,
+            income_dates,
+            income_amounts,
         )
 
         chart = {
             'chart': {'type': 'line'},
             'title': {'text': 'Статистика по расходам и доходам'},
             'xAxis': [
-                {'categories': unique_expense_dates,
-                 'title': {'text': 'Дата (расходы)'},
-                 },
-                {'categories': unique_income_dates,
-                 'title': {'text': 'Дата (доходы)'},
-                 },
+                {
+                    'categories': unique_expense_dates,
+                    'title': {'text': 'Дата (расходы)'},
+                },
+                {
+                    'categories': unique_income_dates,
+                    'title': {'text': 'Дата (доходы)'},
+                },
             ],
             'yAxis': {'title': {'text': 'Сумма'}},
             'series': [

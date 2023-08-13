@@ -8,7 +8,6 @@ LENGTH_PASSWORD = 12
 
 
 class TestUser(TestCase):
-
     fixtures = ['users.yaml']
 
     def setUp(self) -> None:

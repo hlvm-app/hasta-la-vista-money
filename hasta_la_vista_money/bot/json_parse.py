@@ -25,7 +25,9 @@ class JsonParser:
         self.json_data = json_data
 
     def parse_json(
-        self, json_data: dict, key: str,
+        self,
+        json_data: dict,
+        key: str,
     ) -> list[dict] | int | str | None:
         """
         Метод разбора json данных.
@@ -48,7 +50,9 @@ class JsonParser:
         return JsonParser.__get_value(self, json_data, key)
 
     def __get_value(  # noqa: WPS112
-        self, dictionary, key,
+        self,
+        dictionary,
+        key,
     ) -> str | list | int | None:
         """
         Приватный метод получения значений из словаря (json данных).

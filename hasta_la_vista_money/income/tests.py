@@ -11,9 +11,11 @@ NEW_TEST_AMOUNT = 25000
 
 
 class TestIncome(TestCase):
-
     fixtures = [
-        'users.yaml', 'account.yaml', 'income.yaml', 'income_cat.yaml',
+        'users.yaml',
+        'account.yaml',
+        'income.yaml',
+        'income_cat.yaml',
     ]
 
     def setUp(self) -> None:
@@ -69,7 +71,7 @@ class TestIncome(TestCase):
     def test_income_delete(self):
         self.client.force_login(self.user)
 
-        url = reverse_lazy('income:delete_income', args=(self.income.pk, ))
+        url = reverse_lazy('income:delete_income', args=(self.income.pk,))
 
         response = self.client.post(url, follow=True)
         self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
@@ -91,7 +93,8 @@ class TestIncome(TestCase):
         self.client.force_login(self.user)
 
         url = reverse_lazy(
-            'income:delete_category_income', args=(self.income.pk, ),
+            'income:delete_category_income',
+            args=(self.income.pk,),
         )
 
         response = self.client.post(url, follow=True)

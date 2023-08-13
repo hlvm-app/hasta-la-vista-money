@@ -29,7 +29,8 @@ urlpatterns = [
     path(
         'applications/',
         include(
-            'hasta_la_vista_money.applications.urls', namespace='applications',
+            'hasta_la_vista_money.applications.urls',
+            namespace='applications',
         ),
         name='applications',
     ),
@@ -60,14 +61,16 @@ urlpatterns = [
     path(
         'bot/',
         include(
-            'hasta_la_vista_money.bot.urls', namespace='bot',
+            'hasta_la_vista_money.bot.urls',
+            namespace='bot',
         ),
         name='bot',
     ),
     path(
         'account/',
         include(
-            'hasta_la_vista_money.account.urls', namespace='account',
+            'hasta_la_vista_money.account.urls',
+            namespace='account',
         ),
         name='account',
     ),
@@ -80,6 +83,4 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    urlpatterns += (
-        path('__debug__/', include('debug_toolbar.urls')),
-    )
+    urlpatterns += (path('__debug__/', include('debug_toolbar.urls')),)

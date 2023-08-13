@@ -11,7 +11,6 @@ from hasta_la_vista_money.constants import MessageOnSite, NumericParameter
 
 
 class AddAccountForm(ModelForm):
-
     class Meta:
         model = Account
         fields = ['name_account', 'balance', 'currency']
