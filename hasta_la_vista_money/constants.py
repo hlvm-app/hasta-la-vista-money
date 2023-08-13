@@ -55,7 +55,7 @@ class MessageOnSite(Enum):
     SUCCESS_MESSAGE_CHANGED_ACCOUNT = 'Счёт успешно изменён!'
     SUCCESS_MESSAGE_CHANGED_PROFILE = 'Профиль успешно обновлён!'
     SUCCESS_MESSAGE_CHANGED_PASSWORD = (
-        'Новый пароль успешно установлен!'  # noqa: E501 S105
+        'Новый пароль успешно установлен!'  # noqa: S105
     )
     SUCCESS_MESSAGE_LOGOUT = 'Вы успешно вышли из своей учётной записи!'
     HELP_TEXT_PASSWORD = ''.join(
@@ -243,6 +243,7 @@ class TemplateHTMLView(Enum):
     INCOME_TEMPLATE = 'income/income.html'
     EXPENSE_TEMPLATE = 'expense/expense.html'
     RECEIPT_TEMPLATE = 'receipts/receipts.html'
+    USERS_TEMPLATE_PROFILE = 'users/profile.html'
 
 
 class SuccessUrlView(Enum):
