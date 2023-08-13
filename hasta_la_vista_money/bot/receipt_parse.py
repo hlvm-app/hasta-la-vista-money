@@ -72,7 +72,7 @@ class ReceiptParser:
         self.receipt = None
         self.product_list = []
 
-    def parse_products(self) -> None:  # noqa: WPS210
+    def parse_products(self) -> None:
         """
         Метод класса для парсинга продуктов из JSON данных чека.
 
@@ -81,29 +81,40 @@ class ReceiptParser:
         """
         try:
             products_list = self.parser.parse_json(
-                self.json_data, ReceiptConstants.ITEMS_PRODUCT.value,
+                self.json_data,
+                ReceiptConstants.ITEMS_PRODUCT.value,
             )
             for product in products_list:
                 product_name = self.parser.parse_json(
-                    product, ReceiptConstants.PRODUCT_NAME.value,
+                    product,
+                    ReceiptConstants.PRODUCT_NAME.value,
                 )
                 price = convert_number(
                     self.parser.parse_json(
-                        product, ReceiptConstants.PRICE.value,
+                        product,
+                        ReceiptConstants.PRICE.value,
                     ),
                 )
                 quantity = self.parser.parse_json(
-                    product, ReceiptConstants.QUANTITY.value,
+                    product,
+                    ReceiptConstants.QUANTITY.value,
                 )
-                amount = convert_number(self.parser.parse_json(
-                    product, ReceiptConstants.AMOUNT.value,
-                ))
+                amount = convert_number(
+                    self.parser.parse_json(
+                        product,
+                        ReceiptConstants.AMOUNT.value,
+                    ),
+                )
                 nds_type = self.parser.parse_json(
-                    product, ReceiptConstants.NDS_TYPE.value,
+                    product,
+                    ReceiptConstants.NDS_TYPE.value,
                 )
-                nds_sum = convert_number(self.parser.parse_json(
-                    product, ReceiptConstants.NDS_SUM.value,
-                ))
+                nds_sum = convert_number(
+                    self.parser.parse_json(
+                        product,
+                        ReceiptConstants.NDS_SUM.value,
+                    ),
+                )
 
                 product_data = ProductData(
                     user=self.user,
@@ -132,13 +143,16 @@ class ReceiptParser:
         """
         try:
             name_seller = self.parser.parse_json(
-                self.json_data, ReceiptConstants.NAME_SELLER.value,
+                self.json_data,
+                ReceiptConstants.NAME_SELLER.value,
             )
             retail_place_address = self.parser.parse_json(
-                self.json_data, ReceiptConstants.RETAIL_PLACE_ADDRESS.value,
+                self.json_data,
+                ReceiptConstants.RETAIL_PLACE_ADDRESS.value,
             )
             retail_place = self.parser.parse_json(
-                self.json_data, ReceiptConstants.RETAIL_PLACE.value,
+                self.json_data,
+                ReceiptConstants.RETAIL_PLACE.value,
             )
 
             customer_data = CustomerData(
@@ -153,7 +167,15 @@ class ReceiptParser:
                 f'Ошибка записи продавца в базу данных: {integrity_error}',
             )
 
-    def parse_receipt(self, chat_id: int) -> None:  # noqa: WPS231 C901 WPS210 WPS213 E501
+    @classmethod
+    def check_operation_type(cls, operation_type, total_sum):
+        if operation_type in {2, 3}:
+            return -total_sum
+
+    def parse_receipt(
+        self,
+        chat_id: int,
+    ) -> None:
         """
         Метод класса для парсинга основной информации о чеке.
 
@@ -177,8 +199,7 @@ class ReceiptParser:
                 total_sum,
             ) = self.extract_receipt_info()
 
-            if operation_type in {2, 3}:
-                total_sum = -total_sum
+            total_sum = self.check_operation_type(operation_type, total_sum)
 
             check_number_receipt = Receipt.objects.filter(
                 user=self.user,
@@ -217,19 +238,27 @@ class ReceiptParser:
             )
 
     def extract_receipt_info(self):
-        receipt_date = convert_date_time(self.parser.parse_json(
-            self.json_data, ReceiptConstants.RECEIPT_DATE_TIME.value,
-        ))
+        receipt_date = convert_date_time(
+            self.parser.parse_json(
+                self.json_data,
+                ReceiptConstants.RECEIPT_DATE_TIME.value,
+            ),
+        )
         number_receipt = self.parser.parse_json(
-            self.json_data, ReceiptConstants.NUMBER_RECEIPT.value,
+            self.json_data,
+            ReceiptConstants.NUMBER_RECEIPT.value,
         )
 
         operation_type = self.parser.parse_json(
-            self.json_data, ReceiptConstants.OPERATION_TYPE.value,
+            self.json_data,
+            ReceiptConstants.OPERATION_TYPE.value,
         )
-        total_sum = convert_number(self.parser.parse_json(
-            self.json_data, ReceiptConstants.TOTAL_SUM.value,
-        ))
+        total_sum = convert_number(
+            self.parser.parse_json(
+                self.json_data,
+                ReceiptConstants.TOTAL_SUM.value,
+            ),
+        )
         return receipt_date, number_receipt, operation_type, total_sum
 
     def process_receipt_data(
