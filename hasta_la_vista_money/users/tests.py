@@ -25,10 +25,13 @@ class TestUser(TestCase):
         username = self.faker.user_name()
         first_name = self.faker.first_name()
         last_name = self.faker.last_name()
+        email = self.faker.email()
         set_password = self.faker.password(length=LENGTH_PASSWORD)
         new_user = {
             'first_name': first_name,
             'last_name': last_name,
+            'email': email,
+            'policy': True,
             'username': username,
             'password1': set_password,
             'password2': set_password,
