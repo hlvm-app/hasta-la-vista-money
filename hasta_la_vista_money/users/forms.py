@@ -30,7 +30,7 @@ class RegisterUserForm(UserCreationForm):
         ]
 
 
-class ForgetPasswordForm(forms.Form):
+class ForgotPasswordForm(forms.Form):
     username = CharField(label='Имя пользователя')
 
 
