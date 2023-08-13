@@ -169,8 +169,7 @@ class ReceiptParser:
 
     @classmethod
     def check_operation_type(cls, operation_type, total_sum):
-        if operation_type in {2, 3}:
-            return -total_sum
+        return -total_sum if operation_type in {2, 3} else total_sum
 
     def parse_receipt(
         self,
