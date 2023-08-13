@@ -8,7 +8,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, TemplateView, UpdateView
-from hasta_la_vista_money.constants import MessageOnSite
+from hasta_la_vista_money.constants import MessageOnSite, TemplateHTMLView
 from hasta_la_vista_money.custom_mixin import CustomSuccessURLUserMixin
 from hasta_la_vista_money.users.forms import (
     RegisterUserForm,
@@ -27,7 +27,7 @@ class IndexView(TemplateView):
 
 class ListUsers(TemplateView):
     model = User
-    template_name = 'users/profile.html'
+    template_name = TemplateHTMLView.USERS_TEMPLATE_PROFILE.value
     context_object_name = 'users'
 
     def get_context_data(self, **kwargs):
@@ -56,7 +56,6 @@ class LoginUser(SuccessMessageMixin, LoginView):
 
 
 class LogoutUser(LogoutView, SuccessMessageMixin):
-
     def dispatch(self, request, *args, **kwargs):
         messages.add_message(
             request,
@@ -86,7 +85,7 @@ class UpdateUserView(
     UpdateView,
 ):
     model = User
-    template_name = 'users/profile.html'
+    template_name = TemplateHTMLView.USERS_TEMPLATE_PROFILE.value
     form_class = UpdateUserForm
     success_message = MessageOnSite.SUCCESS_MESSAGE_CHANGED_PROFILE.value
 
@@ -98,8 +97,8 @@ class UpdateUserView(
     def post(self, request, *args, **kwargs):
         user_update = self.get_form()
         valid_form = (
-            user_update.is_valid() and
-            request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+            user_update.is_valid()
+            and request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
         )
         if valid_form:
             user_update.save()
@@ -116,17 +115,18 @@ class UpdateUserPasswordView(
     PasswordChangeView,
 ):
     model = User
-    template_name = 'users/profile.html'
+    template_name = TemplateHTMLView.USERS_TEMPLATE_PROFILE.value
     form_class = PasswordChangeForm
     success_message = MessageOnSite.SUCCESS_MESSAGE_CHANGED_PASSWORD.value
 
     def post(self, request, *args, **kwargs):
         user_update_pass_form = PasswordChangeForm(
-            data=request.POST, user=request.user,
+            data=request.POST,
+            user=request.user,
         )
         valid_form = (
-            user_update_pass_form.is_valid() and
-            request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+            user_update_pass_form.is_valid()
+            and request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
         )
         if valid_form:
             user_update_pass_form.save()
@@ -135,6 +135,7 @@ class UpdateUserPasswordView(
             response_data = {'success': True}
         else:
             response_data = {
-                'success': False, 'errors': user_update_pass_form.errors,
+                'success': False,
+                'errors': user_update_pass_form.errors,
             }
         return JsonResponse(response_data)
