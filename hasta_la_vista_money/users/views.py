@@ -158,11 +158,11 @@ class ForgotPasswordView(TemplateView):
     template_name = 'users/registration/password_reset.html'
 
     def get(self, request, *args, **kwargs):
-        form = ForgotPasswordForm()
-        return render(request, self.template_name, {'form': form})
+        reset_password_form = ForgotPasswordForm()
+        return render(request, self.template_name, {'reset_password_form': reset_password_form})
 
     def post(self, request, *args, **kwargs):
-        form = ForgotPasswordForm(request.POST)
+        reset_password_form = ForgotPasswordForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             user = User.objects.filter(username=username).first()
@@ -187,22 +187,13 @@ class ForgotPasswordView(TemplateView):
                     ),
                 )
                 bot_admin.send_message(telegram_user.telegram_id, message)
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'reset_password_form': reset_password_form})
 
 
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'users/login.html'
     form_class = SetPasswordForm
     success_url = reverse_lazy('login')
-
-    def get(self, request, *args, **kwargs):
-        user = request.user
-        reset_password_form = SetPasswordForm(user=user)
-        return render(
-            request,
-            self.template_name,
-            {'reset_password_form': reset_password_form}
-        )
 
     def form_valid(self, form):
         form.save()
