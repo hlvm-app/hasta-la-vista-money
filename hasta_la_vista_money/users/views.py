@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm, SetPasswordForm
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import (
     LoginView,
@@ -154,7 +154,7 @@ class UpdateUserPasswordView(
         return JsonResponse(response_data)
 
 
-class ForgotPasswordView(CreateView):
+class ForgotPasswordView(TemplateView):
     form_class = ForgotPasswordForm
     template_name = 'users/login.html'
     success_url = 'https://t.me/GetReceiptBot'
@@ -179,7 +179,7 @@ class ForgotPasswordView(CreateView):
                 uid = urlsafe_base64_encode(force_bytes(user.pk))
                 reset_link = ''.join(
                     (
-                        f'https://{current_site.domain}/users/',
+                        f'https://{current_site.domain}',
                         f"{reverse_lazy('users:custom-password-reset-confirm', args=[uid, token])}",  # noqa: E501
                     ),
                 )
@@ -189,6 +189,7 @@ class ForgotPasswordView(CreateView):
                         'Кто-то запросил сброс пароля ',
                         'для вашей учетной записи.\n',
                         'Ссылка действует сутки.\n',
+                        'Если это были не вы, просто удалите сообщение.\n',
                         f'Для сброса пароля перейдите по ссылке: {reset_link}',
                     ),
                 )
@@ -202,8 +203,7 @@ class ForgotPasswordView(CreateView):
 
 
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
-    template_name = 'users/registration/password_reset_confirm.html'
-    form_class = SetPasswordForm
+    template_name = 'users/password_reset_confirm.html'
     success_url = reverse_lazy('login')
 
     def form_valid(self, form):
