@@ -157,7 +157,7 @@ class UpdateUserPasswordView(
 
 class ForgotPasswordView(TemplateView):
     form_class = ForgotPasswordForm
-    template_name = 'users/registration/password_reset.html'
+    template_name = 'users/login.html'
 
     def get(self, request, *args, **kwargs):
         reset_password_form = ForgotPasswordForm()
@@ -204,7 +204,7 @@ class ForgotPasswordView(TemplateView):
 
 
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
-    template_name = 'users/login.html'
+    template_name = 'users/registration/password_reset_confirm.html'
     form_class = SetPasswordForm
     success_url = reverse_lazy('login')
 
