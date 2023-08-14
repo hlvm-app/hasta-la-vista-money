@@ -23,7 +23,7 @@
         <p class='text-light'>Тогда нажимайте кнопку:</p>
         <a class="btn btn-primary text-light" href="{% url 'users:registration' %}">{% translate 'Регистрация' %}</a>
         <button class="btn btn-primary mt-2 text-light" data-bs-toggle="modal" data-bs-target="#reset-password" >{% translate 'Восстановить пароль' %}</button>
-        <div id="reset-password" class="modal fade ajax-modal" >
+        <div id="reset-password" class="modal fade" >
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -33,7 +33,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="ajax-form m-2" method="POST">
+                        <form class="m-2" method="POST" action="{% url 'users:forgot-password' %}">
 							{% csrf_token %}
 							{% if reset_password_form %}
 						        {% for field in reset_password_form %}
