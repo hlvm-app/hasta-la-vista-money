@@ -31,7 +31,10 @@ class RegisterUserForm(UserCreationForm):
 
 
 class ForgotPasswordForm(forms.Form):
-    username = CharField(label='Имя пользователя')
+    username = CharField(
+        label='Имя пользователя',
+        help_text=MessageOnSite.HELP_TEXT_FORGOT_PASSWORD.value,
+    )
 
 
 class UpdateUserForm(ModelForm):
