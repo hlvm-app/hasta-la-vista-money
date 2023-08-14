@@ -48,8 +48,10 @@ class ListUsers(TemplateView):
             user_update_pass_form = PasswordChangeForm(
                 user=self.request.user,
             )
+            reset_password_form = ForgotPasswordForm()
             context['user_update'] = user_update
             context['user_update_pass_form'] = user_update_pass_form
+            context['reset_password_form'] = reset_password_form
         return context
 
 
@@ -163,8 +165,8 @@ class ForgotPasswordView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         reset_password_form = ForgotPasswordForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
+        if reset_password_form.is_valid():
+            username = reset_password_form.cleaned_data.get('username')
             user = User.objects.filter(username=username).first()
             telegram_user = TelegramUser.objects.filter(user=user).first()
             if telegram_user:
