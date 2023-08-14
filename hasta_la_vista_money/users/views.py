@@ -161,7 +161,11 @@ class ForgotPasswordView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         reset_password_form = ForgotPasswordForm()
-        return render(request, self.template_name, {'reset_password_form': reset_password_form})
+        return render(
+            request,
+            self.template_name, 
+            {'reset_password_form': reset_password_form},
+        )
 
     def post(self, request, *args, **kwargs):
         reset_password_form = ForgotPasswordForm(request.POST)
