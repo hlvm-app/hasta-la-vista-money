@@ -14,7 +14,11 @@ class AccessMiddleware(BaseMiddleware):
         self.telegram_username = TelegramUser.objects.filter(
             telegram_id=message.from_user.id,
         ).first()
-        if message.text and message.text == '/auth':
+        if message.text and (
+            '/auth' in message.text
+            or '/start' in message.text
+            or '/help' in message.text
+        ):
             return None
 
         if self.telegram_username is None and message.text:
