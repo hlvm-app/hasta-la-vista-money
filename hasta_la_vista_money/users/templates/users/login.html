@@ -5,12 +5,13 @@
 {% block title %}{% translate 'Страница входа' %}{% endblock %}
 {% block content %}
     <div class="container d-flex min-vh-100 flex-column justify-content-center align-items-center">
+        {% include 'error_modal.html' %}
         <h1 class="text-light text-uppercase">Hasta La Vista, Money!</h1>
         <p class="text-light text-center">Удобная домашняя бухгалтерия. Управляй финансами семьи грамотно!</p>
         <form method="post" class="form text-light">
             {% csrf_token %}
             <p class="my-4">
-                {% bootstrap_form form %}
+                {% bootstrap_form user_login_form %}
             </p>
             <div class="row align-items-center justify-content-center">
                 <div class="row justify-content-center align-items-center">
@@ -21,8 +22,37 @@
         <p class='text-light mt-3'>Ещё не зарегистрированы?</p>
         <p class='text-light'>Тогда нажимайте кнопку:</p>
         <a class="btn btn-primary text-light" href="{% url 'users:registration' %}">{% translate 'Регистрация' %}</a>
-        <a class="btn btn-primary mt-2 text-light" href="{% url 'users:forgot-password' %}">{% translate 'Восстановить пароль' %}</a>
-
+        <a class="btn btn-primary mt-2 text-light" data-bs-toggle="modal" data-bs-target="#reset-password" href="{% url 'users:forgot-password' %}">{% translate 'Восстановить пароль' %}</a>
+        <div id="reset-password" class="modal fade ajax-modal" >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            Сбросить пароль
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="ajax-form m-2" method="POST" action="{% url 'income:create' %}">
+							{% csrf_token %}
+							{% if reset_password_form %}
+						        {% for field in reset_password_form %}
+						            <div class="form-group {% if field.errors %} has-error{% endif %}">
+						                {% bootstrap_field field %}
+						                {% if field.errors %}
+						                    {% for error in field.errors %}
+						                        <p class="help-block">{{ error }}</p>
+						                    {% endfor %}
+						                {% endif %}
+						            </div>
+						        {% endfor %}
+						    {% endif %}
+							<button type="submit" class="btn btn-primary">Добавить</button>
+						</form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 {% endblock %}
