@@ -22,7 +22,7 @@
         <p class='text-light mt-3'>Ещё не зарегистрированы?</p>
         <p class='text-light'>Тогда нажимайте кнопку:</p>
         <a class="btn btn-primary text-light" href="{% url 'users:registration' %}">{% translate 'Регистрация' %}</a>
-        <a class="btn btn-primary mt-2 text-light" data-bs-toggle="modal" data-bs-target="#reset-password" href="{% url 'users:forgot-password' %}">{% translate 'Восстановить пароль' %}</a>
+        <button class="btn btn-primary mt-2 text-light" data-bs-toggle="modal" data-bs-target="#reset-password" >{% translate 'Восстановить пароль' %}</button>
         <div id="reset-password" class="modal fade ajax-modal" >
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -33,7 +33,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="ajax-form m-2" method="POST" action="{% url 'income:create' %}">
+                        <form class="ajax-form m-2" method="POST">
 							{% csrf_token %}
 							{% if reset_password_form %}
 						        {% for field in reset_password_form %}
@@ -47,7 +47,7 @@
 						            </div>
 						        {% endfor %}
 						    {% endif %}
-							<button type="submit" class="btn btn-primary">Добавить</button>
+							<button type="submit" class="btn btn-primary">Выслать ссылку для сброса пароля</button>
 						</form>
                     </div>
                 </div>

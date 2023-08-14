@@ -165,6 +165,7 @@ class ForgotPasswordView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         reset_password_form = ForgotPasswordForm(request.POST)
+        response_data = {}
         if reset_password_form.is_valid():
             username = reset_password_form.cleaned_data.get('username')
             user = User.objects.filter(username=username).first()
@@ -189,7 +190,13 @@ class ForgotPasswordView(TemplateView):
                     ),
                 )
                 bot_admin.send_message(telegram_user.telegram_id, message)
-        return render(request, self.template_name, {'reset_password_form': reset_password_form})
+                response_data = {'success': True}
+        else:
+            response_data = {
+                'success': False,
+                'errors': reset_password_form.errors,
+            }
+        return JsonResponse(response_data)
 
 
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
