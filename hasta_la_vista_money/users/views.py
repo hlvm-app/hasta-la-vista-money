@@ -48,10 +48,8 @@ class ListUsers(TemplateView):
             user_update_pass_form = PasswordChangeForm(
                 user=self.request.user,
             )
-            reset_password_form = ForgotPasswordForm()
             context['user_update'] = user_update
             context['user_update_pass_form'] = user_update_pass_form
-            context['reset_password_form'] = reset_password_form
         return context
 
 
@@ -66,6 +64,7 @@ class LoginUser(SuccessMessageMixin, LoginView):
         context = super().get_context_data(**kwargs)
         context['button_text'] = _('Войти')
         context['user_login_form'] = UserLoginForm()
+        context['reset_password_form'] = ForgotPasswordForm()
         return context
 
 
@@ -155,21 +154,21 @@ class UpdateUserPasswordView(
         return JsonResponse(response_data)
 
 
-class ForgotPasswordView(TemplateView):
+class ForgotPasswordView(CreateView):
     form_class = ForgotPasswordForm
     template_name = 'users/login.html'
+    success_url = 'https://t.me/GetReceiptBot'
 
     def get(self, request, *args, **kwargs):
         reset_password_form = ForgotPasswordForm()
         return render(
             request,
-            self.template_name, 
+            self.template_name,
             {'reset_password_form': reset_password_form},
         )
 
     def post(self, request, *args, **kwargs):
         reset_password_form = ForgotPasswordForm(request.POST)
-        response_data = {}
         if reset_password_form.is_valid():
             username = reset_password_form.cleaned_data.get('username')
             user = User.objects.filter(username=username).first()
@@ -181,7 +180,7 @@ class ForgotPasswordView(TemplateView):
                 reset_link = ''.join(
                     (
                         f'https://{current_site.domain}/users/',
-                        f'reset-password/{uid}/{token}/',
+                        f"{reverse_lazy('users:custom-password-reset-confirm', args=[uid, token])}",  # noqa: E501
                     ),
                 )
                 message = ''.join(
@@ -194,13 +193,12 @@ class ForgotPasswordView(TemplateView):
                     ),
                 )
                 bot_admin.send_message(telegram_user.telegram_id, message)
-                response_data = {'success': True}
-        else:
-            response_data = {
-                'success': False,
-                'errors': reset_password_form.errors,
-            }
-        return JsonResponse(response_data)
+                return redirect(self.success_url)
+        return render(
+            request,
+            self.template_name,
+            {'reset_password_form': reset_password_form},
+        )
 
 
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
