@@ -63,6 +63,7 @@ class LoginUser(SuccessMessageMixin, LoginView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['button_text'] = _('Войти')
+        context['user_login_form'] = UserLoginForm()
         return context
 
 
@@ -190,9 +191,18 @@ class ForgotPasswordView(TemplateView):
 
 
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
-    template_name = 'users/registration/password_reset_confirm.html'
+    template_name = 'users/login.html'
     form_class = SetPasswordForm
     success_url = reverse_lazy('login')
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        reset_password_form = SetPasswordForm(user=user)
+        return render(
+            request,
+            self.template_name,
+            {'reset_password_form': reset_password_form}
+        )
 
     def form_valid(self, form):
         form.save()
