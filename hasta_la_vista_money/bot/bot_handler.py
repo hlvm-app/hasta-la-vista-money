@@ -14,6 +14,20 @@ from telebot import types
 bot_admin.setup_middleware(AccessMiddleware())
 
 
+@bot_admin.message_handler(commands=['start', 'help'])
+def handle_start_help(message):
+    bot_admin.send_message(
+        message.chat.id,
+        ''.join(
+            (
+                'Приветствую!<br>',
+                'Этот бот используется для добавления чеков ',
+                'в домашнуюю бухгалтерию Hasta La Vista, Money!',
+            )
+        )
+    )
+
+
 @bot_admin.message_handler(commands=['auth'])
 def handle_start(message):
     """
@@ -179,7 +193,8 @@ def start_process_add_manual_receipt(message):
         ''.join(
             (
                 'Чтобы добавить чек используя данные с чека, ',
-                'введите поочередно - дату, ФД, ФП и номер чека. ',
+                'введите поочередно - Дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС, ',
+                'сумму чека, ФН, ФД, ФП.<br>',
                 'Сначала введите дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС',
             ),
         ),
