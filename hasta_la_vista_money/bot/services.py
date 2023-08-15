@@ -2,6 +2,7 @@ import datetime
 from typing import Union
 
 from hasta_la_vista_money.bot.log_config import logger
+from hasta_la_vista_money.users.models import TelegramUser
 
 
 # Выделяем дату из json
@@ -45,3 +46,15 @@ def convert_number(number: int) -> Union[int, float]:
     :rtype: float
     """
     return round(number / 100, 2) if number else 0
+
+
+def get_telegram_user(message):
+    """
+    Функция получения о наличии телеграм пользователя в базе данных.
+
+    :param message:
+    :return:
+    """
+    return TelegramUser.objects.filter(
+        telegram_id=message.from_user.id,
+    ).first()
