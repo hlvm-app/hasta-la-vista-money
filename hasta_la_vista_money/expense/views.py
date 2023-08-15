@@ -229,8 +229,8 @@ class ExpenseDeleteView(DetailView, DeleteView):
 
 class ExpenseCategoryCreateView(ExpenseIncomeFormValidCreateMixin):
     model = ExpenseType
-    template_name = TemplateHTMLView.INCOME_TEMPLATE.value
-    success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)
+    template_name = TemplateHTMLView.EXPENSE_TEMPLATE.value
+    success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
     form_class = AddCategoryForm
 
 
