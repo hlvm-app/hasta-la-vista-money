@@ -1,15 +1,12 @@
-import decimal
-
-from dateutil.parser import ParserError, parse
 from hasta_la_vista_money.account.models import Account
+from hasta_la_vista_money.bot.handle_receipt_manual import HandleReceiptManual
 from hasta_la_vista_money.bot.middleware import AccessMiddleware, bot_admin
-from hasta_la_vista_money.bot.receipt_api_receiver import ReceiptApiReceiver
-from hasta_la_vista_money.bot.receipt_parse import ReceiptParser
 from hasta_la_vista_money.bot.receipt_parser_json import handle_receipt_json
 from hasta_la_vista_money.bot.receipt_parser_text import handle_receipt_text
 from hasta_la_vista_money.bot.receipt_parser_text_qrcode import (
     handle_receipt_text_qrcode,
 )
+from hasta_la_vista_money.bot.services import get_telegram_user
 from hasta_la_vista_money.constants import TelegramMessage
 from hasta_la_vista_money.users.models import TelegramUser, User
 from telebot import types
@@ -82,18 +79,6 @@ def create_telegram_user(message, user):
         TelegramMessage.AUTHORIZATION_SUCCESSFUL.value,
     )
     bot_admin.delete_message(message.from_user.id, message.message_id)
-
-
-def get_telegram_user(message):
-    """
-    Функция получения о наличии телеграм пользователя в базе данных.
-
-    :param message:
-    :return:
-    """
-    return TelegramUser.objects.filter(
-        telegram_id=message.from_user.id,
-    ).first()
 
 
 def check_account_exist(user):
@@ -181,9 +166,6 @@ def handle_select_account(call):
     pin_message(call, account)
 
 
-dictionary_string_from_qrcode = {}
-
-
 @bot_admin.message_handler(commands=['manual'])
 def start_process_add_manual_receipt(message):
     """
@@ -202,117 +184,11 @@ def start_process_add_manual_receipt(message):
             ),
         ),
     )
-    bot_admin.register_next_step_handler(message, process_date_receipt)
-
-
-def process_date_receipt(message):
-    """
-    Получение даты от пользователя.
-
-    :param message:
-    :return:
-    """
-    try:
-        date = parse(message.text)
-        dictionary_string_from_qrcode['date'] = f'{date:%Y%m%dT%H%M%S}'
-        bot_admin.send_message(message.chat.id, 'Введите сумму чека')
-        bot_admin.register_next_step_handler(message, process_amount_receipt)
-    except ParserError:
-        bot_admin.send_message(
-            message.chat.id,
-            'Неверный формат даты! Повторите ввод сначала /manual',
-        )
-
-
-def process_amount_receipt(message):
-    """
-    Получение суммы от пользователя.
-
-    :param message:
-    :return:
-    """
-    try:
-        amount_receipt = message.text
-        dictionary_string_from_qrcode['amount'] = decimal.Decimal(
-            amount_receipt,
-        )
-        bot_admin.send_message(message.chat.id, 'Введите номер ФН')
-        bot_admin.register_next_step_handler(
-            message,
-            process_fiscal_number_receipt,
-        )
-    except ValueError:
-        bot_admin.send_message(message.chat.id, 'Введите сумму!')
-
-
-def process_fiscal_number_receipt(message):
-    """
-    Получение ФН от пользователя.
-
-    :param message:
-    :return:
-    """
-    try:
-        fn_receipt = message.text
-        dictionary_string_from_qrcode['fn'] = int(fn_receipt)
-        bot_admin.send_message(message.chat.id, 'Введите номер ФД')
-        bot_admin.register_next_step_handler(
-            message,
-            process_fiscal_doc_receipt,
-        )
-    except ValueError:
-        bot_admin.send_message(message.chat.id, 'Введите корректный номер ФН!')
-
-
-def process_fiscal_doc_receipt(message):
-    """
-    Получение ФД от пользователя.
-
-    :param message:
-    :return:
-    """
-    try:
-        fd_receipt = message.text
-        dictionary_string_from_qrcode['fd'] = int(fd_receipt)
-        bot_admin.send_message(message.chat.id, 'Введите номер ФП')
-        bot_admin.register_next_step_handler(message, process_fp_receipt)
-    except ValueError:
-        bot_admin.send_message(message.chat.id, 'Введите корректный номер ФД!')
-
-
-def process_fp_receipt(message):
-    """
-    Получение ФП от пользователя.
-
-    :param message:
-    :return:
-    """
-    try:
-        fp_receipt = message.text
-        dictionary_string_from_qrcode['fp'] = int(fp_receipt)
-        telegram_user_id = message.from_user.id
-
-        telegram_user = get_telegram_user(telegram_user_id)
-
-        if telegram_user:
-            user = telegram_user.user
-            account = telegram_user.selected_account_id
-            client = ReceiptApiReceiver()
-            json_data = client.get_receipt(
-                ''.join(
-                    (
-                        f't={dictionary_string_from_qrcode["date"]}',
-                        f'&s={dictionary_string_from_qrcode["amount"]}',
-                        f'&fn={dictionary_string_from_qrcode["fn"]}',
-                        f'&i={dictionary_string_from_qrcode["fd"]}',
-                        f'&fp={dictionary_string_from_qrcode["fp"]}&n=1',
-                    ),
-                ),
-            )
-            parser = ReceiptParser(json_data, user, account)
-            parser.parse(message.chat.id)
-    except ValueError:
-        bot_admin.send_message(message.chat.id, 'Введите корректный номер ФП!')
+    receipt_manual = HandleReceiptManual(message)
+    bot_admin.register_next_step_handler(
+        message,
+        receipt_manual.process_date_receipt,
+    )
 
 
 @bot_admin.message_handler(commands=['deauthorize'])
