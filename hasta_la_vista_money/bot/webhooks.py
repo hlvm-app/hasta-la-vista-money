@@ -2,13 +2,13 @@ import json
 
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from hasta_la_vista_money.bot.bot_handler import (
+from hasta_la_vista_money.bot.config_bot import bot_admin
+from hasta_la_vista_money.bot.handler_bot import (
     handle_receipt,
     handle_select_account,
     handle_start,
     start_process_add_manual_receipt,
 )
-from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.log_config import logger
 from hasta_la_vista_money.constants import HTTPStatus, ResponseText
 from telebot import types

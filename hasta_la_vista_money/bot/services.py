@@ -1,6 +1,7 @@
 import datetime
 from typing import Union
 
+from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.bot.log_config import logger
 from hasta_la_vista_money.users.models import TelegramUser
 
@@ -58,3 +59,13 @@ def get_telegram_user(message):
     return TelegramUser.objects.filter(
         telegram_id=message.from_user.id,
     ).first()
+
+
+def check_account_exist(user):
+    """
+    Проверка существования счёта.
+
+    :param user:
+    :return:
+    """
+    return Account.objects.filter(user=user).first()
