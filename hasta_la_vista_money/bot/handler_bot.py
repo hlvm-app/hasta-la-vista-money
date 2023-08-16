@@ -27,19 +27,7 @@ def handle_start_help(message):
     """
     bot_admin.send_message(
         message.chat.id,
-        ''.join(
-            (
-                'Описание команд:\n',
-                '/start и /help выводят этот текст;\n',
-                '/auth - позволяет авторизоваться в боте для доступа к ',
-                'остальным командам;\n',
-                '/select_account - выводит список счетов для выбора. ',
-                'Счета добавляются через сайт;\n',
-                '/manual - позволяет добавить чек с помощью параметров ',
-                'самого чека, если, например, QR-код не считывается;\n'
-                '/deauthorize - отвязывает телеграм аккаунт от бота.',
-            ),
-        ),
+        TelegramMessage.HELP_TEXT_START.value,
     )
 
 
@@ -112,14 +100,7 @@ def start_process_add_manual_receipt(message):
     """
     bot_admin.send_message(
         message.chat.id,
-        ''.join(
-            (
-                'Чтобы добавить чек используя данные с чека, ',
-                'введите поочередно - Дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС, ',
-                'сумму чека, ФН, ФД, ФП.<br>',
-                'Сначала введите дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС',
-            ),
-        ),
+        TelegramMessage.START_MANUAL_HANDLER_RECEIPT.value,
     )
     receipt_manual = HandleReceiptManual(message)
     bot_admin.register_next_step_handler(
