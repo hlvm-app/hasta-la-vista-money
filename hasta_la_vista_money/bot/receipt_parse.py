@@ -167,10 +167,6 @@ class ReceiptParser:
                 f'Ошибка записи продавца в базу данных: {integrity_error}',
             )
 
-    @classmethod
-    def check_operation_type(cls, operation_type, total_sum):
-        return -total_sum if operation_type in {2, 3} else total_sum
-
     def parse_receipt(
         self,
         chat_id: int,
@@ -223,7 +219,7 @@ class ReceiptParser:
                 )
                 bot_admin.send_message(
                     chat_id,
-                    ReceiptConstants.RECEIPT_BE_ADDED.value,
+                    self.get_string_result_receipt(),
                 )
         except IntegrityError as integrity_error:
             self.handle_integrity_error(
@@ -235,6 +231,25 @@ class ReceiptParser:
                 chat_id,
                 TelegramMessage.NOT_CREATE_ACCOUNT.value,
             )
+
+    def get_string_result_receipt(self):
+        account_balance = get_object_or_404(Account, id=self.account)
+        products = [product.product_name for product in self.product_list]
+        newline_char = '\n'
+        return ''.join(
+            (
+                'Чек успешно добавлен.\n\n',
+                'Параметры чека:\n',
+                f'<b>Счёт списания:</b> {account_balance.name_account}\n',
+                f'<b>Дата чека:</b> {self.receipt.receipt_date}\n',
+                f'<b>Продавец:</b> {self.customer}\n\n',
+                f"<b>Товары:</b>\n{f', {newline_char}'.join(products)}\n",
+            ),
+        )
+
+    @classmethod
+    def check_operation_type(cls, operation_type, total_sum):
+        return -total_sum if operation_type in {2, 3} else total_sum
 
     def extract_receipt_info(self):
         receipt_date = convert_date_time(
