@@ -77,6 +77,6 @@ class DateTimePickerWidgetForm(DateTimePickerInput):
             )
             + datetime.timedelta(
                 days=NumericParameter.ONE.value,
-            )
+            ).strftime('%d/%m/%Y %H:%M'),
         )
         super().__init__(*args, **kwargs, options=options)
