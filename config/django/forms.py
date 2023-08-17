@@ -75,4 +75,4 @@ class DateTimePickerWidgetForm(DateTimePickerInput):
             'maxDate',
             max_date.strftime('%d/%m/%Y %H:%M'),
         )
-        super().__init__(*args, **kwargs, **options)
+        super().__init__(*args, **kwargs, options=optionss)
