@@ -68,13 +68,9 @@ class DateTimePickerWidgetForm(DateTimePickerInput):
                 )
             ).strftime('%d/%m/%Y %H:%M'),
         )
-        max_date = TODAY.replace(
-                    hour=NumericParameter.DAY_MINUS_HOUR.value,
-                    minute=NumericParameter.MINUTE_MINUS_ONE.value,
-                    second=NumericParameter.SECOND_MINUS_ONE.value,
-                ) + datetime.timedelta(
-                    days=NumericParameter.ONE.value,
-                )
+        max_date = datetime.datetime.now() + datetime.timedelta(
+            days=NumericParameter.ONE.value,
+        )
         options.setdefault(
             'maxDate',
             max_date.strftime('%d/%m/%Y %H:%M'),
