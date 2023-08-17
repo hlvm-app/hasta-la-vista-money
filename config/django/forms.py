@@ -74,6 +74,9 @@ class DateTimePickerWidgetForm(DateTimePickerInput):
                 hour=NumericParameter.DAY_MINUS_HOUR.value,
                 minute=NumericParameter.MINUTE_MINUS_ONE.value,
                 second=NumericParameter.SECOND_MINUS_ONE.value,
-            ) + 1,
+            )
+            + datetime.timedelta(
+                days=NumericParameter.ONE.value,
+            )
         )
         super().__init__(*args, **kwargs, options=options)
