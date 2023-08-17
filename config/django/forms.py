@@ -71,7 +71,7 @@ class DateTimePickerWidgetForm(DateTimePickerInput):
         options.setdefault(
             'maxDate',
             TODAY.replace(
-                hour=NumericParameter.DAY_MINUS_HOUR.value,
+                hour=NumericParameter.DAY_MINUS_HOUR.value + 24,
                 minute=NumericParameter.MINUTE_MINUS_ONE.value,
                 second=NumericParameter.SECOND_MINUS_ONE.value,
             ),
