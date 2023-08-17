@@ -206,10 +206,7 @@ class ReceiptParser:
                 number_receipt=number_receipt,
             )
 
-            if 'query' in self.json_data and number_receipt is None:
-                logger.error(ReceiptConstants.RECEIPT_NOT_ACCEPTED.value)
-                return
-            elif check_number_receipt:
+            if check_number_receipt:
                 bot_admin.send_message(
                     chat_id,
                     ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
@@ -249,6 +246,9 @@ class ReceiptParser:
         operation_type,
         total_sum,
     ):
+        if 'query' in self.json_data and number_receipt is None:
+            logger.error(ReceiptConstants.RECEIPT_NOT_ACCEPTED.value)
+            return
         self.parse_customer()
         account_balance = get_object_or_404(Account, id=self.account)
         if account_balance.user == self.user:
