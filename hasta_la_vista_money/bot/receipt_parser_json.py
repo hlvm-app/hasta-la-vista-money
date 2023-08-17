@@ -43,7 +43,7 @@ def handle_receipt_json(message, bot, user, account):
         json_data = json.loads(file_downloaded)
 
         parse = ReceiptParser(json_data, user, account)
-        parse.parse(message.chat.id)
+        parse.parse_receipt(message.chat.id)
 
     except json.decoder.JSONDecodeError as json_error:
         logger.error(
