@@ -26,7 +26,7 @@ class ReceiptParserTestCase(TestCase):
         with open('fixtures/receipt.json', 'r') as receipt_json:
             json_data = json.load(receipt_json)
         self.parser = ReceiptParser(json_data, self.user, self.account.id)
-        self.parser.parse_receipt(int(environ.get('ID_GROUP_USER')))
+        self.parser.parse(int(environ.get('ID_GROUP_USER')))
 
     def test_parse_receipt(self):
         self.assertIsNotNone(self.parser.receipt)

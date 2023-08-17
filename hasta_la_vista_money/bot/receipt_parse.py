@@ -246,15 +246,6 @@ class ReceiptParser:
         operation_type,
         total_sum,
     ):
-        """
-        Обработка данных чека.
-
-        :param receipt_date:
-        :param number_receipt:
-        :param operation_type:
-        :param total_sum:
-        :return:
-        """
         if 'query' in self.json_data and number_receipt is None:
             logger.error(ReceiptConstants.RECEIPT_NOT_ACCEPTED.value)
             return
@@ -298,3 +289,15 @@ class ReceiptParser:
             ),
         )
         return receipt_date, number_receipt, operation_type, total_sum
+
+    def parse(self, chat_id: int) -> None:
+        """
+        Метод отвечает за вызов метода `parse_receipt` по парсингу чека.
+
+        В случае ошибки выбрасывает исключение и отправляет ошибку пользователю.
+
+        :argument chat_id: ID пользователя, кому направлять сообщения.
+
+
+        """
+        self.parse_receipt(chat_id)

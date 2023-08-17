@@ -49,7 +49,7 @@ def handle_receipt_text_qrcode(message, bot, user, account):
                 user,
                 account,
             )
-            parse.parse_receipt(message.chat.id)
+            parse.parse(message.chat.id)
     else:
         bot.send_message(
             message.chat.id,

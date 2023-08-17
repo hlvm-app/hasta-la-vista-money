@@ -47,6 +47,6 @@ def handle_receipt_text(message, bot, user, account):
         json_data = client.get_receipt(qr_code)
 
         parse = ReceiptParser(json_data, user, account)
-        parse.parse_receipt(message.chat.id)
+        parse.parse(message.chat.id)
     else:
         bot.send_message(message.chat.id, 'Недопустимый текст')
