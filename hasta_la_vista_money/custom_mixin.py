@@ -41,6 +41,7 @@ class DeleteCategoryMixin(DeleteView):
 
 class CustomSuccessURLUserMixin:
     def __init__(self):
+        """Конструктов класса инициализирующий аргумент kwargs."""
         self.kwargs = None
 
     def get_success_url(self):
@@ -50,6 +51,12 @@ class CustomSuccessURLUserMixin:
 
 class ExpenseIncomeFormValidCreateMixin(CreateView):
     def __init__(self, *args, **kwargs):
+        """
+        Конструктов класса инициализирующий аргументы класса.
+
+        :param args:
+        :param kwargs:
+        """
         super().__init__(*args, **kwargs)
         self.request = None
 
@@ -66,6 +73,7 @@ class ExpenseIncomeFormValidCreateMixin(CreateView):
 
 class UpdateViewMixin:
     def __init__(self):
+        """Конструктов класса инициализирующий аргументы класса."""
         self.template_name = None
         self.request = None
 

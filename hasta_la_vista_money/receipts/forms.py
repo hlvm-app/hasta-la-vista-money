@@ -55,6 +55,12 @@ class CustomerForm(BaseForm):
         fields = ['name_seller', 'retail_place_address', 'retail_place']
 
     def __init__(self, *args, **kwargs):
+        """
+        Конструктов класса инициализирующий поля формы.
+
+        :param args:
+        :param kwargs:
+        """
         super().__init__(*args, **kwargs)
         self.fields['retail_place_address'].required = False
         self.fields['retail_place'].required = False

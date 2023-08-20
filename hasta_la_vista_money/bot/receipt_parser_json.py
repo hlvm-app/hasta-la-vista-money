@@ -47,7 +47,11 @@ def handle_receipt_json(message, bot, user, account):
 
     except json.decoder.JSONDecodeError as json_error:
         logger.error(
-            f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S}\n'
-            f'Некорректный JSON файл: {json_error}.\n'
-            f'Проверьте тот ли файл загружаете...',
+            ''.join(
+                (
+                    f'{datetime.datetime.now():%Y-%m-%d %H:%M:%S}\n',
+                    f'Некорректный JSON файл: {json_error}.\n',
+                    'Проверьте тот ли файл загружаете...',
+                ),
+            ),
         )

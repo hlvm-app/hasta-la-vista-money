@@ -9,6 +9,11 @@ from hasta_la_vista_money.bot.services import get_telegram_user
 
 class HandleReceiptManual:
     def __init__(self, message):
+        """
+        Конструктов класса инициализирующий аргументы класса.
+
+        :param message:
+        """
         self.message = message
         self.dictionary_string_from_qrcode = {}
 

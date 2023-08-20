@@ -35,6 +35,13 @@ class TransferMoneyAccountForm(Form):
     )
 
     def __init__(self, user, *args, **kwargs):
+        """
+        Конструктов класса инициализирующий две поля формы.
+
+        :param user:
+        :param args:
+        :param kwargs:
+        """
         super().__init__(*args, **kwargs)
         self.fields['from_account'].queryset = Account.objects.filter(user=user)
         self.fields['to_account'].queryset = Account.objects.filter(user=user)

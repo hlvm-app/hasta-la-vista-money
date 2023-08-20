@@ -6,11 +6,12 @@ from telebot.handler_backends import BaseMiddleware, SkipHandler
 
 class AccessMiddleware(BaseMiddleware):
     def __init__(self):
+        """Конструктов класса инициализирующий аргументы класса."""
         super().__init__()
         self.telegram_username = None
         self.update_types = ['message']
 
-    def pre_process(self, message, data):  # noqa: WPS110
+    def pre_process(self, message, data):
         self.telegram_username = TelegramUser.objects.filter(
             telegram_id=message.from_user.id,
         ).first()
@@ -28,5 +29,5 @@ class AccessMiddleware(BaseMiddleware):
             )
             return SkipHandler()
 
-    def post_process(self, message, data, exception):  # noqa: WPS110
+    def post_process(self, message, data, exception):
         data['exception'] = exception

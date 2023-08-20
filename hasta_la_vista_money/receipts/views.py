@@ -106,6 +106,12 @@ class ReceiptCreateView(SuccessMessageMixin, CreateView):
     success_message = MessageOnSite.SUCCESS_MESSAGE_CREATE_RECEIPT.value
 
     def __init__(self, *args, **kwargs):
+        """
+        Конструктов класса инициализирующий аргументы класса.
+
+        :param args:
+        :param kwargs:
+        """
         self.request = None
         super().__init__(*args, **kwargs)
 
