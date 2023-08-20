@@ -110,6 +110,14 @@ class ReceiptCreateView(SuccessMessageMixin, CreateView):
         super().__init__(*args, **kwargs)
 
     @staticmethod
+    def check_exist_receipt(request, receipt_form):
+        number_receipt = receipt_form.cleaned_data.get('number_receipt')
+        return Receipt.objects.filter(
+            user=request.user,
+            number_receipt=number_receipt,
+        )
+
+    @staticmethod
     def create_receipt(request, receipt_form, product_formset, customer):
         receipt = receipt_form.save(commit=False)
         total_sum = receipt.total_sum
@@ -129,13 +137,25 @@ class ReceiptCreateView(SuccessMessageMixin, CreateView):
                 receipt.product.add(product)
             return receipt
 
-    @staticmethod
-    def check_exist_receipt(request, receipt_form):
-        number_receipt = receipt_form.cleaned_data.get('number_receipt')
-        return Receipt.objects.filter(
-            user=request.user,
-            number_receipt=number_receipt,
-        )
+    def form_valid_receipt(self, receipt_form, product_formset, customer):
+        number_receipt = self.check_exist_receipt(self.request, receipt_form)
+        if number_receipt:
+            messages.error(
+                self.request,
+                ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
+            )
+        else:
+            self.create_receipt(
+                self.request,
+                receipt_form,
+                product_formset,
+                customer,
+            )
+            messages.success(
+                self.request,
+                MessageOnSite.SUCCESS_MESSAGE_CREATE_RECEIPT.value,
+            )
+            return {'success': True}
 
     def setup(self, request, *args, **kwargs):
         self.request = request
@@ -147,29 +167,16 @@ class ReceiptCreateView(SuccessMessageMixin, CreateView):
         return context
 
     def form_valid(self, form):
+        customer = form.cleaned_data.get('customer')
         product_formset = ProductFormSet(self.request.POST)
-        response_data = {}
+
         valid_form = form.is_valid() and product_formset.is_valid()
         if valid_form:
-            number_receipt = self.check_exist_receipt(self.request, form)
-            if number_receipt:
-                messages.error(
-                    self.request,
-                    ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
-                )
-            else:
-                customer = form.cleaned_data.get('customer')
-                self.create_receipt(
-                    self.request,
-                    form,
-                    product_formset,
-                    customer,
-                )
-                messages.success(
-                    self.request,
-                    MessageOnSite.SUCCESS_MESSAGE_CREATE_RECEIPT.value,
-                )
-                response_data = {'success': True}
+            response_data = self.form_valid_receipt(
+                receipt_form=form,
+                product_formset=product_formset,
+                customer=customer,
+            )
         else:
             response_data = {
                 'success': False,
