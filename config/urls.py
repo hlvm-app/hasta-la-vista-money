@@ -75,9 +75,14 @@ urlpatterns = [
         name='account',
     ),
     path(
-        'reports',
+        'reports/',
         include('hasta_la_vista_money.reports.urls', namespace='reports'),
         name='reports',
+    ),
+    path(
+        'loan/',
+        include('hasta_la_vista_money.loan.urls', namespace='loan'),
+        name='loan',
     ),
     path('adminushka/', admin.site.urls),
 ]
