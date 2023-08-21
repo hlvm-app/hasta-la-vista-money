@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'hasta_la_vista_money.bot',
     'hasta_la_vista_money.expense',
     'hasta_la_vista_money.income',
+    'hasta_la_vista_money.loan',
     'hasta_la_vista_money.receipts',
     'hasta_la_vista_money.reports',
     'hasta_la_vista_money.users',
