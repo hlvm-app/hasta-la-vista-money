@@ -52,6 +52,12 @@ class BaseForm(ModelForm):
 
 class DateTimePickerWidgetForm(DateTimePickerInput):
     def __init__(self, *args, **kwargs):
+        """
+        Инициализация параметров календаря.
+
+        :param args:
+        :param kwargs:
+        """
         options = kwargs.pop('options', {})
         options.setdefault('format', 'DD/MM/YYYY HH:mm')
         options.setdefault('showTodayButton', True)
