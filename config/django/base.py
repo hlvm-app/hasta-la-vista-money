@@ -287,3 +287,8 @@ if os.environ.get('ACCESS_TOKEN') is not None:
 
 # Password reset timeout in seconds
 PASSWORD_RESET_TIMEOUT = 86400
+
+
+# Configure Celery
+CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
+CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
