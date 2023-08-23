@@ -4,11 +4,9 @@
 Пользователь при этом должен отправить текст по шаблону, который он получит из
 QR-кода чека.
 """
-
 import re
 
-from hasta_la_vista_money.bot.receipt_api_receiver import ReceiptApiReceiver
-from hasta_la_vista_money.bot.receipt_parse import ReceiptParser
+from hasta_la_vista_money.bot.tasks import async_handle_receipt_text_qrcode
 
 
 def handle_receipt_text(message, bot, user, account):
@@ -42,11 +40,16 @@ def handle_receipt_text(message, bot, user, account):
     text_pattern = re.match(pattern, input_user)
 
     if text_pattern:
-        client = ReceiptApiReceiver()
-        qr_code = input_user
-        json_data = client.get_receipt(qr_code)
+        text_qr_code = input_user
 
-        parse = ReceiptParser(json_data, user, account)
-        parse.parse_receipt(message.chat.id)
+        chat_id = message.chat.id
+        user_id = user.id
+
+        async_handle_receipt_text_qrcode.delay(
+            chat_id=chat_id,
+            user_id=user_id,
+            account=account,
+            input_user=text_qr_code,
+        )
     else:
         bot.send_message(message.chat.id, 'Недопустимый текст')
