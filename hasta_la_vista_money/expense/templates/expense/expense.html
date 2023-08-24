@@ -124,10 +124,6 @@
                     </table>
                 </div>
             </div>
-            <form id="button-remove-expense" method="post" action="{% url 'expense:delete' expense.id %}">
-                {% csrf_token %}
-                <input type="hidden" name="expense_id" value="{{ expense.id }}">
-            </form>
             <div class="offset-xl-1 col-xl-6 mt-5 position-relative">
                 <div class="table-responsive">
                     <table class="table table-sm table-hover align-middle text-center text-light table-bordered shadow" aria-label="table expense">
@@ -154,6 +150,10 @@
                         </thead>
                         <tbody>
                             {% for expense in expenses %}
+                                <form id="button-remove-expense" method="post" action="{% url 'expense:delete' expense.id %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="expense_id" value="{{ expense.id }}">
+                                </form>
                                 <tr>
                                     <td>{{ expense.category__name }}</td>
                                     <td>{{ expense.date | date:'F Y'}}</td>
