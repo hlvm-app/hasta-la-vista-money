@@ -1,3 +1,7 @@
+.. image:: https://github.com/TurtleOld/hasta-la-vista-money/actions/workflows/dokku.yaml/badge.svg
+   :target: https://github.com/TurtleOld/hasta-la-vista-money/actions/workflows/dokku.yaml
+   :alt: Deploy to Dokku
+
 .. image:: https://img.shields.io/github/actions/workflow/status/TurtleOld/hasta-la-vista-money/hasta_la_vista_money.yaml?label=Hasta%20La%20Vista%2C%20Money%21
    :alt: GitHub Workflow Status
 
