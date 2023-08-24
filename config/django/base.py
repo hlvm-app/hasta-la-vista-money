@@ -287,10 +287,12 @@ if os.environ.get('ACCESS_TOKEN') is not None:
 
 # Password reset timeout in seconds
 PASSWORD_RESET_TIMEOUT = 86400
+
+
+# Configure Celery
 SIXTY = 60
 THIRTY = 30
 
-# Configure Celery
 CELERY_TIMEZONE = 'Europe/Moscow'
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = SIXTY * THIRTY
