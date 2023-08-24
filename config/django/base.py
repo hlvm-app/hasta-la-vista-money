@@ -16,7 +16,6 @@ import dj_database_url
 import rollbar
 from config.django.sessions import *  # NOQA
 from dotenv import load_dotenv
-from hasta_la_vista_money.constants import NumericParameter
 
 load_dotenv()
 
@@ -288,13 +287,12 @@ if os.environ.get('ACCESS_TOKEN') is not None:
 
 # Password reset timeout in seconds
 PASSWORD_RESET_TIMEOUT = 86400
-
+SIXTY = 60
+THIRTY = 30
 
 # Configure Celery
 CELERY_TIMEZONE = 'Europe/Moscow'
 CELERY_TASK_TRACK_STARTED = True
-CELERY_TASK_TIME_LIMIT = (
-    NumericParameter.SIXTY.value * NumericParameter.THIRTY.value,
-)
+CELERY_TASK_TIME_LIMIT = SIXTY * THIRTY
 CELERY_BROKER_URL = os.environ.get('REDIS_URL')
 CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL')
