@@ -8,6 +8,7 @@ import json
 
 from hasta_la_vista_money.bot.log_config import logger
 from hasta_la_vista_money.bot.receipt_parse import ReceiptParser
+from hasta_la_vista_money.bot.tasks import async_handle_receipt_json
 
 
 def handle_receipt_json(message, bot, user, account):
@@ -40,10 +41,16 @@ def handle_receipt_json(message, bot, user, account):
         file_downloaded = bot.download_file(
             file_path=file_info.file_path,
         )
+        chat_id = message.chat.id
+        user_id = user.id
         json_data = json.loads(file_downloaded)
 
-        parse = ReceiptParser(json_data, user, account)
-        parse.parse_receipt(message.chat.id)
+        async_handle_receipt_json.delay(
+            chat_id=chat_id,
+            user_id=user_id,
+            account=account,
+            json_data=json_data,
+        )
 
     except json.decoder.JSONDecodeError as json_error:
         logger.error(
