@@ -94,7 +94,7 @@ class PageApplication(
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             accounts = Account.objects.filter(
-                user=self.request.userб
+                user=self.request.user,
             ).order_by('name_account')
 
             receipt_info_by_month = self.collect_info_receipt(
