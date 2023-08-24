@@ -7,7 +7,6 @@ import datetime
 import json
 
 from hasta_la_vista_money.bot.log_config import logger
-from hasta_la_vista_money.bot.receipt_parse import ReceiptParser
 from hasta_la_vista_money.bot.tasks import async_handle_receipt_json
 
 
