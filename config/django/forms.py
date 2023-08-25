@@ -76,13 +76,10 @@ class DateTimePickerWidgetForm(DateTimePickerInput):
         )
         options.setdefault(
             'maxDate',
-            (
-                TODAY.replace(
-                    hour=NumericParameter.DAY_MINUS_HOUR.value,
-                    minute=NumericParameter.MINUTE_MINUS_ONE.value,
-                    second=NumericParameter.SECOND_MINUS_ONE.value,
-                )
-                + datetime.timedelta(days=1)
-            ).strftime('%d/%m/%Y %H:%M'),
+            TODAY.replace(
+                hour=NumericParameter.DAY_MINUS_HOUR.value,
+                minute=NumericParameter.MINUTE_MINUS_ONE.value,
+                second=NumericParameter.SECOND_MINUS_ONE.value,
+            ),
         )
         super().__init__(*args, **kwargs, options=options)
