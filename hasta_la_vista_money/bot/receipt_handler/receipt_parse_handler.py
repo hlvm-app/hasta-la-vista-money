@@ -7,34 +7,24 @@ from hasta_la_vista_money.constants import TelegramMessage
 from hasta_la_vista_money.receipts.models import Receipt
 
 
-def get_string_result_receipt(
-    account,
-    product_list,
-    receipt_date,
-    customer,
-    total_sum,
-):
+def get_string_result_receipt(**kwargs):
     """
     Формирование строки с краткой информацией о добавленном чеке.
 
-    :param account:
-    :param product_list:
-    :param receipt_date:
-    :param customer:
-    :param total_sum:
+    :param kwargs: Принимает несколько именованных аргументов.
     :return:
     """
-    account_balance = get_object_or_404(Account, id=account)
-    products = [product.product_name for product in product_list]
+    account_balance = get_object_or_404(Account, id=kwargs.get('account'))
+    products = [product.product_name for product in kwargs.get('product_list')]
     newline_char = '\n'
     return ''.join(
         (
             'Чек успешно добавлен.\n\n',
             'Параметры чека:\n',
             f'<b>Счёт списания:</b> {account_balance.name_account}\n',
-            f'<b>Дата чека:</b> {receipt_date}\n',
-            f'<b>Сумма чека:</b> {total_sum}\n',
-            f'<b>Продавец:</b> {customer}\n\n',
+            f'<b>Дата чека:</b> {kwargs.get("receipt_date")}\n',
+            f'<b>Сумма чека:</b> {kwargs.get("total_sum")}\n',
+            f'<b>Продавец:</b> {kwargs.get("customer")}\n\n',
             f"<b>Товары:</b>\n{f', {newline_char}'.join(products)}\n",
         ),
     )
