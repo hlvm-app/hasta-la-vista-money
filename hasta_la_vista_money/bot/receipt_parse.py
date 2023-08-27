@@ -4,7 +4,6 @@ from django.db import IntegrityError
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.json_parse import JsonParser
 from hasta_la_vista_money.bot.log_config import logger
 from hasta_la_vista_money.bot.receipt_data_classes import (
@@ -18,6 +17,9 @@ from hasta_la_vista_money.bot.receipt_parse_handler import (
     check_operation_type,
     get_string_result_receipt,
     handle_integrity_error,
+)
+from hasta_la_vista_money.bot.send_message.send_message_tg_user import (
+    SendMessageToTelegramUser,
 )
 from hasta_la_vista_money.bot.services import convert_date_time, convert_number
 from hasta_la_vista_money.constants import ReceiptConstants, TelegramMessage
@@ -207,7 +209,7 @@ class ReceiptParser:
             )
 
             if check_number_receipt:
-                bot_admin.send_message(
+                SendMessageToTelegramUser.send_message_to_telegram_user(
                     chat_id,
                     ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
                 )
@@ -219,7 +221,7 @@ class ReceiptParser:
                     operation_type,
                     total_sum,
                 )
-                bot_admin.send_message(
+                SendMessageToTelegramUser.send_message_to_telegram_user(
                     chat_id,
                     get_string_result_receipt(
                         account=self.account,
@@ -234,7 +236,7 @@ class ReceiptParser:
                 integrity_error=integrity_error,
             )
         except Http404:
-            bot_admin.send_message(
+            SendMessageToTelegramUser.send_message_to_telegram_user(
                 chat_id,
                 TelegramMessage.NOT_CREATE_ACCOUNT.value,
             )

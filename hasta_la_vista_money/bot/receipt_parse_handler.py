@@ -1,6 +1,8 @@
 from django.shortcuts import get_object_or_404
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.bot.config_bot import bot_admin
+from hasta_la_vista_money.bot.send_message.send_message_tg_user import (
+    SendMessageToTelegramUser,
+)
 from hasta_la_vista_money.constants import TelegramMessage
 from hasta_la_vista_money.receipts.models import Receipt
 
@@ -66,12 +68,12 @@ def handle_integrity_error(chat_id, integrity_error):
     :return:
     """
     if 'account' in str(integrity_error):
-        bot_admin.send_message(
+        SendMessageToTelegramUser.send_message_to_telegram_user(
             chat_id,
             TelegramMessage.NOT_CREATE_ACCOUNT.value,
         )
     else:
-        bot_admin.send_message(
+        SendMessageToTelegramUser.send_message_to_telegram_user(
             chat_id,
             TelegramMessage.ERROR_DATABASE_RECORD.value,
         )

@@ -4,6 +4,9 @@ from dateutil.parser import ParserError, parse
 from hasta_la_vista_money.bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.receipt_api_receiver import ReceiptApiReceiver
 from hasta_la_vista_money.bot.receipt_parse import ReceiptParser
+from hasta_la_vista_money.bot.send_message.send_message_tg_user import (
+    SendMessageToTelegramUser,
+)
 from hasta_la_vista_money.bot.services import get_telegram_user
 
 
@@ -27,13 +30,16 @@ class HandleReceiptManual:
         try:
             date = parse(message.text)
             self.dictionary_string_from_qrcode['date'] = f'{date:%Y%m%dT%H%M%S}'
-            bot_admin.send_message(message.chat.id, 'Введите сумму чека')
+            SendMessageToTelegramUser.send_message_to_telegram_user(
+                message.chat.id,
+                'Введите сумму чека',
+            )
             bot_admin.register_next_step_handler(
                 message,
                 self.process_amount_receipt,
             )
         except ParserError:
-            bot_admin.send_message(
+            SendMessageToTelegramUser.send_message_to_telegram_user(
                 message.chat.id,
                 'Неверный формат даты! Повторите ввод сначала /manual',
             )
@@ -50,13 +56,19 @@ class HandleReceiptManual:
             self.dictionary_string_from_qrcode['amount'] = decimal.Decimal(
                 amount_receipt,
             )
-            bot_admin.send_message(message.chat.id, 'Введите номер ФН')
+            SendMessageToTelegramUser.send_message_to_telegram_user(
+                message.chat.id,
+                'Введите номер ФН',
+            )
             bot_admin.register_next_step_handler(
                 message,
                 self.process_fiscal_number_receipt,
             )
         except ValueError:
-            bot_admin.send_message(message.chat.id, 'Введите сумму!')
+            SendMessageToTelegramUser.send_message_to_telegram_user(
+                message.chat.id,
+                'Введите сумму!',
+            )
 
     def process_fiscal_number_receipt(self, message):
         """
@@ -68,13 +80,16 @@ class HandleReceiptManual:
         try:
             fn_receipt = message.text
             self.dictionary_string_from_qrcode['fn'] = int(fn_receipt)
-            bot_admin.send_message(message.chat.id, 'Введите номер ФД')
+            SendMessageToTelegramUser.send_message_to_telegram_user(
+                message.chat.id,
+                'Введите номер ФД',
+            )
             bot_admin.register_next_step_handler(
                 message,
                 self.process_fiscal_doc_receipt,
             )
         except ValueError:
-            bot_admin.send_message(
+            SendMessageToTelegramUser.send_message_to_telegram_user(
                 message.chat.id,
                 'Введите корректный номер ФН!',
             )
@@ -89,13 +104,16 @@ class HandleReceiptManual:
         try:
             fd_receipt = message.text
             self.dictionary_string_from_qrcode['fd'] = int(fd_receipt)
-            bot_admin.send_message(message.chat.id, 'Введите номер ФП')
+            SendMessageToTelegramUser.send_message_to_telegram_user(
+                message.chat.id,
+                'Введите номер ФП',
+            )
             bot_admin.register_next_step_handler(
                 message,
                 self.process_fp_receipt,
             )
         except ValueError:
-            bot_admin.send_message(
+            SendMessageToTelegramUser.send_message_to_telegram_user(
                 message.chat.id,
                 'Введите корректный номер ФД!',
             )
@@ -131,7 +149,7 @@ class HandleReceiptManual:
                 parser = ReceiptParser(json_data, user, account)
                 parser.parse(message.chat.id)
         except ValueError:
-            bot_admin.send_message(
+            SendMessageToTelegramUser.send_message_to_telegram_user(
                 message.chat.id,
                 'Введите корректный номер ФП!',
             )

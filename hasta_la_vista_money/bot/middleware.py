@@ -1,4 +1,6 @@
-from hasta_la_vista_money.bot.config_bot import bot_admin
+from hasta_la_vista_money.bot.send_message.send_message_tg_user import (
+    SendMessageToTelegramUser,
+)
 from hasta_la_vista_money.constants import TelegramMessage
 from hasta_la_vista_money.users.models import TelegramUser
 from telebot.handler_backends import BaseMiddleware, SkipHandler
@@ -23,7 +25,7 @@ class AccessMiddleware(BaseMiddleware):
             return None
 
         if self.telegram_username is None and message.text:
-            bot_admin.send_message(
+            SendMessageToTelegramUser.send_message_to_telegram_user(
                 message.chat.id,
                 TelegramMessage.ACCESS_DENIED.value,
             )

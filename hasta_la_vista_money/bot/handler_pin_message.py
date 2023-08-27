@@ -1,4 +1,7 @@
 from hasta_la_vista_money.bot.config_bot import bot_admin
+from hasta_la_vista_money.bot.send_message.send_message_tg_user import (
+    SendMessageToTelegramUser,
+)
 
 
 def pin_message(call, account):
@@ -10,7 +13,7 @@ def pin_message(call, account):
     :return:
     """
     bot_admin.unpin_all_chat_messages(chat_id=call.message.chat.id)
-    pinned_message = bot_admin.send_message(
+    pinned_message = SendMessageToTelegramUser.send_message_to_telegram_user(
         chat_id=call.message.chat.id,
         text=f'Выбран счёт: {account.name_account}',
     )

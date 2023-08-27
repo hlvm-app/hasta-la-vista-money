@@ -17,7 +17,9 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, TemplateView, UpdateView
-from hasta_la_vista_money.bot.config_bot import bot_admin
+from hasta_la_vista_money.bot.send_message.send_message_tg_user import (
+    SendMessageToTelegramUser,
+)
 from hasta_la_vista_money.constants import MessageOnSite, TemplateHTMLView
 from hasta_la_vista_money.custom_mixin import CustomSuccessURLUserMixin
 from hasta_la_vista_money.users.forms import (
@@ -193,7 +195,10 @@ class ForgotPasswordView(TemplateView):
                         f'Для сброса пароля перейдите по ссылке: {reset_link}',
                     ),
                 )
-                bot_admin.send_message(telegram_user.telegram_id, message)
+                SendMessageToTelegramUser.send_message_to_telegram_user(
+                    telegram_user.telegram_id,
+                    message,
+                )
                 return redirect(self.success_url)
         return render(
             request,

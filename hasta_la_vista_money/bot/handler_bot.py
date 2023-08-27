@@ -7,6 +7,7 @@ from hasta_la_vista_money.bot.handler_receipt_content_type import (
 )
 from hasta_la_vista_money.bot.keyboards import create_buttons_with_account
 from hasta_la_vista_money.bot.middleware import AccessMiddleware, bot_admin
+from hasta_la_vista_money.bot.receipt_parse import SendMessageToTelegramUser
 from hasta_la_vista_money.bot.services import (
     check_account_exist,
     get_telegram_user,
@@ -25,7 +26,7 @@ def handle_start_help(message):
     :param message:
     :return:
     """
-    bot_admin.send_message(
+    SendMessageToTelegramUser.send_message_to_telegram_user(
         message.chat.id,
         TelegramMessage.HELP_TEXT_START.value,
     )
@@ -41,12 +42,12 @@ def handle_start(message):
     """
     telegram_user = get_telegram_user(message)
     if telegram_user:
-        bot_admin.send_message(
+        SendMessageToTelegramUser.send_message_to_telegram_user(
             message.chat.id,
             TelegramMessage.ALREADY_LOGGED.value,
         )
     else:
-        bot_admin.send_message(
+        SendMessageToTelegramUser.send_message_to_telegram_user(
             message.chat.id,
             TelegramMessage.REQUIRED_AUTHORIZATION.value,
         )
@@ -98,7 +99,7 @@ def start_process_add_manual_receipt(message):
     :param message:
     :return:
     """
-    bot_admin.send_message(
+    SendMessageToTelegramUser.send_message_to_telegram_user(
         message.chat.id,
         TelegramMessage.START_MANUAL_HANDLER_RECEIPT.value,
     )
@@ -118,7 +119,10 @@ def process_deauthorize(message):
     :return:
     """
     TelegramUser.objects.get(telegram_id=message.from_user.id).delete()
-    bot_admin.send_message(message.chat.id, 'Телеграм аккаунт отвязан!')
+    SendMessageToTelegramUser.send_message_to_telegram_user(
+        message.chat.id,
+        'Телеграм аккаунт отвязан!',
+    )
 
 
 @bot_admin.message_handler(content_types=['text', 'document', 'photo'])

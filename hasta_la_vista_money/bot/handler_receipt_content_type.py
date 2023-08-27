@@ -4,6 +4,9 @@ from hasta_la_vista_money.bot.receipt_parser_text import handle_receipt_text
 from hasta_la_vista_money.bot.receipt_parser_text_qrcode import (
     handle_receipt_text_qrcode,
 )
+from hasta_la_vista_money.bot.send_message.send_message_tg_user import (
+    SendMessageToTelegramUser,
+)
 from hasta_la_vista_money.constants import TelegramMessage
 
 
@@ -23,7 +26,7 @@ def telegram_content_type(message, user, account):
     elif message.content_type == 'document':
         handle_receipt_json(message, bot_admin, user, account)
     else:
-        bot_admin.send_message(
+        SendMessageToTelegramUser.send_message_to_telegram_user(
             message.chat.id,
-            TelegramMessage.ACCEPTED_FORMAT_JSON.value,
+            text=TelegramMessage.ACCEPTED_FORMAT_JSON.value,
         )
