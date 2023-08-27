@@ -64,9 +64,6 @@ class ReceiptParser:
         По итогу, если чек существует или был добавлен, отправляется
         сообщение тому пользователю, кто попытался добавить чек.
 
-    parse(chat_id) -> None
-        Метод отвечает за вызов метода по парсингу чека.
-        В случае ошибки выбрасывает исключение и отправляет ошибку пользователю.
     """
 
     def __init__(self, json_data, user, account):
@@ -208,13 +205,7 @@ class ReceiptParser:
                 number_receipt=number_receipt,
             )
 
-            if check_number_receipt:
-                SendMessageToTelegramUser.send_message_to_telegram_user(
-                    chat_id,
-                    ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
-                )
-                return
-            else:
+            if check_number_receipt is None:
                 self.process_receipt_data(
                     receipt_date,
                     number_receipt,
@@ -228,8 +219,16 @@ class ReceiptParser:
                         product_list=self.product_list,
                         receipt_date=self.receipt.receipt_date,
                         customer=self.customer,
+                        total_sum=total_sum,
                     ),
                 )
+            else:
+                SendMessageToTelegramUser.send_message_to_telegram_user(
+                    chat_id,
+                    ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
+                )
+                return
+
         except IntegrityError as integrity_error:
             handle_integrity_error(
                 chat_id=chat_id,

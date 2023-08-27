@@ -1,4 +1,4 @@
-from hasta_la_vista_money.bot.config_bot import bot_admin
+from hasta_la_vista_money.bot.config_bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.send_message.send_message_tg_user import (
     SendMessageToTelegramUser,
 )

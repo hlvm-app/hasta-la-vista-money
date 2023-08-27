@@ -7,7 +7,13 @@ from hasta_la_vista_money.constants import TelegramMessage
 from hasta_la_vista_money.receipts.models import Receipt
 
 
-def get_string_result_receipt(account, product_list, receipt_date, customer):
+def get_string_result_receipt(
+    account,
+    product_list,
+    receipt_date,
+    customer,
+    total_sum,
+):
     """
     Формирование строки с краткой информацией о добавленном чеке.
 
@@ -15,6 +21,7 @@ def get_string_result_receipt(account, product_list, receipt_date, customer):
     :param product_list:
     :param receipt_date:
     :param customer:
+    :param total_sum:
     :return:
     """
     account_balance = get_object_or_404(Account, id=account)
@@ -26,6 +33,7 @@ def get_string_result_receipt(account, product_list, receipt_date, customer):
             'Параметры чека:\n',
             f'<b>Счёт списания:</b> {account_balance.name_account}\n',
             f'<b>Дата чека:</b> {receipt_date}\n',
+            f'<b>Сумма чека:</b> {total_sum}\n',
             f'<b>Продавец:</b> {customer}\n\n',
             f"<b>Товары:</b>\n{f', {newline_char}'.join(products)}\n",
         ),

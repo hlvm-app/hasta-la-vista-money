@@ -1,7 +1,7 @@
 import decimal
 
 from dateutil.parser import ParserError, parse
-from hasta_la_vista_money.bot.config_bot import bot_admin
+from hasta_la_vista_money.bot.config_bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.receipt_api_receiver import ReceiptApiReceiver
 from hasta_la_vista_money.bot.receipt_parse import ReceiptParser
 from hasta_la_vista_money.bot.send_message.send_message_tg_user import (
@@ -147,7 +147,7 @@ class HandleReceiptManual:
                     ),
                 )
                 parser = ReceiptParser(json_data, user, account)
-                parser.parse(message.chat.id)
+                parser.parse_receipt(message.chat.id)
         except ValueError:
             SendMessageToTelegramUser.send_message_to_telegram_user(
                 message.chat.id,

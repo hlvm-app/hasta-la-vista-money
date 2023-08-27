@@ -1,5 +1,5 @@
 from django.core.management import BaseCommand
-from hasta_la_vista_money.bot.config_bot import bot_admin
+from hasta_la_vista_money.bot.config_bot.config_bot import bot_admin
 
 
 class Command(BaseCommand):
@@ -28,4 +28,4 @@ class Command(BaseCommand):
             # Заглушка нужна для того, чтобы не выводилась ошибка
             # TypeError: 'function' object is not subscriptable
             # так как чат с ботом не является супергруппой.
-            ...  # noqa: WPS428
+            ...

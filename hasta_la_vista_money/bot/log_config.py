@@ -1,7 +1,7 @@
 import logging
 import os
 
-from hasta_la_vista_money.bot.config_bot import bot_admin
+from hasta_la_vista_money.bot.config_bot.config_bot import bot_admin
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.ERROR)
