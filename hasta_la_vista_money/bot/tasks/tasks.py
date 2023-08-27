@@ -1,7 +1,11 @@
 """Модуль задач для пакета bot."""
 from celery import shared_task
-from hasta_la_vista_money.bot.receipt_api_receiver import ReceiptApiReceiver
-from hasta_la_vista_money.bot.receipt_parse import ReceiptParser
+from hasta_la_vista_money.bot.receipt_handler.receipt_api_receiver import (
+    ReceiptApiReceiver,
+)
+from hasta_la_vista_money.bot.receipt_handler.receipt_parser import (
+    ReceiptParser,
+)
 from hasta_la_vista_money.users.models import User
 
 

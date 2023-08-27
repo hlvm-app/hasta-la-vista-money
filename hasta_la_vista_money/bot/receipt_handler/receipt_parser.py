@@ -4,15 +4,15 @@ from django.db import IntegrityError
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.bot.json_parse import JsonParser
+from hasta_la_vista_money.bot.json_parser.json_parser import JsonParser
 from hasta_la_vista_money.bot.log_config import logger
-from hasta_la_vista_money.bot.receipt_data_classes import (
+from hasta_la_vista_money.bot.receipt_handler.data_classes import (
     CustomerData,
     ProductData,
     ReceiptData,
     ReceiptDataWriter,
 )
-from hasta_la_vista_money.bot.receipt_parse_handler import (
+from hasta_la_vista_money.bot.receipt_handler.receipt_parse_handler import (
     check_exists_number_receipt,
     check_operation_type,
     get_string_result_receipt,

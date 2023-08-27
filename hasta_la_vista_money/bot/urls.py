@@ -1,5 +1,5 @@
 from django.urls import path
-from hasta_la_vista_money.bot.webhooks import webhooks
+from hasta_la_vista_money.bot.webhooks.webhooks import webhooks
 
 app_name = 'bot'
 

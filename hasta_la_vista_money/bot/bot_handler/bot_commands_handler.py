@@ -1,13 +1,22 @@
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.bot.handle_receipt_manual import HandleReceiptManual
-from hasta_la_vista_money.bot.handler_auth import handle_auth
-from hasta_la_vista_money.bot.handler_pin_message import pin_message
-from hasta_la_vista_money.bot.handler_receipt_content_type import (
+from hasta_la_vista_money.bot.bot_handler.auth_user_handler import handle_auth
+from hasta_la_vista_money.bot.bot_handler.keyboards import (
+    create_buttons_with_account,
+)
+from hasta_la_vista_money.bot.bot_handler.pin_message_handler import (
+    pin_message,
+)
+from hasta_la_vista_money.bot.bot_handler.receipt_manual_handler import (
+    HandleReceiptManual,
+)
+from hasta_la_vista_money.bot.config_bot.config_bot import bot_admin
+from hasta_la_vista_money.bot.middleware.middleware import AccessMiddleware
+from hasta_la_vista_money.bot.receipt_handler.content_type_handler import (
     telegram_content_type,
 )
-from hasta_la_vista_money.bot.keyboards import create_buttons_with_account
-from hasta_la_vista_money.bot.middleware import AccessMiddleware, bot_admin
-from hasta_la_vista_money.bot.receipt_parse import SendMessageToTelegramUser
+from hasta_la_vista_money.bot.receipt_handler.receipt_parser import (
+    SendMessageToTelegramUser,
+)
 from hasta_la_vista_money.bot.services import (
     check_account_exist,
     get_telegram_user,

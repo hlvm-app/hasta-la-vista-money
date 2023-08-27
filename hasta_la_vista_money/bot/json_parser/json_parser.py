@@ -49,7 +49,7 @@ class JsonParser:
         """
         return JsonParser.__get_value(self, json_data, key)
 
-    def __get_value(  # noqa: WPS112
+    def __get_value(
         self,
         dictionary,
         key,

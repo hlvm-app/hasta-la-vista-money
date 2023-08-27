@@ -4,7 +4,9 @@ from os import environ
 from django.test import TestCase
 from dotenv import load_dotenv
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.bot.receipt_parse import ReceiptParser
+from hasta_la_vista_money.bot.receipt_handler.receipt_parser import (
+    ReceiptParser,
+)
 from hasta_la_vista_money.users.models import User
 
 load_dotenv()

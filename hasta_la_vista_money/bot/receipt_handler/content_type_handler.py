@@ -1,7 +1,11 @@
 from hasta_la_vista_money.bot.config_bot.config_bot import bot_admin
-from hasta_la_vista_money.bot.receipt_parser_json import handle_receipt_json
-from hasta_la_vista_money.bot.receipt_parser_text import handle_receipt_text
-from hasta_la_vista_money.bot.receipt_parser_text_qrcode import (
+from hasta_la_vista_money.bot.receipt_handler.receipt_parser_json import (
+    handle_receipt_json,
+)
+from hasta_la_vista_money.bot.receipt_handler.receipt_parser_text import (
+    handle_receipt_text,
+)
+from hasta_la_vista_money.bot.receipt_handler.text_qr_code_handler import (
     handle_receipt_text_qrcode,
 )
 from hasta_la_vista_money.bot.send_message.send_message_tg_user import (

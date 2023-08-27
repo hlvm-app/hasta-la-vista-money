@@ -5,8 +5,10 @@
 """
 import tempfile
 
-from hasta_la_vista_money.bot.decode_qrcode import decode_qrcode
-from hasta_la_vista_money.bot.tasks import async_handle_receipt_text_qrcode
+from hasta_la_vista_money.bot.qrcode_decode import decode_qrcode
+from hasta_la_vista_money.bot.tasks.tasks import (
+    async_handle_receipt_text_qrcode,
+)
 
 
 def handle_receipt_text_qrcode(message, bot, user, account):
