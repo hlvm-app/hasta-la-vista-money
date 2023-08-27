@@ -3,10 +3,6 @@
 import os
 import sys
 
-from hasta_la_vista_money.bot.config_bot import bot_admin
-
-token_bot = os.environ.get('TOKEN_TELEGRAM_BOT')
-
 
 def main():
     """Run administrative tasks."""
