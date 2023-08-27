@@ -128,10 +128,10 @@
                             <tbody>
                                 {% for income in income_by_month %}
                                     <tr>
-                                        <td>{{ income.category__name }}</td>
-                                        <td>{{ income.date | date:"F Y" }}</td>
-                                        <td>{{ income.amount | comma }}</td>
-                                        <td>{{ income.account__name_account }}</td>
+                                        <td class="text-nowrap">{{ income.category__name }}</td>
+                                        <td class="text-nowrap">{{ income.date | date:"F Y" }}</td>
+                                        <td class="text-nowrap">{{ income.amount | comma }}</td>
+                                        <td class="text-nowrap">{{ income.account__name_account }}</td>
                                         <td class="d-flex justify-content-center align-items-center table-buttons">
                                             <a href="{% url 'income:change' income.id %}" class="change-object-button btn btn-info border-0 btn-sm me-1">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">

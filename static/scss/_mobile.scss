@@ -13,14 +13,18 @@
     .logo {
         font-size: 1.5rem;
     }
-    .table-buttons {
-        margin-top: 10%;
+    .wrapper-table-income th, td {
+        font-size: .7rem;
+    }
+    .wrapper-table-expense th, td {
+        font-size: .7rem;
     }
     .logo {
         margin-top: auto;
     }
     .account {
         font-size: 1rem;
+        height: 100% !important;
     }
     .text-menu-button {
         display: none;
