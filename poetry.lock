@@ -625,6 +625,21 @@ python-versions = "*"
 flake8 = "*"
 
 [[package]]
+name = "flower"
+version = "2.0.1"
+description = "Celery Flower"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+celery = ">=5.0.5"
+humanize = "*"
+prometheus-client = ">=0.8.0"
+pytz = "*"
+tornado = ">=5.0.0,<7.0.0"
+
+[[package]]
 name = "furo"
 version = "2023.7.26"
 description = "A clean customisable Sphinx documentation theme."
@@ -659,6 +674,17 @@ python-versions = ">=3.7"
 
 [package.dependencies]
 gitdb = ">=4.0.1,<5"
+
+[[package]]
+name = "humanize"
+version = "4.8.0"
+description = "Python humanize utilities"
+category = "dev"
+optional = false
+python-versions = ">=3.8"
+
+[package.extras]
+tests = ["freezegun", "pytest", "pytest-cov"]
 
 [[package]]
 name = "hyperlink"
@@ -952,6 +978,17 @@ docs = ["furo (>=2023.7.26)", "proselint (>=0.13)", "sphinx-autodoc-typehints (>
 test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest-cov (>=4.1)", "pytest-mock (>=3.11.1)", "pytest (>=7.4)"]
 
 [[package]]
+name = "prometheus-client"
+version = "0.17.1"
+description = "Python client for the Prometheus monitoring system."
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[package.extras]
+twisted = ["twisted"]
+
+[[package]]
 name = "prompt-toolkit"
 version = "3.0.39"
 description = "Library for building powerful interactive command lines in Python"
@@ -1082,6 +1119,14 @@ python-versions = ">=3.8"
 
 [package.extras]
 cli = ["click (>=5.0)"]
+
+[[package]]
+name = "pytz"
+version = "2023.3"
+description = "World timezone definitions, modern and historical"
+category = "dev"
+optional = false
+python-versions = "*"
 
 [[package]]
 name = "pyyaml"
@@ -1397,6 +1442,14 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "tornado"
+version = "6.3.3"
+description = "Tornado is a Python web framework and asynchronous networking library, originally developed at FriendFeed."
+category = "dev"
+optional = false
+python-versions = ">= 3.8"
+
+[[package]]
 name = "twisted"
 version = "22.10.0"
 description = "An asynchronous networking framework written in Python"
@@ -1553,7 +1606,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<4"
-content-hash = "65ee22a994d19baffdf1b2beae0fbad6e6daa068aae19b5c67b2d35eee9298f2"
+content-hash = "136309400f9523d3f20e9b81cd679832b55e7b0b5fb1ae2225119b8460488949"
 
 [metadata.files]
 alabaster = []
@@ -1605,9 +1658,11 @@ flake8-isort = []
 flake8-quotes = []
 flake8-rst-docstrings = []
 flake8-string-format = []
+flower = []
 furo = []
 gitdb = []
 gitpython = []
+humanize = []
 hyperlink = []
 idna = []
 imagesize = []
@@ -1631,6 +1686,7 @@ pbr = []
 pep8-naming = []
 pillow = []
 platformdirs = []
+prometheus-client = []
 prompt-toolkit = []
 psycopg2-binary = []
 pycodestyle = []
@@ -1642,6 +1698,7 @@ pygments = []
 pytelegrambotapi = []
 python-dateutil = []
 python-dotenv = []
+pytz = []
 pyyaml = []
 pyzbar = []
 redis = []
@@ -1666,6 +1723,7 @@ sphinxcontrib-serializinghtml = []
 sqlparse = []
 stevedore = []
 tomli = []
+tornado = []
 twisted = []
 twisted-iocpsupport = []
 typing-extensions = []
