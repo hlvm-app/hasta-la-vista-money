@@ -76,6 +76,8 @@ class DateTimePickerWidgetForm(DateTimePickerInput):
         )
         options.setdefault(
             'maxDate',
-            (datetime.datetime.today() + datetime.timedelta(days=2)).strftime('%Y-%m-%d 23:59:59'),
+            (datetime.datetime.today() + datetime.timedelta(days=2)).strftime(
+                '%Y-%m-%d 23:59:59',
+            ),
         )
         super().__init__(*args, **kwargs, options=options)
