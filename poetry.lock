@@ -893,6 +893,7 @@ python-versions = ">=3.6"
 numpy = [
     {version = ">=1.21.2", markers = "python_version >= \"3.10\""},
     {version = ">=1.21.4", markers = "python_version >= \"3.10\" and platform_system == \"Darwin\""},
+    {version = ">=1.23.5", markers = "python_version >= \"3.11\""},
     {version = ">=1.19.3", markers = "python_version >= \"3.6\" and platform_system == \"Linux\" and platform_machine == \"aarch64\" or python_version >= \"3.9\""},
     {version = ">=1.17.0", markers = "python_version >= \"3.7\""},
     {version = ">=1.17.3", markers = "python_version >= \"3.8\""},
@@ -1572,8 +1573,8 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 
 [metadata]
 lock-version = "1.1"
-python-versions = "==3.10.12"
-content-hash = "bdc55a1d31de6237dc88f3f719d4f4dc9451fbdfaa7f188105c53d2df4d615df"
+python-versions = "^3.10.12"
+content-hash = "4f07a1ad685fa11e4643de160fa3ba1dd55a4533ecfda4e47ae6c2f9b99860eb"
 
 [metadata.files]
 alabaster = []
