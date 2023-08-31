@@ -86,5 +86,6 @@ class DateTimePickerWidgetForm(DateTimePickerInput):
                     days=NumericParameter.TODAY_MINUS_FIVE_YEARS.value,
                 )
             ).strftime('%d/%m/%Y %H:%M'),
+            
         )
         super().__init__(*args, **kwargs, options=options)
