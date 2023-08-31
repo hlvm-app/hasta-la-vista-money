@@ -19,9 +19,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install Poetry Action
-        uses: snok/install-poetry@v1.3.4
-
       - name: Push to dokku
         uses: dokku/github-action@v1.4.0
         with:
