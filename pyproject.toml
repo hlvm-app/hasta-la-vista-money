@@ -8,7 +8,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<4"
+python = "==3.10.12"
 python-dotenv = ">=0.20.0"
 dj-database-url = ">=1.0.0"
 django-bootstrap5 = ">=22.1"
