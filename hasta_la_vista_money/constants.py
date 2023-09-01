@@ -2,6 +2,7 @@ import datetime
 from enum import Enum
 
 
+
 class ReceiptConstants(Enum):
     NAME_SELLER = 'user'
     RETAIL_PLACE_ADDRESS = 'retailPlaceAddress'
