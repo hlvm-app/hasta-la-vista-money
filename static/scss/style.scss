@@ -1,3 +1,8 @@
+@import "fonts";
+@import "buttons";
+@import "mobile";
+
+
 html, body {
     width: 100%;
     height: 100%;
@@ -33,6 +38,10 @@ html, body {
     padding: 10px;
     border-radius: 50%;
     height: 16rem
+}
+
+.button-receipt {
+    height: 6rem;
 }
 
 .add-receipt-form {
@@ -107,8 +116,3 @@ html, body {
 caption {
     text-shadow:#000000 0px -3px 13px;
 }
-
-
-@import "fonts";
-@import "buttons";
-@import "mobile";

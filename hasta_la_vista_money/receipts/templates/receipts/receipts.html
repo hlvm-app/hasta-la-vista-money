@@ -107,43 +107,138 @@
                 </button>
             </div>
             {% for receipt in receipts %}
-            <div class="receipt mx-auto bg-light position-relative rounded-3 m-1 shadow">
-                <form class="form-remove-receipt-button m-0" action="{% url 'receipts:delete' receipt.id %}" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="receipt_id" value="{{ receipt.id }}">
-                    <button class="remove-object-button position-absolute top-50 end-0 translate-middle mr-5 mt-1 btn btn-outline-danger border-0 btn-small" data-nonce="{{request.csp_nonce}}" type="submit" name="delete_receipt_button">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
-                        </svg>
-                    </button>
-                </form>
+	            <div class="col-xl-12">
+		            <div class="d-grid gap-2">
+			            <button class="button-receipt btn btn-light text-dark  mb-2" data-bs-toggle="modal" data-bs-target="#receipt-{{ receipt.id }}">{{ receipt.customer.name_seller }}<br> <strong>Дата: </strong>{{ receipt.receipt_date | date:"d.m.Y H:i" }} <strong>Сумма чека: </strong>{{ receipt.total_sum | comma }}</button>
+			            <!-- /.btn btn-light text-dark -->
+		            </div>
+	            </div>
+				<div id="receipt-{{ receipt.id }}" class="modal modal-lg fade ajax-modal" >
+		            <div class="modal-dialog modal-dialog-centered">
+		                <div class="modal-content">
+		                    <div class="modal-header">
+		                            <div class="col-xl-4">
+			                            Кассовый чек
+		                            </div>
+		                            <!-- /.col-xl-4 -->
+		                            <div class="col-xl-4">
+			                            {% if receipt.operation_type == 1 %}
+			                                Покупка
+			                            {% elif receipt.operation_type == 2 %}
+			                                Возврат покупки
+			                            {% endif %}
+		                            </div>
+		                            <!-- /.col-xl-4 -->
+		                            <div class="col-xl-3">
+			                            {{ receipt.receipt_date | date:"d.m.Y H:i" }}
+		                            </div>
+		                            <!-- /.col-xl-4 -->
+	                                <div class="col-xl-1">
+		                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	                                </div>
+	                                <!-- /.col-xl-1 -->
+		                    </div>
+		                    <div class="modal-body">
+		                        <div class="d-flex justify-content-center align-items-center">
+			                        <div class="col-xl-10">
+				                        <strong class="fs-4">{{ receipt.customer.name_seller }}</strong>
+			                        </div>
+			                        <!-- /.col-xl-10 -->
+			                        <div class="col-xl-2">
+				                        <form class="form-remove-receipt-button m-0" action="{% url 'receipts:delete' receipt.id %}" method="post">
+						                    {% csrf_token %}
+						                    <input type="hidden" name="receipt_id" value="{{ receipt.id }}">
+						                    <button class="remove-object-button position-absolute top-50 end-0 translate-middle mr-5 btn btn-outline-danger border-0 btn-small" data-nonce="{{request.csp_nonce}}" type="submit" name="delete_receipt_button">
+						                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+						                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+						                        </svg>
+						                    </button>
+						                </form>
+			                        </div>
+			                        <!-- /.col-xl-2 -->
 
-                <table class="table table-sm table-borderless" aria-label="table receipts">
-					<thead>
-						<tr>
-							<th scope="col" class="col-xl-7 fs-4 align-middle">Продавец: {{ receipt.customer.name_seller }}</th>
-							<th scope="col" class="col-xl-2">Дата и время:<br>{{ receipt.receipt_date | date:"d.m.Y H:i" }}</th>
-							<th scope="col" class="col-xl-2">Итоговая сумма:<br>{{ receipt.total_sum | comma }}</th>
-						</tr>
-						<tr>
-							<th scope="row">Наименование товара</th>
-							<th scope="col">Цена</th>
-							<th scope="col">Количество</th>
-							<th scope="col">Сумма</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for product in receipt.product.all %}
-							<tr>
-								<th scope="row" class="fw-normal">{{ product.product_name }}</th>
-								<td >{{ product.price | comma }}</td>
-								<td >{{ product.quantity }}</td>
-								<td >{{ product.amount | comma }}</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-            </div>
+		                        </div>
+		                        <table class="table mt-1" aria-describedby="table for receipt">
+			                        <thead>
+				                        <tr>
+					                        <th>Предмет расчёта</th>
+					                        <th>Цена</th>
+					                        <th>Количество</th>
+					                        <th>Сумма</th>
+				                        </tr>
+			                        </thead>
+			                        <tbody>
+			                            {% for product in receipt.product.all %}
+					                        <tr>
+						                        <td>{{ product.product_name }}</td>
+						                        <td>{{ product.price | comma }}</td>
+						                        <td>{{ product.quantity }}</td>
+						                        <td>{{ product.amount | comma }}</td>
+					                        </tr>
+				                        {% endfor %}
+			                        </tbody>
+		                        </table>
+		                        <!-- /.table -->
+		                        <div class="row justify-content-between align-items-center">
+									<div class="ms-2 col-xl-3">
+										<strong class="fs-4">Итог</strong>
+									</div>
+									<div class="col-3">
+										<strong class="fs-4">{{ receipt.total_sum }}</strong>
+									</div>
+								</div>
+		                        <!-- /.d-flex justify-content-between align-items-center-->
+{#		                        <div class="row justify-content-between align-items-center">#}
+{#									<div class="offset-xl-1 col-xl-4">#}
+{#										<strong class="fs-4">НДС 10%</strong>#}
+{#									</div>#}
+{#									<div class="col-3">#}
+{#										<strong class="fs-4">0</strong>#}
+{#									</div>#}
+{#								</div>#}
+{#		                        <!-- /.d-flex justify-content-between align-items-center-->#}
+{#		                        <div class="row justify-content-between align-items-center">#}
+{#									<div class="offset-xl-1 col-xl-4">#}
+{#										<strong class="fs-4">НДС 20%</strong>#}
+{#									</div>#}
+{#									<div class="col-3">#}
+{#										<strong class="fs-4">0</strong>#}
+{#									</div>#}
+{#								</div>#}
+		                        <!-- /.d-flex justify-content-between align-items-center-->
+		                        <div class="row justify-content-between align-items-center mt-3">
+									<div class="ms-2 col-xl-3">
+										Списано со счёта
+									</div>
+									<div class="col-3">
+										{{ receipt.account }}
+									</div>
+								</div>
+		                        <!-- /.d-flex justify-content-between align-items-center-->
+		                        <div class="row justify-content-between align-items-center mt-5">
+									<div class="ms-2 col-xl-3">
+										Место расчётов
+									</div>
+									<div class="col-8">
+										{{ receipt.customer.retail_place }}
+									</div>
+								</div>
+		                        <!-- /.d-flex justify-content-between align-items-center-->
+		                        <div class="row justify-content-between align-items-center mt-1">
+									<div class="ms-2 col-xl-3">
+										Адрес расчётов
+									</div>
+									<div class="col-8">
+										{% if receipt.customer.retail_place_address %}
+											{{ receipt.customer.retail_place_address }}
+										{% endif %}
+									</div>
+								</div>
+		                        <!-- /.d-flex justify-content-between align-items-center-->
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
             {% endfor %}
         </div>
     </div>

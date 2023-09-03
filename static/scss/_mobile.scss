@@ -46,6 +46,9 @@
         --bs-btn-disabled-bg: #dc3545;
         --bs-btn-disabled-border-color: #dc3545 !important;
     }
+    .button-receipt {
+        height: auto !important;
+    }
 
 }
 @media (min-width: 768px) and (max-width: 991px) {
