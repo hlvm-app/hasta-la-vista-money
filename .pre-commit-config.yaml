@@ -16,12 +16,14 @@ repos:
 -   repo: https://github.com/python-poetry/poetry
     rev: 1.6.0
     hooks:
+    -   id: poetry-check
     -   id: poetry-export
         args: [ "--dev", "-f", "requirements.txt", "-o", "requirements/dev.txt" ]
 
 -   repo: https://github.com/python-poetry/poetry
     rev: 1.6.0
     hooks:
+    -   id: poetry-check
     -   id: poetry-export
         args: [ "-f", "requirements.txt", "-o", "requirements/prod.txt" ]
 
