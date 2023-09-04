@@ -51,7 +51,7 @@ class ReceiptParser:
 
     parse_customer() -> None
         Метод класса для парсинга продавца из JSON данных чека.
-        Парсинг включает в себя название продавца, например: ООО "Пятерочка".
+        Парсинг включает в себя название продавца, например: ООО 'Пятерочка'.
         Фактический адрес расположения магазина, в котором был распечатан чек.
         Название того магазина, где был распечатан чек.
 
@@ -141,7 +141,7 @@ class ReceiptParser:
         """
         Метод класса для парсинга продавца из JSON данных чека.
 
-        Парсинг включает в себя название продавца, например: ООО "Пятерочка".
+        Парсинг включает в себя название продавца, например: ООО 'Пятерочка'.
         Фактический адрес расположения магазина, в котором был распечатан чек.
         Название того магазина, где был распечатан чек.
         """
@@ -194,6 +194,8 @@ class ReceiptParser:
             (
                 receipt_date,
                 number_receipt,
+                nds10,
+                nds20,
                 operation_type,
                 total_sum,
             ) = self.extract_receipt_info()
@@ -209,6 +211,8 @@ class ReceiptParser:
                 self.process_receipt_data(
                     receipt_date,
                     number_receipt,
+                    nds10,
+                    nds20,
                     operation_type,
                     total_sum,
                 )
@@ -244,6 +248,8 @@ class ReceiptParser:
         self,
         receipt_date,
         number_receipt,
+        nds10,
+        nds20,
         operation_type,
         total_sum,
     ):
@@ -260,6 +266,8 @@ class ReceiptParser:
             account=account_balance,
             receipt_date=receipt_date,
             number_receipt=number_receipt,
+            nds10=nds10,
+            nds20=nds20,
             operation_type=operation_type,
             total_sum=total_sum,
             customer=self.customer,
@@ -279,6 +287,20 @@ class ReceiptParser:
             ReceiptConstants.NUMBER_RECEIPT.value,
         )
 
+        nds10 = convert_number(
+            self.parser.parse_json(
+                self.json_data,
+                ReceiptConstants.NDS10.value,
+            ),
+        )
+
+        nds20 = convert_number(
+            self.parser.parse_json(
+                self.json_data,
+                ReceiptConstants.NDS20.value,
+            ),
+        )
+
         operation_type = self.parser.parse_json(
             self.json_data,
             ReceiptConstants.OPERATION_TYPE.value,
@@ -289,4 +311,11 @@ class ReceiptParser:
                 ReceiptConstants.TOTAL_SUM.value,
             ),
         )
-        return receipt_date, number_receipt, operation_type, total_sum
+        return (
+            receipt_date,
+            number_receipt,
+            nds10,
+            nds20,
+            operation_type,
+            total_sum,
+        )
