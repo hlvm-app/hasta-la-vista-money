@@ -17,6 +17,8 @@ class ReceiptConstants(Enum):
     AMOUNT = 'sum'
     NDS_TYPE = 'nds'
     NDS_SUM = 'ndsSum'
+    NDS10 = 'nds10'
+    NDS20 = 'nds18'
     ITEMS_PRODUCT = 'items'
     RECEIPT_ALREADY_EXISTS = 'Такой чек уже существует!'
     RECEIPT_CANNOT_BE_ADDED = (
@@ -238,7 +240,7 @@ class NumberMonthOfYear(Enum):
     NUMBER_TWELFTH_MONTH_YEAR = 12
 
 
-MONTH_NUMBERS = {  # noqa: WPS407
+MONTH_NUMBERS = {
     'Январь': 1,
     'Февраль': 2,
     'Март': 3,
@@ -253,7 +255,7 @@ MONTH_NUMBERS = {  # noqa: WPS407
     'Декабрь': 12,
 }
 
-MONTH_NAMES = {  # noqa: WPS407
+MONTH_NAMES = {
     1: 'Январь',
     2: 'Февраль',
     3: 'Март',
