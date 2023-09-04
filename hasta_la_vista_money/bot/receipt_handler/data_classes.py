@@ -29,6 +29,8 @@ class ReceiptData:
     account: Any
     receipt_date: str
     number_receipt: int
+    nds10: int
+    nds20: int
     operation_type: int
     total_sum: float
     customer: str
@@ -63,6 +65,8 @@ class ReceiptDataWriter:
             account=receipt_data.account,
             receipt_date=receipt_data.receipt_date,
             number_receipt=receipt_data.number_receipt,
+            nds10=receipt_data.nds10,
+            nds20=receipt_data.nds20,
             operation_type=receipt_data.operation_type,
             total_sum=receipt_data.total_sum,
             customer=receipt_data.customer,
