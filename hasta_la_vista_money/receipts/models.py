@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from hasta_la_vista_money.account.models import Account
+from hasta_la_vista_money.constants import NumericParameter
 from hasta_la_vista_money.users.models import User
 
 OPERATION_TYPES = (
@@ -40,6 +41,18 @@ class Receipt(models.Model):
     account = models.ForeignKey(Account, on_delete=models.PROTECT)
     receipt_date = models.DateTimeField()
     number_receipt = models.IntegerField(default=None, null=True)
+    nds10 = models.DecimalField(
+        blank=True,
+        max_digits=NumericParameter.SIXTY.value,
+        null=True,
+        decimal_places=NumericParameter.TWO.value,
+    )
+    nds20 = models.DecimalField(
+        blank=True,
+        max_digits=NumericParameter.SIXTY.value,
+        null=True,
+        decimal_places=NumericParameter.TWO.value,
+    )
     operation_type = models.IntegerField(
         default=0,
         null=True,
