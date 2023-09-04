@@ -96,8 +96,10 @@ class ReceiptForm(BaseForm):
         'customer': _('Имя продавца'),
         'account': _('Счёт'),
         'receipt_date': _('Дата и время чека'),
-        'number_receipt': _('Номер документа'),
         'operation_type': _('Тип операции'),
+        'number_receipt': _('Номер документа'),
+        'nds10': _('НДС 10%'),
+        'nds20': _('НДС 20%'),
         'total_sum': _('Итоговая сумма по чеку'),
     }
 
