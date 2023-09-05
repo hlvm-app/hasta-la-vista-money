@@ -16,6 +16,7 @@ class Loan(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     account = models.ForeignKey(Account, on_delete=models.PROTECT)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    date = models.DateTimeField()
     loan_amount = models.FloatField(
         max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
     )
@@ -23,7 +24,7 @@ class Loan(models.Model):
         max_digits=NumericParameter.TWO_HUNDRED_FIFTY.value,
         decimal_places=NumericParameter.TWO.value,
     )
-    monthly_interest_rate = models.DecimalField(
+    period_loan = models.DecimalField(
         max_digits=NumericParameter.TWO_HUNDRED_FIFTY.value,
         decimal_places=NumericParameter.TWO.value,
     )
