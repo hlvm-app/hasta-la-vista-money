@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count, ProtectedError, Sum
 from django.db.models.functions import TruncMonth
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, TemplateView, UpdateView
@@ -164,10 +164,13 @@ class ChangeAccountView(
     success_message = MessageOnSite.SUCCESS_MESSAGE_CHANGED_ACCOUNT.value
 
     def get(self, request, *args, **kwargs):
-        return self.get_update_form(
-            self.form_class,
-            'add_account_form',
-        )
+        user = Income.objects.filter(user=request.user).first()
+        if user:
+            return self.get_update_form(
+                self.form_class,
+                'add_account_form',
+            )
+        raise Http404
 
 
 class TransferMoneyAccountView(

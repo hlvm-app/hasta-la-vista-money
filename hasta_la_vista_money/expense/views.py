@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count, Sum
 from django.db.models.functions import TruncMonth
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -170,10 +170,13 @@ class ExpenseUpdateView(
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
 
     def get(self, request, *args, **kwargs):
-        return self.get_update_form(
-            self.form_class,
-            'add_expense_form',
-        )
+        user = Expense.objects.filter(user=request.user).first()
+        if user:
+            return self.get_update_form(
+                self.form_class,
+                'add_expense_form',
+            )
+        raise Http404
 
     def form_valid(self, form):
         expense_id = self.get_object().id

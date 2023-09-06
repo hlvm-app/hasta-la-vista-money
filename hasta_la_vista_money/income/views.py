@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, UpdateView
@@ -20,6 +20,7 @@ from hasta_la_vista_money.custom_mixin import (
 )
 from hasta_la_vista_money.income.forms import AddCategoryIncomeForm, IncomeForm
 from hasta_la_vista_money.income.models import Income, IncomeType
+from hasta_la_vista_money.users.models import User
 
 
 class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
@@ -32,7 +33,8 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
     success_url = SuccessUrlView.INCOME_URL.value
 
     def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
+        user = User.objects.filter(username=request.user)
+        if user:
             income_form = IncomeForm()
             add_category_income_form = AddCategoryIncomeForm()
 
@@ -125,7 +127,10 @@ class IncomeUpdateView(
     success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)
 
     def get(self, request, *args, **kwargs):
-        return self.get_update_form(self.form_class, 'income_form')
+        user = Income.objects.filter(user=request.user).first()
+        if user:
+            return self.get_update_form(self.form_class, 'income_form')
+        raise Http404
 
     def form_valid(self, form):
         income_id = self.get_object().id
