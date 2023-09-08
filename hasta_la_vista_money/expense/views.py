@@ -1,5 +1,3 @@
-from itertools import chain
-
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count, Sum
@@ -28,7 +26,6 @@ from hasta_la_vista_money.custom_mixin import (
 )
 from hasta_la_vista_money.expense.forms import AddCategoryForm, AddExpenseForm
 from hasta_la_vista_money.expense.models import Expense, ExpenseType
-from hasta_la_vista_money.loan.models import Category
 from hasta_la_vista_money.receipts.models import Receipt
 
 
@@ -88,15 +85,13 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             expense_categories = ExpenseType.objects.filter(
                 user=request.user,
             ).all()
-            loan_categories = Category.objects.filter(user=request.user).all()
 
-            result_categories = list(chain(expense_categories, loan_categories))
             return render(
                 request,
                 self.template_name,
                 {
                     'add_category_form': add_category_form,
-                    'categories': result_categories,
+                    'categories': expense_categories,
                     'receipt_info_by_month': receipt_info_by_month,
                     'expenses': expenses,
                     'add_expense_form': add_expense_form,
