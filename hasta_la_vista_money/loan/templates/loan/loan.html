@@ -9,28 +9,182 @@
 {% block title %}{% translate 'Кредиты' %}{% endblock %}
 {% block content %}
 	<div class="container-fluid">
+		{% include 'error_modal.html' %}
+		<div id="add-loan" class="ajax-modal modal fade">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">
+							Добавить кредит
+						</h5>
+						<button type="button" class="btn-close"
+						        data-bs-dismiss="modal"
+						        aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						{{ loan_form.media }}
+						<form class="ajax-form m-2" method="POST"
+						      action="{% url 'loan:create' %}">
+							{% csrf_token %}
+							{% if loan_form %}
+								{% for field in loan_form %}
+									<div class="form-group {% if field.errors %} has-error{% endif %}">
+										{% bootstrap_field field %}
+										{% if field.errors %}
+											{% for error in field.errors %}
+												<p class="help-block">{{ error }}</p>
+											{% endfor %}
+										{% endif %}
+									</div>
+								{% endfor %}
+							{% endif %}
+							{% bootstrap_button button_add_loan button_type="submit" button_class='btn btn-primary' %}
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="row">
 			<div class="col-xl-12">
 				<details class="ms-5 text-light">
 					<summary class="btn btn-primary mb-2">Подсказка</summary>
 					<p>
-						Раздел &laquo;Кредиты&raquo; предназначен для контроля за взятыми кредитами.<br>
+						Раздел &laquo;Кредиты&raquo; предназначен для контроля
+						за взятыми кредитами.<br>
 						<strong>Предупреждение:</strong>
-						Поскольку каждый банк производит расчет коэффициента самостоятельно, как следствие, возникают различия в округлении получившихся цифр коэффициента. Данные, предоставленные банком и на этой странице, могут не совпадать!<br>
-						Сведения, указанные банком, являются приоритетными, на текущей странице - справочной информацией для лучшего понимания по планированию бюджета!<br><br>
-						Суммы рассчитываются согласно общепринятой формуле:<br><br>
+						Поскольку каждый банк производит расчет коэффициента
+						самостоятельно, как следствие, возникают различия в
+						округлении получившихся цифр коэффициента. Данные,
+						предоставленные банком и на этой странице, могут не
+						совпадать!<br>
+						Сведения, указанные банком, являются приоритетными, на
+						текущей странице - справочной информацией для лучшего
+						понимания по планированию бюджета!<br><br>
+						Суммы рассчитываются согласно общепринятой
+						формуле:<br><br>
 						Расчёт ежемесячной процентной ставки:<br>
-						<code class="text-light"><i>Ежемесячная ставка = Ежегодная ставка / 12 месяцев</i></code><br><br>
+						<code class="text-light"><i>Ежемесячная ставка =
+							Ежегодная ставка / 12 месяцев</i></code><br><br>
 						Расчёт коэффициента:<br>
-						<code class="text-light"><i>Коэффициент = Ежемесячная ставка * (1 + Ежемесячная ставка) ^ Срок кредита в месяцах / ((1 + Ежемесячная ставка) ^ Срок кредита в месяцах) - 1)</i></code><br><br>
+						<code class="text-light"><i>Коэффициент = Ежемесячная
+							ставка * (1 + Ежемесячная ставка) ^ Срок кредита в
+							месяцах / ((1 + Ежемесячная ставка) ^ Срок кредита в
+							месяцах) - 1)</i></code><br><br>
 						Расчёт ежемесячного платежа:<br>
-						<code class="text-light"><i>Ежемесячный платёж = Сумма кредита * Коэффициент</i></code><br><br>
-						<small>Примечание: / - деление, * умножение, ^ - возведение в степень</small>
+						<code class="text-light"><i>Ежемесячный платёж = Сумма
+							кредита * Коэффициент</i></code><br><br>
+						<small>Примечание: / - деление, * умножение, ^ -
+							возведение в степень</small>
 					</p>
 				</details>
 			</div>
 			<!-- /.col-xl-12 -->
+		</div>
+		<!-- /.row -->
+		<div class="row">
+			<div class="col-xl-12">
+				<button type="button" class="btn btn-outline-light ms-5"
+				        data-bs-toggle="modal" data-bs-target="#add-loan"
+				        title="Добавить кредит">
+					Добавить кредит
+				</button>
+			</div>
+		</div>
+		<!-- /.row -->
 
+		<div class="row justify-content-xl-center">
+			<div class="col-xl-6">
+				<div class="d-grid gap-2">
+					{% if loan %}
+						<h2>Список моих кредитов:</h2>
+						{% for item_loan in loan %}
+							<button type="button"
+							        class="btn btn-primary btn-danger"
+							        data-bs-toggle="modal"
+							        data-bs-target="#loan-{{ item_loan.pk }}">
+								Кредит №{{ item_loan.pk }}<br>
+								Сумма кредита: {{ item_loan.loan_amount }}
+								Годовая процентная
+								ставка: {{ item_loan.annual_interest_rate }}%
+								Срок кредита
+								(месяцы): {{ item_loan.period_loan }}
+							</button>
+							<div id="loan-{{ item_loan.pk }}"
+							     class="ajax-modal modal fade">
+								<div class="modal-dialog modal-xl modal-sm modal-md modal-dialog-centered">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">
+												Кредит №{{ item_loan.pk }}
+											</h5>
+											<button type="button"
+											        class="btn btn-outline-primary ms-5"
+											        data-bs-toggle="modal"
+											        data-bs-target="#payment-{{ item_loan.pk }}"
+											        title="Внести платеж">
+												Внести платеж
+											</button>
+											<button type="button"
+											        class="btn-close"
+											        data-bs-dismiss="modal"
+											        aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<h3>График платежей:</h3>
+											<table class="table"
+											       aria-describedby="table payment">
+												<thead>
+												<tr>
+													<th>Месяц</th>
+													<th>Остаток</th>
+													<th>Ежемесячный платеж</th>
+													<th>Проценты</th>
+													<th>Погашение основного
+														долга
+													</th>
+												</tr>
+												</thead>
+												<tbody>
+												{% for payment in result_calculate %}
+													{% for inner_payment in payment %}
+														{% if inner_payment.id == item_loan.pk %}
+															<tr>
+																<td>{{ inner_payment.month }}</td>
+																<td>{{ inner_payment.balance }}</td>
+																<td>{{ inner_payment.monthly_payment }}</td>
+																<td>{{ inner_payment.interest }}</td>
+																<td>{{ inner_payment.principal_payment }}</td>
+															</tr>
+														{% endif %}
+													{% endfor %}
+												{% endfor %}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div id="payment-{{ item_loan.pk }}" class="ajax-modal modal fade">
+						        <div class="modal-dialog modal-xl modal-sm modal-md modal-dialog-centered">
+						            <div class="modal-content">
+						                <div class="modal-header">
+						                    <h5 class="modal-title">
+						                        Внести платеж
+						                    </h5>
+						                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						                </div>
+						                <div class="modal-body">
+
+						                </div>
+						            </div>
+						        </div>
+							</div>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<!-- /.d-flex justify-content-center -->
+			</div>
+			<!-- /.col-xl-12 -->
 		</div>
 		<!-- /.row -->
 	</div>
