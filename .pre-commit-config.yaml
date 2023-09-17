@@ -17,6 +17,7 @@ repos:
     rev: 1.6.0
     hooks:
     -   id: poetry-check
+    -   id: poetry-lock
     -   id: poetry-export
         args: ["-f", "requirements.txt", "-o", "requirements/dev.txt", "--with", "dev", "--without-hashes"]
 
@@ -24,6 +25,7 @@ repos:
     rev: 1.6.0
     hooks:
     -   id: poetry-check
+    -   id: poetry-lock
     -   id: poetry-export
         args: [ "-f", "requirements.txt", "-o", "requirements/prod.txt", "--without-hashes"]
 
