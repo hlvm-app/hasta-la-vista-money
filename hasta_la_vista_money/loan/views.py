@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
-from hasta_la_vista_money.loan.forms import LoanForm
+from hasta_la_vista_money.loan.forms import LoanForm, PaymentMakeLoanForm
 from hasta_la_vista_money.loan.models import Loan
 from hasta_la_vista_money.loan.tasks import async_calculate_annuity_loan
 from hasta_la_vista_money.users.models import User
@@ -21,6 +21,7 @@ class LoanView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         )
         if user:
             loan_form = LoanForm()
+            payment_make_loan = PaymentMakeLoanForm()
             loan = Loan.objects.filter(user=request.user).all()
             result_calculate = []
             for item_loan in loan:
@@ -39,6 +40,7 @@ class LoanView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 self.template_name,
                 {
                     'loan_form': loan_form,
+                    'payment_make_loan': payment_make_loan,
                     'loan': loan,
                     'result_calculate': result_calculate,
                 },
@@ -73,6 +75,3 @@ class LoanCreateView(SuccessMessageMixin, CreateView):
                 'errors': loan_form.errors,
             }
         return JsonResponse(response_data)
-
-    def calculate_annuity_loan(self):
-        ...
