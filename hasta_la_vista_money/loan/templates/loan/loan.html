@@ -164,20 +164,42 @@
 									</div>
 								</div>
 							</div>
-							<div id="payment-{{ item_loan.pk }}" class="ajax-modal modal fade">
-						        <div class="modal-dialog modal-xl modal-sm modal-md modal-dialog-centered">
-						            <div class="modal-content">
-						                <div class="modal-header">
-						                    <h5 class="modal-title">
-						                        Внести платеж
-						                    </h5>
-						                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						                </div>
-						                <div class="modal-body">
-
-						                </div>
-						            </div>
-						        </div>
+							<div id="payment-{{ item_loan.pk }}"
+							     class="ajax-modal modal fade">
+								<div class="modal-dialog modal-xl modal-sm modal-md modal-dialog-centered">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">
+												Внести платеж
+											</h5>
+											<button type="button"
+											        class="btn-close"
+											        data-bs-dismiss="modal"
+											        aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											{{ payment_make_loan.media }}
+											<form class="ajax-form m-2"
+											      method="POST"
+											      action="{% url 'loan:payment_create' %}">
+												{% csrf_token %}
+												{% if payment_make_loan %}
+													{% for field in payment_make_loan %}
+														<div class="form-group {% if field.errors %} has-error{% endif %}">
+															{% bootstrap_field field %}
+															{% if field.errors %}
+																{% for error in field.errors %}
+																	<p class="help-block">{{ error }}</p>
+																{% endfor %}
+															{% endif %}
+														</div>
+													{% endfor %}
+												{% endif %}
+												{% bootstrap_button button_add_payment button_type="submit" button_class='btn btn-primary' %}
+											</form>
+										</div>
+									</div>
+								</div>
 							</div>
 						{% endfor %}
 					{% endif %}
