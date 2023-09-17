@@ -91,6 +91,7 @@ class MessageOnSite(Enum):
     )
     SUCCESS_MESSAGE_TRANSFER_MONEY = 'Средства успешно переведены'
     SUCCESS_MESSAGE_INSUFFICIENT_FUNDS = 'Недостаточно средств'
+    SUCCESS_MESSAGE_PAYMENT_MAKE = 'Платеж успешно внесён'
 
 
 class TelegramMessage(Enum):
