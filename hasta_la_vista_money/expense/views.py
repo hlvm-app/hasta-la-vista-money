@@ -67,6 +67,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                     count=Count('id'),
                     total_amount=Sum('total_sum'),
                 )
+                .order_by('-month')
             )
 
             expenses = (
