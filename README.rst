@@ -1,13 +1,12 @@
-**Hasta La Vista, Money!**
-===========================
-
-
-.. image:: https://github.com/TurtleOld/hasta-la-vista-money/actions/workflows/dokku.yaml/badge.svg
-   :target: https://github.com/TurtleOld/hasta-la-vista-money/actions/workflows/dokku.yaml
-   :alt: Deploy to Dokku
-
+######################
+Hasta La Vista, Money!
+######################
 .. image:: https://img.shields.io/github/actions/workflow/status/TurtleOld/hasta-la-vista-money/hasta_la_vista_money.yaml?label=Hasta%20La%20Vista%2C%20Money%21
    :alt: GitHub Workflow Status
+
+.. image:: https://github.com/TurtleOld/hasta-la-vista-money/actions/workflows/dokku.yaml/badge.svg
+   :alt: Deploy to Dokku
+   :target: https://github.com/TurtleOld/hasta-la-vista-money/actions/workflows/dokku.yaml
 
 .. image:: https://api.codeclimate.com/v1/badges/cbd04aad36a00366e9ca/maintainability
    :target: https://codeclimate.com/github/TurtleOld/hasta-la-vista-money/maintainability
@@ -24,8 +23,9 @@
    :target: https://www.codefactor.io/repository/github/turtleold/hasta-la-vista-money
    :alt: CodeFactor
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Hasta La Vista, Money - проект домашней бухгалтерии для контроля расходов и доходов семьи с возможностью просмотра отчётов
+Hasta La Vista, Money - проект домашней бухгалтерии для контроля расходов и доходов семьи с возможностью просмотра отчётов.
 
 Проект даёт возможность не только контролировать расходы и доходы, но и упрощает внесение данных о покупках.
 Для этого необходимо просканировать QR-код с чека. Когда QR-кода нет на чеке, есть возможность внесение покупок вручную.
