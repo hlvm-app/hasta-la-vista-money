@@ -57,3 +57,10 @@ repos:
         entry: yesqa
         language: system
         types: [ python ]
+        
+-   repo: https://github.com/thclark/pre-commit-sphinx
+    rev: 0.0.1
+    hooks:
+    -   id: build-docs
+        args: ['--cache-dir', 'docs/doctrees', '--html-dir', 'docs/html', '--source-dir', 'docs/source']
+        language_version: python3
