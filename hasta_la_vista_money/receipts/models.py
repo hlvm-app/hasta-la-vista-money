@@ -73,6 +73,9 @@ class Receipt(models.Model):
     product = models.ManyToManyField('Product', related_name='product')
     manual = models.BooleanField(null=True)
 
+    class Meta:
+        ordering = ['-receipt_date']
+
     def datetime(self):
         return self.receipt_date
 

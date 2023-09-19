@@ -18,8 +18,11 @@ class Account(models.Model):
     )
     currency = models.CharField(choices=CURRENCY)
 
+    class Meta:
+        ordering = ['name_account']
+
     def __str__(self):
-        return self.name_account
+        return f'{self.name_account}'
 
     def transfer_money(self, to_account, amount):
         if amount <= self.balance:

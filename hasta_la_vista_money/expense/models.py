@@ -8,6 +8,9 @@ class ExpenseType(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     name = models.CharField(max_length=NumericParameter.TWO_HUNDRED_FIFTY.value)
 
+    class Meta:
+        ordering = ['name']
+
     def __str__(self):
         return str(self.name)
 
@@ -22,6 +25,9 @@ class Expense(models.Model):
         max_digits=NumericParameter.TWENTY.value,
         decimal_places=NumericParameter.TWO.value,
     )
+
+    class Meta:
+        ordering = ['-date']
 
     def __str__(self):
         return str(self.category)

@@ -67,7 +67,6 @@ class PageApplication(
                 'category__name',
                 'amount',
             )
-            .order_by('-date')
         )
 
         income = (
@@ -81,7 +80,6 @@ class PageApplication(
                 'category__name',
                 'amount',
             )
-            .order_by('-date')
         )
 
         return sorted(
@@ -95,7 +93,7 @@ class PageApplication(
         if self.request.user.is_authenticated:
             accounts = Account.objects.filter(
                 user=self.request.user,
-            ).order_by('name_account')
+            )
 
             receipt_info_by_month = self.collect_info_receipt(
                 user=self.request.user,

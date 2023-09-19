@@ -67,7 +67,6 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                     count=Count('id'),
                     total_amount=Sum('total_sum'),
                 )
-                .order_by('-month')
             )
 
             expenses = (
@@ -79,7 +78,6 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                     'category__name',
                     'amount',
                 )
-                .order_by('-date')
             )
 
             expense_categories = ExpenseType.objects.filter(

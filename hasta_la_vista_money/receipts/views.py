@@ -57,7 +57,6 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 .filter(
                     user=request.user,
                 )
-                .order_by('-receipt_date')
             )
 
             return render(

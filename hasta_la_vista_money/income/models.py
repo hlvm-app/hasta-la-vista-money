@@ -8,6 +8,9 @@ class IncomeType(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     name = models.CharField(max_length=NumericParameter.TWO_HUNDRED_FIFTY.value)
 
+    class Meta:
+        ordering = ['name']
+
     def __str__(self):
         return self.name
 
@@ -23,6 +26,9 @@ class Income(models.Model):
         max_digits=NumericParameter.TWENTY.value,
         decimal_places=2,
     )
+
+    class Meta:
+        ordering = ['-date']
 
     def __str__(self):
         return str(self.category)
