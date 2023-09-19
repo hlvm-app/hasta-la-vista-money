@@ -1,3 +1,7 @@
+**Hasta La Vista, Money!**
+===========================
+
+
 .. image:: https://github.com/TurtleOld/hasta-la-vista-money/actions/workflows/dokku.yaml/badge.svg
    :target: https://github.com/TurtleOld/hasta-la-vista-money/actions/workflows/dokku.yaml
    :alt: Deploy to Dokku
@@ -19,13 +23,6 @@
 .. image:: https://www.codefactor.io/repository/github/turtleold/hasta-la-vista-money/badge
    :target: https://www.codefactor.io/repository/github/turtleold/hasta-la-vista-money
    :alt: CodeFactor
-
-
-======================
-Hasta La Vista, Money!
-======================
-
-`Документация по проекту <https://hasta-la-vista-money.readthedocs.io>`_
 
 
 Hasta La Vista, Money - проект домашней бухгалтерии для контроля расходов и доходов семьи с возможностью просмотра отчётов
@@ -68,3 +65,11 @@ Hasta La Vista, Money - проект домашней бухгалтерии д�
       4. Итоговая сумма продукта;
       5. Тип НДС;
       6. Сумма НДС;
+
+
+-------------------------------------------------------------------------
+
+Contributers
+============
+
+Если вы хотите помочь проекту, ознакомтесь с `документацией по проекту <https://hasta-la-vista-money.readthedocs.io>`_
