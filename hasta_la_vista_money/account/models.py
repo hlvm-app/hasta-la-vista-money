@@ -26,7 +26,7 @@ class Account(models.Model):
         return f'{self.name_account}'
 
     def get_absolute_url(self):
-        return reverse('account:change', args=[f'{self.id}'])
+        return reverse('account:change', args=[self.id])
 
     def transfer_money(self, to_account, amount):
         if amount <= self.balance:
