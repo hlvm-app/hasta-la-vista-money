@@ -13,7 +13,7 @@ urlpatterns = [
         name='delete_account',
     ),
     path(
-        '<int:pk>/change',
+        'change/<int:pk>/',
         ChangeAccountView.as_view(),
         name='change',
     ),
