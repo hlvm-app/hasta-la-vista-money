@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from hasta_la_vista_money.constants import NumericParameter
 from hasta_la_vista_money.users.models import User
 
@@ -23,6 +24,9 @@ class Account(models.Model):
 
     def __str__(self):
         return f'{self.name_account}'
+
+    def get_absolute_url(self):
+        return reverse('account:change', args=[f'{self.id}'])
 
     def transfer_money(self, to_account, amount):
         if amount <= self.balance:
