@@ -1,4 +1,4 @@
-@media (max-width: 767px) {
+@media only screen and (max-width: 767px) {
     .receipt tr, h4 {
         font-size: calc(1.250rem + -2vw);
     }
@@ -12,6 +12,7 @@
     }
     .logo {
         font-size: 1.5rem;
+        margin: 0 auto;
     }
     .wrapper-table-income th, td {
         font-size: .7rem;
@@ -48,6 +49,9 @@
     }
     .button-receipt {
         height: auto !important;
+    }
+    table th {
+        font-size: .8rem;
     }
 
 }
