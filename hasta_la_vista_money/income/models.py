@@ -11,6 +11,7 @@ class IncomeType(models.Model):
 
     class Meta:
         ordering = ['name']
+        indexes = [models.Index(fields=['name'])]
 
     def __str__(self):
         return self.name
@@ -30,6 +31,10 @@ class Income(models.Model):
 
     class Meta:
         ordering = ['-date']
+        indexes = [
+            models.Index(fields=['-date']),
+            models.Index(fields=['amount']),
+        ]
 
     def __str__(self):
         return str(self.category)

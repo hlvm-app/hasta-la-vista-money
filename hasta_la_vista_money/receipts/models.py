@@ -75,6 +75,14 @@ class Receipt(models.Model):
 
     class Meta:
         ordering = ['-receipt_date']
+        indexes = [
+            models.Index(fields=['-receipt_date']),
+            models.Index(fields=['number_receipt']),
+            models.Index(fields=['nds10']),
+            models.Index(fields=['nds20']),
+            models.Index(fields=['operation_type']),
+            models.Index(fields=['total_sum']),
+        ]
 
     def datetime(self):
         return self.receipt_date

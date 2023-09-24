@@ -17,6 +17,15 @@ class Loan(models.Model):
     )
     period_loan = models.IntegerField()
 
+    class Meta:
+        ordering = ['-date']
+        indexes = [
+            models.Index(fields=['-date']),
+            models.Index(fields=['loan_amount']),
+            models.Index(fields=['annual_interest_rate']),
+            models.Index(fields=['period_loan']),
+        ]
+
     def __str__(self):
         return f'Кредит на сумму {self.loan_amount}'
 

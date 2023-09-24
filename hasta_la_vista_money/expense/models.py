@@ -11,6 +11,9 @@ class ExpenseType(models.Model):
 
     class Meta:
         ordering = ['name']
+        indexes = [
+            models.Index(fields=['name']),
+        ]
 
     def __str__(self):
         return str(self.name)
@@ -29,6 +32,10 @@ class Expense(models.Model):
 
     class Meta:
         ordering = ['-date']
+        indexes = [
+            models.Index(fields=['-date']),
+            models.Index(fields=['amount']),
+        ]
 
     def __str__(self):
         return str(self.category)
