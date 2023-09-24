@@ -85,17 +85,8 @@ class PageApplication(
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
-            accounts = (
-                Account.objects.select_related(
-                    'user',
-                    'name_account',
-                    'balance',
-                    'currency',
-                )
-                .filter(
-                    user=self.request.user,
-                )
-                .values('id', 'name_account', 'balance', 'currency')
+            accounts = Account.objects.filter(
+                user=self.request.user,
             )
 
             receipt_info_by_month = self.collect_info_receipt(
@@ -105,12 +96,9 @@ class PageApplication(
             income_expense = self.collect_info_income_expense(
                 user=self.request.user,
             )
-            account_transfer_money = (
-                Account.objects.select_related('user', 'name_account')
-                .values('name_account')
-                .filter(
-                    user=self.request.user,
-                )
+
+            account_transfer_money = Account.objects.filter(
+                user=self.request.user,
             )
             initial_form_data = {
                 'from_account': account_transfer_money.first(),
