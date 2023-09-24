@@ -57,7 +57,6 @@ INSTALLED_APPS = [
     'bootstrap_datepicker_plus',
     'axes',
     'csp',
-    'debug_toolbar',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -81,6 +80,12 @@ INSTALLED_APPS = [
     'locale',
 ]
 
+if DEBUG:
+    INSTALLED_APPS.append('debug_toolbar')
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
 
 AUTH_USER_MODEL = 'users.User'
 
