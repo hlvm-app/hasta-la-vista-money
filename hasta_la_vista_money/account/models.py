@@ -23,7 +23,6 @@ class Account(models.Model):
         ordering = ['name_account']
         indexes = [
             models.Index(fields=['name_account']),
-            models.Index(fields=['balance']),
         ]
 
     def __str__(self):
