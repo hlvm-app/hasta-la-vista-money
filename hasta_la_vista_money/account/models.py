@@ -21,6 +21,10 @@ class Account(models.Model):
 
     class Meta:
         ordering = ['name_account']
+        indexes = [
+            models.Index(fields=['name_account']),
+            models.Index(fields=['balance']),
+        ]
 
     def __str__(self):
         return f'{self.name_account}'
