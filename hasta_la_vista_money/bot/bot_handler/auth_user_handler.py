@@ -16,7 +16,11 @@ def handle_auth(message):
         return
 
     username, password = map(str, auth_data)
-    user = User.objects.filter(username=username).first()
+    user = (
+        User.objects.select_related('username')
+        .filter(username=username)
+        .first()
+    )
 
     if user and user.check_password(password):
         create_telegram_user(message, user)
