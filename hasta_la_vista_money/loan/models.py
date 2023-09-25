@@ -39,3 +39,25 @@ class PaymentMakeLoan(models.Model):
         max_digits=NumericParameter.TWO_HUNDRED_FIFTY.value,
         decimal_places=NumericParameter.TWO.value,
     )
+
+
+class PaymentSchedule(models.Model):
+    loan = models.ForeignKey(Loan, on_delete=models.PROTECT)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    date = models.DateTimeField()
+    balance = models.DecimalField(
+        max_digits=NumericParameter.SIXTY.value,
+        decimal_places=NumericParameter.TWO.value,
+    )
+    monthly_payment = models.DecimalField(
+        max_digits=NumericParameter.SIXTY.value,
+        decimal_places=NumericParameter.TWO.value,
+    )
+    interest = models.DecimalField(
+        max_digits=NumericParameter.SIXTY.value,
+        decimal_places=NumericParameter.TWO.value,
+    )
+    principal_payment = models.DecimalField(
+        max_digits=NumericParameter.SIXTY.value,
+        decimal_places=NumericParameter.TWO.value,
+    )
