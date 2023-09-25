@@ -8,7 +8,11 @@ from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import MessageOnSite
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.loan.forms import LoanForm, PaymentMakeLoanForm
-from hasta_la_vista_money.loan.models import Loan, PaymentMakeLoan
+from hasta_la_vista_money.loan.models import (
+    Loan,
+    PaymentMakeLoan,
+    PaymentSchedule,
+)
 from hasta_la_vista_money.loan.tasks import async_calculate_annuity_loan
 from hasta_la_vista_money.users.models import User
 
@@ -25,18 +29,9 @@ class LoanView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             loan_form = LoanForm()
             payment_make_loan = PaymentMakeLoanForm()
             loan = Loan.objects.filter(user=request.user).all()
-            result_calculate = []
-            for item_loan in loan:
-                result_calculate.append(
-                    async_calculate_annuity_loan(
-                        item_loan.pk,
-                        item_loan.date,
-                        item_loan.loan_amount,
-                        item_loan.annual_interest_rate,
-                        item_loan.period_loan,
-                    ),
-                )
-
+            result_calculate = PaymentSchedule.objects.filter(
+                user=request.user,
+            ).all()
             return render(
                 request,
                 self.template_name,
@@ -62,7 +57,12 @@ class LoanCreateView(SuccessMessageMixin, CreateView):
         if loan_form.is_valid():
             loan = loan_form.save(commit=False)
             loan.user = request.user
+            date = loan_form.cleaned_data.get('date')
             loan_amount = loan_form.cleaned_data.get('loan_amount')
+            annual_interest_rate = loan_form.cleaned_data.get(
+                'annual_interest_rate',
+            )
+            period_loan = loan_form.cleaned_data.get('period_loan')
             loan.account = Account.objects.create(
                 user=request.user,
                 name_account=f'Кредитный счёт на {loan_amount}',
@@ -70,6 +70,14 @@ class LoanCreateView(SuccessMessageMixin, CreateView):
                 currency='RU',
             )
             loan.save()
+            async_calculate_annuity_loan(
+                request.user,
+                loan,
+                date,
+                loan_amount,
+                annual_interest_rate,
+                period_loan,
+            )
             response_data = {'success': True}
         else:
             response_data = {
