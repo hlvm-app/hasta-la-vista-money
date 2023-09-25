@@ -115,6 +115,7 @@ class ReceiptApiReceiver:
         except (
             requests.exceptions.ConnectionError,
             json.decoder.JSONDecodeError,
+            requests.exceptions.ReadTimeout,
         ):
             logger.error('Недоступен сервис авторизации. Попробуйте позже!')
 
