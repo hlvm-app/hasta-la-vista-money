@@ -4,10 +4,12 @@ import datetime
 from celery import shared_task
 from dateutil.relativedelta import relativedelta
 from hasta_la_vista_money.constants import NumberMonthOfYear
+from hasta_la_vista_money.loan.models import PaymentSchedule
 
 
 @shared_task
 def async_calculate_annuity_loan(
+    user,
     id_loan,
     start_date,
     loan_amount,
@@ -17,6 +19,7 @@ def async_calculate_annuity_loan(
     """
     Асинхронная функция по расчёту аннуитетному платежу.
 
+    :param user:
     :param id_loan:
     :param start_date:
     :param loan_amount:
@@ -42,7 +45,6 @@ def async_calculate_annuity_loan(
     )
 
     balance = loan_amount
-    payment_schedule = []
 
     start_date = start_date + relativedelta(months=1)
 
@@ -57,18 +59,14 @@ def async_calculate_annuity_loan(
         current_date = datetime.date(year, month, day)
 
         next_date = start_date + relativedelta(months=1)
-
-        payment_schedule.append(
-            {
-                'id': id_loan,
-                'month': current_date,
-                'balance': round(balance, 2),
-                'monthly_payment': round(monthly_payment, 2),
-                'interest': round(interest, 2),
-                'principal_payment': round(principal_payment, 2),
-            },
+        PaymentSchedule.objects.create(
+            user=user,
+            loan_id=id_loan.id,
+            date=current_date,
+            balance=round(balance, 2),
+            monthly_payment=round(monthly_payment, 2),
+            interest=round(interest, 2),
+            principal_payment=round(principal_payment, 2),
         )
 
         start_date = next_date
-
-    return payment_schedule

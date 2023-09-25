@@ -146,17 +146,16 @@
 												</thead>
 												<tbody>
 												{% for payment in result_calculate %}
-													{% for inner_payment in payment %}
-														{% if inner_payment.id == item_loan.pk %}
-															<tr>
-																<td>{{ inner_payment.month }}</td>
-																<td>{{ inner_payment.balance }}</td>
-																<td>{{ inner_payment.monthly_payment }}</td>
-																<td>{{ inner_payment.interest }}</td>
-																<td>{{ inner_payment.principal_payment }}</td>
-															</tr>
-														{% endif %}
-													{% endfor %}
+                                                    {% if payment.loan.id == item_loan.pk %}
+                                                        <tr>
+                                                            <td>{{ payment.date | date:"d F Y" }}</td>
+                                                            <td>{{ payment.balance }}</td>
+                                                            <td>{{ payment.monthly_payment }}</td>
+                                                            <td>{{ payment.interest }}</td>
+                                                            <td>{{ payment.principal_payment }}</td>
+                                                        </tr>
+                                                    {% endif %}
+
 												{% endfor %}
 												</tbody>
 											</table>
