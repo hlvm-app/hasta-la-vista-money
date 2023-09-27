@@ -18,9 +18,9 @@ class Loan(models.Model):
     period_loan = models.IntegerField()
 
     class Meta:
-        ordering = ['-date']
+        ordering = ['-id']
         indexes = [
-            models.Index(fields=['-date']),
+            models.Index(fields=['-id']),
             models.Index(fields=['loan_amount']),
             models.Index(fields=['annual_interest_rate']),
             models.Index(fields=['period_loan']),
