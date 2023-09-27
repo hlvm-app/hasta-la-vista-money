@@ -3,5 +3,14 @@
         "dokku": {
             "predeploy": "python manage.py migrate"
         }
+    },
+    "healthchecks": {
+        "web": [
+            {
+                "attempts": 3,
+                "timeout": 20,
+                "wait": 10
+            }
+        ]
     }
 }
