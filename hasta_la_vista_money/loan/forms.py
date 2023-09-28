@@ -1,6 +1,7 @@
 """Модуль форм по кредитам."""
 from config.django.forms import BaseForm, DateTimePickerWidgetForm
 from django.utils.translation import gettext_lazy as _
+from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.loan.models import Loan, PaymentMakeLoan
 
 
@@ -27,6 +28,25 @@ class PaymentMakeLoanForm(BaseForm):
         'loan': _('Кредит'),
         'amount': _('Сумма платежа'),
     }
+
+    def __init__(self, user, *args, **kwargs):
+        """
+        Исключаем из выборки счетов все счета кредитов.
+
+        :param user:
+        """
+        super().__init__(*args, **kwargs)
+        self.user = user
+        self.fields['account'].queryset = self.get_account_queryset()
+
+    def get_account_queryset(self):
+        accounts = Account.objects.filter(user=self.user)
+
+        loan = Loan.objects.filter(user=self.user).values_list(
+            'account',
+            flat=True,
+        )
+        return accounts.exclude(id__in=loan)
 
     class Meta:
         model = PaymentMakeLoan
