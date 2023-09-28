@@ -27,7 +27,7 @@ class Loan(models.Model):
         ]
 
     def __str__(self):
-        return f'Кредит на сумму {self.loan_amount}'
+        return f'Кредит №{self.account.id} на сумму {self.loan_amount}'
 
 
 class PaymentMakeLoan(models.Model):
