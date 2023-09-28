@@ -27,9 +27,16 @@ class LoanView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         )
         if user:
             loan_form = LoanForm()
-            payment_make_loan = PaymentMakeLoanForm()
+            payment_make_loan_form = PaymentMakeLoanForm(user=request.user)
             loan = Loan.objects.filter(user=request.user).all()
-            result_calculate = PaymentSchedule.objects.filter(
+            result_calculate = (
+                PaymentSchedule.objects.select_related('loan')
+                .filter(
+                    user=request.user,
+                )
+                .all()
+            )
+            payment_make_loan = PaymentMakeLoan.objects.filter(
                 user=request.user,
             ).all()
             return render(
@@ -37,9 +44,10 @@ class LoanView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 self.template_name,
                 {
                     'loan_form': loan_form,
-                    'payment_make_loan': payment_make_loan,
+                    'payment_make_loan_form': payment_make_loan_form,
                     'loan': loan,
                     'result_calculate': result_calculate,
+                    'payment_make_loan': payment_make_loan,
                 },
             )
 
@@ -100,10 +108,10 @@ class PaymentMakeView(CreateView):
             payment_make = payment_make_form.save(commit=False)
             amount = payment_make_form.cleaned_data.get('amount')
             account = payment_make_form.cleaned_data.get('account')
-            account_balance = get_object_or_404(Account, id=account.id)
-            if account_balance.user == request.user:
-                account_balance.balance -= amount
-                account_balance.save()
+            selected_account = get_object_or_404(Account, id=account.id)
+            if selected_account.user == request.user:
+                selected_account.balance -= amount
+                selected_account.save()
                 payment_make.user = request.user
                 payment_make.save()
                 messages.success(
