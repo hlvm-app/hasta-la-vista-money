@@ -24,16 +24,16 @@ class AddAccountForm(ModelForm):
 class TransferMoneyAccountForm(Form):
     from_account = ModelChoiceField(label='Со счёта:', queryset=None)
     to_account = ModelChoiceField(label='На счёт:', queryset=None)
+    exchange_date = DateTimeField(
+        label='Дата перевода:',
+        widget=DateTimePickerInput(),
+    )
     amount = DecimalField(
         label='Сумма перевода:',
         max_digits=NumericParameter.TWENTY.value,
         decimal_places=NumericParameter.TWO.value,
     )
-    exchange_date = DateTimeField(
-        label='Дата перевода:',
-        widget=DateTimePickerInput(),
-    )
-
+    
     def __init__(self, user, *args, **kwargs):
         """
         Конструктов класса инициализирующий две поля формы.
