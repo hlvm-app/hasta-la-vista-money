@@ -8,7 +8,7 @@ class IncomeForm(BaseForm):
 
     labels = {
         'category': _('Категория дохода'),
-        'account': _('Счёт'),
+        'account': _('Счёт начисления'),
         'date': _('Дата'),
         'amount': _('Сумма'),
     }

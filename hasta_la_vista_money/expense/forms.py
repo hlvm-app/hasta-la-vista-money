@@ -6,7 +6,7 @@ from hasta_la_vista_money.expense.models import Expense, ExpenseType
 class AddExpenseForm(BaseForm):
     labels = {
         'category': _('Категория расхода'),
-        'account': _('Счёт'),
+        'account': _('Счёт списания'),
         'date': _('Дата'),
         'amount': _('Сумма'),
     }
