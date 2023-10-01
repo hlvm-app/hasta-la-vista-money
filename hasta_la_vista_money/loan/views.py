@@ -3,7 +3,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import CreateView, DeleteView, TemplateView
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import MessageOnSite
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
@@ -52,12 +52,12 @@ class LoanView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             )
 
 
-class LoanCreateView(SuccessMessageMixin, CreateView):
+class LoanCreateView(CustomNoPermissionMixin, SuccessMessageMixin, CreateView):
     template_name = 'loan/loan.html'
     model = Loan
     form_class = LoanForm
     success_url = reverse_lazy('loan:list')
-    success_message = 'Кредит успешно добавлен'
+    success_message = MessageOnSite.SUCCESS_MESSAGE_LOAN_CREATE.value
 
     def post(self, request, *args, **kwargs):
         loan_form = LoanForm(request.POST)
@@ -93,6 +93,24 @@ class LoanCreateView(SuccessMessageMixin, CreateView):
                 'errors': loan_form.errors,
             }
         return JsonResponse(response_data)
+
+
+class LoanDeleteView(CustomNoPermissionMixin, SuccessMessageMixin, DeleteView):
+    template_name = 'loan/loan.html'
+    model = Loan
+    success_url = reverse_lazy('loan:list')
+    success_message = MessageOnSite.SUCCESS_MESSAGE_LOAN_DELETE.value
+
+    def form_valid(self, form):
+        loan = self.get_object()
+        payments = PaymentMakeLoan.objects.filter(loan_id=loan.pk).all()
+        payment_schedule = PaymentSchedule.objects.filter(loan_id=loan.pk)
+        account = Account.objects.filter(name_account=loan.account)
+        payment_schedule.delete()
+        account.delete()
+        payments.delete()
+        messages.success(self.request, self.success_message)
+        return super().form_valid(form)
 
 
 class PaymentMakeView(CreateView):
