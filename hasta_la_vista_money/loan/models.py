@@ -7,7 +7,7 @@ from hasta_la_vista_money.users.models import User
 
 class Loan(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
-    account = models.ForeignKey(Account, on_delete=models.PROTECT)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
     date = models.DateTimeField()
     loan_amount = models.FloatField(
         max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
@@ -37,8 +37,8 @@ class Loan(models.Model):
 class PaymentMakeLoan(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     date = models.DateTimeField()
-    account = models.ForeignKey(Account, on_delete=models.PROTECT)
-    loan = models.ForeignKey(Loan, on_delete=models.PROTECT)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    loan = models.ForeignKey(Loan, on_delete=models.CASCADE)
     amount = models.DecimalField(
         max_digits=NumericParameter.TWO_HUNDRED_FIFTY.value,
         decimal_places=NumericParameter.TWO.value,
@@ -46,7 +46,7 @@ class PaymentMakeLoan(models.Model):
 
 
 class PaymentSchedule(models.Model):
-    loan = models.ForeignKey(Loan, on_delete=models.PROTECT)
+    loan = models.ForeignKey(Loan, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     date = models.DateTimeField()
     balance = models.DecimalField(
