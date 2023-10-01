@@ -7,7 +7,7 @@ from hasta_la_vista_money.users.models import User
 
 class Loan(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, on_delete=models.PROTECT)
     date = models.DateTimeField()
     loan_amount = models.FloatField(
         max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
