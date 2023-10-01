@@ -109,18 +109,17 @@ class LoanDeleteView(CustomNoPermissionMixin, SuccessMessageMixin, DeleteView):
         payment_schedule.delete()
         account.delete()
         payments.delete()
-        messages.success(self.request, self.success_message)
         return super().form_valid(form)
 
 
-class PaymentMakeView(CreateView):
+class PaymentMakeCreateView(CreateView):
     template_name = 'loan/loan.html'
     model = PaymentMakeLoan
     form_class = PaymentMakeLoanForm
     success_url = reverse_lazy('loan:list')
 
     def post(self, request, *args, **kwargs):
-        payment_make_form = self.form_class(request.POST)
+        payment_make_form = self.form_class(request.user, request.POST)
         response_data = {}
         if payment_make_form.is_valid():
             payment_make = payment_make_form.save(commit=False)
