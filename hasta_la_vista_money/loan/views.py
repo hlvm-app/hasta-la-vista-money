@@ -103,12 +103,9 @@ class LoanDeleteView(CustomNoPermissionMixin, SuccessMessageMixin, DeleteView):
 
     def form_valid(self, form):
         loan = self.get_object()
-        payments = PaymentMakeLoan.objects.filter(loan_id=loan.pk).all()
-        payment_schedule = PaymentSchedule.objects.filter(loan_id=loan.pk)
-        account = Account.objects.filter(name_account=loan.account)
-        payment_schedule.delete()
+        account = loan.account
+        loan.delete()
         account.delete()
-        payments.delete()
         return super().form_valid(form)
 
 
