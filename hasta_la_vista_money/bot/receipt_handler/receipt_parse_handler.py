@@ -38,10 +38,14 @@ def check_exists_number_receipt(user, number_receipt):
     :param number_receipt:
     :return:
     """
-    return Receipt.objects.filter(
-        user=user,
-        number_receipt=number_receipt,
-    ).first()
+    return (
+        Receipt.objects.select_related('user')
+        .filter(
+            user=user,
+            number_receipt=number_receipt,
+        )
+        .first()
+    )
 
 
 def check_operation_type(operation_type, total_sum):
