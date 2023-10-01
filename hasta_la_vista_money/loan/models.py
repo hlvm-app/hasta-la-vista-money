@@ -28,7 +28,7 @@ class Loan(models.Model):
         ]
 
     def __str__(self):
-        return f'Кредит №{self.account.id} на сумму {self.loan_amount}'
+        return f'Кредит №{self.id} на сумму {self.loan_amount}'
 
     def get_absolute_url(self):
         return reverse('loan:delete', args=[self.id])
