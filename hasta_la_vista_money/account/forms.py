@@ -33,7 +33,7 @@ class TransferMoneyAccountForm(Form):
         max_digits=NumericParameter.TWENTY.value,
         decimal_places=NumericParameter.TWO.value,
     )
-    
+
     def __init__(self, user, *args, **kwargs):
         """
         Конструктов класса инициализирующий две поля формы.
