@@ -140,6 +140,8 @@
 										</div>
 										<div class="modal-body">
 											<h3>График платежей:</h3>
+                                            <strong>Общая сумма кредита:</strong> {{ item_loan.calculate_total_amount_loan_with_interest }}
+                                            <strong class="ms-2">Сумма переплаты:</strong> {{ item_loan.calculate_sum_monthly_payment }}
 											<table class="table"
 											       aria-describedby="table payment">
 												<thead>
