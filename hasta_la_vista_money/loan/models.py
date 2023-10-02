@@ -1,3 +1,5 @@
+import decimal
+
 from django.db import models
 from django.urls import reverse
 from hasta_la_vista_money.account.models import Account
@@ -32,6 +34,18 @@ class Loan(models.Model):
 
     def get_absolute_url(self):
         return reverse('loan:delete', args=[self.id])
+
+    def calculate_sum_monthly_payment(self):
+        monthly_payment = PaymentSchedule.objects.filter(
+            user=self.user,
+        ).aggregate(models.Sum('monthly_payment'))
+        return monthly_payment.get('monthly_payment__sum') - decimal.Decimal(
+            self.loan_amount,
+        )
+
+    def calculate_total_amount_loan_with_interest(self):
+        sum_monthly_payment = self.calculate_sum_monthly_payment()
+        return decimal.Decimal(self.loan_amount) + sum_monthly_payment
 
 
 class PaymentMakeLoan(models.Model):
