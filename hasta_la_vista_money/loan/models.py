@@ -35,6 +35,7 @@ class Loan(models.Model):
     def get_absolute_url(self):
         return reverse('loan:delete', args=[self.id])
 
+    @property
     def calculate_sum_monthly_payment(self):
         monthly_payment = PaymentSchedule.objects.filter(
             user=self.user,
@@ -43,8 +44,9 @@ class Loan(models.Model):
             self.loan_amount,
         )
 
+    @property
     def calculate_total_amount_loan_with_interest(self):
-        sum_monthly_payment = self.calculate_sum_monthly_payment()
+        sum_monthly_payment = self.calculate_sum_monthly_payment
         return decimal.Decimal(self.loan_amount) + sum_monthly_payment
 
 
