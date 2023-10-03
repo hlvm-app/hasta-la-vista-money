@@ -42,18 +42,14 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                 user=request.user,
             )
 
-            income_by_month = (
-                Income.objects.filter(
-                    user=request.user,
-                )
-                .values(
-                    'id',
-                    'date',
-                    'account__name_account',
-                    'category__name',
-                    'amount',
-                )
-                .order_by('-date')
+            income_by_month = Income.objects.filter(
+                user=request.user,
+            ).values(
+                'id',
+                'date',
+                'account__name_account',
+                'category__name',
+                'amount',
             )
 
             categories = IncomeType.objects.filter(user=request.user).all()
