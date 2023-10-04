@@ -42,52 +42,49 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         :param request: Запрос данных со страницы сайта.
         :return: Рендеринг данных на странице сайта.
         """
-        if request.user.is_authenticated:
-            add_expense_form = AddExpenseForm()
-            add_category_form = AddCategoryForm()
+        add_expense_form = AddExpenseForm()
+        add_category_form = AddCategoryForm()
 
-            add_expense_form.fields[
-                'account'
-            ].queryset = Account.objects.filter(
+        add_expense_form.fields['account'].queryset = Account.objects.filter(
+            user=request.user,
+        )
+        receipt_info_by_month = (
+            Receipt.objects.filter(
                 user=request.user,
             )
-            receipt_info_by_month = (
-                Receipt.objects.filter(
-                    user=request.user,
-                )
-                .values(
-                    'receipt_date',
-                    'account__name_account',
-                )
-                .annotate(
-                    count=Count('id'),
-                    total_amount=Sum('total_sum'),
-                )
-            )
-
-            expenses = Expense.objects.filter(user=request.user).values(
-                'id',
-                'date',
+            .values(
+                'receipt_date',
                 'account__name_account',
-                'category__name',
-                'amount',
             )
-
-            expense_categories = ExpenseType.objects.filter(
-                user=request.user,
-            ).all()
-
-            return render(
-                request,
-                self.template_name,
-                {
-                    'add_category_form': add_category_form,
-                    'categories': expense_categories,
-                    'receipt_info_by_month': receipt_info_by_month,
-                    'expenses': expenses,
-                    'add_expense_form': add_expense_form,
-                },
+            .annotate(
+                count=Count('id'),
+                total_amount=Sum('total_sum'),
             )
+        )
+
+        expenses = Expense.objects.filter(user=request.user).values(
+            'id',
+            'date',
+            'account__name_account',
+            'category__name',
+            'amount',
+        )
+
+        expense_categories = ExpenseType.objects.filter(
+            user=request.user,
+        ).all()
+
+        return render(
+            request,
+            self.template_name,
+            {
+                'add_category_form': add_category_form,
+                'categories': expense_categories,
+                'receipt_info_by_month': receipt_info_by_month,
+                'expenses': expenses,
+                'add_expense_form': add_expense_form,
+            },
+        )
 
     def post(self, request, *args, **kwargs):
         categories = ExpenseType.objects.filter(user=request.user).all()
