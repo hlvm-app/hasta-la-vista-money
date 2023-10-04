@@ -21,7 +21,10 @@ from hasta_la_vista_money.bot.send_message.send_message_tg_user import (
     SendMessageToTelegramUser,
 )
 from hasta_la_vista_money.constants import MessageOnSite, TemplateHTMLView
-from hasta_la_vista_money.custom_mixin import CustomSuccessURLUserMixin
+from hasta_la_vista_money.custom_mixin import (
+    CustomNoPermissionMixin,
+    CustomSuccessURLUserMixin,
+)
 from hasta_la_vista_money.users.forms import (
     ForgotPasswordForm,
     RegisterUserForm,
@@ -38,7 +41,7 @@ class IndexView(TemplateView):
         return redirect('login')
 
 
-class ListUsers(TemplateView):
+class ListUsers(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
     model = User
     template_name = TemplateHTMLView.USERS_TEMPLATE_PROFILE.value
     context_object_name = 'users'
@@ -55,7 +58,7 @@ class ListUsers(TemplateView):
         return context
 
 
-class LoginUser(SuccessMessageMixin, LoginView):
+class LoginUser(CustomNoPermissionMixin, SuccessMessageMixin, LoginView):
     model = User
     template_name = 'users/login.html'
     form_class = UserLoginForm
@@ -70,7 +73,7 @@ class LoginUser(SuccessMessageMixin, LoginView):
         return context
 
 
-class LogoutUser(LogoutView, SuccessMessageMixin):
+class LogoutUser(LogoutView, CustomNoPermissionMixin, SuccessMessageMixin):
     def dispatch(self, request, *args, **kwargs):
         messages.add_message(
             request,
@@ -80,7 +83,7 @@ class LogoutUser(LogoutView, SuccessMessageMixin):
         return super().dispatch(request, *args, **kwargs)
 
 
-class CreateUser(SuccessMessageMixin, CreateView):
+class CreateUser(CustomNoPermissionMixin, SuccessMessageMixin, CreateView):
     model = User
     template_name = 'users/registration.html'
     form_class = RegisterUserForm
@@ -156,7 +159,11 @@ class UpdateUserPasswordView(
         return JsonResponse(response_data)
 
 
-class ForgotPasswordView(TemplateView):
+class ForgotPasswordView(
+    CustomNoPermissionMixin,
+    SuccessMessageMixin,
+    TemplateView,
+):
     form_class = ForgotPasswordForm
     template_name = 'users/login.html'
     success_url = 'https://t.me/GetReceiptBot'
@@ -207,7 +214,11 @@ class ForgotPasswordView(TemplateView):
         )
 
 
-class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+class CustomPasswordResetConfirmView(
+    CustomNoPermissionMixin,
+    SuccessMessageMixin,
+    PasswordResetConfirmView,
+):
     template_name = 'users/password_reset_confirm.html'
     success_url = reverse_lazy('login')
 
