@@ -17,6 +17,8 @@ class TestUser(TestCase):
         self.faker = Faker()
 
     def test_create_user(self):
+        self.client.force_login(self.user1)
+        self.client.force_login(self.user2)
         url = reverse_lazy('users:registration')
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
@@ -38,4 +40,4 @@ class TestUser(TestCase):
         }
 
         response = self.client.post(url, new_user, follow=True)
-        self.assertRedirects(response, '/login/')
+        self.assertRedirects(response, '/applications/')
