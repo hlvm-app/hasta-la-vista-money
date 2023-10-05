@@ -1,97 +1,97 @@
 html, body {
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
+    width: 100% !important;
+    height: 100% !important;
+    overflow-x: hidden !important;
 }
 
 .table-buttons form {
-    margin: 0;
+    margin: 0 !important;
 }
 
 .logo {
-    padding-top: 0;
-    color: #ffffff;
-    text-shadow: rgb(0, 0, 0) 2px 2px 3px;
-    font-family: 'Gloria Hallelujah', sans-serif;
-    font-size: 3rem;
+    padding-top: 0 !important;
+    color: #ffffff !important;
+    text-shadow: rgb(0, 0, 0) 2px 2px 3px !important;
+    font-family: 'Gloria Hallelujah', sans-serif !important;
+    font-size: 3rem !important;
 }
 
 .button-exit {
-    margin: 0;
+    margin: 0 !important;
 }
 
 .who-login {
-    margin-left: 3rem;
-    color: #92dc7e;
-    height: .2rem;
+    margin-left: 3rem !important;
+    color: #92dc7e !important;
+    height: .2rem !important;
 }
 
 .receipt {
-    position: relative;
-    overflow: scroll;
-    border: 1px solid black;
-    padding: 10px;
-    border-radius: 50%;
+    position: relative !important;
+    overflow: scroll !important;
+    border: 1px solid black !important;
+    padding: 10px !important;
+    border-radius: 50% !important;
     height: 16rem
 }
 
 .button-receipt {
-    height: 6rem;
+    height: 6rem !important;
 }
 
 .add-receipt-form {
-    margin-bottom: 10%;
+    margin-bottom: 10% !important;
 }
 
 .add-receipt-btn {
-    float: right;
+    float: right !important;
 }
 
 #add-new-seller-btn {
-    position: absolute;
-    top: 2rem;
-    right: -14.5rem;
-    padding: .3rem .6rem;
+    position: absolute !important;
+    top: 2rem !important;
+    right: -14.5rem !important;
+    padding: .3rem .6rem !important;
 }
 
 .wrapper-table-income {
-    position: relative;
+    position: relative !important;
 }
 
 .link-application {
-    position: absolute;
+    position: absolute !important;
 }
 
 .return-receipts-list {
-    position: absolute;
-    top: 5.7rem;
+    position: absolute !important;
+    top: 5.7rem !important;
 }
 
 .return-incomes-list {
-    position: absolute;
-    top: 3rem;
+    position: absolute !important;
+    top: 3rem !important;
 }
 
 .button-add-form-income {
-    font-size: 12px;
+    font-size: 12px !important;
 }
 
 .form-remove-receipt-button {
-    position: relative;
+    position: relative !important;
 }
 
 .wrapper-table-expense {
-    position: relative;
+    position: relative !important;
 }
 
 .open-modal-expense-button {
-    font-size: 13px;
+    font-size: 13px !important;
 }
 
 .open-modal-categories-income-button {
-    position: absolute;
-    top: .9rem;
-    right: -15rem;
+    position: absolute !important;
+    top: .9rem !important;
+    right: -15rem !important;
 }
 
 .help-text-form {
@@ -101,18 +101,16 @@ html, body {
 }
 
 .navbar-nav {
-    margin: 0 auto;
+    margin: 0 auto !important;
 }
 
 .btn-border-white {
-    border-color: #ffffff;
+    border-color: #ffffff !important;
 }
 
-caption {
-    text-shadow:#000000 0px -3px 13px;
-}
+
 
 @import "mobile";
-@import "fonts";
-@import "buttons";
+@import "fonts" ;
 @import "account";
+@import "bootstrap/bootstrap";
