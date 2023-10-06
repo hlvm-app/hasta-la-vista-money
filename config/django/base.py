@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'hasta_la_vista_money.account',
     'hasta_la_vista_money.applications',
     'hasta_la_vista_money.bot',
+    'hasta_la_vista_money.commonlogic',
     'hasta_la_vista_money.expense',
     'hasta_la_vista_money.income',
     'hasta_la_vista_money.loan',
