@@ -3,20 +3,29 @@
 {% load static %}
 
     {% block content %}
-    <div class="row who-login d-flex d-sm-flex justify-content-start">
-        <div class="col-xl-3 col-12 text-xl-start">
-            <p>Ваш логин: {{ user.username }}</p>
+    <div class="row">
+        <div class="col-xl-3 col-12 text-xl-start text-light text-center who-login">
+            Вы вошли как: {{ user.username }}
         </div>
     </div>
-	<nav class="navbar navbar-expand-lg navbar-light">
+	<nav class="navbar navbar-expand-lg navbar-light  mt-3">
 	    <div class="container-fluid">
-	        <a class="navbar-brand ms-xl-4 p-0 mb-1 mx-auto" href="{% url 'applications:list' %}">
-		        <span class="logo">Hasta La Vista, Money!</span>
-	        </a>
-	        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-	            <span class="navbar-toggler-icon"></span>
-	        </button>
-	        <div class="collapse navbar-collapse pt-3" id="navbarNav">
+            <div class="row">
+                <div class="col-9">
+                    <a class="navbar-brand ms-xl-4 p-0" href="{% url 'applications:list' %}">
+                        <span class="logo">Hasta La Vista, Money!</span>
+                    </a>
+                </div>
+                <!-- /.col-10 -->
+                <div class="col-2">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+                <!-- /.col-2 -->
+            </div>
+            <!-- /.row -->
+	        <div class="collapse navbar-collapse pt-2" id="navbarNav">
 	            <ul class="navbar-nav justify-content-between flex-row">
 	                <li class="nav-item me-2 my-xl-2 my-2 text-center text-md-end">
 	                    <a class="nav-link btn btn-outline-primary btn-border-white text-light d-flex align-items-center shadow p-2" href="{% url 'receipts:list' %}">
