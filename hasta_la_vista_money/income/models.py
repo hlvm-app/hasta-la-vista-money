@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from hasta_la_vista_money.account.models import Account
+from hasta_la_vista_money.commonlogic.models import CommonIncomeExpense
 from hasta_la_vista_money.constants import NumericParameter
 from hasta_la_vista_money.users.models import User
 
@@ -17,27 +18,12 @@ class IncomeType(models.Model):
         return self.name
 
 
-class Income(models.Model):
+class Income(CommonIncomeExpense):
     """Модель доходов."""
 
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     account = models.ForeignKey(Account, on_delete=models.PROTECT)
     category = models.ForeignKey(IncomeType, on_delete=models.PROTECT)
-    date = models.DateTimeField()
-    amount = models.DecimalField(
-        max_digits=NumericParameter.TWENTY.value,
-        decimal_places=2,
-    )
-
-    class Meta:
-        ordering = ['-date']
-        indexes = [
-            models.Index(fields=['-date']),
-            models.Index(fields=['amount']),
-        ]
-
-    def __str__(self):
-        return str(self.category)
 
     def get_absolute_url(self):
         return reverse('income:change', args=[self.id])

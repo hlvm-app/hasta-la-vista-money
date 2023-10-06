@@ -198,7 +198,7 @@ class NumericParameter(Enum):
     ONE = 1
     TWO = 2
     TEN = 10
-    TWENTY = 10
+    TWENTY = 20
     THIRTY = 30
     FORTY = 40
     FIFTY = 50
