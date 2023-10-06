@@ -83,7 +83,7 @@ class IncomeCreateView(
         return form
 
     def post(self, request, *args, **kwargs):
-        income_form = IncomeForm(request.POST)
+        income_form = IncomeForm(request.user, request.POST)
         response_data = {}
 
         if income_form.is_valid():

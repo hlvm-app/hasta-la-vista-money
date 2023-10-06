@@ -120,7 +120,7 @@ class ExpenseCreateView(
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
 
     def post(self, request, *args, **kwargs):
-        add_expense_form = AddExpenseForm(request.POST)
+        add_expense_form = AddExpenseForm(request.user, request.POST)
         response_data = {}
         if add_expense_form.is_valid():
             expense = add_expense_form.save(commit=False)
