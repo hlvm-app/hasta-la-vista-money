@@ -9,8 +9,12 @@ html, body {
     overflow-x: hidden !important;
 }
 
-.table-buttons form {
-    margin: 0 !important;
+.table-buttons {
+    display: flex;
+    justify-content: center;
+    form {
+        margin-bottom: 0;
+    }
 }
 
 .logo {
