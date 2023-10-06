@@ -13,6 +13,12 @@ class IncomeForm(BaseForm):
         'amount': _('Сумма'),
     }
 
+    def __init__(self, user, *args, **kwargs):
+        """Фильтруем категории по пользователям."""
+        super().__init__(*args, **kwargs)
+        self.user = user
+        self.fields['category'].queryset = IncomeType.objects.filter(user=user)
+
     class Meta:
         model = Income
         fields = ['category', 'account', 'date', 'amount']

@@ -11,6 +11,12 @@ class AddExpenseForm(BaseForm):
         'amount': _('Сумма'),
     }
 
+    def __init__(self, user, *args, **kwargs):
+        """Фильтруем категории по пользователям."""
+        super().__init__(*args, **kwargs)
+        self.user = user
+        self.fields['category'].queryset = ExpenseType.objects.filter(user=user)
+
     class Meta:
         model = Expense
         fields = ['category', 'account', 'date', 'amount']

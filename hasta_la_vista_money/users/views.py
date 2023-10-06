@@ -45,6 +45,7 @@ class ListUsers(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
     model = User
     template_name = TemplateHTMLView.USERS_TEMPLATE_PROFILE.value
     context_object_name = 'users'
+    no_permission_url = reverse_lazy('login')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -58,7 +59,7 @@ class ListUsers(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         return context
 
 
-class LoginUser(CustomNoPermissionMixin, SuccessMessageMixin, LoginView):
+class LoginUser(SuccessMessageMixin, LoginView):
     model = User
     template_name = 'users/login.html'
     form_class = UserLoginForm
@@ -73,7 +74,7 @@ class LoginUser(CustomNoPermissionMixin, SuccessMessageMixin, LoginView):
         return context
 
 
-class LogoutUser(LogoutView, CustomNoPermissionMixin, SuccessMessageMixin):
+class LogoutUser(LogoutView, SuccessMessageMixin):
     def dispatch(self, request, *args, **kwargs):
         messages.add_message(
             request,
@@ -83,7 +84,7 @@ class LogoutUser(LogoutView, CustomNoPermissionMixin, SuccessMessageMixin):
         return super().dispatch(request, *args, **kwargs)
 
 
-class CreateUser(CustomNoPermissionMixin, SuccessMessageMixin, CreateView):
+class CreateUser(SuccessMessageMixin, CreateView):
     model = User
     template_name = 'users/registration.html'
     form_class = RegisterUserForm
@@ -160,7 +161,6 @@ class UpdateUserPasswordView(
 
 
 class ForgotPasswordView(
-    CustomNoPermissionMixin,
     SuccessMessageMixin,
     TemplateView,
 ):
@@ -215,7 +215,6 @@ class ForgotPasswordView(
 
 
 class CustomPasswordResetConfirmView(
-    CustomNoPermissionMixin,
     SuccessMessageMixin,
     PasswordResetConfirmView,
 ):

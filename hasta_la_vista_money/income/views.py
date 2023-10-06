@@ -35,7 +35,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
     def get(self, request, *args, **kwargs):
         user = User.objects.filter(username=request.user)
         if user:
-            income_form = IncomeForm()
+            income_form = IncomeForm(user=request.user)
             add_category_income_form = AddCategoryIncomeForm()
 
             income_form.fields['account'].queryset = Account.objects.filter(

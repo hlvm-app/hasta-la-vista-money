@@ -42,7 +42,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         :param request: Запрос данных со страницы сайта.
         :return: Рендеринг данных на странице сайта.
         """
-        add_expense_form = AddExpenseForm()
+        add_expense_form = AddExpenseForm(user=request.user)
         add_category_form = AddCategoryForm()
 
         add_expense_form.fields['account'].queryset = Account.objects.filter(
@@ -70,9 +70,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             'amount',
         )
 
-        expense_categories = ExpenseType.objects.filter(
-            user=request.user,
-        ).all()
+        expense_categories = ExpenseType.objects.filter(user=request.user)
 
         return render(
             request,
