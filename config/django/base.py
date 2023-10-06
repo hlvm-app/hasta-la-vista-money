@@ -78,6 +78,7 @@ INSTALLED_APPS = [
     'hasta_la_vista_money.reports',
     'hasta_la_vista_money.users',
     'hasta_la_vista_money.templatags.thousand_comma',
+    'hasta_la_vista_money.templatags.generate_hash',
     'locale',
 ]
 
@@ -165,6 +166,7 @@ TEMPLATES = [
             ],
             'libraries': {
                 'comma': 'hasta_la_vista_money.templatags.thousand_comma',
+                'word_hash': 'hasta_la_vista_money.templatags.generate_hash',
             },
         },
     },
