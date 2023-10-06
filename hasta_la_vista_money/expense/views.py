@@ -42,12 +42,17 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         :param request: Запрос данных со страницы сайта.
         :return: Рендеринг данных на странице сайта.
         """
-        add_expense_form = AddExpenseForm(user=request.user)
-        add_category_form = AddCategoryForm()
-
+        add_expense_form = AddExpenseForm()
         add_expense_form.fields['account'].queryset = Account.objects.filter(
             user=request.user,
         )
+        add_expense_form.fields[
+            'category'
+        ].queryset = ExpenseType.objects.filter(
+            user=request.user,
+        )
+        add_category_form = AddCategoryForm()
+
         receipt_info_by_month = (
             Receipt.objects.filter(
                 user=request.user,
@@ -120,7 +125,7 @@ class ExpenseCreateView(
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
 
     def post(self, request, *args, **kwargs):
-        add_expense_form = AddExpenseForm(request.user, request.POST)
+        add_expense_form = AddExpenseForm(request.POST)
         response_data = {}
         if add_expense_form.is_valid():
             expense = add_expense_form.save(commit=False)
