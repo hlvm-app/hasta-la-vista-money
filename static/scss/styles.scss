@@ -1,14 +1,7 @@
 @import "mobile";
 @import "fonts" ;
+@import "buttons";
 @import "account";
-@import "bootstrap/bootstrap";
-@import "bootstrap/bootstrap-grid";
-@import "bootstrap/bootstrap-reboot";
-@import "bootstrap/bootstrap-utilities";
-@import "bootstrap/functions";
-
-
-
 
 html, body {
     width: 100% !important;
@@ -70,6 +63,10 @@ html, body {
     position: relative !important;
 }
 
+.wrapper-table-expense {
+    position: relative !important;
+}
+
 .link-application {
     position: absolute !important;
 }
@@ -89,10 +86,6 @@ html, body {
 }
 
 .form-remove-receipt-button {
-    position: relative !important;
-}
-
-.wrapper-table-expense {
     position: relative !important;
 }
 
@@ -118,8 +111,4 @@ html, body {
 
 .btn-border-white {
     border: 1px solid #ffffff;
-}
-
-.btn-teal {
-    background-color: $teal-300;
 }
