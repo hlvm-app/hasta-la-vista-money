@@ -25,5 +25,8 @@ class Income(CommonIncomeExpense):
     account = models.ForeignKey(Account, on_delete=models.PROTECT)
     category = models.ForeignKey(IncomeType, on_delete=models.PROTECT)
 
+    def __str__(self):
+        return str(self.category)
+
     def get_absolute_url(self):
         return reverse('income:change', args=[self.id])

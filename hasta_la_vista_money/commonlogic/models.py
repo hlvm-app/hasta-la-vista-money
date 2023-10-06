@@ -16,6 +16,3 @@ class CommonIncomeExpense(models.Model):
             models.Index(fields=['-date']),
             models.Index(fields=['amount']),
         ]
-
-    def __str__(self):
-        return str(self.category)
