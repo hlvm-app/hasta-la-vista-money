@@ -1,4 +1,14 @@
+@import "mobile";
+@import "fonts" ;
+@import "account";
 @import "bootstrap/bootstrap";
+@import "bootstrap/bootstrap-grid";
+@import "bootstrap/bootstrap-reboot";
+@import "bootstrap/bootstrap-utilities";
+@import "bootstrap/functions";
+
+
+
 
 html, body {
     width: 100% !important;
@@ -107,14 +117,9 @@ html, body {
 }
 
 .btn-border-white {
-    border-color: #ffffff !important;
+    border: 1px solid #ffffff;
 }
 
 .btn-teal {
     background-color: $teal-300;
 }
-
-
-@import "mobile";
-@import "fonts" ;
-@import "account";
