@@ -1,3 +1,5 @@
+@import "bootstrap/bootstrap";
+
 html, body {
     width: 100% !important;
     height: 100% !important;
@@ -108,9 +110,11 @@ html, body {
     border-color: #ffffff !important;
 }
 
+.btn-teal {
+    background-color: $teal-300;
+}
 
 
 @import "mobile";
 @import "fonts" ;
 @import "account";
-@import "bootstrap/bootstrap";
