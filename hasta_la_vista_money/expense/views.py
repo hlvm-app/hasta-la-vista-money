@@ -234,5 +234,5 @@ class ExpenseCategoryCreateView(ExpenseIncomeFormValidCreateMixin):
 
 
 class ExpenseCategoryDeleteView(DeleteCategoryMixin):
-    model = ExpenseType
+    model: type[ExpenseType] = ExpenseType
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)

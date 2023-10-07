@@ -1,3 +1,5 @@
+from typing import Optional
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import ProtectedError
@@ -19,7 +21,7 @@ class CustomNoPermissionMixin(LoginRequiredMixin):
 
 
 class DeleteCategoryMixin(DeleteView):
-    model = None
+    model = Optional[None]
     success_url = None
 
     def form_valid(self, form):

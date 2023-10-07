@@ -8,7 +8,6 @@ from django.db.models.functions import TruncMonth
 from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.utils.functional import SimpleLazyObject
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -28,6 +27,7 @@ from hasta_la_vista_money.custom_mixin import (
 from hasta_la_vista_money.expense.models import Expense
 from hasta_la_vista_money.income.models import Income
 from hasta_la_vista_money.receipts.models import Receipt
+from hasta_la_vista_money.users.models import User
 
 
 class PageApplication(
@@ -43,7 +43,7 @@ class PageApplication(
     no_permission_url = reverse_lazy('login')
 
     @classmethod
-    def collect_info_receipt(cls, user: SimpleLazyObject) -> QuerySet:
+    def collect_info_receipt(cls, user: User) -> QuerySet:
         return (
             Receipt.objects.filter(
                 user=user,
@@ -63,7 +63,7 @@ class PageApplication(
         )
 
     @classmethod
-    def collect_info_income_expense(cls, user: SimpleLazyObject) -> list:
+    def collect_info_income_expense(cls, user: User) -> list:
         expenses = Expense.objects.filter(user=user).values(
             'id',
             'date',
@@ -90,21 +90,25 @@ class PageApplication(
 
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
+
+        self.request: WSGIRequest = self.request
+        user: User = self.request.user
+
         if self.request.user.is_authenticated:
             accounts = Account.objects.filter(
-                user=self.request.user,
+                user=user,
             )
 
             receipt_info_by_month = self.collect_info_receipt(
-                user=self.request.user,
+                user=user,
             )
 
             income_expense = self.collect_info_income_expense(
-                user=self.request.user,
+                user=user,
             )
 
             account_transfer_money = Account.objects.filter(
-                user=self.request.user,
+                user=user,
             )
             initial_form_data = {
                 'from_account': account_transfer_money.first(),
