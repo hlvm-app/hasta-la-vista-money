@@ -34,6 +34,7 @@ celery = "^5.3.1"
 django-debug-toolbar = "^4.2.0"
 wemake-python-styleguide = "^0.18.0"
 daphne = "^4.0.0"
+mypy = "^1.5.1"
 
 [tool.poetry.dev-dependencies]
 Faker = "^13.7.0"
@@ -52,6 +53,10 @@ yesqa = "^1.5.0"
 [build-system]
 requires = ["poetry-core>=1.4.0"]
 build-backend = "poetry.core.masonry.api"
+
+[mypy]
+module = 'django.*'
+ignore_missing_imports = true
 
 [tool.black]
 line-length = 80
