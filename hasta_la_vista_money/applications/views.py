@@ -7,7 +7,12 @@ from django.db.models.functions import TruncMonth
 from django.http import Http404, JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, TemplateView, UpdateView
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    TemplateView,
+    UpdateView,
+)
 from hasta_la_vista_money.account.forms import (
     AddAccountForm,
     TransferMoneyAccountForm,
@@ -34,7 +39,6 @@ class PageApplication(
     template_name = 'applications/page_application.html'
     context_object_name = 'applications'
     no_permission_url = reverse_lazy('login')
-    success_url = 'applications:list'
 
     @classmethod
     def collect_info_receipt(cls, user):
@@ -114,6 +118,14 @@ class PageApplication(
             context['receipt_info_by_month'] = receipt_info_by_month
             context['income_expense'] = income_expense
         return context
+
+
+class AccountCreateView(SuccessMessageMixin, CreateView):
+    model = Account
+    template_name = 'applications/page_application.html'
+    form_class = AddAccountForm
+    no_permission_url = reverse_lazy('login')
+    success_url = reverse_lazy('applications:list')
 
     def post(self, request, *args, **kwargs):
         account_form = AddAccountForm(request.POST)
