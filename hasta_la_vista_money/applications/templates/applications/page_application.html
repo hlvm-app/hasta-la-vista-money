@@ -18,10 +18,27 @@
                                 aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="form" method="post">
+                        <form id="add-account-form" class="ajax-form form"
+                              method="post">
                             {% csrf_token %}
-                            {% bootstrap_form add_account_form layout='horizontal' %}
-                            {% bootstrap_button 'Добавить счёт' %}
+                            {% if add_account_form %}
+                                {% for field in add_account_form %}
+                                    {{ field.errors }}
+                                    <div class="form-group{% if field.errors %} has-error{% endif %}">
+                                        {% if field == 'balance' %}
+                                            {{ field | comma }}
+                                        {% else %}
+                                            {% bootstrap_field field %}
+                                        {% endif %}
+                                        {% if field.errors %}
+                                            {% for error in field.errors %}
+                                                <p class="help-block">{{ error }}</p>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            {% bootstrap_button 'Перевести' %}
                         </form>
                     </div>
                 </div>
