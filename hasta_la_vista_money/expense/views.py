@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count, Sum
+from django.db.models.functions import TruncMonth
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -57,14 +58,16 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             Receipt.objects.filter(
                 user=request.user,
             )
+            .annotate(month=TruncMonth('receipt_date'))
             .values(
-                'receipt_date',
+                'month',
                 'account__name_account',
             )
             .annotate(
                 count=Count('id'),
                 total_amount=Sum('total_sum'),
             )
+            .order_by('-month')
         )
 
         expenses = Expense.objects.filter(user=request.user).values(

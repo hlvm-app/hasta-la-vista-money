@@ -115,7 +115,7 @@
                         </tr>
                         {% for receipt in receipt_info_by_month %}
                             <tr>
-                                <td class="col-3">{{ receipt.receipt_date | date:"F Y" }}</td>
+                                <td class="col-3">{{ receipt.month | date:"F Y" }}</td>
                                 <td class="col-2">{{ receipt.count }}</td>
                                 <td class="col-2 text-nowrap">{{ receipt.total_amount | comma }}</td>
                                 <td class="col-3 text-nowrap">{{ receipt.account__name_account }}</td>
