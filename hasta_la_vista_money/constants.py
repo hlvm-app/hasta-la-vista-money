@@ -54,6 +54,7 @@ class MessageOnSite(Enum):
     ANOTHER_ACCRUAL_ACCOUNT = ' '.join(
         'Нельзя выбирать одинаковые счета для перевода.',
     )
+    SUCCESS_MESSAGE_ADDED_ACCOUNT = 'Счёт успешно создан!'
     SUCCESS_MESSAGE_CHANGED_ACCOUNT = 'Счёт успешно изменён!'
     SUCCESS_MESSAGE_CHANGED_PROFILE = 'Профиль успешно обновлён!'
     SUCCESS_MESSAGE_CHANGED_PASSWORD = (
