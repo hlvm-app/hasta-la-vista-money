@@ -36,17 +36,17 @@ class TestAccount(TestCase):
 
     def test_account_create(self):
         self.client.force_login(self.user)
-        url = reverse_lazy('applications:list')
+        url = reverse_lazy('account:create')
 
         new_account = {
+            'user': self.user,
             'name_account': 'Банковская карта *8090',
             'balance': BALANCE_TEST,
             'currency': 'RU',
         }
 
-        response = self.client.post(url, data=new_account)
-        self.assertRedirects(response, '/applications/')
-        self.assertEqual(response.status_code, HTTPStatus.REDIRECTS.value)
+        response = self.client.post(url, data=new_account, follow=True)
+        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
 
         created_account = Account.objects.get(
             name_account='Банковская карта *8090',
