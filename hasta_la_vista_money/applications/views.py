@@ -5,7 +5,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count, ProtectedError, Sum
 from django.db.models.functions import TruncMonth
 from django.http import Http404, JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, TemplateView, UpdateView
 from hasta_la_vista_money.account.forms import (
@@ -116,34 +116,22 @@ class PageApplication(
         return context
 
     def post(self, request, *args, **kwargs):
-        accounts = Account.objects.filter(user=self.request.user).all()
         account_form = AddAccountForm(request.POST)
-
-        receipt_info_by_month = self.collect_info_receipt(
-            user=self.request.user,
-        )
-
-        income_expense = self.collect_info_income_expense(
-            user=self.request.user,
-        )
-
         if account_form.is_valid():
             add_account = account_form.save(commit=False)
-            if request.user.is_authenticated:
-                add_account.user = request.user
-                add_account.save()
-                return redirect(reverse_lazy(self.success_url))
-
-        return render(
-            request,
-            self.template_name,
-            {
-                'accounts': accounts,
-                'income_expense': income_expense,
-                'add_account_form': account_form,
-                'receipt_info_by_month': receipt_info_by_month,
-            },
-        )
+            add_account.user = request.user
+            add_account.save()
+            messages.success(
+                request,
+                MessageOnSite.SUCCESS_MESSAGE_ADDED_ACCOUNT.value,
+            )
+            response_data = {'success': True}
+        else:
+            response_data = {
+                'success': False,
+                'errors': account_form.errors,
+            }
+        return JsonResponse(response_data)
 
 
 class ChangeAccountView(
