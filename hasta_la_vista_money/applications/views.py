@@ -2,11 +2,13 @@ from operator import itemgetter
 
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import Count, ProtectedError, Sum
+from django.core.handlers.wsgi import WSGIRequest
+from django.db.models import Count, ProtectedError, QuerySet, Sum
 from django.db.models.functions import TruncMonth
-from django.http import Http404, JsonResponse
+from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils.functional import SimpleLazyObject
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -41,7 +43,7 @@ class PageApplication(
     no_permission_url = reverse_lazy('login')
 
     @classmethod
-    def collect_info_receipt(cls, user):
+    def collect_info_receipt(cls, user: SimpleLazyObject) -> QuerySet:
         return (
             Receipt.objects.filter(
                 user=user,
@@ -61,7 +63,7 @@ class PageApplication(
         )
 
     @classmethod
-    def collect_info_income_expense(cls, user):
+    def collect_info_income_expense(cls, user: SimpleLazyObject) -> list:
         expenses = Expense.objects.filter(user=user).values(
             'id',
             'date',
@@ -86,7 +88,7 @@ class PageApplication(
             reverse=True,
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             accounts = Account.objects.filter(
@@ -127,7 +129,7 @@ class AccountCreateView(SuccessMessageMixin, CreateView):
     no_permission_url = reverse_lazy('login')
     success_url = reverse_lazy('applications:list')
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: WSGIRequest, *args, **kwargs) -> JsonResponse:
         account_form = AddAccountForm(request.POST)
         if account_form.is_valid():
             add_account = account_form.save(commit=False)
@@ -158,7 +160,7 @@ class ChangeAccountView(
     success_url = reverse_lazy('applications:list')
     success_message = MessageOnSite.SUCCESS_MESSAGE_CHANGED_ACCOUNT.value
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: WSGIRequest, *args, **kwargs) -> HttpResponse:
         user = Income.objects.filter(user=request.user).first()
         if user:
             return self.get_update_form(
@@ -178,7 +180,7 @@ class TransferMoneyAccountView(
     form_class = TransferMoneyAccountForm
     success_message = MessageOnSite.SUCCESS_MESSAGE_TRANSFER_MONEY.value
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: WSGIRequest, *args, **kwargs) -> JsonResponse:
         transfer_money_form = TransferMoneyAccountForm(
             user=request.user,
             data=request.POST,
