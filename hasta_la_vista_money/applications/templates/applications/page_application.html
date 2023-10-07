@@ -19,7 +19,7 @@
                     </div>
                     <div class="modal-body">
                         <form id="add-account-form" class="ajax-form form"
-                              method="post">
+                              method="post" action="{% url 'account:create' %}">
                             {% csrf_token %}
                             {% if add_account_form %}
                                 {% for field in add_account_form %}
