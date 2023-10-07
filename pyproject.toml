@@ -22,7 +22,7 @@ Django = "^4.1.7"
 urllib3 = "^2.0.2"
 django-csp = "^3.7"
 channels = "^4.0.0"
-Pillow = "^10.0.1"
+Pillow = "^9.5.0"
 opencv-python = "^4.7.0"
 numpy = "^1.24.3"
 pyzbar = "^0.1.9"
@@ -34,7 +34,6 @@ celery = "^5.3.1"
 django-debug-toolbar = "^4.2.0"
 wemake-python-styleguide = "^0.18.0"
 daphne = "^4.0.0"
-mypy = "^1.5.1"
 
 [tool.poetry.dev-dependencies]
 Faker = "^13.7.0"
@@ -49,6 +48,7 @@ flower = "^2.0.1"
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.4.0"
 yesqa = "^1.5.0"
+mypy = "^1.5.1"
 
 [build-system]
 requires = ["poetry-core>=1.4.0"]
