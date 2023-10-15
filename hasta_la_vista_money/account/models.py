@@ -69,6 +69,6 @@ class TransferMoneyLog(models.Model):
         return ''.join(
             (
                 f'Перевод суммы {self.amount} ',
-                f'со счёта {self.from_account} на счёт {self.to_account}',
+                f'со счёта "{self.from_account}" на счёт "{self.to_account}"',
             ),
         )
