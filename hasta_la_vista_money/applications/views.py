@@ -6,7 +6,7 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import Count, ProtectedError, QuerySet, Sum
 from django.db.models.functions import TruncMonth
 from django.http import Http404, HttpResponse, JsonResponse
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -95,9 +95,12 @@ class PageApplication(
         user: User = self.request.user
 
         if self.request.user.is_authenticated:
-            accounts = Account.objects.filter(
-                user=user,
+            user = get_object_or_404(
+                User,
+                username=self.request.user,
             )
+
+            accounts = user.account_users.all()
 
             receipt_info_by_month = self.collect_info_receipt(
                 user=user,
@@ -107,9 +110,7 @@ class PageApplication(
                 user=user,
             )
 
-            account_transfer_money = Account.objects.filter(
-                user=user,
-            )
+            account_transfer_money = user.account_users.all()
             initial_form_data = {
                 'from_account': account_transfer_money.first(),
                 'to_account': account_transfer_money.first(),

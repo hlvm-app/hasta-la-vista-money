@@ -7,7 +7,11 @@ CURRENCY = (('RU', 'Российский рубль'),)
 
 
 class Account(models.Model):
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        related_name='account_users',
+    )
     name_account = models.CharField(
         max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
         default='Основной счёт',
@@ -40,7 +44,11 @@ class Account(models.Model):
 
 
 class TransferMoneyLog(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='transfer_money',
+    )
     from_account = models.ForeignKey(
         Account,
         related_name='from_account',
