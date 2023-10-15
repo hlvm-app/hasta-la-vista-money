@@ -1,3 +1,4 @@
+import decimal
 from typing import Union
 
 from django import template
@@ -18,7 +19,7 @@ def comma(number: float) -> Union[float, str]:
     :return: Union[float, str]
     """
     if number > MILLION_MINUS_ONE:
-        return f'{number:,.0f}'.replace(',', ' ')
+        return f'{decimal.Decimal(number):,.2f}'.replace(',', ' ')
     elif number > THOUSAND_MINUS_ONE:
-        return f'{number:,.0f}'.replace(',', ' ')
+        return f'{decimal.Decimal(number):,.2f}'.replace(',', ' ')
     return number
