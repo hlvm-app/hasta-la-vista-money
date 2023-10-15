@@ -24,7 +24,6 @@ from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
     UpdateViewMixin,
 )
-from hasta_la_vista_money.expense.models import Expense
 from hasta_la_vista_money.income.models import Income
 from hasta_la_vista_money.receipts.models import Receipt
 from hasta_la_vista_money.users.models import User
@@ -64,7 +63,7 @@ class PageApplication(
 
     @classmethod
     def collect_info_income_expense(cls, user: User) -> list:
-        expenses = Expense.objects.filter(user=user).values(
+        expenses = user.expense_users.values(
             'id',
             'date',
             'account__name_account',
@@ -72,9 +71,7 @@ class PageApplication(
             'amount',
         )
 
-        income = Income.objects.filter(
-            user=user,
-        ).values(
+        income = user.income_users.values(
             'id',
             'date',
             'account__name_account',
@@ -92,7 +89,6 @@ class PageApplication(
         context = super().get_context_data(**kwargs)
 
         self.request: WSGIRequest = self.request
-        user: User = self.request.user
 
         if self.request.user.is_authenticated:
             user = get_object_or_404(

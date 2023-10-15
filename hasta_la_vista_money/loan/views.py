@@ -8,11 +8,7 @@ from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import MessageOnSite
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.loan.forms import LoanForm, PaymentMakeLoanForm
-from hasta_la_vista_money.loan.models import (
-    Loan,
-    PaymentMakeLoan,
-    PaymentSchedule,
-)
+from hasta_la_vista_money.loan.models import Loan, PaymentMakeLoan
 from hasta_la_vista_money.loan.tasks import async_calculate_annuity_loan
 from hasta_la_vista_money.users.models import User
 
@@ -22,23 +18,15 @@ class LoanView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
     no_permission_url = reverse_lazy('login')
 
     def get(self, request, *args, **kwargs):
-        user = User.objects.filter(
-            username=request.user,
-        )
+        user = get_object_or_404(User, username=request.user)
         if user:
             loan_form = LoanForm()
             payment_make_loan_form = PaymentMakeLoanForm(user=request.user)
             loan = Loan.objects.filter(user=request.user).all()
-            result_calculate = (
-                PaymentSchedule.objects.select_related('loan')
-                .filter(
-                    user=request.user,
-                )
-                .all()
-            )
-            payment_make_loan = PaymentMakeLoan.objects.filter(
-                user=request.user,
+            result_calculate = user.payment_schedule_users.select_related(
+                'loan',
             ).all()
+            payment_make_loan = user.payment_make_loan_users.all()
             return render(
                 request,
                 self.template_name,

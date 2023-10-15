@@ -24,6 +24,7 @@ from hasta_la_vista_money.receipts.forms import (
     ReceiptForm,
 )
 from hasta_la_vista_money.receipts.models import Customer, Receipt
+from hasta_la_vista_money.users.models import User
 
 
 class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
@@ -36,28 +37,20 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
     success_url = 'receipts:list'
 
     def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
+        user = get_object_or_404(User, username=request.user)
+        if user.is_authenticated:
             seller_form = CustomerForm()
 
             receipt_form = ReceiptForm()
-            receipt_form.fields['account'].queryset = Account.objects.filter(
-                user=request.user,
-            )
-            receipt_form.fields['customer'].queryset = Customer.objects.filter(
-                user=request.user,
-            ).distinct('name_seller')
+            receipt_form.fields['account'].queryset = user.account_users
+            receipt_form.fields[
+                'customer'
+            ].queryset = user.customer_users.distinct('name_seller')
 
             product_formset = ProductFormSet()
-
-            receipts = (
-                Receipt.objects.prefetch_related(
-                    'customer',
-                    'product',
-                )
-                .filter(
-                    user=request.user,
-                )
-            )
+            receipts = user.receipt_users.prefetch_related(
+                'product',
+            ).select_related('customer')
 
             return render(
                 request,
