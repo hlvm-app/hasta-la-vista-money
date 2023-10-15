@@ -66,4 +66,9 @@ class TransferMoneyLog(models.Model):
     exchange_date = models.DateTimeField()
 
     def __str__(self):
-        return f'Перевод со счёта {self.from_account} на счёт {self.to_account}'
+        return ''.join(
+            (
+                f'Перевод суммы {self.amount} ',
+                f'со счёта {self.from_account} на счёт {self.to_account}',
+            ),
+        )

@@ -116,6 +116,8 @@ class PageApplication(
                 'to_account': account_transfer_money.first(),
             }
 
+            transfer_money_log = user.transfer_money.all()
+
             context['accounts'] = accounts
             context['add_account_form'] = AddAccountForm()
             context['transfer_money_form'] = TransferMoneyAccountForm(
@@ -124,6 +126,7 @@ class PageApplication(
             )
             context['receipt_info_by_month'] = receipt_info_by_month
             context['income_expense'] = income_expense
+            context['transfer_money_log'] = transfer_money_log
         return context
 
 
