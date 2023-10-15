@@ -4,14 +4,16 @@ from hasta_la_vista_money.constants import NumericParameter
 
 
 class User(AbstractUser):
-    policy = models.BooleanField(null=True)
-
     def __str__(self):
         return self.username
 
 
 class TelegramUser(models.Model):
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        related_name='telegram_users',
+    )
     username = models.CharField(
         max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
     )
@@ -21,4 +23,5 @@ class TelegramUser(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
+        related_name='selected_account_telegram_users',
     )
