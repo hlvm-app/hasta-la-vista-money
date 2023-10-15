@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.urls import reverse
 from hasta_la_vista_money.constants import NumericParameter
@@ -63,12 +65,16 @@ class TransferMoneyLog(models.Model):
         max_digits=NumericParameter.TWENTY.value,
         decimal_places=NumericParameter.TWO.value,
     )
-    exchange_date = models.DateTimeField()
+    exchange_date = models.DateTimeField(default=datetime.now)
+
+    class Meta:
+        ordering = ['-exchange_date']
 
     def __str__(self):
         return ''.join(
             (
+                f'{self.exchange_date:%d-%m-%Y %H:%M}. ',
                 f'Перевод суммы {self.amount} ',
-                f'со счёта "{self.from_account}" на счёт "{self.to_account}"',
+                f'со счёта "{self.from_account}" на счёт "{self.to_account}". ',
             ),
         )
