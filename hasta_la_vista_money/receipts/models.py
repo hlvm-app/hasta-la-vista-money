@@ -15,7 +15,11 @@ OPERATION_TYPES = (
 class Customer(models.Model):
     """Модель продавца."""
 
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        related_name='customer_users',
+    )
     name_seller = models.CharField(max_length=255)  # noqa: WPS432
     retail_place_address = models.CharField(
         default='Нет данных',
@@ -37,8 +41,16 @@ class Customer(models.Model):
 class Receipt(models.Model):
     """Модель чека."""
 
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
-    account = models.ForeignKey(Account, on_delete=models.PROTECT)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        related_name='receipt_users',
+    )
+    account = models.ForeignKey(
+        Account,
+        on_delete=models.PROTECT,
+        related_name='receipt_accounts',
+    )
     receipt_date = models.DateTimeField()
     number_receipt = models.IntegerField(default=None, null=True)
     nds10 = models.DecimalField(
@@ -68,9 +80,9 @@ class Receipt(models.Model):
         Customer,
         on_delete=models.CASCADE,
         verbose_name='customer',
-        related_name='customer',
+        related_name='receipt_customers',
     )
-    product = models.ManyToManyField('Product', related_name='product')
+    product = models.ManyToManyField('Product', related_name='receipt_products')
     manual = models.BooleanField(null=True)
 
     class Meta:
@@ -91,8 +103,12 @@ class Receipt(models.Model):
 class Product(models.Model):
     """Модель продуктов."""
 
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
-    product_name = models.CharField(default='Нет данных', max_length=1000)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        related_name='product_users',
+    )
+    product_name = models.CharField(default='', max_length=1000)
     price = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     quantity = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     amount = models.DecimalField(default=0, max_digits=10, decimal_places=2)

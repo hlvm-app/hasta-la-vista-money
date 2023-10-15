@@ -21,9 +21,21 @@ class ExpenseType(models.Model):
 
 
 class Expense(CommonIncomeExpense):
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
-    account = models.ForeignKey(Account, on_delete=models.PROTECT)
-    category = models.ForeignKey(ExpenseType, on_delete=models.PROTECT)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        related_name='expense_users',
+    )
+    account = models.ForeignKey(
+        Account,
+        on_delete=models.PROTECT,
+        related_name='expense_accounts',
+    )
+    category = models.ForeignKey(
+        ExpenseType,
+        on_delete=models.PROTECT,
+        related_name='expense_categories',
+    )
 
     def __str__(self):
         return str(self.category)

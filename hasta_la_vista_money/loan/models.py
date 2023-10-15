@@ -8,8 +8,16 @@ from hasta_la_vista_money.users.models import User
 
 
 class Loan(models.Model):
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
-    account = models.ForeignKey(Account, on_delete=models.PROTECT)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        related_name='loan_users',
+    )
+    account = models.ForeignKey(
+        Account,
+        on_delete=models.PROTECT,
+        related_name='loan_accounts',
+    )
     date = models.DateTimeField()
     loan_amount = models.FloatField(
         max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
@@ -51,10 +59,22 @@ class Loan(models.Model):
 
 
 class PaymentMakeLoan(models.Model):
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        related_name='payment_make_loan_users',
+    )
+    account = models.ForeignKey(
+        Account,
+        on_delete=models.CASCADE,
+        related_name='payment_make_loan_accounts',
+    )
     date = models.DateTimeField()
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    loan = models.ForeignKey(Loan, on_delete=models.CASCADE)
+    loan = models.ForeignKey(
+        Loan,
+        on_delete=models.CASCADE,
+        related_name='loans',
+    )
     amount = models.DecimalField(
         max_digits=NumericParameter.TWO_HUNDRED_FIFTY.value,
         decimal_places=NumericParameter.TWO.value,
@@ -62,8 +82,16 @@ class PaymentMakeLoan(models.Model):
 
 
 class PaymentSchedule(models.Model):
-    loan = models.ForeignKey(Loan, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        related_name='payment_schedule_users',
+    )
+    loan = models.ForeignKey(
+        Loan,
+        on_delete=models.CASCADE,
+        related_name='payment_schedule_loans',
+    )
     date = models.DateTimeField()
     balance = models.DecimalField(
         max_digits=NumericParameter.SIXTY.value,
