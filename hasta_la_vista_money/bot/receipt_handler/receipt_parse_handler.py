@@ -4,7 +4,7 @@ from hasta_la_vista_money.bot.send_message.send_message_tg_user import (
     SendMessageToTelegramUser,
 )
 from hasta_la_vista_money.constants import TelegramMessage
-from hasta_la_vista_money.receipts.models import Receipt
+from hasta_la_vista_money.users.models import User
 
 
 def get_string_result_receipt(**kwargs):
@@ -38,10 +38,10 @@ def check_exists_number_receipt(user, number_receipt):
     :param number_receipt:
     :return:
     """
+    user = get_object_or_404(User, username=user)
     return (
-        Receipt.objects.select_related('user')
+        user.receipt_users.select_related('user')
         .filter(
-            user=user,
             number_receipt=number_receipt,
         )
         .first()
