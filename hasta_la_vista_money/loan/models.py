@@ -8,6 +8,11 @@ from hasta_la_vista_money.users.models import User
 
 
 class Loan(models.Model):
+    TYPE_LOAN = [
+        ('Annuity', 'Аннуитетный'),
+        ('Differentiated', 'Дифференцированный'),
+    ]
+
     user = models.ForeignKey(
         User,
         on_delete=models.PROTECT,
@@ -27,6 +32,7 @@ class Loan(models.Model):
         decimal_places=NumericParameter.TWO.value,
     )
     period_loan = models.IntegerField()
+    type_loan = models.CharField(choices=TYPE_LOAN, default=TYPE_LOAN[0][0])
 
     class Meta:
         ordering = ['-id']
@@ -47,6 +53,7 @@ class Loan(models.Model):
     def calculate_sum_monthly_payment(self):
         monthly_payment = PaymentSchedule.objects.filter(
             user=self.user,
+            loan_id=self.id,
         ).aggregate(models.Sum('monthly_payment'))
         return monthly_payment.get('monthly_payment__sum') - decimal.Decimal(
             self.loan_amount,
