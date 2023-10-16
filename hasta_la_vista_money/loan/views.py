@@ -48,32 +48,36 @@ class LoanCreateView(CustomNoPermissionMixin, SuccessMessageMixin, CreateView):
     success_message = MessageOnSite.SUCCESS_MESSAGE_LOAN_CREATE.value
 
     def post(self, request, *args, **kwargs):
-        loan_form = LoanForm(request.POST)
+        loan_form = LoanForm(
+            request.POST,
+            user=request.user,
+        )
 
         if loan_form.is_valid():
-            loan = loan_form.save(commit=False)
-            loan.user = request.user
+            loan_form.save()
+            type_loan = loan_form.cleaned_data.get('type_loan')
             date = loan_form.cleaned_data.get('date')
             loan_amount = loan_form.cleaned_data.get('loan_amount')
             annual_interest_rate = loan_form.cleaned_data.get(
                 'annual_interest_rate',
             )
             period_loan = loan_form.cleaned_data.get('period_loan')
-            loan.account = Account.objects.create(
-                user=request.user,
-                name_account=f'Кредитный счёт на {loan_amount}',
-                balance=loan_amount,
-                currency='RU',
-            )
-            loan.save()
-            async_calculate_annuity_loan(
-                request.user,
-                loan,
-                date,
-                loan_amount,
-                annual_interest_rate,
-                period_loan,
-            )
+            loan = Loan.objects.filter(
+                date=date,
+                loan_amount=loan_amount,
+            ).first()
+            if type_loan == 'Annuity':
+                async_calculate_annuity_loan(
+                    self.request.user,
+                    loan.pk,
+                    date,
+                    loan_amount,
+                    annual_interest_rate,
+                    period_loan,
+                )
+            elif type_loan == 'Differentiated':
+                ...
+
             response_data = {'success': True}
         else:
             response_data = {
