@@ -2,13 +2,14 @@ from datetime import datetime
 
 from django.db import models
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 from hasta_la_vista_money.constants import NumericParameter
 from hasta_la_vista_money.users.models import User
 
-CURRENCY = (('RU', 'Российский рубль'),)
-
 
 class Account(models.Model):
+    CURRENCY = [('RU', _('Российский рубль'))]
+
     user = models.ForeignKey(
         User,
         on_delete=models.PROTECT,
