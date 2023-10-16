@@ -61,7 +61,7 @@ def async_calculate_annuity_loan(
         next_date = start_date + relativedelta(months=1)
         PaymentSchedule.objects.create(
             user=user,
-            loan_id=id_loan.id,
+            loan_id=id_loan,
             date=current_date,
             balance=round(balance, 2),
             monthly_payment=round(monthly_payment, 2),
