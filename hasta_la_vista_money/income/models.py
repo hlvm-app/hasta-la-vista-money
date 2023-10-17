@@ -1,5 +1,4 @@
 from django.db import models
-from django.urls import reverse
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.models import CommonIncomeExpense
 from hasta_la_vista_money.constants import NumericParameter
@@ -43,6 +42,3 @@ class Income(CommonIncomeExpense):
 
     def __str__(self):
         return str(self.category)
-
-    def get_absolute_url(self):
-        return reverse('income:change', args=[self.id])
