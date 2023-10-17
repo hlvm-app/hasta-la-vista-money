@@ -9,7 +9,10 @@ from hasta_la_vista_money.constants import MessageOnSite
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.loan.forms import LoanForm, PaymentMakeLoanForm
 from hasta_la_vista_money.loan.models import Loan, PaymentMakeLoan
-from hasta_la_vista_money.loan.tasks import async_calculate_annuity_loan
+from hasta_la_vista_money.loan.tasks import (
+    async_calculate_annuity_loan,
+    async_calculate_differentiated_loan,
+)
 from hasta_la_vista_money.users.models import User
 
 
@@ -22,7 +25,7 @@ class LoanView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         if user:
             loan_form = LoanForm()
             payment_make_loan_form = PaymentMakeLoanForm(user=request.user)
-            loan = Loan.objects.filter(user=request.user).all()
+            loan = user.loan_users.all()
             result_calculate = user.payment_schedule_users.select_related(
                 'loan',
             ).all()
@@ -62,21 +65,30 @@ class LoanCreateView(CustomNoPermissionMixin, SuccessMessageMixin, CreateView):
                 'annual_interest_rate',
             )
             period_loan = loan_form.cleaned_data.get('period_loan')
+
             loan = Loan.objects.filter(
                 date=date,
                 loan_amount=loan_amount,
             ).first()
+
             if type_loan == 'Annuity':
                 async_calculate_annuity_loan(
-                    self.request.user,
-                    loan.pk,
-                    date,
-                    loan_amount,
-                    annual_interest_rate,
-                    period_loan,
+                    user_id=self.request.user.pk,
+                    loan_id=loan.pk,
+                    start_date=date,
+                    loan_amount=loan_amount,
+                    annual_interest_rate=annual_interest_rate,
+                    period_loan=period_loan,
                 )
             elif type_loan == 'Differentiated':
-                ...
+                async_calculate_differentiated_loan(
+                    user_id=self.request.user.pk,
+                    loan_id=loan.pk,
+                    start_date=date,
+                    loan_amount=loan_amount,
+                    annual_interest_rate=annual_interest_rate,
+                    period_loan=period_loan,
+                )
 
             response_data = {'success': True}
         else:
