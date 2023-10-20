@@ -1,5 +1,4 @@
 import decimal
-from typing import Union
 
 from django import template
 
@@ -9,7 +8,7 @@ THOUSAND_MINUS_ONE = 999
 
 
 @register.filter
-def comma(number: float) -> Union[float, str]:
+def comma(number: float) -> str:
     """
     Функция разделения тысячных и миллионных.
 
