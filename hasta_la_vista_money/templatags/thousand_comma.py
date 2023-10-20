@@ -17,6 +17,4 @@ def comma(number: float) -> Union[float, str]:
     :type number: float
     :return: Union[float, str]
     """
-    if number > THOUSAND_MINUS_ONE:
-        return f'{decimal.Decimal(number):,.2f}'.replace(',', ' ')
-    return number
+    return f'{decimal.Decimal(number):,.2f}'.replace(',', ' ')
