@@ -14,6 +14,6 @@ def comma(number: float) -> str:
 
     :param number:
     :type number: float
-    :return: Union[float, str]
+    :return: str
     """
     return f'{decimal.Decimal(number):,.2f}'.replace(',', ' ')
