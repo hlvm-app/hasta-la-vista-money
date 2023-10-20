@@ -6,7 +6,6 @@ from django import template
 register = template.Library()
 
 THOUSAND_MINUS_ONE = 999
-MILLION_MINUS_ONE = 999999
 
 
 @register.filter
@@ -18,8 +17,6 @@ def comma(number: float) -> Union[float, str]:
     :type number: float
     :return: Union[float, str]
     """
-    if number > MILLION_MINUS_ONE:
-        return f'{decimal.Decimal(number):,.2f}'.replace(',', ' ')
-    elif number > THOUSAND_MINUS_ONE:
+    if number > THOUSAND_MINUS_ONE:
         return f'{decimal.Decimal(number):,.2f}'.replace(',', ' ')
     return number
