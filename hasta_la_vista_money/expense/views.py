@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.paginator import Paginator
 from django.db.models import Count, Sum
 from django.db.models.functions import TruncMonth
 from django.http import Http404, JsonResponse
@@ -9,7 +10,7 @@ from django.views.generic import (
     CreateView,
     DeleteView,
     DetailView,
-    TemplateView,
+    ListView,
     UpdateView,
 )
 from hasta_la_vista_money.account.models import Account
@@ -29,7 +30,8 @@ from hasta_la_vista_money.expense.models import Expense, ExpenseType
 from hasta_la_vista_money.receipts.models import Receipt
 
 
-class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
+class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
+    paginate_by = 10
     model = Expense
     template_name = TemplateHTMLView.EXPENSE_TEMPLATE.value
     context_object_name = 'expense'
@@ -78,6 +80,10 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             'amount',
         )
 
+        paginator = Paginator(expenses, self.paginate_by)
+        page_number = request.GET.get('page')
+        page = paginator.get_page(page_number)
+
         expense_categories = ExpenseType.objects.filter(user=request.user)
 
         return render(
@@ -87,31 +93,8 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 'add_category_form': add_category_form,
                 'categories': expense_categories,
                 'receipt_info_by_month': receipt_info_by_month,
-                'expenses': expenses,
+                'expenses': page,
                 'add_expense_form': add_expense_form,
-            },
-        )
-
-    def post(self, request, *args, **kwargs):
-        categories = ExpenseType.objects.filter(user=request.user).all()
-
-        add_category_form = AddCategoryForm(request.POST)
-
-        if add_category_form.is_valid():
-            category_form = add_category_form.save(commit=False)
-            category_form.user = request.user
-            category_form.save()
-            messages.success(
-                request,
-                MessageOnSite.SUCCESS_CATEGORY_ADDED.value,
-            )
-            return redirect(self.success_url)
-        return render(
-            request,
-            self.template_name,
-            {
-                'add_category_form': add_category_form,
-                'categories': categories,
             },
         )
 
@@ -232,7 +215,31 @@ class ExpenseCategoryCreateView(ExpenseIncomeFormValidCreateMixin):
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
     form_class = AddCategoryForm
 
+    def post(self, request, *args, **kwargs):
+        categories = ExpenseType.objects.filter(user=request.user).all()
 
-class ExpenseCategoryDeleteView(DeleteCategoryMixin):
+        add_category_form = AddCategoryForm(request.POST)
+
+        if add_category_form.is_valid():
+            category_form = add_category_form.save(commit=False)
+            category_form.user = request.user
+            category_form.save()
+            messages.success(
+                request,
+                MessageOnSite.SUCCESS_CATEGORY_ADDED.value,
+            )
+            return redirect(self.success_url)
+        return render(
+            request,
+            self.template_name,
+            {
+                'add_category_form': add_category_form,
+                'categories': categories,
+            },
+        )
+
+
+class ExpenseCategoryDeleteView(SuccessMessageMixin, DeleteCategoryMixin):
     model: type[ExpenseType] = ExpenseType
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
+    success_message = MessageOnSite.SUCCESS_CATEGORY_DELETED.value

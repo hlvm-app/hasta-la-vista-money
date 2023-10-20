@@ -24,15 +24,14 @@ class DeleteCategoryMixin(DeleteView):
     model = Optional[None]
     success_url = None
 
-    def form_valid(self, form):
+    def delete(self, request, *args, **kwargs):
         try:
-            category = self.object
-            category.delete()
+            self.object.delete()
             messages.success(
                 self.request,
                 MessageOnSite.SUCCESS_CATEGORY_DELETED.value,
             )
-            return super().form_valid(form)
+            return super().delete(request, *args, **kwargs)
         except ProtectedError:
             messages.error(
                 self.request,
