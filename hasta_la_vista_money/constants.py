@@ -215,6 +215,7 @@ class NumericParameter(Enum):
     MINUTE_MINUS_ONE = 59
     SECOND_MINUS_ONE = 59
     TODAY_MINUS_FIVE_YEARS = 23
+    THREE_HUNDRED_SIXTY_FIVE = 365
 
 
 class ResponseText(Enum):
