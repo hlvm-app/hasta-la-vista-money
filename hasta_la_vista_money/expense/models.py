@@ -7,7 +7,10 @@ from hasta_la_vista_money.users.models import User
 
 class ExpenseType(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
-    name = models.CharField(max_length=NumericParameter.TWO_HUNDRED_FIFTY.value)
+    name = models.CharField(
+        max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
+        unique=True,
+    )
 
     class Meta:
         ordering = ['name']

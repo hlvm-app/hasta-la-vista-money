@@ -11,7 +11,10 @@ class IncomeType(models.Model):
         on_delete=models.PROTECT,
         related_name='income_type',
     )
-    name = models.CharField(max_length=NumericParameter.TWO_HUNDRED_FIFTY.value)
+    name = models.CharField(
+        max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
+        unique=True,
+    )
 
     class Meta:
         ordering = ['name']
