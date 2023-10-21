@@ -51,6 +51,9 @@ class CustomSuccessURLUserMixin:
 
 
 class ExpenseIncomeFormValidCreateMixin(CreateView):
+    model = None
+    form_class = None
+
     def __init__(self, *args, **kwargs):
         """
         Конструктов класса инициализирующий аргументы класса.
@@ -61,15 +64,35 @@ class ExpenseIncomeFormValidCreateMixin(CreateView):
         super().__init__(*args, **kwargs)
         self.request = None
 
-    def form_valid(self, form):
-        category_form = form.save(commit=False)
-        category_form.user = self.request.user
-        category_form.save()
-        messages.success(
-            self.request,
-            MessageOnSite.SUCCESS_CATEGORY_ADDED.value,
+    def post(self, request, *args, **kwargs):
+        category_name = request.POST.get('name')
+        categories = self.model.objects.filter(
+            user=request.user,
+            name=category_name,
         )
-        return super().form_valid(form)
+
+        add_category_form = self.form_class(request.POST)
+
+        if categories:
+            messages.error(
+                request,
+                f'Категория "{category_name}" уже существует!',
+            )
+            return redirect(self.success_url)
+        elif add_category_form.is_valid():
+            category_form = add_category_form.save(commit=False)
+            category_form.user = request.user
+            category_form.save()
+            messages.success(
+                request,
+                f'Категория "{category_name}" была успешно добавлена!',
+            )
+            return redirect(self.success_url)
+        messages.error(
+            request,
+            f'Категория "{category_name}" не может быть добавлена!',
+        )
+        return redirect(self.success_url)
 
 
 class UpdateViewMixin:
