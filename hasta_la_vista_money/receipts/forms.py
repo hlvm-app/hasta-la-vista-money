@@ -1,7 +1,10 @@
 import django_filters
-from config.django.forms import BaseForm, DateTimePickerWidgetForm
 from django.forms import CharField, NumberInput, TextInput, formset_factory
 from django.utils.translation import gettext_lazy as _
+from hasta_la_vista_money.commonlogic.forms import (
+    BaseForm,
+    DateTimePickerWidgetForm,
+)
 from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
 
 

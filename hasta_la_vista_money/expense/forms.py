@@ -1,5 +1,8 @@
-from config.django.forms import BaseForm, DateTimePickerWidgetForm
 from django.utils.translation import gettext_lazy as _
+from hasta_la_vista_money.commonlogic.forms import (
+    BaseForm,
+    DateTimePickerWidgetForm,
+)
 from hasta_la_vista_money.expense.models import Expense, ExpenseType
 
 
