@@ -1,10 +1,12 @@
 from bootstrap_datepicker_plus.widgets import DateTimePickerInput
 from django.forms import (
+    CharField,
     DateTimeField,
     DecimalField,
     Form,
     ModelChoiceField,
     ModelForm,
+    Textarea,
 )
 from hasta_la_vista_money.account.models import Account, TransferMoneyLog
 from hasta_la_vista_money.constants import MessageOnSite, NumericParameter
@@ -32,6 +34,16 @@ class TransferMoneyAccountForm(Form):
         label='Сумма перевода:',
         max_digits=NumericParameter.TWENTY.value,
         decimal_places=NumericParameter.TWO.value,
+    )
+    note = CharField(
+        label='Заметка',
+        widget=Textarea(
+            attrs={
+                'rows': 3,
+                'placeholder': 'Введите заметку не более 250 символов',
+            },
+        ),
+        max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
     )
 
     def __init__(self, user, *args, **kwargs):
@@ -70,6 +82,7 @@ class TransferMoneyAccountForm(Form):
         to_account = self.cleaned_data['to_account']
         amount = self.cleaned_data['amount']
         exchange_date = self.cleaned_data['exchange_date']
+        notes = self.cleaned_data['notes']
 
         if from_account.transfer_money(to_account, amount):
             return TransferMoneyLog.objects.create(
@@ -78,6 +91,7 @@ class TransferMoneyAccountForm(Form):
                 to_account=to_account,
                 amount=amount,
                 exchange_date=exchange_date,
+                notes=notes,
             )
 
         return None
