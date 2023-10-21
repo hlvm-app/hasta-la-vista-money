@@ -47,11 +47,11 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
         :return: Рендеринг данных на странице сайта.
         """
         user = get_object_or_404(User, username=request.user)
-        category = ExpenseType.objects.filter(user=request.user)
+        categories = ExpenseType.objects.filter(user=request.user).all()
 
         add_expense_form = AddExpenseForm()
         add_expense_form.fields['account'].queryset = user.account_users.all()
-        add_expense_form.fields['category'].queryset = category.all()
+        add_expense_form.fields['category'].queryset = categories
 
         add_category_form = AddCategoryForm()
 
@@ -84,14 +84,12 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
 
-        expense_categories = ExpenseType.objects.filter(user=request.user)
-
         return render(
             request,
             self.template_name,
             {
                 'add_category_form': add_category_form,
-                'categories': expense_categories,
+                'categories': categories,
                 'receipt_info_by_month': receipt_info_by_month,
                 'expenses': page,
                 'add_expense_form': add_expense_form,
