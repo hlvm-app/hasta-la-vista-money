@@ -4,13 +4,11 @@ from django.db.models import ProtectedError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import (
-    CreateView,
-    DeleteView,
-    DetailView,
-    TemplateView,
-)
+from django.views.generic import CreateView, DeleteView, DetailView, ListView
 from hasta_la_vista_money.account.models import Account
+from hasta_la_vista_money.commonlogic.custom_paginator import (
+    paginator_custom_view,
+)
 from hasta_la_vista_money.constants import (
     MessageOnSite,
     ReceiptConstants,
@@ -27,9 +25,10 @@ from hasta_la_vista_money.receipts.models import Customer, Receipt
 from hasta_la_vista_money.users.models import User
 
 
-class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
+class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
     """Класс представления чека на сайте."""
 
+    paginate_by = 10
     template_name = 'receipts/receipts.html'
     model = Receipt
     context_object_name = 'receipts'
@@ -52,11 +51,18 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 'product',
             ).select_related('customer')
 
+            page_receipts = paginator_custom_view(
+                request,
+                receipts,
+                self.paginate_by,
+                'receipts',
+            )
+
             return render(
                 request,
                 self.template_name,
                 {
-                    'receipts': receipts,
+                    'receipts': page_receipts,
                     'seller_form': seller_form,
                     'receipt_form': receipt_form,
                     'product_formset': product_formset,
