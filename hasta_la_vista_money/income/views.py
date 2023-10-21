@@ -7,6 +7,9 @@ from django.views.generic import DeleteView, UpdateView
 from django.views.generic.edit import CreateView, DeletionMixin
 from django_filters.views import FilterView
 from hasta_la_vista_money.account.models import Account
+from hasta_la_vista_money.commonlogic.custom_paginator import (
+    paginator_custom_view,
+)
 from hasta_la_vista_money.constants import (
     MessageOnSite,
     SuccessUrlView,
@@ -26,6 +29,7 @@ from hasta_la_vista_money.users.models import User
 class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
     """Представление просмотра доходов из модели, на сайте."""
 
+    paginate_by = 10
     model = Income
     template_name = TemplateHTMLView.INCOME_TEMPLATE.value
     context_object_name = 'incomes'
@@ -54,6 +58,13 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                 'amount',
             )
 
+            pages_income = paginator_custom_view(
+                request,
+                income_by_month,
+                self.paginate_by,
+                'income',
+            )
+
             categories = IncomeType.objects.filter(user=request.user).all()
 
             return render(
@@ -62,7 +73,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                 {
                     'add_category_income_form': add_category_income_form,
                     'categories': categories,
-                    'income_by_month': income_by_month,
+                    'income_by_month': pages_income,
                     'income_form': income_form,
                 },
             )

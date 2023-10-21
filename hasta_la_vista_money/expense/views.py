@@ -1,6 +1,5 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.paginator import Paginator
 from django.db.models import Count, Sum
 from django.db.models.functions import TruncMonth
 from django.http import Http404, JsonResponse
@@ -14,6 +13,9 @@ from django.views.generic import (
     UpdateView,
 )
 from hasta_la_vista_money.account.models import Account
+from hasta_la_vista_money.commonlogic.custom_paginator import (
+    paginator_custom_view,
+)
 from hasta_la_vista_money.constants import (
     MessageOnSite,
     SuccessUrlView,
@@ -81,9 +83,20 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
         )
 
         # Paginator expense table
-        paginator = Paginator(expenses, self.paginate_by)
-        page_number = request.GET.get('page')
-        pages_expense = paginator.get_page(page_number)
+        pages_expense = paginator_custom_view(
+            request,
+            expenses,
+            self.paginate_by,
+            'expenses',
+        )
+
+        # Paginator receipts table
+        pages_receipt_table = paginator_custom_view(
+            request,
+            receipt_info_by_month,
+            self.paginate_by,
+            'receipts',
+        )
 
         expense_categories = ExpenseType.objects.filter(user=request.user)
 
@@ -93,7 +106,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
             {
                 'add_category_form': add_category_form,
                 'categories': expense_categories,
-                'receipt_info_by_month': receipt_info_by_month,
+                'receipt_info_by_month': pages_receipt_table,
                 'expenses': pages_expense,
                 'add_expense_form': add_expense_form,
             },

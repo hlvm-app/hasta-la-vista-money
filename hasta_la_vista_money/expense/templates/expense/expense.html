@@ -122,6 +122,29 @@
                         {% endfor %}
                     </table>
                 </div>
+                {% if receipt_info_by_month.has_other_pages %}
+                    <div class="btn-group mb-5" role="group" aria-label="Item pagination">
+                        {% if receipt_info_by_month.has_previous %}
+                            <a href="?receipts={{ receipt_info_by_month.previous_page_number }}" class="btn btn-outline-light">&laquo;</a>
+                        {% endif %}
+
+                        {% for page_number in receipt_info_by_month.paginator.page_range %}
+                            {% if receipt_info_by_month.number == page_number %}
+                                <button class="btn btn-outline-light active">
+                                    <span>{{ page_number }} <span class="sr-only">(current)</span></span>
+                                </button>
+                            {% else %}
+                                <a href="?receipts={{ page_number }}" class="btn btn-outline-light">
+                                    {{ page_number }}
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if receipt_info_by_month.has_next %}
+                            <a href="?receipts={{ receipt_info_by_month.next_page_number }}" class="btn btn-outline-light">&raquo;</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
             </div>
             <div class="col-xl-6 mt-5 position-relative">
                 <div class="wrapper-table-expense">
@@ -183,7 +206,7 @@
                     {% if expenses.has_other_pages %}
                         <div class="btn-group mb-5" role="group" aria-label="Item pagination">
                             {% if expenses.has_previous %}
-                                <a href="?page={{ expenses.previous_page_number }}" class="btn btn-outline-light">&laquo;</a>
+                                <a href="?expenses={{ expenses.previous_page_number }}" class="btn btn-outline-light">&laquo;</a>
                             {% endif %}
 
                             {% for page_number in expenses.paginator.page_range %}
@@ -192,14 +215,14 @@
                                         <span>{{ page_number }} <span class="sr-only">(current)</span></span>
                                     </button>
                                 {% else %}
-                                    <a href="?page={{ page_number }}" class="btn btn-outline-light">
+                                    <a href="?expenses={{ page_number }}" class="btn btn-outline-light">
                                         {{ page_number }}
                                     </a>
                                 {% endif %}
                             {% endfor %}
 
                             {% if expenses.has_next %}
-                                <a href="?page={{ expenses.next_page_number }}" class="btn btn-outline-light">&raquo;</a>
+                                <a href="?expenses={{ expenses.next_page_number }}" class="btn btn-outline-light">&raquo;</a>
                             {% endif %}
                         </div>
                     {% endif %}
