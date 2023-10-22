@@ -89,7 +89,7 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
     def unique_income_data(cls, income_dates, income_amounts):
         return cls.unique_data(income_dates, income_amounts)
 
-    def get(self, request, *args, **kwargs):  # noqa: WPS210
+    def get(self, request, *args, **kwargs):
         expense_dataset, income_dataset = self.collect_datasets(request)
 
         expense_dates, expense_amounts = self.transform_data_expense(
@@ -109,17 +109,13 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             income_amounts,
         )
 
-        chart = {
+        chart_expense = {
             'chart': {'type': 'line'},
-            'title': {'text': 'Статистика по расходам и доходам'},
+            'title': {'text': 'Статистика по расходам'},
             'xAxis': [
                 {
                     'categories': unique_expense_dates,
-                    'title': {'text': 'Дата (расходы)'},
-                },
-                {
-                    'categories': unique_income_dates,
-                    'title': {'text': 'Дата (доходы)'},
+                    'title': {'text': 'Дата'},
                 },
             ],
             'yAxis': {'title': {'text': 'Сумма'}},
@@ -130,11 +126,31 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                     'color': 'red',
                     'xAxis': 0,
                 },
+            ],
+            'credits': {
+                'enabled': False,
+            },
+            'exporting': {
+                'enabled': False,
+            },
+        }
+
+        chart_income = {
+            'chart': {'type': 'line'},
+            'title': {'text': 'Статистика по доходам'},
+            'xAxis': [
+                {
+                    'categories': unique_income_dates,
+                    'title': {'text': 'Дата'},
+                },
+            ],
+            'yAxis': {'title': {'text': 'Сумма'}},
+            'series': [
                 {
                     'name': 'Доходы',
                     'data': unique_income_amounts,
                     'color': 'green',
-                    'xAxis': 1,
+                    'xAxis': 0,
                 },
             ],
             'credits': {
@@ -145,12 +161,14 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             },
         }
 
-        dump = json.dumps(chart)
+        dump_expense = json.dumps(chart_expense)
+        dump_income = json.dumps(chart_income)
 
         return render(
             request,
             self.template_name,
             {
-                'chart': dump,
+                'chart_expense': dump_expense,
+                'chart_income': dump_income,
             },
         )

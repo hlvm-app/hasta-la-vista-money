@@ -7,9 +7,17 @@
 {% block content %}
     <div class="container-fluid">
         <div class="row">
-            <div class="col-xl-6">
-                <div id="container-chart"></div>
-            </div>
+            {% if chart_expense %}
+                <div class="col-xl-6">
+                    <div id="container-chart-expense"></div>
+                </div>
+            {% endif %}
+            <!-- /.col-xl-6 -->
+            {% if chart_income %}
+                <div class="col-xl-6">
+                    <div id="container-chart-income"></div>
+                </div>
+            {% endif %}
             <!-- /.col-xl-6 -->
         </div>
         <!-- /.row -->
@@ -18,6 +26,9 @@
 
     <script nonce="{{request.csp_nonce}}" src="https://code.highcharts.com/highcharts.js"></script>
     <script nonce="{{request.csp_nonce}}">
-        Highcharts.chart('container-chart', {{ chart|safe }})
+        Highcharts.chart('container-chart-expense', {{ chart_expense|safe }})
+    </script>
+    <script nonce="{{request.csp_nonce}}">
+        Highcharts.chart('container-chart-income', {{ chart_income|safe }})
     </script>
 {% endblock %}
