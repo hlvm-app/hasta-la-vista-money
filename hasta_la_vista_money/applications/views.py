@@ -63,7 +63,7 @@ class PageApplication(
 
     @classmethod
     def collect_info_income_expense(cls, user: User) -> list:
-        expenses = user.expense_users.values(
+        expenses = user.expense_users.select_related('user').values(
             'id',
             'date',
             'account__name_account',
@@ -71,7 +71,7 @@ class PageApplication(
             'amount',
         )
 
-        income = user.income_users.values(
+        income = user.income_users.select_related('user').values(
             'id',
             'date',
             'account__name_account',
@@ -96,7 +96,7 @@ class PageApplication(
                 username=self.request.user,
             )
 
-            accounts = user.account_users.all()
+            accounts = user.account_users.select_related('user').all()
 
             receipt_info_by_month = self.collect_info_receipt(
                 user=user,
@@ -106,13 +106,18 @@ class PageApplication(
                 user=user,
             )
 
-            account_transfer_money = user.account_users.all()
+            account_transfer_money = user.account_users.select_related(
+                'user',
+            ).all()
             initial_form_data = {
                 'from_account': account_transfer_money.first(),
                 'to_account': account_transfer_money.first(),
             }
 
-            transfer_money_log = user.transfer_money.all()
+            transfer_money_log = user.transfer_money.select_related(
+                'to_account',
+                'from_account',
+            ).all()
 
             context['accounts'] = accounts
             context['add_account_form'] = AddAccountForm()
