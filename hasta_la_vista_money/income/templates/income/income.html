@@ -151,7 +151,7 @@
                                 {% for income in income_by_month %}
                                     <tr>
                                         <td class="text-nowrap">{{ income.category__name }}</td>
-                                        <td class="text-nowrap">{{ income.date | date:"F Y" }}</td>
+                                        <td class="text-nowrap" title="{{ income.date }}">{{ income.date | date:"F Y" }}</td>
                                         <td class="text-nowrap">{{ income.amount | comma }}</td>
                                         <td class="text-nowrap">{{ income.account__name_account }}</td>
                                         <td>
