@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import ProtectedError
+from django.db.models import Count, ProtectedError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -58,6 +58,19 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
                 'receipts',
             )
 
+            list_receipts = Receipt.objects.prefetch_related('product').all()
+            purchased_products = (
+                list_receipts.values(
+                    'product__price',
+                    'product__product_name',
+                    'receipt_date',
+                )
+                .filter(user=request.user)
+                .annotate(products=Count('product__product_name'))
+                .order_by('-product__product_name')
+                .distinct()[:10]
+            )
+
             return render(
                 request,
                 self.template_name,
@@ -66,6 +79,7 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
                     'seller_form': seller_form,
                     'receipt_form': receipt_form,
                     'product_formset': product_formset,
+                    'frequently_purchased_products': purchased_products,
                 },
             )
 
