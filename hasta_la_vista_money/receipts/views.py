@@ -61,9 +61,7 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
             list_receipts = Receipt.objects.prefetch_related('product').all()
             purchased_products = (
                 list_receipts.values(
-                    'product__price',
                     'product__product_name',
-                    'receipt_date',
                 )
                 .filter(user=request.user)
                 .annotate(products=Count('product__product_name'))
