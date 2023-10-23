@@ -89,7 +89,7 @@
                 </div>
             </div>
         </div>
-        <div id="frequently-purchased-products" class="modal-sm modal fade ajax-modal" >
+        <div id="frequently-purchased-products" class="modal-sm modal modal-lg fade ajax-modal" >
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -99,9 +99,12 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        Список из 10 часто покупаемых товаров:
                         {% for product in frequently_purchased_products %}
                             <ul class="list-group">
+
                                 <li class="list-group-item">
+
                                     {{ product.product__product_name }}<br>
                                 </li>
                             </ul>
