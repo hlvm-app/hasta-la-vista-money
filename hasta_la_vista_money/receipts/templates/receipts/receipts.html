@@ -116,24 +116,23 @@
     </div>
     <div class="container">
         <div class="row mt-5">
-            <div class="d-grid gap-2 d-md-flex justify-content-xl-end justify-content-center">
-                <ul class="count-receipt-list list-group list-group-horizontal d-flex align-items-center" style="color:;">
+            <div class="d-grid gap-2 d-md-flex justify-content-center">
+                <ul class="count-receipt-list list-group list-group-horizontal d-flex align-items-center">
                     <span class="text-center">Количество чеков:</span>
                     <li class="list-group-item rounded-3 me-2">{{ total_receipts.count }}</li>
-
                     <span class="text-center">Сумма чеков:</span>
                     <li class="list-group-item rounded-3">{{ total_sum_receipts.total }}</li>
                 </ul>
-                <button type="button" class="d-flex align-items-center btn btn-primary m-xl-1 m-1" data-bs-toggle="modal" data-bs-target="#frequently-purchased-products">
+                <button type="button" class="d-flex align-items-center btn btn-sm btn-primary m-xl-1 m-1" data-bs-toggle="modal" data-bs-target="#frequently-purchased-products">
                     Часто покупаемые товары
                 </button>
-	            <button type="button" class="d-flex align-items-center btn btn-info m-xl-1 m-1" data-bs-toggle="modal" data-bs-target="#add-customer">
+	            <button type="button" class="d-flex align-items-center btn btn-sm btn-info m-xl-1 m-1" data-bs-toggle="modal" data-bs-target="#add-customer">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"></path>
                     </svg>
                     Добавить нового продавца
                 </button>
-                <button type="button" class="d-flex align-items-center add-receipt-button btn btn-danger m-xl-1 m-1" data-bs-toggle="modal" data-bs-target="#add-receipt">
+                <button type="button" class="d-flex align-items-center add-receipt-button btn btn-sm btn-danger m-xl-1 m-1" data-bs-toggle="modal" data-bs-target="#add-receipt">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"></path>
                     </svg>
