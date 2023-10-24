@@ -112,6 +112,14 @@ html, body {
     border: 1px solid #ffffff;
 }
 
+.count-receipt-list {
+    color: #FFCC00;
+    li {
+        background-color: #FFCC00;
+    }
+}
+
+
 @import "account";
 @import "buttons";
 @import "fonts" ;

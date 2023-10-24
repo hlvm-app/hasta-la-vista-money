@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import Count, ProtectedError
+from django.db.models import Count, ProtectedError, Sum
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -69,11 +69,15 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
                 .distinct()[:10]
             )
 
+            total_sum_receipts = receipts.aggregate(total=Sum('total_sum'))
+
             return render(
                 request,
                 self.template_name,
                 {
                     'receipts': page_receipts,
+                    'total_receipts': receipts,
+                    'total_sum_receipts': total_sum_receipts,
                     'seller_form': seller_form,
                     'receipt_form': receipt_form,
                     'product_formset': product_formset,
