@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.http import Http404, JsonResponse
+from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, UpdateView
@@ -10,6 +10,7 @@ from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.custom_paginator import (
     paginator_custom_view,
 )
+from hasta_la_vista_money.commonlogic.views import create_object_view
 from hasta_la_vista_money.constants import (
     MessageOnSite,
     SuccessUrlView,
@@ -97,30 +98,11 @@ class IncomeCreateView(
 
     def post(self, request, *args, **kwargs):
         income_form = IncomeForm(request.POST)
-        response_data = {}
-
-        if income_form.is_valid():
-            income = income_form.save(commit=False)
-            amount = income_form.cleaned_data.get('amount')
-            account = income_form.cleaned_data.get('account')
-            account_balance = get_object_or_404(Account, id=account.id)
-
-            if account_balance.user == request.user:
-                account_balance.balance += amount
-                account_balance.save()
-                income.user = request.user
-                income.save()
-                messages.success(
-                    request,
-                    MessageOnSite.SUCCESS_INCOME_ADDED.value,
-                )
-                response_data = {'success': True}
-        else:
-            response_data = {
-                'success': False,
-                'errors': income_form.errors,
-            }
-        return JsonResponse(response_data)
+        return create_object_view(
+            form=income_form,
+            request=request,
+            message=MessageOnSite.SUCCESS_INCOME_ADDED.value,
+        )
 
 
 class IncomeUpdateView(

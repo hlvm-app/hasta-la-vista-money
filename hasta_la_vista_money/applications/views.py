@@ -3,8 +3,7 @@ from operator import itemgetter
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.handlers.wsgi import WSGIRequest
-from django.db.models import Count, ProtectedError, QuerySet, Sum
-from django.db.models.functions import TruncMonth
+from django.db.models import ProtectedError
 from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -19,13 +18,13 @@ from hasta_la_vista_money.account.forms import (
     TransferMoneyAccountForm,
 )
 from hasta_la_vista_money.account.models import Account
+from hasta_la_vista_money.commonlogic.views import collect_info_receipt
 from hasta_la_vista_money.constants import MessageOnSite
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
     UpdateViewMixin,
 )
 from hasta_la_vista_money.income.models import Income
-from hasta_la_vista_money.receipts.models import Receipt
 from hasta_la_vista_money.users.models import User
 
 
@@ -40,26 +39,6 @@ class PageApplication(
     template_name = 'applications/page_application.html'
     context_object_name = 'applications'
     no_permission_url = reverse_lazy('login')
-
-    @classmethod
-    def collect_info_receipt(cls, user: User) -> QuerySet:
-        return (
-            Receipt.objects.filter(
-                user=user,
-            )
-            .annotate(
-                month=TruncMonth('receipt_date'),
-            )
-            .values(
-                'month',
-                'account__name_account',
-            )
-            .annotate(
-                count=Count('id'),
-                total_amount=Sum('total_sum'),
-            )
-            .order_by('-month')
-        )
 
     @classmethod
     def collect_info_income_expense(cls, user: User) -> list:
@@ -98,9 +77,7 @@ class PageApplication(
 
             accounts = user.account_users.select_related('user').all()
 
-            receipt_info_by_month = self.collect_info_receipt(
-                user=user,
-            )
+            receipt_info_by_month = collect_info_receipt(user=user)
 
             income_expense = self.collect_info_income_expense(
                 user=user,

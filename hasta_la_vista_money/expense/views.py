@@ -1,8 +1,6 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import Count, Sum
-from django.db.models.functions import TruncMonth
-from django.http import Http404, JsonResponse
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -15,6 +13,10 @@ from django.views.generic import (
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.custom_paginator import (
     paginator_custom_view,
+)
+from hasta_la_vista_money.commonlogic.views import (
+    collect_info_receipt,
+    create_object_view,
 )
 from hasta_la_vista_money.constants import (
     MessageOnSite,
@@ -29,7 +31,6 @@ from hasta_la_vista_money.custom_mixin import (
 )
 from hasta_la_vista_money.expense.forms import AddCategoryForm, AddExpenseForm
 from hasta_la_vista_money.expense.models import Expense, ExpenseType
-from hasta_la_vista_money.receipts.models import Receipt
 
 
 class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
@@ -58,21 +59,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
         )
         add_category_form = AddCategoryForm()
 
-        receipt_info_by_month = (
-            Receipt.objects.filter(
-                user=request.user,
-            )
-            .annotate(month=TruncMonth('receipt_date'))
-            .values(
-                'month',
-                'account__name_account',
-            )
-            .annotate(
-                count=Count('id'),
-                total_amount=Sum('total_sum'),
-            )
-            .order_by('-month')
-        )
+        receipt_info_by_month = collect_info_receipt(user=request.user)
 
         expenses = Expense.objects.filter(user=request.user).values(
             'id',
@@ -149,28 +136,11 @@ class ExpenseCreateView(
 
     def post(self, request, *args, **kwargs):
         add_expense_form = AddExpenseForm(request.POST)
-        response_data = {}
-        if add_expense_form.is_valid():
-            expense = add_expense_form.save(commit=False)
-            amount = add_expense_form.cleaned_data.get('amount')
-            account = add_expense_form.cleaned_data.get('account')
-            account_balance = get_object_or_404(Account, id=account.id)
-            if account_balance.user == request.user:
-                account_balance.balance -= amount
-                account_balance.save()
-                expense.user = request.user
-                expense.save()
-                messages.success(
-                    request,
-                    MessageOnSite.SUCCESS_EXPENSE_ADDED.value,
-                )
-                response_data = {'success': True}
-        else:
-            response_data = {
-                'success': False,
-                'errors': add_expense_form.errors,
-            }
-        return JsonResponse(response_data)
+        return create_object_view(
+            form=add_expense_form,
+            request=request,
+            message=MessageOnSite.SUCCESS_EXPENSE_ADDED.value,
+        )
 
 
 class ExpenseUpdateView(
