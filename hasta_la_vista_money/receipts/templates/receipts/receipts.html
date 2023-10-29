@@ -89,6 +89,16 @@
                 </div>
             </div>
         </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <form action="" method="get" class="form">
+                        {% bootstrap_form receipt_filter.form %}
+                        {% bootstrap_button 'Фильтровать' %}
+                    </form>
+                </div>
+            </div>
+        </div>
         <div id="frequently-purchased-products" class="modal-sm modal modal-lg fade ajax-modal" >
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -139,7 +149,7 @@
                     Добавить чек вручную по наименованиям
                 </button>
             </div>
-            {% for receipt in receipts %}
+            {% for receipt in receipt_filter.qs %}
 	            <div class="col-xl-12">
 		            <div class="d-grid gap-2">
 			            <button class="button-receipt btn btn-light text-dark  mb-2" data-bs-toggle="modal" data-bs-target="#receipt-{{ receipt.id }}">{{ receipt.customer.name_seller }}<br> <strong>Дата: </strong>{{ receipt.receipt_date | date:"d.m.Y H:i" }} <strong>Сумма чека: </strong>{{ receipt.total_sum | comma }}</button>

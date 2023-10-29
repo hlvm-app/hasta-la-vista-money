@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView
+from django_filters.views import FilterView
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.custom_paginator import (
     paginator_custom_view,
@@ -19,13 +20,19 @@ from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.receipts.forms import (
     CustomerForm,
     ProductFormSet,
+    ReceiptFilter,
     ReceiptForm,
 )
 from hasta_la_vista_money.receipts.models import Customer, Receipt
 from hasta_la_vista_money.users.models import User
 
 
-class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
+class ReceiptView(
+    CustomNoPermissionMixin,
+    SuccessMessageMixin,
+    ListView,
+    FilterView,
+):
     """Класс представления чека на сайте."""
 
     paginate_by = 10
@@ -39,7 +46,10 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
         user = get_object_or_404(User, username=request.user)
         if user.is_authenticated:
             seller_form = CustomerForm()
-
+            receipt_filter = ReceiptFilter(
+                request.GET,
+                queryset=Receipt.objects.all(),
+            )
             receipt_form = ReceiptForm()
             receipt_form.fields['account'].queryset = user.account_users
             receipt_form.fields[
@@ -76,6 +86,7 @@ class ReceiptView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
                 self.template_name,
                 {
                     'receipts': page_receipts,
+                    'receipt_filter': receipt_filter,
                     'total_receipts': receipts,
                     'total_sum_receipts': total_sum_receipts,
                     'seller_form': seller_form,
