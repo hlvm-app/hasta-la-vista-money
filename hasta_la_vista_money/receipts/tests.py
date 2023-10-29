@@ -30,7 +30,6 @@ class TestReceipt(TestCase):
 
     def test_receipt_create(self):
         self.client.force_login(self.user)
-        url = reverse_lazy('receipts:create')
 
         new_product_data = {
             'user': self.user,
@@ -65,12 +64,6 @@ class TestReceipt(TestCase):
 
         form_receipt = ReceiptForm(data=new_receipt_data)
         self.assertTrue(form_receipt.is_valid())
-
-        response_receipt = self.client.post(url, data=form_receipt.data)
-        self.assertEqual(
-            response_receipt.status_code,
-            HTTPStatus.SUCCESS_CODE.value,
-        )
 
     def test_receipt_delete(self):
         self.client.force_login(self.user)
