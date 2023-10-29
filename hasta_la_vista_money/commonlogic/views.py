@@ -51,11 +51,7 @@ def create_object_view(form, request, message) -> JsonResponse:
         account = cd.get('account')
         selected_account = get_object_or_404(Account, id=account.id)
         if selected_account.user == request.user:
-            if 'income' in request.path:
-                selected_account.balance += amount
-            else:
-                selected_account.balance -= amount
-            selected_account.save()
+            change_account_balance(account, request, amount)
             form_class.user = request.user
             form_class.save()
             messages.success(
@@ -69,3 +65,12 @@ def create_object_view(form, request, message) -> JsonResponse:
             'errors': form.errors,
         }
     return JsonResponse(response_data)
+
+
+def change_account_balance(account, request, amount):
+    """Изменение баланса счёта."""
+    if 'income' in request.path:
+        account.balance += amount
+    else:
+        account.balance -= amount
+    account.save()
