@@ -30,10 +30,20 @@ class ReceiptFilter(django_filters.FilterSet):
         ),
     )
 
+    def __init__(self, *args, **kwargs):
+        """
+        Конструктор класса инициализирующий поля формы.
+
+        :param args:
+        :param kwargs:
+        """
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
     @property
     def qs(self):
         queryset = super().qs
-        return queryset.distinct()
+        return queryset.filter(user=self.user).distinct()
 
     class Meta:
         model = Receipt

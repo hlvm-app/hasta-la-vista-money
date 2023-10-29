@@ -49,6 +49,7 @@ class ReceiptView(
             receipt_filter = ReceiptFilter(
                 request.GET,
                 queryset=Receipt.objects.all(),
+                user=request.user,
             )
             receipt_form = ReceiptForm()
             receipt_form.fields['account'].queryset = user.account_users
