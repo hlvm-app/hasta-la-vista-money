@@ -37,8 +37,6 @@ class ReceiptView(
     paginate_by = 10
     template_name = 'receipts/receipts.html'
     model = Receipt
-    filterset_class = ReceiptFilter
-    context_object_name = 'receipts'
     no_permission_url = reverse_lazy('login')
     success_url = 'receipts:list'
 

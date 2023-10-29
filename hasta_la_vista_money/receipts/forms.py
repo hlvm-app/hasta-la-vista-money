@@ -1,5 +1,11 @@
 import django_filters
-from django.forms import CharField, NumberInput, TextInput, formset_factory
+from django.forms import (
+    CharField,
+    NumberInput,
+    Select,
+    TextInput,
+    formset_factory,
+)
 from django.utils.translation import gettext_lazy as _
 from hasta_la_vista_money.commonlogic.forms import (
     BaseForm,
@@ -15,6 +21,7 @@ class ReceiptFilter(django_filters.FilterSet):
         queryset=Customer.objects.all(),
         field_name='customer__name_seller',
         label=_('Продавец'),
+        widget=Select(attrs={'class': 'form-control mb-2'}),
     )
     receipt_date = django_filters.DateFromToRangeFilter(
         label=_('Период'),
