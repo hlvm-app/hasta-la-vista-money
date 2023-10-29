@@ -4,6 +4,5 @@ ADMINS = [('Alexander Pavlov', 'alexander.pavlov@pavlovteam.ru')]
 
 CSRF_COOKIE_SECURE = True
 CSRF_USE_SESSIONS = True
-SECURE_SSL_REDIRECT = True
 SECURE_HSTS_SECONDS = 1800
 SECURE_HSTS_PRELOAD = True
