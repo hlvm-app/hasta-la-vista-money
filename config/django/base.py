@@ -31,6 +31,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', None)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'true').lower() in {'yes', '1', 'true'}
 
+
 ALLOWED_HOSTS = (
     os.environ.get(
         'ALLOWED_HOSTS',
@@ -85,18 +86,6 @@ INSTALLED_APPS = [
 if DEBUG:
     INSTALLED_APPS.append('debug_toolbar')
 
-INTERNAL_IPS = [
-    '127.0.0.1',
-]
-
-AUTH_USER_MODEL = 'users.User'
-
-LOGIN_REDIRECT_URL = '/'
-
-LOGIN_URL = '/login/'
-
-LOGOUT_REDIRECT_URL = '/login'
-
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -113,6 +102,20 @@ MIDDLEWARE = [
     'axes.middleware.AxesMiddleware',
 ]
 
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
+AUTH_USER_MODEL = 'users.User'
+
+LOGIN_REDIRECT_URL = '/'
+
+LOGIN_URL = '/login/'
+
+LOGOUT_REDIRECT_URL = '/login'
+
+
+# Settings CSP
 CSP_INCLUDE_NONCE_IN = ['script-src', 'style-src', 'img-src', 'font-src']
 
 CSP_DEFAULT_SRC = (
@@ -173,6 +176,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+
+ASGI_APPLICATION = 'config.asgi.application'
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
@@ -272,7 +277,7 @@ FIXTURE_DIRS = (os.path.join(BASE_DIR, 'fixtures'),)
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATIC_URL = os.path.join(BASE_DIR, 'static/')
+STATIC_URL = 'static/'
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
