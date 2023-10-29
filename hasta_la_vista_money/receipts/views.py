@@ -4,7 +4,7 @@ from django.db.models import Count, ProtectedError, Sum
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, DetailView, ListView
+from django.views.generic import CreateView, DeleteView, DetailView
 from django_filters.views import FilterView
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.custom_paginator import (
@@ -30,7 +30,6 @@ from hasta_la_vista_money.users.models import User
 class ReceiptView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
-    ListView,
     FilterView,
 ):
     """Класс представления чека на сайте."""
@@ -38,6 +37,7 @@ class ReceiptView(
     paginate_by = 10
     template_name = 'receipts/receipts.html'
     model = Receipt
+    filterset_class = ReceiptFilter
     context_object_name = 'receipts'
     no_permission_url = reverse_lazy('login')
     success_url = 'receipts:list'
@@ -96,6 +96,10 @@ class ReceiptView(
                     'frequently_purchased_products': purchased_products,
                 },
             )
+
+    def get_queryset(self):
+        filterset = ReceiptFilter(self.request)
+        return filterset.qs
 
 
 class CustomerCreateView(SuccessMessageMixin, CreateView):

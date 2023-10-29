@@ -12,11 +12,7 @@ class ReceiptFilter(django_filters.FilterSet):
     """Класс представляющий фильтр чеков на сайте."""
 
     name_seller = django_filters.ModelChoiceFilter(
-        queryset=Customer.objects.distinct(
-            'name_seller',
-        ).order_by(
-            'name_seller',
-        ),
+        queryset=Customer.objects.all(),
         field_name='customer__name_seller',
         label=_('Продавец'),
     )
@@ -39,11 +35,16 @@ class ReceiptFilter(django_filters.FilterSet):
         """
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
+        self.filters['name_seller'].queryset = (
+            Customer.objects.filter(user=self.user)
+            .distinct('name_seller')
+            .order_by('name_seller')
+        )
 
     @property
     def qs(self):
         queryset = super().qs
-        return queryset.filter(user=self.user).distinct()
+        return queryset.distinct()
 
     class Meta:
         model = Receipt
