@@ -51,7 +51,7 @@ class ReceiptFilter(django_filters.FilterSet):
     @property
     def qs(self):
         queryset = super().qs
-        return queryset.distinct()
+        return queryset.filter(user=self.user).distinct()
 
     class Meta:
         model = Receipt
