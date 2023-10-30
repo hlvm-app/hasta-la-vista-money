@@ -78,7 +78,8 @@ class ReceiptView(
                 .distinct()[:10]
             )
 
-            total_sum_receipts = receipts.aggregate(total=Sum('total_sum'))
+            total_sum_receipts = receipt_filter.qs.aggregate(total=Sum('total_sum'))
+            total_receipts = receipt_filter.qs
 
             return render(
                 request,
@@ -86,7 +87,7 @@ class ReceiptView(
                 {
                     'receipts': page_receipts,
                     'receipt_filter': receipt_filter,
-                    'total_receipts': receipts,
+                    'total_receipts': total_receipts,
                     'total_sum_receipts': total_sum_receipts,
                     'seller_form': seller_form,
                     'receipt_form': receipt_form,
