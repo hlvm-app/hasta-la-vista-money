@@ -84,6 +84,11 @@ urlpatterns = [
         include('hasta_la_vista_money.loan.urls', namespace='loan'),
         name='loan',
     ),
+    path(
+        'budget/',
+        include('hasta_la_vista_money.budget.urls', namespace='budget'),
+        name='budget',
+    ),
     path('adminushka/', admin.site.urls),
 ]
 
