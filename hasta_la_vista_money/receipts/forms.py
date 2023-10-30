@@ -7,6 +7,7 @@ from django.forms import (
     formset_factory,
 )
 from django.utils.translation import gettext_lazy as _
+from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.forms import (
     BaseForm,
     DateTimePickerWidgetForm,
@@ -32,6 +33,11 @@ class ReceiptFilter(django_filters.FilterSet):
             },
         ),
     )
+    account = django_filters.ModelChoiceFilter(
+        queryset=Account.objects.all(),
+        label=_('Счёт'),
+        widget=Select(attrs={'class': 'form-control mb-4'}),
+    )
 
     def __init__(self, *args, **kwargs):
         """
@@ -47,6 +53,9 @@ class ReceiptFilter(django_filters.FilterSet):
             .distinct('name_seller')
             .order_by('name_seller')
         )
+        self.filters['account'].queryset = Account.objects.filter(
+            user=self.user,
+        )
 
     @property
     def qs(self):
@@ -55,7 +64,7 @@ class ReceiptFilter(django_filters.FilterSet):
 
     class Meta:
         model = Receipt
-        fields = ['name_seller', 'receipt_date']
+        fields = ['name_seller', 'receipt_date', 'account']
 
 
 class CustomerForm(BaseForm):
