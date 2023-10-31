@@ -64,7 +64,7 @@ class LoginUser(SuccessMessageMixin, LoginView):
     template_name = 'users/login.html'
     form_class = UserLoginForm
     success_message = MessageOnSite.SUCCESS_MESSAGE_LOGIN.value
-    next_page = '/applications'
+    next_page = '/hasta-la-vista-money'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

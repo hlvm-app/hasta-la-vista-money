@@ -27,7 +27,7 @@ urlpatterns = [
         name='logout',
     ),
     path(
-        'applications/',
+        'hasta-la-vista-money/',
         include(
             'hasta_la_vista_money.applications.urls',
             namespace='applications',
