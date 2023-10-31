@@ -70,7 +70,7 @@ class TestAccount(TestCase):
         )
         self.assertRedirects(
             response,
-            '/applications/',
+            '/hasta-la-vista-money/',
             status_code=HTTPStatus.REDIRECTS.value,
         )
 
@@ -82,7 +82,7 @@ class TestAccount(TestCase):
         )
 
         response = self.client.post(url, follow=True)
-        self.assertRedirects(response, '/applications/')
+        self.assertRedirects(response, '/hasta-la-vista-money/')
 
     def test_delete_account_exist_expense(self):
         self.client.force_login(self.user)
