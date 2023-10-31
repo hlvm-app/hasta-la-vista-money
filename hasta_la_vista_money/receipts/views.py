@@ -55,7 +55,7 @@ class ReceiptView(
                 'customer'
             ].queryset = user.customer_users.distinct('name_seller')
 
-            product_formset = ProductFormSet()            
+            product_formset = ProductFormSet()
 
             list_receipts = Receipt.objects.prefetch_related('product').all()
             purchased_products = (
@@ -68,7 +68,10 @@ class ReceiptView(
                 .distinct()[:10]
             )
 
-            total_sum_receipts = receipt_filter.qs.aggregate(total=Sum('total_sum'))
+            total_sum_receipts = (
+                receipt_filter.qs
+                .aggregate(total=Sum('total_sum'))
+            )
             total_receipts = receipt_filter.qs
 
             page_receipts = paginator_custom_view(
