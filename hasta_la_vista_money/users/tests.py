@@ -40,4 +40,4 @@ class TestUser(TestCase):
         }
 
         response = self.client.post(url, new_user, follow=True)
-        self.assertRedirects(response, '/applications/')
+        self.assertRedirects(response, '/hasta-la-vista-money/')
