@@ -67,7 +67,7 @@ class TransferMoneyLog(models.Model):
         decimal_places=NumericParameter.TWO.value,
     )
     exchange_date = models.DateTimeField(default=datetime.now)
-    note = models.TextField(blank=True)
+    notes = models.TextField(blank=True, null=True)
 
     class Meta:
         ordering = ['-exchange_date']

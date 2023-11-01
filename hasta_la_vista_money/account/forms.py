@@ -35,12 +35,18 @@ class TransferMoneyAccountForm(Form):
         max_digits=NumericParameter.TWENTY.value,
         decimal_places=NumericParameter.TWO.value,
     )
-    note = CharField(
+    notes = CharField(
         label='Заметка',
+        required=False,
         widget=Textarea(
             attrs={
                 'rows': 3,
-                'placeholder': 'Введите заметку не более 250 символов',
+                'placeholder': ''.join(
+                    (
+                        'Введите заметку не более 250 символов.\n',
+                        'Поле необязательное!',
+                    ),
+                ),
             },
         ),
         max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
