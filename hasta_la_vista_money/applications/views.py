@@ -28,6 +28,53 @@ from hasta_la_vista_money.income.models import Income
 from hasta_la_vista_money.users.models import User
 
 
+def collect_info_income(user: User):
+    """
+    Сбор информации о доходах из базы данных, фильтруемая по пользователю.
+
+    :param user: User
+    :return: Queryset
+    """
+    return user.income_users.select_related('user').values(
+        'id',
+        'date',
+        'account__name_account',
+        'category__name',
+        'amount',
+    )
+
+
+def collect_info_expense(user: User):
+    """
+    Сбор информации о расходах из базы данных, фильтруемая по пользователю.
+
+    :param user: User
+    :return: Queryset
+    """
+    return user.expense_users.select_related('user').values(
+        'id',
+        'date',
+        'account__name_account',
+        'category__name',
+        'amount',
+    )
+
+
+def sort_expense_income(expenses, income):
+    """
+    Создание отсортированного списка с расходам и доходами.
+
+    :param expenses: Queryset
+    :param income: Queryset
+    :return: list
+    """
+    return sorted(
+        list(expenses) + list(income),
+        key=itemgetter('date'),
+        reverse=True,
+    )
+
+
 class PageApplication(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
@@ -39,30 +86,6 @@ class PageApplication(
     template_name = 'applications/page_application.html'
     context_object_name = 'applications'
     no_permission_url = reverse_lazy('login')
-
-    @classmethod
-    def collect_info_income_expense(cls, user: User) -> list:
-        expenses = user.expense_users.select_related('user').values(
-            'id',
-            'date',
-            'account__name_account',
-            'category__name',
-            'amount',
-        )
-
-        income = user.income_users.select_related('user').values(
-            'id',
-            'date',
-            'account__name_account',
-            'category__name',
-            'amount',
-        )
-
-        return sorted(
-            list(expenses) + list(income),
-            key=itemgetter('date'),
-            reverse=True,
-        )
 
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
@@ -79,9 +102,9 @@ class PageApplication(
 
             receipt_info_by_month = collect_info_receipt(user=user)
 
-            income_expense = self.collect_info_income_expense(
-                user=user,
-            )
+            income = collect_info_income(user)
+            expenses = collect_info_expense(user)
+            income_expense = sort_expense_income(expenses, income)
 
             account_transfer_money = user.account_users.select_related(
                 'user',
