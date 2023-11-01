@@ -49,6 +49,8 @@ flower = "^2.0.1"
 pre-commit = "^3.4.0"
 yesqa = "^1.5.0"
 mypy = "^1.5.1"
+bump2version = "^1.0.1"
+icecream = "^2.1.3"
 
 [build-system]
 requires = ["poetry-core>=1.4.0"]
