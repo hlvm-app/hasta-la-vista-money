@@ -55,24 +55,20 @@ class HandleReceiptManual:
         :param message:
         :return:
         """
-        try:
-            amount_receipt = message.text
-            self.dictionary_string_from_qrcode['amount'] = decimal.Decimal(
-                amount_receipt,
-            )
-            SendMessageToTelegramUser.send_message_to_telegram_user(
-                message.chat.id,
-                'Введите номер ФН',
-            )
-            bot_admin.register_next_step_handler(
-                message,
-                self.process_fiscal_number_receipt,
-            )
-        except ValueError:
-            SendMessageToTelegramUser.send_message_to_telegram_user(
-                message.chat.id,
-                'Введите сумму!',
-            )
+        amount_receipt = message.text
+        amount_receipt = amount_receipt.replace(',', '.')
+
+        self.dictionary_string_from_qrcode['amount'] = decimal.Decimal(
+            amount_receipt,
+        )
+        SendMessageToTelegramUser.send_message_to_telegram_user(
+            message.chat.id,
+            'Введите номер ФН',
+        )
+        bot_admin.register_next_step_handler(
+            message,
+            self.process_fiscal_number_receipt,
+        )
 
     def process_fiscal_number_receipt(self, message):
         """
@@ -152,8 +148,8 @@ class HandleReceiptManual:
                 )
                 parser = ReceiptParser(json_data, user, account)
                 parser.parse_receipt(message.chat.id)
-        except ValueError:
+        except ValueError as error:
             SendMessageToTelegramUser.send_message_to_telegram_user(
                 message.chat.id,
-                'Введите корректный номер ФП!',
+                f'{error}',
             )
