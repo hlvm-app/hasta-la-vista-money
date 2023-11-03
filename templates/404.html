@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Страница не найдена</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load i18n %}
+{% load django_bootstrap5 %}
 
-</body>
-</html>
+
+{% block title %}{% translate 'Страница не найдена - 404' %}{% endblock %}
+
+
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-xl-12 mt-5 d-flex justify-content-center">
+			<p class="text-404-error text-dark">404</p>
+		</div>
+		<!-- /.col-xl-12 -->
+	</div>
+	<!-- /.row -->
+</div>
+<!-- /.container -->
+{% endblock %}
