@@ -50,14 +50,22 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
         :return: Рендеринг данных на странице сайта.
         """
         user = get_object_or_404(User, username=request.user)
+
+        expense_categories = user.category_expense_users.select_related(
+            'user',
+        ).all()
+
         add_expense_form = AddExpenseForm()
-        add_expense_form.fields['account'].queryset = user.account_users.all()
-        add_expense_form.fields['category'].queryset = user.expense_users.all()
+        add_expense_form.fields[
+            'account'
+        ].queryset = user.account_users.select_related('user').all()
+
+        add_expense_form.fields['category'].queryset = expense_categories
         add_category_form = AddCategoryForm()
 
         receipt_info_by_month = collect_info_receipt(user=request.user)
 
-        expenses = user.expense_users.values(
+        expenses = user.expense_users.select_related('user', 'account').values(
             'id',
             'date',
             'account__name_account',
@@ -81,8 +89,6 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
             'receipts',
         )
 
-        expense_categories = user.category_expense_users.all()
-
         return render(
             request,
             self.template_name,
@@ -98,7 +104,6 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
     def post(self, request, *args, **kwargs):
         user = get_object_or_404(User, username=request.user)
         categories = user.category_expense_users.all()
-
         add_category_form = AddCategoryForm(request.POST)
 
         if add_category_form.is_valid():
