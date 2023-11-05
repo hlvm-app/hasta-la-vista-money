@@ -153,7 +153,7 @@
                     Добавить чек вручную по наименованиям
                 </button>
             </div>
-            {% for receipt in receipt_filter.qs %}
+            {% for receipt in receipts %}
 	            <div class="col-xl-12">
 		            <div class="d-grid gap-2">
 			            <button class="button-receipt btn btn-light text-dark  mb-2" data-bs-toggle="modal" data-bs-target="#receipt-{{ receipt.id }}">{{ receipt.customer.name_seller }}<br> <strong>Дата: </strong>{{ receipt.receipt_date | date:"d.m.Y H:i" }} <strong>Сумма чека: </strong>{{ receipt.total_sum | comma }}</button>
