@@ -4,7 +4,6 @@ from django.db.models.functions import TruncMonth
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.receipts.models import Receipt
 from hasta_la_vista_money.users.models import User
 
 
@@ -16,10 +15,7 @@ def collect_info_receipt(user: User) -> QuerySet:
     :return: QuerySet
     """
     return (
-        Receipt.objects.filter(
-            user=user,
-        )
-        .annotate(
+        user.receipt_users.annotate(
             month=TruncMonth('receipt_date'),
         )
         .values(
