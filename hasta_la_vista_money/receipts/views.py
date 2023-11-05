@@ -68,9 +68,8 @@ class ReceiptView(
                 .distinct()[:10]
             )
 
-            total_sum_receipts = (
-                receipt_filter.qs
-                .aggregate(total=Sum('total_sum'))
+            total_sum_receipts = receipt_filter.qs.aggregate(
+                total=Sum('total_sum'),
             )
             total_receipts = receipt_filter.qs
 
