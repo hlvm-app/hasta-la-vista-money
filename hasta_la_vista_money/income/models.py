@@ -9,7 +9,7 @@ class IncomeType(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.PROTECT,
-        related_name='income_type',
+        related_name='category_income_users',
     )
     name = models.CharField(
         max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,

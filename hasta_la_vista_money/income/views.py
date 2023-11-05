@@ -38,20 +38,16 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
     success_url = SuccessUrlView.INCOME_URL.value
 
     def get(self, request, *args, **kwargs):
-        user = User.objects.filter(username=request.user)
+        user = get_object_or_404(User, username=request.user)
         if user:
             income_form = IncomeForm()
-            income_form.fields['category'].queryset = IncomeType.objects.filter(
-                user=request.user,
-            )
-            income_form.fields['account'].queryset = Account.objects.filter(
-                user=request.user,
-            )
+            income_form.fields[
+                'category'
+            ].queryset = user.category_income_users.all()
+            income_form.fields['account'].queryset = user.account_users.all()
             add_category_income_form = AddCategoryIncomeForm()
 
-            income_by_month = Income.objects.filter(
-                user=request.user,
-            ).values(
+            income_by_month = user.income_users.values(
                 'id',
                 'date',
                 'account__name_account',
@@ -66,7 +62,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
                 'income',
             )
 
-            categories = IncomeType.objects.filter(user=request.user).all()
+            categories = user.category_income_users.all()
 
             return render(
                 request,
@@ -118,7 +114,7 @@ class IncomeUpdateView(
     success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)
 
     def get(self, request, *args, **kwargs):
-        user = Income.objects.filter(user=request.user).first()
+        user = get_object_or_404(User, username=request.user)
         if user:
             return self.get_update_form(self.form_class, 'income_form')
         raise Http404
