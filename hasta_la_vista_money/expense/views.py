@@ -31,6 +31,7 @@ from hasta_la_vista_money.custom_mixin import (
 )
 from hasta_la_vista_money.expense.forms import AddCategoryForm, AddExpenseForm
 from hasta_la_vista_money.expense.models import Expense, ExpenseType
+from hasta_la_vista_money.users.models import User
 
 
 class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
@@ -48,20 +49,15 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
         :param request: Запрос данных со страницы сайта.
         :return: Рендеринг данных на странице сайта.
         """
+        user = get_object_or_404(User, username=request.user)
         add_expense_form = AddExpenseForm()
-        add_expense_form.fields['account'].queryset = Account.objects.filter(
-            user=request.user,
-        )
-        add_expense_form.fields[
-            'category'
-        ].queryset = ExpenseType.objects.filter(
-            user=request.user,
-        )
+        add_expense_form.fields['account'].queryset = user.account_users.all()
+        add_expense_form.fields['category'].queryset = user.expense_users.all()
         add_category_form = AddCategoryForm()
 
         receipt_info_by_month = collect_info_receipt(user=request.user)
 
-        expenses = Expense.objects.filter(user=request.user).values(
+        expenses = user.expense_users.values(
             'id',
             'date',
             'account__name_account',
@@ -85,7 +81,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
             'receipts',
         )
 
-        expense_categories = ExpenseType.objects.filter(user=request.user)
+        expense_categories = user.category_expense_users.all()
 
         return render(
             request,
@@ -100,7 +96,8 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
         )
 
     def post(self, request, *args, **kwargs):
-        categories = ExpenseType.objects.filter(user=request.user).all()
+        user = get_object_or_404(User, username=request.user)
+        categories = user.category_expense_users.all()
 
         add_category_form = AddCategoryForm(request.POST)
 
@@ -156,7 +153,7 @@ class ExpenseUpdateView(
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
 
     def get(self, request, *args, **kwargs):
-        user = Expense.objects.filter(user=request.user).first()
+        user = get_object_or_404(User, username=request.user)
         if user:
             return self.get_update_form(
                 self.form_class,
