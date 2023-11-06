@@ -27,13 +27,14 @@ class AddExpenseForm(BaseForm):
         cleaned_data = super().clean()
         account = cleaned_data.get('account')
         amount = cleaned_data.get('amount')
-        account_balance = get_object_or_404(Account, name_account=account)
-        if amount > account_balance.balance:
-            self.add_error(
-                'account',
-                f'Недостаточно средств на счёте {account}',
-            )
-        return cleaned_data
+        if account:
+            account = get_object_or_404(Account, name_account=account)
+            if amount > account.balance:
+                self.add_error(
+                    'account',
+                    f'Недостаточно средств на счёте {account}',
+                )
+            return cleaned_data
 
 
 class AddCategoryForm(BaseForm):
