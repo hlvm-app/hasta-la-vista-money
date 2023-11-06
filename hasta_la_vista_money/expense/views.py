@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import Http404
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -98,29 +98,6 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
                 'receipt_info_by_month': pages_receipt_table,
                 'expenses': pages_expense,
                 'add_expense_form': add_expense_form,
-            },
-        )
-
-    def post(self, request, *args, **kwargs):
-        user = get_object_or_404(User, username=request.user)
-        categories = user.category_expense_users.all()
-        add_category_form = AddCategoryForm(request.POST)
-
-        if add_category_form.is_valid():
-            category_form = add_category_form.save(commit=False)
-            category_form.user = request.user
-            category_form.save()
-            messages.success(
-                request,
-                MessageOnSite.SUCCESS_CATEGORY_ADDED.value,
-            )
-            return redirect(self.success_url)
-        return render(
-            request,
-            self.template_name,
-            {
-                'add_category_form': add_category_form,
-                'categories': categories,
             },
         )
 
