@@ -68,9 +68,8 @@ class ReceiptView(
                 .distinct()[:10]
             )
 
-            total_sum_receipts = (
-                receipt_filter.qs
-                .aggregate(total=Sum('total_sum'))
+            total_sum_receipts = receipt_filter.qs.aggregate(
+                total=Sum('total_sum'),
             )
             total_receipts = receipt_filter.qs
 
@@ -215,7 +214,7 @@ class ReceiptCreateView(SuccessMessageMixin, CreateView):
         else:
             response_data = {
                 'success': False,
-                'errors': form.errors,
+                'errors': product_formset.errors,
             }
         return JsonResponse(response_data)
 
