@@ -214,7 +214,7 @@ class ReceiptCreateView(SuccessMessageMixin, CreateView):
         else:
             response_data = {
                 'success': False,
-                'errors': form.errors,
+                'errors': product_formset.errors,
             }
         return JsonResponse(response_data)
 

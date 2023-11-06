@@ -17,15 +17,30 @@ $(document).ready(function() {
                         form.find('.has-error').removeClass('has-error'); // Удаляем класс has-error у всех полей формы
                         form.find('.help-block').remove(); // Удаляем все предыдущие сообщения об ошибках
                         for (let field in errors) {
+                            console.log(errors)
+                            console.log(field)
                             if (errors.hasOwnProperty(field)) {
                                 const fieldErrors = errors[field];
-                                const fieldElement = form.find('[name="' + field + '"]');
-                                const errorContainer = fieldElement.closest('.form-group');
-                                errorContainer.addClass('has-error');
-                                for (let i = 0; i < fieldErrors.length; i++) {
-                                    let errorMessage = '<p class="help-block text-danger">' + fieldErrors[i] + '</p>';
-                                    errorContainer.append(errorMessage);
+                                if ('quantity' in fieldErrors) {
+                                    for (let fieldError in fieldErrors) {
+                                        const fieldElement = form.find('[name="form-' + field + '-' + fieldError +'"]');
+                                        const errorContainer = fieldElement.closest('.form-group');
+                                        errorContainer.addClass('has-error');
+                                        let errorMessage = '<p class="help-block text-danger">' + fieldErrors[fieldError] + '</p>';
+                                        errorContainer.append(errorMessage);
+                                    }
                                 }
+                                else {
+                                    const fieldElement = form.find('[name="' + field + '"]');
+                                    const errorContainer = fieldElement.closest('.form-group');
+                                    errorContainer.addClass('has-error');
+                                    for (let i = 0; i < fieldErrors.length; i++) {
+                                        let errorMessage = '<p class="help-block text-danger">' + fieldErrors[i] + '</p>';
+                                        errorContainer.append(errorMessage);
+                                    }
+                                }
+
+
                             }
                         }
                     }

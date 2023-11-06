@@ -115,6 +115,16 @@ class ProductForm(BaseForm):
             'amount': NumberInput(attrs={'class': 'amount', 'readonly': True}),
         }
 
+    def clean(self):
+        cleaned_data = super().clean()
+        quantity = cleaned_data.get('quantity')
+        if quantity <= 0:
+            self.add_error(
+                'quantity',
+                _('Количество должно быть больше 0.'),
+            )
+        return cleaned_data
+
 
 ProductFormSet = formset_factory(ProductForm, extra=1)
 
