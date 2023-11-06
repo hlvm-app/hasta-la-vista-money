@@ -294,7 +294,7 @@
             {% if receipts.has_other_pages %}
                 <div class="btn-group mb-5 w-25" role="group" aria-label="Item pagination">
                     {% if receipts.has_previous %}
-                        <a href="?receipts={{ receipts.previous_page_number }}" class="btn btn-outline-light">&laquo;</a>
+                        <a href="?receipts={{ receipts.previous_page_number }}{% for key, value in request.GET.items %}&{{ key }}={{ value }}{% endfor %}" class="btn btn-outline-light">&laquo;</a>
                     {% endif %}
 
                     {% for page_number in receipts.paginator.page_range %}
@@ -303,14 +303,14 @@
                                 <span>{{ page_number }} <span class="sr-only">(current)</span></span>
                             </button>
                         {% else %}
-                            <a href="?receipts={{ page_number }}" class="btn btn-outline-light">
+                            <a href="?receipts={{ page_number }}{% for key, value in request.GET.items %}&{{ key }}={{ value }}{% endfor %}" class="btn btn-outline-light">
                                 {{ page_number }}
                             </a>
                         {% endif %}
                     {% endfor %}
 
                     {% if receipts.has_next %}
-                        <a href="?receipts={{ receipts.next_page_number }}" class="btn btn-outline-light">&raquo;</a>
+                        <a href="?receipts={{ receipts.next_page_number }}{% for key, value in request.GET.items %}&{{ key }}={{ value }}{% endfor %}" class="btn btn-outline-light">&raquo;</a>
                     {% endif %}
                 </div>
             {% endif %}
