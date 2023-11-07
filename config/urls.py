@@ -29,7 +29,7 @@ urlpatterns = [
     path(
         'hasta-la-vista-money/',
         include(
-            'hasta_la_vista_money.applications.urls',
+            'hasta_la_vista_money.account.urls',
             namespace='applications',
         ),
         name='applications',

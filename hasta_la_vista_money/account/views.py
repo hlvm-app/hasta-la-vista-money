@@ -75,7 +75,7 @@ def sort_expense_income(expenses, income):
     )
 
 
-class PageApplication(
+class AccountView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
     TemplateView,
@@ -83,7 +83,7 @@ class PageApplication(
     """Отображает список приложений в проекте на сайте."""
 
     model = Account
-    template_name = 'applications/page_application.html'
+    template_name = 'account/account.html'
     context_object_name = 'applications'
     no_permission_url = reverse_lazy('login')
 
@@ -133,7 +133,7 @@ class PageApplication(
 
 class AccountCreateView(SuccessMessageMixin, CreateView):
     model = Account
-    template_name = 'applications/page_application.html'
+    template_name = 'account/account.html'
     form_class = AddAccountForm
     no_permission_url = reverse_lazy('login')
     success_url = reverse_lazy('applications:list')
@@ -185,7 +185,7 @@ class TransferMoneyAccountView(
     UpdateView,
 ):
     model = Account
-    template_name = 'applications/page_application.html'
+    template_name = 'account/account.html'
     form_class = TransferMoneyAccountForm
     success_message = MessageOnSite.SUCCESS_MESSAGE_TRANSFER_MONEY.value
 
