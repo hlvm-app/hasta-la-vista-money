@@ -4,7 +4,6 @@ import os
 import requests
 from dotenv import load_dotenv
 from hasta_la_vista_money.bot.log_config import logger
-from icecream import ic
 
 
 class ReceiptApiReceiver:
@@ -69,7 +68,6 @@ class ReceiptApiReceiver:
         )
         self.accept_language = 'ru-RU;q=1, en-US;q=0.9'
         self.session_id()
-        ic(self._session_id)
 
     def session_id(self) -> None:
         """
