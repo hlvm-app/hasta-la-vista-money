@@ -44,7 +44,7 @@ def handle_receipt_json(message, bot, user, account):
         user_id = user.id
         json_data = json.loads(file_downloaded)
 
-        async_handle_receipt_json.delay(
+        async_handle_receipt_json(
             chat_id=chat_id,
             user_id=user_id,
             account=account,

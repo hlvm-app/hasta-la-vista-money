@@ -47,7 +47,7 @@ def handle_receipt_text(message, bot, user, account):
         chat_id = message.chat.id
         user_id = user.id
 
-        async_handle_receipt_text_qrcode.delay(
+        async_handle_receipt_text_qrcode(
             chat_id=chat_id,
             user_id=user_id,
             account=account,
