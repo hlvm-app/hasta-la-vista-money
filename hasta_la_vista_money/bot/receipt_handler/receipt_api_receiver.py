@@ -112,13 +112,12 @@ class ReceiptApiReceiver:
                 timeout=10,
             )
             self._session_id = response.json()['sessionId']
-
         except (
             requests.exceptions.ConnectionError,
             json.decoder.JSONDecodeError,
             requests.exceptions.ReadTimeout,
-        ) as error:
-            logger.error(error)
+        ):
+            logger.error('Недоступен сервис авторизации. Попробуйте позже!')
 
     def get_receipt(self, qr: str) -> dict | None:
         """
