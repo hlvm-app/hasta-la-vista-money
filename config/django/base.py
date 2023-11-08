@@ -301,8 +301,3 @@ if os.environ.get('ACCESS_TOKEN') is not None:
 
 # Password reset timeout in seconds
 PASSWORD_RESET_TIMEOUT = 86400
-
-
-# Configure Celery
-SIXTY = 60
-THIRTY = 30

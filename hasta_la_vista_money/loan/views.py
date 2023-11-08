@@ -9,8 +9,8 @@ from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.loan.forms import LoanForm, PaymentMakeLoanForm
 from hasta_la_vista_money.loan.models import Loan, PaymentMakeLoan
 from hasta_la_vista_money.loan.tasks import (
-    async_calculate_annuity_loan,
-    async_calculate_differentiated_loan,
+    calculate_annuity_loan,
+    calculate_differentiated_loan,
 )
 from hasta_la_vista_money.users.models import User
 
@@ -71,7 +71,7 @@ class LoanCreateView(CustomNoPermissionMixin, SuccessMessageMixin, CreateView):
             ).first()
 
             if type_loan == 'Annuity':
-                async_calculate_annuity_loan(
+                calculate_annuity_loan(
                     user_id=self.request.user.pk,
                     loan_id=loan.pk,
                     start_date=date,
@@ -80,7 +80,7 @@ class LoanCreateView(CustomNoPermissionMixin, SuccessMessageMixin, CreateView):
                     period_loan=period_loan,
                 )
             elif type_loan == 'Differentiated':
-                async_calculate_differentiated_loan(
+                calculate_differentiated_loan(
                     user_id=self.request.user.pk,
                     loan_id=loan.pk,
                     start_date=date,
