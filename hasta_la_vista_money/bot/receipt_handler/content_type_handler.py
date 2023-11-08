@@ -23,10 +23,11 @@ def telegram_content_type(message, user, account):
     :param account:
     :return:
     """
+    url = 'https://proverkacheka.com/api/v1/check/get'
     if message.content_type == 'text':
-        handle_receipt_text(message, bot_admin, user, account)
+        handle_receipt_text(url, message, bot_admin, user, account)
     elif message.content_type == 'photo':
-        handle_receipt_text_qrcode(message, bot_admin, user, account)
+        handle_receipt_text_qrcode(url, message, bot_admin, user, account)
     elif message.content_type == 'document':
         handle_receipt_json(message, bot_admin, user, account)
     else:

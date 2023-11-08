@@ -14,7 +14,7 @@ from hasta_la_vista_money.bot.receipt_handler.receipt_parser import (
 )
 
 
-def handle_receipt_text(message, bot, user, account):
+def handle_receipt_text(url, message, bot, user, account):
     """
     Обрабатывает текстовые сообщения, содержащие информацию в QR-коде чека.
 
@@ -49,8 +49,12 @@ def handle_receipt_text(message, bot, user, account):
 
         chat_id = message.chat.id
 
-        client = ReceiptApiReceiver()
-        json_data = client.get_receipt(text_qr_code)
+        data = {
+            'token': os.getenv('TOKEN', None),
+            'qrraw': text_qr_code,
+        }
+        response = requests.post(url, data=data)
+        json_data = response.json()
         parse = ReceiptParser(json_data, user, account)
         parse.parse_receipt(chat_id)
     else:
