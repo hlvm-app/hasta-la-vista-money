@@ -3,10 +3,10 @@
 
 От пользователя будет ожидаться картинка с QR-кодом.
 """
-import requests
-import tempfile
 import os
+import tempfile
 
+import requests
 from hasta_la_vista_money.bot.receipt_handler.receipt_parser import (
     ReceiptParser,
 )
@@ -41,25 +41,26 @@ def handle_receipt_text_qrcode(url, message, bot, user, account):
             suffix='.png',
         ) as image_file:
             image_file.write(byte_code)
-            data = {
-                'token': os.getenv('TOKEN', None),
-            }
-            files = {
-                'qrfile': image_file,
-            }
-            response = requests.post(
-                url,
-                data=data,
-                files=files,
-                timeout=10
-            )
-            json_data = response.json()
 
-            chat_id = message.chat.id
+            with open(image_file, 'rb') as open_image_file:
+                data = {
+                    'token': os.getenv('TOKEN', None),
+                }
+                files = {
+                    'qrfile': open_image_file,
+                }
+                response = requests.post(
+                    url,
+                    data=data,
+                    files=files,
+                    timeout=10
+                )
+                json_data = response.json()
 
+                chat_id = message.chat.id
 
-            parse = ReceiptParser(json_data, user, account)
-            parse.parse_receipt(chat_id)
+                parse = ReceiptParser(json_data, user, account)
+                parse.parse_receipt(chat_id)
     else:
         bot.send_message(
             message.chat.id,
