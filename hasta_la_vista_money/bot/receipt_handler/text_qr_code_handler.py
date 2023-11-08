@@ -7,6 +7,7 @@ import os
 import tempfile
 
 import requests
+from hasta_la_vista_money.bot.qrcode_decode import decode_qrcode
 from hasta_la_vista_money.bot.receipt_handler.receipt_parser import (
     ReceiptParser,
 )
@@ -41,26 +42,26 @@ def handle_receipt_text_qrcode(url, message, bot, user, account):
             suffix='.png',
         ) as image_file:
             image_file.write(byte_code)
+            text_qr_code = decode_qrcode(image_file.name)
+            if not text_qr_code:
+                return ''
 
-            with open(image_file.name, 'rb') as open_image_file:
-                data = {
-                    'token': os.getenv('TOKEN', None),
-                }
-                files = {
-                    'qrfile': open_image_file,
-                }
-                response = requests.post(
-                    url,
-                    data=data,
-                    files=files,
-                    timeout=10,
-                )
-                json_data = response.json()
+            data = {
+                'token': os.getenv('TOKEN', None),
+                'qrraw': text_qr_code,
+            }
 
-                chat_id = message.chat.id
+            response = requests.post(
+                url,
+                data=data,
+                timeout=10,
+            )
+            json_data = response.json()
 
-                parse = ReceiptParser(json_data, user, account)
-                parse.parse_receipt(chat_id)
+            chat_id = message.chat.id
+
+            parse = ReceiptParser(json_data, user, account)
+            parse.parse_receipt(chat_id)
     else:
         bot.send_message(
             message.chat.id,
