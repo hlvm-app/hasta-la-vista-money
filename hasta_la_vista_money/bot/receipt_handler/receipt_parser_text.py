@@ -4,10 +4,10 @@
 Пользователь при этом должен отправить текст по шаблону, который он получит из
 QR-кода чека.
 """
-import re
-import requests
 import os
+import re
 
+import requests
 from hasta_la_vista_money.bot.receipt_handler.receipt_parser import (
     ReceiptParser,
 )

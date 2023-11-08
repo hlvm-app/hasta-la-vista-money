@@ -42,7 +42,7 @@ def handle_receipt_text_qrcode(url, message, bot, user, account):
         ) as image_file:
             image_file.write(byte_code)
 
-            with open(image_file, 'rb') as open_image_file:
+            with open(image_file.name, 'rb') as open_image_file:
                 data = {
                     'token': os.getenv('TOKEN', None),
                 }
@@ -53,7 +53,7 @@ def handle_receipt_text_qrcode(url, message, bot, user, account):
                     url,
                     data=data,
                     files=files,
-                    timeout=10
+                    timeout=10,
                 )
                 json_data = response.json()
 
