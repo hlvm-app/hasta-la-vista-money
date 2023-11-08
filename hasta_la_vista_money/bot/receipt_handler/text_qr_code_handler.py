@@ -3,13 +3,10 @@
 
 От пользователя будет ожидаться картинка с QR-кодом.
 """
+import requests
 import tempfile
 import os
 
-from hasta_la_vista_money.bot.qrcode_decode import decode_qrcode
-from hasta_la_vista_money.bot.receipt_handler.receipt_api_receiver import (
-    ReceiptApiReceiver,
-)
 from hasta_la_vista_money.bot.receipt_handler.receipt_parser import (
     ReceiptParser,
 )
@@ -50,7 +47,12 @@ def handle_receipt_text_qrcode(url, message, bot, user, account):
             files = {
                 'qrfile': image_file,
             }
-            response = requests.post(url, data=data, files=files)
+            response = requests.post(
+                url,
+                data=data,
+                files=files,
+                timeout=10
+            )
             json_data = response.json()
 
             chat_id = message.chat.id

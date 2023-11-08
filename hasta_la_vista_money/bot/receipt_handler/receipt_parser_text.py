@@ -5,11 +5,9 @@
 QR-кода чека.
 """
 import re
+import requests
 import os
 
-from hasta_la_vista_money.bot.receipt_handler.receipt_api_receiver import (
-    ReceiptApiReceiver,
-)
 from hasta_la_vista_money.bot.receipt_handler.receipt_parser import (
     ReceiptParser,
 )
@@ -54,7 +52,7 @@ def handle_receipt_text(url, message, bot, user, account):
             'token': os.getenv('TOKEN', None),
             'qrraw': text_qr_code,
         }
-        response = requests.post(url, data=data)
+        response = requests.post(url, data=data, timeout=10)
         json_data = response.json()
         parse = ReceiptParser(json_data, user, account)
         parse.parse_receipt(chat_id)
