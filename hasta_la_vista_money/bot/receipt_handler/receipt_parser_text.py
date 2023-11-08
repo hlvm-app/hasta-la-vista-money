@@ -5,6 +5,7 @@
 QR-кода чека.
 """
 import re
+import os
 
 from hasta_la_vista_money.bot.receipt_handler.receipt_api_receiver import (
     ReceiptApiReceiver,

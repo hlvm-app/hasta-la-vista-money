@@ -4,6 +4,7 @@
 От пользователя будет ожидаться картинка с QR-кодом.
 """
 import tempfile
+import os
 
 from hasta_la_vista_money.bot.qrcode_decode import decode_qrcode
 from hasta_la_vista_money.bot.receipt_handler.receipt_api_receiver import (
