@@ -1,11 +1,10 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import Http404
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, UpdateView
+from django.views.generic import DeleteView, ListView, UpdateView
 from django.views.generic.edit import CreateView, DeletionMixin
-from django_filters.views import FilterView
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.custom_paginator import (
     paginator_custom_view,
@@ -27,7 +26,7 @@ from hasta_la_vista_money.income.models import Income, IncomeType
 from hasta_la_vista_money.users.models import User
 
 
-class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
+class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
     """Представление просмотра доходов из модели, на сайте."""
 
     paginate_by = 10
@@ -37,8 +36,9 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
     no_permission_url = reverse_lazy('login')
     success_url = SuccessUrlView.INCOME_URL.value
 
-    def get(self, request, *args, **kwargs):
-        user = get_object_or_404(User, username=request.user)
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = get_object_or_404(User, username=self.request.user)
         if user:
             income_form = IncomeForm()
             categories = user.category_income_users.select_related('user').all()
@@ -60,22 +60,18 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, FilterView):
             )
 
             pages_income = paginator_custom_view(
-                request,
+                self.request,
                 income_by_month,
                 self.paginate_by,
                 'income',
             )
 
-            return render(
-                request,
-                self.template_name,
-                {
-                    'add_category_income_form': add_category_income_form,
-                    'categories': categories,
-                    'income_by_month': pages_income,
-                    'income_form': income_form,
-                },
-            )
+            context['add_category_income_form'] = add_category_income_form
+            context['categories'] = categories
+            context['income_by_month'] = pages_income
+            context['income_form'] = income_form
+
+            return context
 
 
 class IncomeCreateView(
