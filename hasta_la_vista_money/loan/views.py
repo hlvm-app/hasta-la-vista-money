@@ -1,8 +1,8 @@
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, TemplateView
+from django.views.generic import CreateView, DeleteView, ListView
 from hasta_la_vista_money.commonlogic.views import create_object_view
 from hasta_la_vista_money.constants import MessageOnSite
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
@@ -15,31 +15,30 @@ from hasta_la_vista_money.loan.tasks import (
 from hasta_la_vista_money.users.models import User
 
 
-class LoanView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
+class LoanView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
+    model = Loan
     template_name = 'loan/loan.html'
     no_permission_url = reverse_lazy('login')
 
-    def get(self, request, *args, **kwargs):
-        user = get_object_or_404(User, username=request.user)
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = get_object_or_404(User, username=self.request.user)
         if user:
             loan_form = LoanForm()
-            payment_make_loan_form = PaymentMakeLoanForm(user=request.user)
+            payment_make_loan_form = PaymentMakeLoanForm(user=self.request.user)
             loan = user.loan_users.all()
             result_calculate = user.payment_schedule_users.select_related(
                 'loan',
             ).all()
             payment_make_loan = user.payment_make_loan_users.all()
-            return render(
-                request,
-                self.template_name,
-                {
-                    'loan_form': loan_form,
-                    'payment_make_loan_form': payment_make_loan_form,
-                    'loan': loan,
-                    'result_calculate': result_calculate,
-                    'payment_make_loan': payment_make_loan,
-                },
-            )
+
+            context['loan_form'] = loan_form
+            context['payment_make_loan_form'] = payment_make_loan_form
+            context['loan'] = loan
+            context['result_calculate'] = result_calculate
+            context['payment_make_loan'] = payment_make_loan
+
+            return context
 
 
 class LoanCreateView(CustomNoPermissionMixin, SuccessMessageMixin, CreateView):
