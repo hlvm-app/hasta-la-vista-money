@@ -7,12 +7,7 @@ from django.db.models import ProtectedError
 from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import (
-    CreateView,
-    DeleteView,
-    TemplateView,
-    UpdateView,
-)
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from hasta_la_vista_money.account.forms import (
     AddAccountForm,
     TransferMoneyAccountForm,
@@ -78,7 +73,7 @@ def sort_expense_income(expenses, income):
 class AccountView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
-    TemplateView,
+    ListView,
 ):
     """Отображает список приложений в проекте на сайте."""
 
