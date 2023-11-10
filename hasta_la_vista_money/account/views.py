@@ -83,8 +83,6 @@ class AccountView(
     no_permission_url = reverse_lazy('login')
 
     def get_context_data(self, **kwargs) -> dict:
-        context = super().get_context_data(**kwargs)
-
         self.request: WSGIRequest = self.request
 
         if self.request.user.is_authenticated:
@@ -114,6 +112,7 @@ class AccountView(
                 'from_account',
             ).all()
 
+            context = super().get_context_data(**kwargs)
             context['accounts'] = accounts
             context['add_account_form'] = AddAccountForm()
             context['transfer_money_form'] = TransferMoneyAccountForm(

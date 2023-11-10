@@ -37,7 +37,6 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
     success_url = SuccessUrlView.INCOME_URL.value
 
     def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(**kwargs)
         user = get_object_or_404(User, username=self.request.user)
         if user:
             income_form = IncomeForm()
@@ -66,6 +65,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
                 'income',
             )
 
+            context = super().get_context_data(**kwargs)
             context['add_category_income_form'] = add_category_income_form
             context['categories'] = categories
             context['income_by_month'] = pages_income

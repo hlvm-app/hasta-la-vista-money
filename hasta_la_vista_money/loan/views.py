@@ -21,7 +21,6 @@ class LoanView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
     no_permission_url = reverse_lazy('login')
 
     def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(**kwargs)
         user = get_object_or_404(User, username=self.request.user)
         if user:
             loan_form = LoanForm()
@@ -32,6 +31,7 @@ class LoanView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
             ).all()
             payment_make_loan = user.payment_make_loan_users.all()
 
+            context = super().get_context_data(**kwargs)
             context['loan_form'] = loan_form
             context['payment_make_loan_form'] = payment_make_loan_form
             context['loan'] = loan

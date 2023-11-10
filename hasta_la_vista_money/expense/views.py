@@ -48,7 +48,6 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
 
         :return: Рендеринг данных на странице сайта.
         """
-        context = super().get_context_data(**kwargs)
         user = get_object_or_404(User, username=self.request.user)
 
         expense_categories = user.category_expense_users.select_related(
@@ -89,6 +88,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
             'receipts',
         )
 
+        context = super().get_context_data(**kwargs)
         context['add_category_form'] = add_category_form
         context['categories'] = expense_categories
         context['receipt_info_by_month'] = pages_receipt_table
