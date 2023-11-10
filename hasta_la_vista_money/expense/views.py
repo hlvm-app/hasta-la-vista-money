@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import Http404
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -42,14 +42,14 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
     no_permission_url = reverse_lazy('login')
     success_url = SuccessUrlView.EXPENSE_URL.value
 
-    def get(self, request, *args, **kwargs):
+    def get_context_data(self, *args, **kwargs):
         """
         Метод отображения расходов по месяцам на странице.
 
-        :param request: Запрос данных со страницы сайта.
         :return: Рендеринг данных на странице сайта.
         """
-        user = get_object_or_404(User, username=request.user)
+        context = super().get_context_data(**kwargs)
+        user = get_object_or_404(User, username=self.request.user)
 
         expense_categories = user.category_expense_users.select_related(
             'user',
@@ -63,7 +63,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
         add_expense_form.fields['category'].queryset = expense_categories
         add_category_form = AddCategoryForm()
 
-        receipt_info_by_month = collect_info_receipt(user=request.user)
+        receipt_info_by_month = collect_info_receipt(user=self.request.user)
 
         expenses = user.expense_users.select_related('user', 'account').values(
             'id',
@@ -75,7 +75,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
 
         # Paginator expense table
         pages_expense = paginator_custom_view(
-            request,
+            self.request,
             expenses,
             self.paginate_by,
             'expenses',
@@ -83,23 +83,19 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
 
         # Paginator receipts table
         pages_receipt_table = paginator_custom_view(
-            request,
+            self.request,
             receipt_info_by_month,
             self.paginate_by,
             'receipts',
         )
 
-        return render(
-            request,
-            self.template_name,
-            {
-                'add_category_form': add_category_form,
-                'categories': expense_categories,
-                'receipt_info_by_month': pages_receipt_table,
-                'expenses': pages_expense,
-                'add_expense_form': add_expense_form,
-            },
-        )
+        context['add_category_form'] = add_category_form
+        context['categories'] = expense_categories
+        context['receipt_info_by_month'] = pages_receipt_table
+        context['expenses'] = pages_expense
+        context['add_expense_form'] = add_expense_form
+
+        return context
 
 
 class ExpenseCreateView(
