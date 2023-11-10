@@ -65,7 +65,7 @@ class ReceiptView(
                 )
                 .filter(user=self.request.user)
                 .annotate(products=Count('product__product_name'))
-                .order_by('-product__product_name')
+                .order_by('-products')
                 .distinct()[:10]
             )
 
