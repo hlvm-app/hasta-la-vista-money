@@ -4,14 +4,16 @@
 Пользователь при этом должен отправить текст по шаблону, который он получит из
 QR-кода чека.
 """
+import os
 import re
 
-from hasta_la_vista_money.bot.tasks.tasks import (
-    async_handle_receipt_text_qrcode,
+import requests
+from hasta_la_vista_money.bot.receipt_handler.receipt_parser import (
+    ReceiptParser,
 )
 
 
-def handle_receipt_text(message, bot, user, account):
+def handle_receipt_text(url, message, bot, user, account):
     """
     Обрабатывает текстовые сообщения, содержащие информацию в QR-коде чека.
 
@@ -45,13 +47,14 @@ def handle_receipt_text(message, bot, user, account):
         text_qr_code = input_user
 
         chat_id = message.chat.id
-        user_id = user.id
 
-        async_handle_receipt_text_qrcode.delay(
-            chat_id=chat_id,
-            user_id=user_id,
-            account=account,
-            input_user=text_qr_code,
-        )
+        data = {
+            'token': os.getenv('TOKEN', None),
+            'qrraw': text_qr_code,
+        }
+        response = requests.post(url, data=data, timeout=10)
+        json_data = response.json()
+        parse = ReceiptParser(json_data, user, account)
+        parse.parse_receipt(chat_id)
     else:
         bot.send_message(message.chat.id, 'Недопустимый текст')

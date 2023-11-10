@@ -3,15 +3,17 @@
 
 От пользователя будет ожидаться картинка с QR-кодом.
 """
+import os
 import tempfile
 
+import requests
 from hasta_la_vista_money.bot.qrcode_decode import decode_qrcode
-from hasta_la_vista_money.bot.tasks.tasks import (
-    async_handle_receipt_text_qrcode,
+from hasta_la_vista_money.bot.receipt_handler.receipt_parser import (
+    ReceiptParser,
 )
 
 
-def handle_receipt_text_qrcode(message, bot, user, account):
+def handle_receipt_text_qrcode(url, message, bot, user, account):
     """
     Функция по обработке сообщения от пользователя.
 
@@ -40,21 +42,26 @@ def handle_receipt_text_qrcode(message, bot, user, account):
             suffix='.png',
         ) as image_file:
             image_file.write(byte_code)
-            # Из image_file с помощью функции decode_qrcode получает
-            # текст из QR-кода.
             text_qr_code = decode_qrcode(image_file.name)
             if not text_qr_code:
                 return ''
 
-            chat_id = message.chat.id
-            user_id = user.id
+            data = {
+                'token': os.getenv('TOKEN', None),
+                'qrraw': text_qr_code,
+            }
 
-            async_handle_receipt_text_qrcode.delay(
-                chat_id=chat_id,
-                user_id=user_id,
-                account=account,
-                input_user=text_qr_code,
+            response = requests.post(
+                url,
+                data=data,
+                timeout=10,
             )
+            json_data = response.json()
+
+            chat_id = message.chat.id
+
+            parse = ReceiptParser(json_data, user, account)
+            parse.parse_receipt(chat_id)
     else:
         bot.send_message(
             message.chat.id,

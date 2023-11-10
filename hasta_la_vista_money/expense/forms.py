@@ -1,4 +1,6 @@
+from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
+from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.forms import (
     BaseForm,
     DateTimePickerWidgetForm,
@@ -20,6 +22,19 @@ class AddExpenseForm(BaseForm):
         widgets = {
             'date': DateTimePickerWidgetForm,
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        account = cleaned_data.get('account')
+        amount = cleaned_data.get('amount')
+        if account:
+            account = get_object_or_404(Account, name_account=account)
+            if amount > account.balance:
+                self.add_error(
+                    'account',
+                    f'Недостаточно средств на счёте {account}',
+                )
+            return cleaned_data
 
 
 class AddCategoryForm(BaseForm):

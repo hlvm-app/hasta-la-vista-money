@@ -7,12 +7,7 @@ from django.db.models import ProtectedError
 from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import (
-    CreateView,
-    DeleteView,
-    TemplateView,
-    UpdateView,
-)
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from hasta_la_vista_money.account.forms import (
     AddAccountForm,
     TransferMoneyAccountForm,
@@ -75,21 +70,19 @@ def sort_expense_income(expenses, income):
     )
 
 
-class PageApplication(
+class AccountView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
-    TemplateView,
+    ListView,
 ):
     """Отображает список приложений в проекте на сайте."""
 
     model = Account
-    template_name = 'applications/page_application.html'
+    template_name = 'account/account.html'
     context_object_name = 'applications'
     no_permission_url = reverse_lazy('login')
 
     def get_context_data(self, **kwargs) -> dict:
-        context = super().get_context_data(**kwargs)
-
         self.request: WSGIRequest = self.request
 
         if self.request.user.is_authenticated:
@@ -119,6 +112,7 @@ class PageApplication(
                 'from_account',
             ).all()
 
+            context = super().get_context_data(**kwargs)
             context['accounts'] = accounts
             context['add_account_form'] = AddAccountForm()
             context['transfer_money_form'] = TransferMoneyAccountForm(
@@ -133,7 +127,7 @@ class PageApplication(
 
 class AccountCreateView(SuccessMessageMixin, CreateView):
     model = Account
-    template_name = 'applications/page_application.html'
+    template_name = 'account/account.html'
     form_class = AddAccountForm
     no_permission_url = reverse_lazy('login')
     success_url = reverse_lazy('applications:list')
@@ -185,7 +179,7 @@ class TransferMoneyAccountView(
     UpdateView,
 ):
     model = Account
-    template_name = 'applications/page_application.html'
+    template_name = 'account/account.html'
     form_class = TransferMoneyAccountForm
     success_message = MessageOnSite.SUCCESS_MESSAGE_TRANSFER_MONEY.value
 

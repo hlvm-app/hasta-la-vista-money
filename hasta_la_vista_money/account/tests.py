@@ -86,26 +86,22 @@ class TestAccount(TestCase):
 
     def test_delete_account_exist_expense(self):
         self.client.force_login(self.user)
-        url1 = reverse_lazy('expense:list')
 
         url2 = reverse_lazy(
             'account:delete_account',
             args=(self.account1.pk,),
         )
 
-        new_expense = {
-            'user': self.user,
-            'account': self.account1,
-            'category': 'Банковский платёж',
-            'date': '20/12/2023 15:30',
-            'amount': '15000.00',
-        }
-        response = self.client.post(url1, data=new_expense)
-        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
-
-        expense_exists = Expense.objects.filter(account=self.account1).exists()
+        expense_exists = Expense.objects.filter(
+            account__name_account=self.account1.name_account,
+        ).exists()
         self.assertTrue(expense_exists)
 
         response = self.client.post(url2, follow=True)
+
+        self.assertContains(
+            response,
+            'Счёт не может быть удалён!',
+        )
         self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
         self.assertTrue(Account.objects.filter(pk=self.account1.pk).exists())

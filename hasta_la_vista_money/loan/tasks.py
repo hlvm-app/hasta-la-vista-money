@@ -1,7 +1,6 @@
 """Модуль задач для пакета loan."""
 import datetime
 
-from celery import shared_task
 from dateutil.relativedelta import relativedelta
 from django.shortcuts import get_object_or_404
 from hasta_la_vista_money.constants import NumberMonthOfYear
@@ -9,8 +8,7 @@ from hasta_la_vista_money.loan.models import Loan, PaymentSchedule
 from hasta_la_vista_money.users.models import User
 
 
-@shared_task
-def async_calculate_annuity_loan(
+def calculate_annuity_loan(
     user_id,
     loan_id,
     start_date,
@@ -81,8 +79,7 @@ def async_calculate_annuity_loan(
         start_date = next_date
 
 
-@shared_task
-def async_calculate_differentiated_loan(
+def calculate_differentiated_loan(
     user_id,
     loan_id,
     start_date: datetime.datetime,

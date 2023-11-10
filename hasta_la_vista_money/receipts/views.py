@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count, ProtectedError, Sum
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView
 from django_filters.views import FilterView
@@ -37,17 +37,18 @@ class ReceiptView(
     paginate_by = 10
     template_name = 'receipts/receipts.html'
     model = Receipt
+    filterset_class = ReceiptFilter
     no_permission_url = reverse_lazy('login')
     success_url = 'receipts:list'
 
-    def get(self, request, *args, **kwargs):
-        user = get_object_or_404(User, username=request.user)
+    def get_context_data(self, *args, **kwargs):
+        user = get_object_or_404(User, username=self.request.user)
         if user.is_authenticated:
             seller_form = CustomerForm()
             receipt_filter = ReceiptFilter(
-                request.GET,
+                self.request.GET,
                 queryset=Receipt.objects.all(),
-                user=request.user,
+                user=self.request.user,
             )
             receipt_form = ReceiptForm()
             receipt_form.fields['account'].queryset = user.account_users
@@ -62,9 +63,9 @@ class ReceiptView(
                 list_receipts.values(
                     'product__product_name',
                 )
-                .filter(user=request.user)
+                .filter(user=self.request.user)
                 .annotate(products=Count('product__product_name'))
-                .order_by('-product__product_name')
+                .order_by('-products')
                 .distinct()[:10]
             )
 
@@ -74,30 +75,23 @@ class ReceiptView(
             total_receipts = receipt_filter.qs
 
             page_receipts = paginator_custom_view(
-                request,
+                self.request,
                 total_receipts,
                 self.paginate_by,
                 'receipts',
             )
 
-            return render(
-                request,
-                self.template_name,
-                {
-                    'receipts': page_receipts,
-                    'receipt_filter': receipt_filter,
-                    'total_receipts': total_receipts,
-                    'total_sum_receipts': total_sum_receipts,
-                    'seller_form': seller_form,
-                    'receipt_form': receipt_form,
-                    'product_formset': product_formset,
-                    'frequently_purchased_products': purchased_products,
-                },
-            )
+            context = super().get_context_data(**kwargs)
+            context['receipts'] = page_receipts
+            context['receipt_filter'] = receipt_filter
+            context['total_receipts'] = total_receipts
+            context['total_sum_receipts'] = total_sum_receipts
+            context['seller_form'] = seller_form
+            context['receipt_form'] = receipt_form
+            context['product_formset'] = product_formset
+            context['frequently_purchased_products'] = purchased_products
 
-    def get_queryset(self):
-        filterset = ReceiptFilter(self.request)
-        return filterset.qs
+            return context
 
 
 class CustomerCreateView(SuccessMessageMixin, CreateView):

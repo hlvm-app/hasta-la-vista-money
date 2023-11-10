@@ -69,7 +69,6 @@ INSTALLED_APPS = [
     'django_filters',
     'hasta_la_vista_money',
     'hasta_la_vista_money.account',
-    'hasta_la_vista_money.applications',
     'hasta_la_vista_money.bot',
     'hasta_la_vista_money.budget',
     'hasta_la_vista_money.commonlogic',
@@ -302,13 +301,3 @@ if os.environ.get('ACCESS_TOKEN') is not None:
 
 # Password reset timeout in seconds
 PASSWORD_RESET_TIMEOUT = 86400
-
-
-# Configure Celery
-SIXTY = 60
-THIRTY = 30
-
-CELERY_TIMEZONE = 'Europe/Moscow'
-CELERY_TASK_TRACK_STARTED = True
-CELERY_TASK_TIME_LIMIT = SIXTY * THIRTY
-CELERY_BROKER_URL = os.environ.get('RABBITMQ_URL')
