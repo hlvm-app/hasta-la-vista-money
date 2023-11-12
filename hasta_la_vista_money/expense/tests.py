@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import HTTPStatus
 from hasta_la_vista_money.expense.forms import AddExpenseForm
-from hasta_la_vista_money.expense.models import Expense, ExpenseType
+from hasta_la_vista_money.expense.models import Expense, ExpenseCategory
 from hasta_la_vista_money.users.models import User
 
 TEST_AMOUNT = 15000
@@ -22,7 +22,7 @@ class TestExpense(TestCase):
         self.user = User.objects.get(pk=1)
         self.account = Account.objects.get(pk=1)
         self.expense = Expense.objects.get(pk=1)
-        self.expense_type = ExpenseType.objects.get(pk=1)
+        self.expense_type = ExpenseCategory.objects.get(pk=1)
 
     def test_list_expense(self):
         self.client.force_login(self.user)
