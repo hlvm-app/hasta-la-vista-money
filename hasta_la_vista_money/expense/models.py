@@ -5,7 +5,7 @@ from hasta_la_vista_money.constants import NumericParameter
 from hasta_la_vista_money.users.models import User
 
 
-class Category(models.Model):
+class ExpenseCategory(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.PROTECT,
@@ -38,7 +38,7 @@ class Expense(CommonIncomeExpense):
         related_name='expense_accounts',
     )
     category = models.ForeignKey(
-        Category,
+        ExpenseCategory,
         on_delete=models.PROTECT,
         related_name='expense_categories',
     )

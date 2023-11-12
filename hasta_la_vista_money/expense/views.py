@@ -30,7 +30,7 @@ from hasta_la_vista_money.custom_mixin import (
     UpdateViewMixin,
 )
 from hasta_la_vista_money.expense.forms import AddCategoryForm, AddExpenseForm
-from hasta_la_vista_money.expense.models import Category, Expense
+from hasta_la_vista_money.expense.models import Expense, ExpenseCategory
 from hasta_la_vista_money.users.models import User
 
 
@@ -192,12 +192,12 @@ class ExpenseDeleteView(DetailView, DeleteView):
 
 
 class ExpenseCategoryCreateView(ExpenseIncomeFormValidCreateMixin):
-    model = Category
+    model = ExpenseCategory
     template_name = TemplateHTMLView.EXPENSE_TEMPLATE.value
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
     form_class = AddCategoryForm
 
 
 class ExpenseCategoryDeleteView(DeleteCategoryMixin):
-    model: type[Category] = Category
+    model: type[ExpenseCategory] = ExpenseCategory
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)

@@ -5,7 +5,7 @@ from hasta_la_vista_money.commonlogic.forms import (
     BaseForm,
     DateTimePickerWidgetForm,
 )
-from hasta_la_vista_money.expense.models import Category, Expense
+from hasta_la_vista_money.expense.models import Expense, ExpenseCategory
 
 
 class AddExpenseForm(BaseForm):
@@ -43,5 +43,5 @@ class AddCategoryForm(BaseForm):
     }
 
     class Meta:
-        model = Category
+        model = ExpenseCategory
         fields = ['name']

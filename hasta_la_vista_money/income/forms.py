@@ -3,7 +3,7 @@ from hasta_la_vista_money.commonlogic.forms import (
     BaseForm,
     DateTimePickerWidgetForm,
 )
-from hasta_la_vista_money.income.models import Category, Income
+from hasta_la_vista_money.income.models import Income, IncomeCategory
 
 
 class IncomeForm(BaseForm):
@@ -30,5 +30,5 @@ class AddCategoryIncomeForm(BaseForm):
     }
 
     class Meta:
-        model = Category
+        model = IncomeCategory
         fields = ['name']
