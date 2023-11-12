@@ -22,7 +22,7 @@ from hasta_la_vista_money.custom_mixin import (
     UpdateViewMixin,
 )
 from hasta_la_vista_money.income.forms import AddCategoryIncomeForm, IncomeForm
-from hasta_la_vista_money.income.models import Income, IncomeType
+from hasta_la_vista_money.income.models import Category, Income
 from hasta_la_vista_money.users.models import User
 
 
@@ -169,12 +169,12 @@ class IncomeDeleteView(DeleteView, DeletionMixin):
 
 
 class IncomeCategoryCreateView(ExpenseIncomeFormValidCreateMixin):
-    model = IncomeType
+    model = Category
     template_name = TemplateHTMLView.INCOME_TEMPLATE.value
     success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)
     form_class = AddCategoryIncomeForm
 
 
 class IncomeCategoryDeleteView(DeleteCategoryMixin):
-    model = IncomeType
+    model = Category
     success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)

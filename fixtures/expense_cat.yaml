@@ -1,6 +1,6 @@
 [
 {
-    "model": "expense.expensetype",
+    "model": "expense.category",
     "pk": 1,
     "fields": {
         "user": 1,
