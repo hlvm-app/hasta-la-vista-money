@@ -55,6 +55,7 @@ class CustomSuccessURLUserMixin:
 class ExpenseIncomeFormValidCreateMixin(CreateView):
     model = None
     form_class = None
+    depth = None
 
     def __init__(self, *args, **kwargs):
         """
@@ -75,7 +76,11 @@ class ExpenseIncomeFormValidCreateMixin(CreateView):
             name=category_name,
         )
 
-        add_category_form = self.form_class(request.POST)
+        add_category_form = self.form_class(
+            data=request.POST,
+            user=request.user,
+            depth=self.depth,
+        )
 
         if categories:
             messages.error(

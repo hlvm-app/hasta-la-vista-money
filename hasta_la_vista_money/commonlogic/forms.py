@@ -30,7 +30,7 @@ class BaseForm(ModelForm):
 
         abstract = True
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user=None, depth=None, *args, **kwargs):
         """
         Инициализирует экземпляр класса BaseForm.
 

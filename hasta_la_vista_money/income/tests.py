@@ -84,6 +84,7 @@ class TestIncome(TestCase):
         new_category = {
             'user': self.user,
             'name': 'Аванс',
+            'depth': 3,
         }
 
         response = self.client.post(url, data=new_category, follow=True)
