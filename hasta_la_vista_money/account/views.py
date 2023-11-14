@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import ProtectedError
-from django.http import Http404, HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
@@ -15,11 +15,7 @@ from hasta_la_vista_money.account.forms import (
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.views import collect_info_receipt
 from hasta_la_vista_money.constants import MessageOnSite
-from hasta_la_vista_money.custom_mixin import (
-    CustomNoPermissionMixin,
-    UpdateViewMixin,
-)
-from hasta_la_vista_money.income.models import Income
+from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.users.models import User
 
 
@@ -155,7 +151,6 @@ class ChangeAccountView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
     UpdateView,
-    UpdateViewMixin,
 ):
     model = Account
     form_class = AddAccountForm
@@ -163,14 +158,12 @@ class ChangeAccountView(
     success_url = reverse_lazy('applications:list')
     success_message = MessageOnSite.SUCCESS_MESSAGE_CHANGED_ACCOUNT.value
 
-    def get(self, request: WSGIRequest, *args, **kwargs) -> HttpResponse:
-        user = Income.objects.filter(user=request.user).first()
-        if user:
-            return self.get_update_form(
-                self.form_class,
-                'add_account_form',
-            )
-        raise Http404
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form_class = self.get_form_class()
+        form = form_class(**self.get_form_kwargs())
+        context['add_account_form'] = form
+        return context
 
 
 class TransferMoneyAccountView(
