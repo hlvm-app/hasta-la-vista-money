@@ -80,7 +80,10 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
             income_form.fields[
                 'account'
             ].queryset = user.account_users.select_related('user').all()
-            add_category_income_form = AddCategoryIncomeForm()
+            add_category_income_form = AddCategoryIncomeForm(
+                user=self.request.user,
+                depth=depth_limit,
+            )
 
             income_by_month = user.income_users.select_related(
                 'user, account',

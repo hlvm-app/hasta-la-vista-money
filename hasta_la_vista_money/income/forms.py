@@ -69,6 +69,21 @@ class AddCategoryIncomeForm(BaseForm):
         'name': 'Название категории',
     }
 
+    def __init__(self, user, depth, *args, **kwargs):
+        """Конструктор формы."""
+        super().__init__(*args, **kwargs)
+        user = get_object_or_404(User, username=user)
+        categories = (
+            user.category_income_users.select_related('user')
+            .order_by('parent_category_id')
+            .all()
+        )
+        category_choices = get_category_choices(
+            queryset=categories,
+            max_level=depth,
+        )
+        self.fields['parent_category'].choices = category_choices
+
     class Meta:
         model = IncomeCategory
         fields = ['name', 'parent_category']
