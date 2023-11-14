@@ -4,6 +4,7 @@ from django.db.models.functions import TruncMonth
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from hasta_la_vista_money.account.models import Account
+from hasta_la_vista_money.income.models import IncomeCategory
 from hasta_la_vista_money.users.models import User
 
 
@@ -41,15 +42,18 @@ def create_object_view(form, request, message) -> JsonResponse:
     """
     response_data = {}
     if form.is_valid():
-        form_class = form.save(commit=False)
+        form_instance = form.save(commit=False)
         cd = form.cleaned_data
         amount = cd.get('amount')
         account = cd.get('account')
+        category_id = cd.get('category')
         selected_account = get_object_or_404(Account, id=account.id)
+        selected_category = get_object_or_404(IncomeCategory, name=category_id)
         if selected_account.user == request.user:
             change_account_balance(account, request, amount)
-            form_class.user = request.user
-            form_class.save()
+            form_instance.user = request.user
+            form_instance.category = selected_category
+            form_instance.save()
             messages.success(
                 request,
                 message,

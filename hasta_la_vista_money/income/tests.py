@@ -42,7 +42,7 @@ class TestIncome(TestCase):
             'amount': TEST_AMOUNT,
         }
 
-        form = IncomeForm(data=new_income)
+        form = IncomeForm(data=new_income, user=self.user, depth=3)
         self.assertTrue(form.is_valid())
 
         response = self.client.post(url, data=form.data, follow=True)
@@ -59,7 +59,7 @@ class TestIncome(TestCase):
             'amount': NEW_TEST_AMOUNT,
         }
 
-        form = IncomeForm(data=update_expense)
+        form = IncomeForm(data=update_expense, user=self.user, depth=3)
         self.assertTrue(form.is_valid())
 
         response = self.client.post(url, form.data)
