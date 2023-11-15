@@ -8,6 +8,26 @@ from hasta_la_vista_money.income.models import IncomeCategory
 from hasta_la_vista_money.users.models import User
 
 
+def build_category_tree(categories, parent_id=None, depth=2, current_depth=1):
+    """Формирование дерева категория для отображения на сайте."""
+    tree = []
+    for category in categories:
+        if category['parent_category'] == parent_id:
+            children = []
+            if current_depth < depth:
+                children = build_category_tree(
+                    categories,
+                    category['id'],
+                    depth,
+                    current_depth + 1,
+                )
+            category_copy = category.copy()
+            if children:
+                category_copy['children'] = children
+            tree.append(category_copy)
+    return tree
+
+
 def collect_info_receipt(user: User) -> QuerySet:
     """
     Сбор информации о чеках для отображения на страницах сайта.

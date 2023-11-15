@@ -1,6 +1,5 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -48,19 +47,26 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
 
         :return: Рендеринг данных на странице сайта.
         """
+        depth_limit = 3
         user = get_object_or_404(User, username=self.request.user)
 
         expense_categories = user.category_expense_users.select_related(
             'user',
         ).all()
 
-        add_expense_form = AddExpenseForm()
+        add_expense_form = AddExpenseForm(
+            user=self.request.user,
+            depth=depth_limit,
+        )
         add_expense_form.fields[
             'account'
         ].queryset = user.account_users.select_related('user').all()
 
         add_expense_form.fields['category'].queryset = expense_categories
-        add_category_form = AddCategoryForm()
+        add_category_form = AddCategoryForm(
+            user=self.request.user,
+            depth=depth_limit,
+        )
 
         receipt_info_by_month = collect_info_receipt(user=self.request.user)
 
@@ -108,12 +114,25 @@ class ExpenseCreateView(
     no_permission_url = reverse_lazy('login')
     form_class = AddExpenseForm
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
+    depth_limit = 3
 
-    def post(self, request, *args, **kwargs):
-        add_expense_form = AddExpenseForm(request.POST)
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        kwargs['depth'] = self.depth_limit
+        return kwargs
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.action = reverse_lazy('expense:create')
+        return form
+
+    def form_valid(self, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
         return create_object_view(
-            form=add_expense_form,
-            request=request,
+            form=form,
+            request=self.request,
             message=MessageOnSite.SUCCESS_EXPENSE_ADDED.value,
         )
 
@@ -130,14 +149,28 @@ class ExpenseUpdateView(
     no_permission_url = reverse_lazy('login')
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
 
-    def get(self, request, *args, **kwargs):
-        user = get_object_or_404(User, username=request.user)
-        if user:
-            return self.get_update_form(
-                self.form_class,
-                'add_expense_form',
-            )
-        raise Http404
+    def get_object(self, queryset=None):  # noqa: WPS615
+        return get_object_or_404(Expense, pk=self.kwargs['pk'])
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        kwargs['depth'] = self.depth_limit
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form_class = self.get_form_class()
+        form = form_class(**self.get_form_kwargs())
+        context['add_expense_form'] = form
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        return self.form_invalid(form)
 
     def form_valid(self, form):
         expense_id = self.get_object().id
@@ -196,6 +229,13 @@ class ExpenseCategoryCreateView(ExpenseIncomeFormValidCreateMixin):
     template_name = TemplateHTMLView.EXPENSE_TEMPLATE.value
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
     form_class = AddCategoryForm
+    depth = 3
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        kwargs['depth'] = self.depth
+        return kwargs
 
 
 class ExpenseCategoryDeleteView(DeleteCategoryMixin):

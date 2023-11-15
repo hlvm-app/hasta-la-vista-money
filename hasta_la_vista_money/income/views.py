@@ -8,7 +8,10 @@ from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.custom_paginator import (
     paginator_custom_view,
 )
-from hasta_la_vista_money.commonlogic.views import create_object_view
+from hasta_la_vista_money.commonlogic.views import (
+    build_category_tree,
+    create_object_view,
+)
 from hasta_la_vista_money.constants import (
     MessageOnSite,
     SuccessUrlView,
@@ -23,26 +26,6 @@ from hasta_la_vista_money.custom_mixin import (
 from hasta_la_vista_money.income.forms import AddCategoryIncomeForm, IncomeForm
 from hasta_la_vista_money.income.models import Income, IncomeCategory
 from hasta_la_vista_money.users.models import User
-
-
-def build_category_tree(categories, parent_id=None, depth=2, current_depth=1):
-    """Формирование дерева категория для отображение на сайте."""
-    tree = []
-    for category in categories:
-        if category['parent_category'] == parent_id:
-            children = []
-            if current_depth < depth:
-                children = build_category_tree(
-                    categories,
-                    category['id'],
-                    depth,
-                    current_depth + 1,
-                )
-            category_copy = category.copy()
-            if children:
-                category_copy['children'] = children
-            tree.append(category_copy)
-    return tree
 
 
 class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
@@ -175,7 +158,7 @@ class IncomeUpdateView(
         return context
 
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object()  # Получаем и сохраняем объект модели
+        self.object = self.get_object()
         form = self.get_form()
         if form.is_valid():
             return self.form_valid(form)

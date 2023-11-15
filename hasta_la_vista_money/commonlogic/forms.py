@@ -5,6 +5,26 @@ from django.forms import ModelForm
 from hasta_la_vista_money.constants import TODAY, NumericParameter
 
 
+def get_category_choices(queryset, parent=None, level=0, max_level=2):
+    """Формируем выбор категории в форме."""
+    choices = []
+    prefix = '   >' * level
+    categories = queryset.filter(parent_category=parent)
+    for category in categories:
+        category_id = category.id
+        category_name = category.name
+        choices.append((category_id, f'{prefix} {category_name}'))
+        if level < max_level - 1:
+            subcategories = get_category_choices(
+                queryset,
+                parent=category,
+                level=level + 1,
+                max_level=max_level,
+            )
+            choices.extend(subcategories)
+    return choices
+
+
 class BaseForm(ModelForm):
     r"""
     Базовая модель формы Django для создания форм на основе модели.
