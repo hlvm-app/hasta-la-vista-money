@@ -1,3 +1,4 @@
+from django.forms import ModelChoiceField
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from hasta_la_vista_money.account.models import Account
@@ -18,19 +19,15 @@ class AddExpenseForm(BaseForm):
         'amount': _('Сумма'),
     }
 
-    class Meta:
-        model = Expense
-        fields = ['category', 'account', 'date', 'amount']
-        widgets = {
-            'date': DateTimePickerWidgetForm,
-        }
+    category = ModelChoiceField(queryset=ExpenseCategory.objects.all())
 
     def __init__(self, user, depth, *args, **kwargs):
         """Конструктор формы."""
+        self.user = user
         super().__init__(*args, **kwargs)
-        user = get_object_or_404(User, username=user)
+        selected_user = get_object_or_404(User, username=self.user)
         categories = (
-            user.category_income_users.select_related('user')
+            selected_user.category_expense_users.select_related('user')
             .order_by('parent_category_id')
             .all()
         )
@@ -38,20 +35,30 @@ class AddExpenseForm(BaseForm):
             queryset=categories,
             max_level=depth,
         )
+        category_choices.insert(0, ('', '----------'))
         self.fields['category'].choices = category_choices
 
     def clean(self):
         cleaned_data = super().clean()
-        account = cleaned_data.get('account')
+        account_form = cleaned_data.get('account')
         amount = cleaned_data.get('amount')
-        if account:
-            account = get_object_or_404(Account, name_account=account)
+        category = cleaned_data.get('category')
+
+        if account_form and amount and category:
+            account = get_object_or_404(Account, name_account=account_form)
             if amount > account.balance:
                 self.add_error(
                     'account',
                     f'Недостаточно средств на счёте {account}',
                 )
-            return cleaned_data
+        return cleaned_data
+
+    class Meta:
+        model = Expense
+        fields = ['category', 'account', 'date', 'amount']
+        widgets = {
+            'date': DateTimePickerWidgetForm,
+        }
 
 
 class AddCategoryForm(BaseForm):
@@ -65,7 +72,7 @@ class AddCategoryForm(BaseForm):
         super().__init__(*args, **kwargs)
         user = get_object_or_404(User, username=user)
         categories = (
-            user.category_income_users.select_related('user')
+            user.category_expense_users.select_related('user')
             .order_by('parent_category_id')
             .all()
         )
@@ -73,6 +80,7 @@ class AddCategoryForm(BaseForm):
             queryset=categories,
             max_level=depth,
         )
+        category_choices.insert(0, ('', '----------'))
         self.fields['parent_category'].choices = category_choices
 
     class Meta:

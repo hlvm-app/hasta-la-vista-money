@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -14,6 +15,7 @@ from hasta_la_vista_money.commonlogic.custom_paginator import (
     paginator_custom_view,
 )
 from hasta_la_vista_money.commonlogic.views import (
+    build_category_tree,
     collect_info_receipt,
     create_object_view,
 )
@@ -47,61 +49,74 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
 
         :return: Рендеринг данных на странице сайта.
         """
-        depth_limit = 3
         user = get_object_or_404(User, username=self.request.user)
+        depth_limit = 3
+        if user:
+            expense_categories = (
+                user.category_expense_users.select_related('user')
+                .values(
+                    'id',
+                    'name',
+                    'parent_category',
+                    'parent_category__name',
+                )
+                .order_by('parent_category_id')
+                .all()
+            )
+            flattened_categories = build_category_tree(
+                expense_categories,
+                depth=depth_limit,
+            )
+            add_expense_form = AddExpenseForm(
+                user=self.request.user,
+                depth=depth_limit,
+            )
+            add_expense_form.fields[
+                'account'
+            ].queryset = user.account_users.select_related('user').all()
 
-        expense_categories = user.category_expense_users.select_related(
-            'user',
-        ).all()
+            add_category_form = AddCategoryForm(
+                user=self.request.user,
+                depth=depth_limit,
+            )
 
-        add_expense_form = AddExpenseForm(
-            user=self.request.user,
-            depth=depth_limit,
-        )
-        add_expense_form.fields[
-            'account'
-        ].queryset = user.account_users.select_related('user').all()
+            receipt_info_by_month = collect_info_receipt(user=self.request.user)
 
-        add_expense_form.fields['category'].queryset = expense_categories
-        add_category_form = AddCategoryForm(
-            user=self.request.user,
-            depth=depth_limit,
-        )
+            expenses = user.expense_users.select_related(
+                'user',
+                'account',
+            ).values(
+                'id',
+                'date',
+                'account__name_account',
+                'category__name',
+                'amount',
+            )
 
-        receipt_info_by_month = collect_info_receipt(user=self.request.user)
+            # Paginator expense table
+            pages_expense = paginator_custom_view(
+                self.request,
+                expenses,
+                self.paginate_by,
+                'expenses',
+            )
 
-        expenses = user.expense_users.select_related('user', 'account').values(
-            'id',
-            'date',
-            'account__name_account',
-            'category__name',
-            'amount',
-        )
+            # Paginator receipts table
+            pages_receipt_table = paginator_custom_view(
+                self.request,
+                receipt_info_by_month,
+                self.paginate_by,
+                'receipts',
+            )
+            context = super().get_context_data(**kwargs)
+            context['add_category_form'] = add_category_form
+            context['categories'] = expense_categories
+            context['receipt_info_by_month'] = pages_receipt_table
+            context['expenses'] = pages_expense
+            context['add_expense_form'] = add_expense_form
+            context['flattened_categories'] = flattened_categories
 
-        # Paginator expense table
-        pages_expense = paginator_custom_view(
-            self.request,
-            expenses,
-            self.paginate_by,
-            'expenses',
-        )
-
-        # Paginator receipts table
-        pages_receipt_table = paginator_custom_view(
-            self.request,
-            receipt_info_by_month,
-            self.paginate_by,
-            'receipts',
-        )
-
-        context = super().get_context_data(**kwargs)
-        context['add_category_form'] = add_category_form
-        context['categories'] = expense_categories
-        context['receipt_info_by_month'] = pages_receipt_table
-        context['expenses'] = pages_expense
-        context['add_expense_form'] = add_expense_form
-
-        return context
+            return context
 
 
 class ExpenseCreateView(
@@ -122,19 +137,18 @@ class ExpenseCreateView(
         kwargs['depth'] = self.depth_limit
         return kwargs
 
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-        form.action = reverse_lazy('expense:create')
-        return form
+    def form_valid(self, form):
+        if form.is_valid():
+            response_data = create_object_view(
+                form=form,
+                model=ExpenseCategory,
+                request=self.request,
+                message=MessageOnSite.SUCCESS_EXPENSE_ADDED.value,
+            )
+            return JsonResponse(response_data)
 
-    def form_valid(self, *args, **kwargs):
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        return create_object_view(
-            form=form,
-            request=self.request,
-            message=MessageOnSite.SUCCESS_EXPENSE_ADDED.value,
-        )
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
 
 
 class ExpenseUpdateView(
