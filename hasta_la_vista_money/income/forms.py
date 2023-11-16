@@ -35,6 +35,7 @@ class IncomeForm(BaseForm):
             queryset=categories,
             max_level=depth,
         )
+        category_choices.insert(0, ('', '----------'))
         self.fields['category'].choices = category_choices
 
     class Meta:
@@ -56,7 +57,7 @@ class AddCategoryIncomeForm(BaseForm):
         super().__init__(*args, **kwargs)
         user = get_object_or_404(User, username=user)
         categories = (
-            user.category_income_users.select_related('user')
+            user.category_expense_users.select_related('user')
             .order_by('parent_category_id')
             .all()
         )
@@ -64,6 +65,7 @@ class AddCategoryIncomeForm(BaseForm):
             queryset=categories,
             max_level=depth,
         )
+        category_choices.insert(0, ('', '----------'))
         self.fields['parent_category'].choices = category_choices
 
     class Meta:

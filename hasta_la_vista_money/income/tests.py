@@ -51,7 +51,7 @@ class TestIncome(TestCase):
     def test_income_update(self):
         self.client.force_login(self.user)
         url = reverse_lazy('income:change', args=(self.income.pk,))
-        update_expense = {
+        update_income = {
             'user': self.user,
             'category': self.income_type.id,
             'account': self.account.id,
@@ -59,7 +59,7 @@ class TestIncome(TestCase):
             'amount': NEW_TEST_AMOUNT,
         }
 
-        form = IncomeForm(data=update_expense, user=self.user, depth=3)
+        form = IncomeForm(data=update_income, user=self.user, depth=3)
         self.assertTrue(form.is_valid())
 
         response = self.client.post(url, form.data)

@@ -42,7 +42,6 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
         user = get_object_or_404(User, username=self.request.user)
         depth_limit = 3
         if user:
-            income_form = IncomeForm(user=self.request.user, depth=depth_limit)
             categories = (
                 user.category_income_users.select_related('user')
                 .values(
@@ -59,17 +58,19 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
                 categories,
                 depth=depth_limit,
             )
-
+            income_form = IncomeForm(user=self.request.user, depth=depth_limit)
             income_form.fields[
                 'account'
             ].queryset = user.account_users.select_related('user').all()
+
             add_category_income_form = AddCategoryIncomeForm(
                 user=self.request.user,
                 depth=depth_limit,
             )
 
             income_by_month = user.income_users.select_related(
-                'user, account',
+                'user',
+                'account',
             ).values(
                 'id',
                 'date',
@@ -123,6 +124,7 @@ class IncomeCreateView(
         form = self.get_form(form_class)
         return create_object_view(
             form=form,
+            model=IncomeCategory,
             request=self.request,
             message=MessageOnSite.SUCCESS_INCOME_ADDED.value,
         )
