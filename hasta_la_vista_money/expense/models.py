@@ -15,6 +15,13 @@ class ExpenseCategory(models.Model):
         max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
         unique=True,
     )
+    parent_category = models.ForeignKey(
+        'self',
+        blank=True,
+        null=True,
+        related_name='subcategories',
+        on_delete=models.SET_NULL,
+    )
 
     class Meta:
         ordering = ['name']
