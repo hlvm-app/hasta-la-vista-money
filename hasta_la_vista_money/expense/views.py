@@ -15,6 +15,7 @@ from hasta_la_vista_money.commonlogic.custom_paginator import (
     paginator_custom_view,
 )
 from hasta_la_vista_money.commonlogic.views import (
+    FormKwargs,
     build_category_tree,
     collect_info_receipt,
     create_object_view,
@@ -122,6 +123,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
 class ExpenseCreateView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
+    FormKwargs,
     CreateView,
 ):
     model = Expense
@@ -130,12 +132,6 @@ class ExpenseCreateView(
     form_class = AddExpenseForm
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
     depth_limit = 3
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
-        kwargs['depth'] = self.depth_limit
-        return kwargs
 
     def form_valid(self, form):
         if form.is_valid():
@@ -146,9 +142,6 @@ class ExpenseCreateView(
                 message=MessageOnSite.SUCCESS_EXPENSE_ADDED.value,
             )
             return JsonResponse(response_data)
-
-    def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(form=form))
 
 
 class ExpenseUpdateView(
@@ -238,18 +231,12 @@ class ExpenseDeleteView(DetailView, DeleteView):
             return super().form_valid(form)
 
 
-class ExpenseCategoryCreateView(ExpenseIncomeFormValidCreateMixin):
+class ExpenseCategoryCreateView(ExpenseIncomeFormValidCreateMixin, FormKwargs):
     model = ExpenseCategory
     template_name = TemplateHTMLView.EXPENSE_TEMPLATE.value
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
     form_class = AddCategoryForm
     depth = 3
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
-        kwargs['depth'] = self.depth
-        return kwargs
 
 
 class ExpenseCategoryDeleteView(DeleteCategoryMixin):

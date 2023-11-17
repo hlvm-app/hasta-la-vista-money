@@ -9,6 +9,7 @@ from hasta_la_vista_money.commonlogic.custom_paginator import (
     paginator_custom_view,
 )
 from hasta_la_vista_money.commonlogic.views import (
+    FormKwargs,
     build_category_tree,
     create_object_view,
 )
@@ -99,6 +100,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
 class IncomeCreateView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
+    FormKwargs,
     CreateView,
 ):
     model = Income
@@ -107,17 +109,6 @@ class IncomeCreateView(
     form_class = IncomeForm
     success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)
     depth_limit = 3
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
-        kwargs['depth'] = self.depth_limit
-        return kwargs
-
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-        form.action = reverse_lazy('income:create')
-        return form
 
     def form_valid(self, *args, **kwargs):
         form_class = self.get_form_class()
@@ -133,6 +124,7 @@ class IncomeCreateView(
 class IncomeUpdateView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
+    FormKwargs,
     UpdateView,
     UpdateViewMixin,
 ):
@@ -145,12 +137,6 @@ class IncomeUpdateView(
 
     def get_object(self, queryset=None):  # noqa: WPS615
         return get_object_or_404(Income, pk=self.kwargs['pk'])
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
-        kwargs['depth'] = self.depth_limit
-        return kwargs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -216,18 +202,12 @@ class IncomeDeleteView(DeleteView, DeletionMixin):
             return super().form_valid(form)
 
 
-class IncomeCategoryCreateView(ExpenseIncomeFormValidCreateMixin):
+class IncomeCategoryCreateView(ExpenseIncomeFormValidCreateMixin, FormKwargs):
     model = IncomeCategory
     template_name = TemplateHTMLView.INCOME_TEMPLATE.value
     success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)
     form_class = AddCategoryIncomeForm
     depth = 3
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
-        kwargs['depth'] = self.depth
-        return kwargs
 
 
 class IncomeCategoryDeleteView(DeleteCategoryMixin):
