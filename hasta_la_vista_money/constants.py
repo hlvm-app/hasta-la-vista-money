@@ -186,6 +186,9 @@ class TelegramMessage(Enum):
             'Сначала введите дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС',
         ),
     )
+    NO_INFORMATION_BY_RECEIPT = ''.join(
+        'Нет информации по чеку.\nПопробуйте позже или внесите данные на сайте',
+    )
 
 
 class HTTPStatus(Enum):
