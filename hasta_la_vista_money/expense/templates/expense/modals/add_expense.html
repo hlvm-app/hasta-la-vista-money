@@ -1,0 +1,37 @@
+{% load i18n %}
+{% load django_bootstrap5 %}
+
+<div id="add-expense" class="ajax-modal modal fade">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Добавить расход
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {{ add_expense_form.media }}
+                <form class="ajax-form m-2" method="POST"
+                      action="{% url 'expense:create' %}">
+                    {% csrf_token %}
+                    {% if add_expense_form %}
+                        {% for field in add_expense_form %}
+                            <div class="form-group {% if field.errors %} has-error{% endif %}">
+                                {% bootstrap_field field %}
+                                {% if field.errors %}
+                                    {% for error in field.errors %}
+                                        <p class="help-block">{{ error }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <button type="submit" class="btn btn-primary">Добавить
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

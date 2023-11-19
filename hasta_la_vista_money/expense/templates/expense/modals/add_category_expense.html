@@ -1,0 +1,24 @@
+{% load i18n %}
+{% load django_bootstrap5 %}
+
+<div id="add-category-expense" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Добавить категорию расхода
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="form" method="post"
+                      action="{% url 'expense:create_category' %}">
+                    {% csrf_token %}
+                    {% bootstrap_form add_category_form %}
+                    {% bootstrap_button button_add_category button_type="submit" button_class='add-category-expense btn btn-primary' %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
