@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.db.models import Count, QuerySet, Sum
 from django.db.models.functions import TruncMonth
 from django.shortcuts import get_object_or_404
+from django.views.generic import CreateView
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.users.models import User
 
@@ -49,7 +50,9 @@ def collect_info_receipt(user: User) -> QuerySet:
     )
 
 
-class FormKwargs:
+class IncomeExpenseCreateViewMixin(CreateView):
+    depth_limit = None
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user

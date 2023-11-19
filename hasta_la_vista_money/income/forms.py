@@ -22,7 +22,7 @@ class IncomeForm(BaseForm):
 
     category = ModelChoiceField(queryset=IncomeCategory.objects.all())
 
-    def __init__(self, user, depth, *args, **kwargs):
+    def __init__(self, user=None, depth=None, *args, **kwargs):
         """Конструктор формы."""
         super().__init__(*args, **kwargs)
         user = get_object_or_404(User, username=user)
