@@ -10,6 +10,7 @@ from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.custom_paginator import (
     paginator_custom_view,
 )
+from hasta_la_vista_money.commonlogic.views import collect_info_receipt
 from hasta_la_vista_money.constants import (
     MessageOnSite,
     ReceiptConstants,
@@ -74,9 +75,19 @@ class ReceiptView(
             )
             total_receipts = receipt_filter.qs
 
+            receipt_info_by_month = collect_info_receipt(user=self.request.user)
+
             page_receipts = paginator_custom_view(
                 self.request,
                 total_receipts,
+                self.paginate_by,
+                'receipts',
+            )
+
+            # Paginator receipts table
+            pages_receipt_table = paginator_custom_view(
+                self.request,
+                receipt_info_by_month,
                 self.paginate_by,
                 'receipts',
             )
@@ -89,6 +100,7 @@ class ReceiptView(
             context['seller_form'] = seller_form
             context['receipt_form'] = receipt_form
             context['product_formset'] = product_formset
+            context['receipt_info_by_month'] = pages_receipt_table
             context['frequently_purchased_products'] = purchased_products
 
             return context
