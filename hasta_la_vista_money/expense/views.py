@@ -3,19 +3,13 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import (
-    CreateView,
-    DeleteView,
-    DetailView,
-    ListView,
-    UpdateView,
-)
+from django.views.generic import DeleteView, DetailView, ListView, UpdateView
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.custom_paginator import (
     paginator_custom_view,
 )
 from hasta_la_vista_money.commonlogic.views import (
-    FormKwargs,
+    IncomeExpenseCreateViewMixin,
     build_category_tree,
     collect_info_receipt,
     create_object_view,
@@ -123,8 +117,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
 class ExpenseCreateView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
-    FormKwargs,
-    CreateView,
+    IncomeExpenseCreateViewMixin,
 ):
     model = Expense
     template_name = TemplateHTMLView.EXPENSE_TEMPLATE.value
@@ -231,7 +224,10 @@ class ExpenseDeleteView(DetailView, DeleteView):
             return super().form_valid(form)
 
 
-class ExpenseCategoryCreateView(ExpenseIncomeFormValidCreateMixin, FormKwargs):
+class ExpenseCategoryCreateView(
+    ExpenseIncomeFormValidCreateMixin,
+    IncomeExpenseCreateViewMixin,
+):
     model = ExpenseCategory
     template_name = TemplateHTMLView.EXPENSE_TEMPLATE.value
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)

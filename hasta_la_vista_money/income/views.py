@@ -3,13 +3,13 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, ListView, UpdateView
-from django.views.generic.edit import CreateView, DeletionMixin
+from django.views.generic.edit import DeletionMixin
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.custom_paginator import (
     paginator_custom_view,
 )
 from hasta_la_vista_money.commonlogic.views import (
-    FormKwargs,
+    IncomeExpenseCreateViewMixin,
     build_category_tree,
     create_object_view,
 )
@@ -100,8 +100,7 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
 class IncomeCreateView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
-    FormKwargs,
-    CreateView,
+    IncomeExpenseCreateViewMixin,
 ):
     model = Income
     template_name = TemplateHTMLView.INCOME_TEMPLATE.value
@@ -124,7 +123,6 @@ class IncomeCreateView(
 class IncomeUpdateView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
-    FormKwargs,
     UpdateView,
     UpdateViewMixin,
 ):
@@ -137,6 +135,14 @@ class IncomeUpdateView(
 
     def get_object(self, queryset=None):  # noqa: WPS615
         return get_object_or_404(Income, pk=self.kwargs['pk'])
+
+    def get_form(self, form_class=None):
+        form_class = self.get_form_class()
+        return form_class(
+            user=self.request.user,
+            depth=self.depth_limit,
+            **self.get_form_kwargs(),
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -202,7 +208,10 @@ class IncomeDeleteView(DeleteView, DeletionMixin):
             return super().form_valid(form)
 
 
-class IncomeCategoryCreateView(ExpenseIncomeFormValidCreateMixin, FormKwargs):
+class IncomeCategoryCreateView(
+    ExpenseIncomeFormValidCreateMixin,
+    IncomeExpenseCreateViewMixin,
+):
     model = IncomeCategory
     template_name = TemplateHTMLView.INCOME_TEMPLATE.value
     success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)
