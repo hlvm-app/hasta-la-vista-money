@@ -14,10 +14,7 @@ from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.custom_paginator import (
     paginator_custom_view,
 )
-from hasta_la_vista_money.commonlogic.views import (
-    collect_info_receipt,
-    create_object_view,
-)
+from hasta_la_vista_money.commonlogic.views import create_object_view
 from hasta_la_vista_money.constants import (
     MessageOnSite,
     SuccessUrlView,
@@ -62,8 +59,6 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
         add_expense_form.fields['category'].queryset = expense_categories
         add_category_form = AddCategoryForm()
 
-        receipt_info_by_month = collect_info_receipt(user=self.request.user)
-
         expenses = user.expense_users.select_related('user', 'account').values(
             'id',
             'date',
@@ -80,18 +75,9 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
             'expenses',
         )
 
-        # Paginator receipts table
-        pages_receipt_table = paginator_custom_view(
-            self.request,
-            receipt_info_by_month,
-            self.paginate_by,
-            'receipts',
-        )
-
         context = super().get_context_data(**kwargs)
         context['add_category_form'] = add_category_form
         context['categories'] = expense_categories
-        context['receipt_info_by_month'] = pages_receipt_table
         context['expenses'] = pages_expense
         context['add_expense_form'] = add_expense_form
 

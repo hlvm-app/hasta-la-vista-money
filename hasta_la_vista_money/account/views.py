@@ -84,7 +84,7 @@ class AccountView(
 
     def get_context_data(self, **kwargs) -> dict:
         self.request: WSGIRequest = self.request
-
+        context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             user = get_object_or_404(
                 User,
@@ -112,7 +112,6 @@ class AccountView(
                 'from_account',
             ).all()
 
-            context = super().get_context_data(**kwargs)
             context['accounts'] = accounts
             context['add_account_form'] = AddAccountForm()
             context['transfer_money_form'] = TransferMoneyAccountForm(
