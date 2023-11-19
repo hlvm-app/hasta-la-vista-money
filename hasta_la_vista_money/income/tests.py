@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import HTTPStatus
 from hasta_la_vista_money.income.forms import IncomeForm
-from hasta_la_vista_money.income.models import Income, IncomeType
+from hasta_la_vista_money.income.models import Income, IncomeCategory
 from hasta_la_vista_money.users.models import User
 
 TEST_AMOUNT = 15000
@@ -22,7 +22,7 @@ class TestIncome(TestCase):
         self.user = User.objects.get(pk=1)
         self.account = Account.objects.get(pk=1)
         self.income = Income.objects.get(pk=1)
-        self.income_type = IncomeType.objects.get(pk=1)
+        self.income_type = IncomeCategory.objects.get(pk=1)
 
     def test_list_income(self):
         self.client.force_login(self.user)
@@ -42,7 +42,7 @@ class TestIncome(TestCase):
             'amount': TEST_AMOUNT,
         }
 
-        form = IncomeForm(data=new_income)
+        form = IncomeForm(data=new_income, user=self.user, depth=3)
         self.assertTrue(form.is_valid())
 
         response = self.client.post(url, data=form.data, follow=True)
@@ -51,7 +51,7 @@ class TestIncome(TestCase):
     def test_income_update(self):
         self.client.force_login(self.user)
         url = reverse_lazy('income:change', args=(self.income.pk,))
-        update_expense = {
+        update_income = {
             'user': self.user,
             'category': self.income_type.id,
             'account': self.account.id,
@@ -59,7 +59,7 @@ class TestIncome(TestCase):
             'amount': NEW_TEST_AMOUNT,
         }
 
-        form = IncomeForm(data=update_expense)
+        form = IncomeForm(data=update_income, user=self.user, depth=3)
         self.assertTrue(form.is_valid())
 
         response = self.client.post(url, form.data)
@@ -84,6 +84,7 @@ class TestIncome(TestCase):
         new_category = {
             'user': self.user,
             'name': 'Аванс',
+            'depth': 3,
         }
 
         response = self.client.post(url, data=new_category, follow=True)

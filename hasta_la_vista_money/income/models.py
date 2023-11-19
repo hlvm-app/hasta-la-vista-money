@@ -5,7 +5,7 @@ from hasta_la_vista_money.constants import NumericParameter
 from hasta_la_vista_money.users.models import User
 
 
-class IncomeType(models.Model):
+class IncomeCategory(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.PROTECT,
@@ -15,9 +15,16 @@ class IncomeType(models.Model):
         max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
         unique=True,
     )
+    parent_category = models.ForeignKey(
+        'self',
+        blank=True,
+        null=True,
+        related_name='subcategories',
+        on_delete=models.SET_NULL,
+    )
 
     class Meta:
-        ordering = ['name']
+        ordering = ['parent_category_id']
         indexes = [models.Index(fields=['name'])]
 
     def __str__(self):
@@ -38,7 +45,7 @@ class Income(CommonIncomeExpense):
         related_name='income_accounts',
     )
     category = models.ForeignKey(
-        IncomeType,
+        IncomeCategory,
         on_delete=models.PROTECT,
         related_name='income_categories',
     )

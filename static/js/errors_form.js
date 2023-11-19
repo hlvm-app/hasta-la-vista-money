@@ -17,8 +17,6 @@ $(document).ready(function() {
                         form.find('.has-error').removeClass('has-error'); // Удаляем класс has-error у всех полей формы
                         form.find('.help-block').remove(); // Удаляем все предыдущие сообщения об ошибках
                         for (let field in errors) {
-                            console.log(errors)
-                            console.log(field)
                             if (errors.hasOwnProperty(field)) {
                                 const fieldErrors = errors[field];
                                 if ('quantity' in fieldErrors) {

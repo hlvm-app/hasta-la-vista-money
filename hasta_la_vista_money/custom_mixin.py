@@ -3,7 +3,8 @@ from typing import Optional
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import ProtectedError
-from django.shortcuts import redirect, render
+from django.http import JsonResponse
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView
 from hasta_la_vista_money.constants import MessageOnSite
@@ -26,7 +27,7 @@ class DeleteCategoryMixin(DeleteView):
 
     def form_valid(self, form):
         try:
-            category = self.object
+            category = self.get_object()
             category.delete()
             messages.success(
                 self.request,
@@ -54,6 +55,7 @@ class CustomSuccessURLUserMixin:
 class ExpenseIncomeFormValidCreateMixin(CreateView):
     model = None
     form_class = None
+    depth = None
 
     def __init__(self, *args, **kwargs):
         """
@@ -66,20 +68,26 @@ class ExpenseIncomeFormValidCreateMixin(CreateView):
         self.request = None
 
     def post(self, request, *args, **kwargs):
+        response_data = {}
+
         category_name = request.POST.get('name')
         categories = self.model.objects.filter(
             user=request.user,
             name=category_name,
         )
 
-        add_category_form = self.form_class(request.POST)
+        add_category_form = self.form_class(
+            data=request.POST,
+            user=request.user,
+            depth=self.depth,
+        )
 
         if categories:
             messages.error(
                 request,
                 f'Категория "{category_name}" уже существует!',
             )
-            return redirect(self.success_url)
+
         elif add_category_form.is_valid():
             category_form = add_category_form.save(commit=False)
             category_form.user = request.user
@@ -88,25 +96,34 @@ class ExpenseIncomeFormValidCreateMixin(CreateView):
                 request,
                 f'Категория "{category_name}" была успешно добавлена!',
             )
-            return redirect(self.success_url)
-        messages.error(
-            request,
-            f'Категория "{category_name}" не может быть добавлена!',
-        )
-        return redirect(self.success_url)
+            response_data = {'success': True}
+        else:
+            messages.error(
+                request,
+                f'Категория "{category_name}" не может быть добавлена!',
+            )
+            response_data = {
+                'success': False,
+                'errors': add_category_form.errors,
+            }
+        return JsonResponse(response_data)
 
 
 class UpdateViewMixin:
+    depth_limit = 3
+
     def __init__(self):
         """Конструктов класса инициализирующий аргументы класса."""
         self.template_name = None
         self.request = None
 
-    def get_update_form(self, form_class=None, form_name=None):
+    def get_update_form(
+        self,
+        form_class=None,
+        form_name=None,
+        user=None,
+        depth=None,
+    ):
         model = self.get_object()
-        form = form_class(instance=model)
-        return render(
-            self.request,
-            self.template_name,
-            {form_name: form},
-        )
+        form = form_class(instance=model, user=user, depth=depth)
+        return {form_name: form}

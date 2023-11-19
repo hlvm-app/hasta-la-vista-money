@@ -1,6 +1,6 @@
 [
 {
-    "model": "income.incometype",
+    "model": "income.incomecategory",
     "pk": 1,
     "fields": {
         "user": 1,
