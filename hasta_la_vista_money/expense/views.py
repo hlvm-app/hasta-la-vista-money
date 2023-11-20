@@ -54,7 +54,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
                     'parent_category',
                     'parent_category__name',
                 )
-                .order_by('parent_category_id')
+                .order_by('name', 'parent_category')
                 .all()
             )
             flattened_categories = build_category_tree(
