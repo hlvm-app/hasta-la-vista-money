@@ -1,0 +1,37 @@
+{% load i18n %}
+{% load django_bootstrap5 %}
+
+<div id="add-income" class="modal fade ajax-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Добавить новый доход
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {{ income_form.media }}
+                <form class="ajax-form m-2" method="POST"
+                      action="{% url 'income:create' %}">
+                    {% csrf_token %}
+                    {% if income_form %}
+                        {% for field in income_form %}
+                            <div class="form-group {% if field.errors %} has-error{% endif %}">
+                                {% bootstrap_field field %}
+                                {% if field.errors %}
+                                    {% for error in field.errors %}
+                                        <p class="help-block">{{ error }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <button type="submit" class="btn btn-primary">Добавить
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
