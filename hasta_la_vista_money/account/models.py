@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -66,7 +64,7 @@ class TransferMoneyLog(models.Model):
         max_digits=NumericParameter.TWENTY.value,
         decimal_places=NumericParameter.TWO.value,
     )
-    exchange_date = models.DateTimeField(default=datetime.now)
+    exchange_date = models.DateTimeField()
     notes = models.TextField(blank=True, null=True)
 
     class Meta:

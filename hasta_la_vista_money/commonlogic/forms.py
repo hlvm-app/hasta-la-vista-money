@@ -92,7 +92,7 @@ class DateTimePickerWidgetForm(DateTimePickerInput):
                 - datetime.timedelta(
                     days=NumericParameter.TODAY_MINUS_FIVE_YEARS.value,
                 )
-            ).strftime('%d/%m/%Y %H:%M'),
+            ).strftime('%d-%m-%Y %H:%M'),
         )
         options.setdefault(
             'maxDate',
@@ -102,7 +102,7 @@ class DateTimePickerWidgetForm(DateTimePickerInput):
                     days=NumericParameter.THREE_HUNDRED_SIXTY_FIVE.value,
                 )
             ).strftime(
-                '%Y-%m-%d 23:59:59',
+                '%Y-%m-%d %H:%M',
             ),
         )
         super().__init__(*args, **kwargs, options=options)

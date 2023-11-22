@@ -9,6 +9,7 @@ from django.forms import (
     Textarea,
 )
 from hasta_la_vista_money.account.models import Account, TransferMoneyLog
+from hasta_la_vista_money.commonlogic.forms import DateTimePickerWidgetForm
 from hasta_la_vista_money.constants import MessageOnSite, NumericParameter
 
 
@@ -101,3 +102,10 @@ class TransferMoneyAccountForm(Form):
             )
 
         return None
+
+    class Meta:
+        model = TransferMoneyLog
+        fields = '__all__'
+        widgets = {
+            'date': DateTimePickerWidgetForm,
+        }
