@@ -107,5 +107,5 @@ class TransferMoneyAccountForm(Form):
         model = TransferMoneyLog
         fields = '__all__'
         widgets = {
-            'date': DateTimePickerWidgetForm,
+            'exchange_date': DateTimePickerWidgetForm,
         }
