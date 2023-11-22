@@ -11,9 +11,14 @@
 {% block content %}
     <div class="container-fluid">
         {% include 'error_modal.html' %}
-
+        {% include 'receipts/filter.html' %}
+        {% include 'receipts/modals/add_receipt.html' %}
+        {% include 'receipts/modals/frequently_purchased_products.html' %}
+        {% include 'receipts/modals/add_seller.html' %}
+        {% include 'receipts/modals/receipts_statistics.html' %}
     </div>
     <div class="container">
+
         <div class="row mt-5">
             <div class="d-flex justify-content-end">
                 <button type="button"
