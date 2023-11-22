@@ -1,5 +1,4 @@
 """Модуль разбора json данных."""
-from icecream import ic
 
 
 class JsonParser:
@@ -48,8 +47,6 @@ class JsonParser:
         list[dict] | None
             Словарь внутри списка, либо None
         """
-        ic(json_data)
-        ic(key)
         return JsonParser.__get_value(self, json_data, key)
 
     def __get_value(
