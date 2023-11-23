@@ -55,7 +55,6 @@ CSRF_TRUSTED_ORIGINS = (
 # Application definition
 
 INSTALLED_APPS = [
-    'bootstrap_datepicker_plus',
     'axes',
     'csp',
     'django.contrib.admin',

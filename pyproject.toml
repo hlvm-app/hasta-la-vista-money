@@ -26,7 +26,6 @@ Pillow = "^10.0.1"
 opencv-python = "^4.7.0"
 numpy = "^1.24.3"
 pyzbar = "^0.1.9"
-django-bootstrap-datepicker-plus = "^5.0.4"
 django-axes = "^6.0.5"
 Twisted = {extras = ["http2", "tls"], version = "^23.10.0"}
 python-dateutil = "^2.8.2"

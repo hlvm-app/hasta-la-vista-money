@@ -23,7 +23,6 @@ class AddAccountForm(ModelForm):
 
 
 class TransferMoneyAccountForm(ModelForm):
-    labels = {'exchange_date': _('Дата перевода')}
     from_account = ModelChoiceField(label='Со счёта:', queryset=None)
     to_account = ModelChoiceField(label='На счёт:', queryset=None)
     amount = DecimalField(
@@ -43,9 +42,9 @@ class TransferMoneyAccountForm(ModelForm):
                         'Поле необязательное!',
                     ),
                 ),
+                'maxlength': NumericParameter.TWO_HUNDRED_FIFTY.value,
             },
         ),
-        max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
     )
 
     def __init__(self, user, *args, **kwargs):
@@ -100,8 +99,14 @@ class TransferMoneyAccountForm(ModelForm):
 
     class Meta:
         model = TransferMoneyLog
-        fields = '__all__'
-        exclude = ('user',)
+        fields = [
+            'from_account',
+            'to_account',
+            'exchange_date',
+            'amount',
+            'notes',
+        ]
+        labels = {'exchange_date': _('Дата перевода')}
         widgets = {
             'exchange_date': DateTimeInput(
                 attrs={'type': 'datetime-local', 'class': 'form-control'},
