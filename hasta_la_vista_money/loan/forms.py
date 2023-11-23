@@ -1,10 +1,8 @@
 """Модуль форм по кредитам."""
+from django.forms import DateTimeInput
 from django.utils.translation import gettext_lazy as _
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.commonlogic.forms import (
-    BaseForm,
-    DateTimePickerWidgetForm,
-)
+from hasta_la_vista_money.commonlogic.forms import BaseForm
 from hasta_la_vista_money.loan.models import Loan, PaymentMakeLoan
 
 
@@ -27,7 +25,9 @@ class LoanForm(BaseForm):
             'period_loan',
         ]
         widgets = {
-            'date': DateTimePickerWidgetForm,
+            'date': DateTimeInput(
+                attrs={'type': 'datetime-local', 'class': 'form-control'},
+            ),
         }
 
     def __init__(self, *args, **kwargs):
@@ -85,5 +85,7 @@ class PaymentMakeLoanForm(BaseForm):
         model = PaymentMakeLoan
         fields = ['date', 'account', 'loan', 'amount']
         widgets = {
-            'date': DateTimePickerWidgetForm,
+            'date': DateTimeInput(
+                attrs={'type': 'datetime-local', 'class': 'form-control'},
+            ),
         }

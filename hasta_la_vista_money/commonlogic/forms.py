@@ -1,8 +1,4 @@
-import datetime
-
-from bootstrap_datepicker_plus.widgets import DateTimePickerInput
 from django.forms import ModelForm
-from hasta_la_vista_money.constants import TODAY, NumericParameter
 
 
 def get_category_choices(queryset, parent=None, level=0, max_level=2):
@@ -68,41 +64,3 @@ class BaseForm(ModelForm):
                 field,
                 self.fields[field].label,
             )
-
-
-class DateTimePickerWidgetForm(DateTimePickerInput):
-    def __init__(self, *args, **kwargs):
-        """
-        Инициализация параметров календаря.
-
-        :param args:
-        :param kwargs:
-        """
-        options = kwargs.pop('options', {})
-        options.setdefault('format', 'DD/MM/YYYY HH:mm')
-        options.setdefault('showTodayButton', True)
-        options.setdefault(
-            'minDate',
-            (
-                TODAY.replace(
-                    month=1,
-                    day=1,
-                    year=TODAY.year - 1,
-                )
-                - datetime.timedelta(
-                    days=NumericParameter.TODAY_MINUS_FIVE_YEARS.value,
-                )
-            ).strftime('%d-%m-%Y %H:%M'),
-        )
-        options.setdefault(
-            'maxDate',
-            (
-                datetime.datetime.today()
-                + datetime.timedelta(
-                    days=NumericParameter.THREE_HUNDRED_SIXTY_FIVE.value,
-                )
-            ).strftime(
-                '%Y-%m-%d %H:%M',
-            ),
-        )
-        super().__init__(*args, **kwargs, options=options)

@@ -1,10 +1,9 @@
-from django.forms import ModelChoiceField
+from django.forms import DateTimeInput, ModelChoiceField
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.forms import (
     BaseForm,
-    DateTimePickerWidgetForm,
     get_category_choices,
 )
 from hasta_la_vista_money.expense.models import Expense, ExpenseCategory
@@ -57,7 +56,9 @@ class AddExpenseForm(BaseForm):
         model = Expense
         fields = ['category', 'account', 'date', 'amount']
         widgets = {
-            'date': DateTimePickerWidgetForm,
+            'date': DateTimeInput(
+                attrs={'type': 'datetime-local', 'class': 'form-control'},
+            ),
         }
 
 

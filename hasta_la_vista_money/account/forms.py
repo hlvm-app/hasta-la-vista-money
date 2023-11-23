@@ -1,15 +1,13 @@
-from bootstrap_datepicker_plus.widgets import DateTimePickerInput
 from django.forms import (
     CharField,
-    DateTimeField,
+    DateTimeInput,
     DecimalField,
-    Form,
     ModelChoiceField,
     ModelForm,
     Textarea,
 )
+from django.utils.translation import gettext_lazy as _
 from hasta_la_vista_money.account.models import Account, TransferMoneyLog
-from hasta_la_vista_money.commonlogic.forms import DateTimePickerWidgetForm
 from hasta_la_vista_money.constants import MessageOnSite, NumericParameter
 
 
@@ -24,13 +22,10 @@ class AddAccountForm(ModelForm):
         }
 
 
-class TransferMoneyAccountForm(Form):
+class TransferMoneyAccountForm(ModelForm):
+    labels = {'exchange_date': _('Дата перевода')}
     from_account = ModelChoiceField(label='Со счёта:', queryset=None)
     to_account = ModelChoiceField(label='На счёт:', queryset=None)
-    exchange_date = DateTimeField(
-        label='Дата перевода:',
-        widget=DateTimePickerInput(),
-    )
     amount = DecimalField(
         label='Сумма перевода:',
         max_digits=NumericParameter.TWENTY.value,
@@ -106,6 +101,9 @@ class TransferMoneyAccountForm(Form):
     class Meta:
         model = TransferMoneyLog
         fields = '__all__'
+        exclude = ('user',)
         widgets = {
-            'exchange_date': DateTimePickerWidgetForm,
+            'exchange_date': DateTimeInput(
+                attrs={'type': 'datetime-local', 'class': 'form-control'},
+            ),
         }

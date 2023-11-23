@@ -1,6 +1,7 @@
 import django_filters
 from django.forms import (
     CharField,
+    DateTimeInput,
     NumberInput,
     Select,
     TextInput,
@@ -8,10 +9,7 @@ from django.forms import (
 )
 from django.utils.translation import gettext_lazy as _
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.commonlogic.forms import (
-    BaseForm,
-    DateTimePickerWidgetForm,
-)
+from hasta_la_vista_money.commonlogic.forms import BaseForm
 from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
 
 
@@ -154,7 +152,9 @@ class ReceiptForm(BaseForm):
             'total_sum',
         ]
         widgets = {
-            'receipt_date': DateTimePickerWidgetForm,
+            'receipt_date': DateTimeInput(
+                attrs={'type': 'datetime-local', 'class': 'form-control'},
+            ),
             'total_sum': NumberInput(
                 attrs={'class': 'total-sum', 'readonly': True},
             ),
