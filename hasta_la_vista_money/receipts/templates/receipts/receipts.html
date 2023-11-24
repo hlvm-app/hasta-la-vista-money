@@ -240,7 +240,7 @@
                     {% for page_number in receipts.paginator.page_range %}
                         {% if receipts.number == page_number %}
                             <button class="btn btn-outline-light active">
-                                <span>{{ page_number }} <span class="sr-only">(current)</span></span>
+                                <span>{{ page_number }}<span class="visually-hidden">(current)</span></span>
                             </button>
                         {% else %}
                             <a href="?
