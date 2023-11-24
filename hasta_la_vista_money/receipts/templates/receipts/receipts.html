@@ -242,7 +242,7 @@
                             <button class="btn btn-outline-light active">
                                 <span>{{ page_number }}<span class="visually-hidden">(current)</span></span>
                             </button>
-                        {% else %}
+                        {% elif page_number >= receipts.number|add:-2 and page_number <= receipts.number|add:2 %}
                             <a href="?
 
                                     {% for key, value in request.GET.items %}{% if key != 'receipts' %}&{{ key }}={{ value }}{% endif %}{% endfor %}&receipts={{ page_number }}"
