@@ -82,6 +82,7 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
                 'date',
                 'account__name_account',
                 'category__name',
+                'category__parent_category__name',
                 'amount',
             )
 

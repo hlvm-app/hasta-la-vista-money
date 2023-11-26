@@ -29,7 +29,7 @@
                                     {% for category in flattened_categories %}
                                         <li class="list-group-item">
                                             <div class="d-flex align-items-center">
-                                                <span>{{ category.name }}</span>
+                                                <strong>{{ category.name }}</strong>
                                                 <form class="form-remove-category-button m-0"
                                                       method="post"
                                                       action="{% url 'income:delete_category_income' category.id %}">
