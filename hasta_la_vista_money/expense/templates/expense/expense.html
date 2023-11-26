@@ -82,7 +82,7 @@
                                     <button class="btn btn-outline-light active">
                                         <span>{{ page_number }} <span class="visually-hidden">(current)</span></span>
                                     </button>
-                                {% else %}
+                                {% elif page_number >= expenses.number|add:-5 and page_number <= expenses.number|add:5 %}
                                     <a href="?expenses={{ page_number }}" class="btn btn-outline-light">
                                         {{ page_number }}
                                     </a>
