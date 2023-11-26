@@ -3,7 +3,6 @@ from typing import Optional
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import ProtectedError
-from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView
@@ -56,6 +55,7 @@ class ExpenseIncomeFormValidCreateMixin(CreateView):
     model = None
     form_class = None
     depth = None
+    success_url = None
 
     def __init__(self, *args, **kwargs):
         """
@@ -68,8 +68,6 @@ class ExpenseIncomeFormValidCreateMixin(CreateView):
         self.request = None
 
     def post(self, request, *args, **kwargs):
-        response_data = {}
-
         category_name = request.POST.get('name')
         categories = self.model.objects.filter(
             user=request.user,
@@ -96,17 +94,13 @@ class ExpenseIncomeFormValidCreateMixin(CreateView):
                 request,
                 f'Категория "{category_name}" была успешно добавлена!',
             )
-            response_data = {'success': True}
+            return redirect(self.success_url)
         else:
             messages.error(
                 request,
                 f'Категория "{category_name}" не может быть добавлена!',
             )
-            response_data = {
-                'success': False,
-                'errors': add_category_form.errors,
-            }
-        return JsonResponse(response_data)
+            return redirect(self.success_url)
 
 
 class UpdateViewMixin:
