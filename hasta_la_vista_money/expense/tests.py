@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse_lazy
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import HTTPStatus
-from hasta_la_vista_money.expense.forms import AddExpenseForm
+from hasta_la_vista_money.expense.forms import AddCategoryForm, AddExpenseForm
 from hasta_la_vista_money.expense.models import Expense, ExpenseCategory
 from hasta_la_vista_money.users.models import User
 
@@ -23,6 +23,7 @@ class TestExpense(TestCase):
         self.account = Account.objects.get(pk=1)
         self.expense = Expense.objects.get(pk=1)
         self.expense_type = ExpenseCategory.objects.get(pk=1)
+        self.parent_category = ExpenseCategory.objects.get(name='ЖКХ')
 
     def test_list_expense(self):
         self.client.force_login(self.user)
@@ -76,15 +77,13 @@ class TestExpense(TestCase):
     def test_category_expense_create(self):
         self.client.force_login(self.user)
 
-        url = reverse_lazy('expense:create_category')
-
         new_category = {
-            'user': self.user,
-            'name': 'ЖКХ',
+            'name': 'Оплата счёта',
+            'parent_category': self.parent_category.id,
         }
 
-        response = self.client.post(url, data=new_category, follow=True)
-        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+        form = AddCategoryForm(data=new_category, user=self.user, depth=3)
+        self.assertTrue(form.is_valid())
 
     def test_category_expense_delete(self):
         self.client.force_login(self.user)

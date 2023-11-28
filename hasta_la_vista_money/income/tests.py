@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse_lazy
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.constants import HTTPStatus
-from hasta_la_vista_money.income.forms import IncomeForm
+from hasta_la_vista_money.income.forms import AddCategoryIncomeForm, IncomeForm
 from hasta_la_vista_money.income.models import Income, IncomeCategory
 from hasta_la_vista_money.users.models import User
 
@@ -23,6 +23,7 @@ class TestIncome(TestCase):
         self.account = Account.objects.get(pk=1)
         self.income = Income.objects.get(pk=1)
         self.income_type = IncomeCategory.objects.get(pk=1)
+        self.parent_category = IncomeCategory.objects.get(name='Зарплата')
 
     def test_list_income(self):
         self.client.force_login(self.user)
@@ -79,16 +80,13 @@ class TestIncome(TestCase):
     def test_category_income_create(self):
         self.client.force_login(self.user)
 
-        url = reverse_lazy('income:create_category')
-
         new_category = {
-            'user': self.user,
-            'name': 'Аванс',
-            'depth': 3,
+            'name': 'Вторая часть',
+            'parent_category': self.parent_category.id,
         }
 
-        response = self.client.post(url, data=new_category, follow=True)
-        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+        form = AddCategoryIncomeForm(data=new_category, user=self.user, depth=3)
+        self.assertTrue(form.is_valid())
 
     def test_category_income_delete(self):
         self.client.force_login(self.user)
