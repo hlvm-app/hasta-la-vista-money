@@ -13,9 +13,10 @@ import os
 from pathlib import Path
 
 import dj_database_url
-import rollbar
+import sentry_sdk
 from config.django.sessions import *  # NOQA
 from dotenv import load_dotenv
+from sentry_sdk.integrations.django import DjangoIntegration
 
 load_dotenv()
 
@@ -98,7 +99,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
     'axes.middleware.AxesMiddleware',
 ]
 
@@ -117,6 +117,7 @@ LOGOUT_REDIRECT_URL = '/login'
 
 # Settings CSP
 CSP_INCLUDE_NONCE_IN = ['script-src', 'style-src', 'img-src', 'font-src']
+CSP_REPORT_URI = [os.getenv('SENTRY_ENDPOINT')]
 
 CSP_DEFAULT_SRC = (
     "'self'",
@@ -287,16 +288,15 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-if os.environ.get('ACCESS_TOKEN') is not None:
-    ROLLBAR = {
-        'access_token': os.environ.get('ACCESS_TOKEN'),
-        'environment': 'production',
-        'patch_debugview': False,
-        'root': BASE_DIR,
-    }
-
-    rollbar.init(**ROLLBAR)
-
-
 # Password reset timeout in seconds
 PASSWORD_RESET_TIMEOUT = 86400
+
+RATE = 0.01
+
+sentry_sdk.init(
+    dsn=os.getenv('SENTRY_DSN'),
+    integrations=[DjangoIntegration()],
+    auto_session_tracking=False,
+    traces_sample_rate=RATE,
+    environment=os.getenv('SENTRY_ENVIRONMENT'),
+)
