@@ -51,7 +51,7 @@ class CustomSuccessURLUserMixin:
         return reverse_lazy('users:profile', kwargs={'pk': user})
 
 
-class ExpenseIncomeFormValidCreateMixin(CreateView):
+class ExpenseIncomeCategoryCreateViewMixin(CreateView):
     model = None
     form_class = None
     depth = None
@@ -67,37 +67,37 @@ class ExpenseIncomeFormValidCreateMixin(CreateView):
         super().__init__(*args, **kwargs)
         self.request = None
 
-    def post(self, request, *args, **kwargs):
-        category_name = request.POST.get('name')
+    def form_valid(self, form):
+        category_name = self.request.POST.get('name')
         categories = self.model.objects.filter(
-            user=request.user,
+            user=self.request.user,
             name=category_name,
         )
 
         add_category_form = self.form_class(
-            data=request.POST,
-            user=request.user,
+            data=self.request.POST,
+            user=self.request.user,
             depth=self.depth,
         )
 
         if categories:
             messages.error(
-                request,
+                self.request,
                 f'Категория "{category_name}" уже существует!',
             )
 
         elif add_category_form.is_valid():
             category_form = add_category_form.save(commit=False)
-            category_form.user = request.user
+            category_form.user = self.request.user
             category_form.save()
             messages.success(
-                request,
+                self.request,
                 f'Категория "{category_name}" была успешно добавлена!',
             )
             return redirect(self.success_url)
         else:
             messages.error(
-                request,
+                self.request,
                 f'Категория "{category_name}" не может быть добавлена!',
             )
             return redirect(self.success_url)
