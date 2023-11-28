@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, ListView, UpdateView
@@ -21,7 +22,7 @@ from hasta_la_vista_money.constants import (
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
     DeleteCategoryMixin,
-    ExpenseIncomeFormValidCreateMixin,
+    ExpenseIncomeCategoryCreateViewMixin,
     UpdateViewMixin,
 )
 from hasta_la_vista_money.income.forms import AddCategoryIncomeForm, IncomeForm
@@ -110,15 +111,17 @@ class IncomeCreateView(
     success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)
     depth_limit = 3
 
-    def form_valid(self, *args, **kwargs):
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        return create_object_view(
-            form=form,
-            model=IncomeCategory,
-            request=self.request,
-            message=MessageOnSite.SUCCESS_INCOME_ADDED.value,
-        )
+    def form_valid(self, form):
+        if form.is_valid():
+            form_class = self.get_form_class()
+            form = self.get_form(form_class)
+            response_data = create_object_view(
+                form=form,
+                model=IncomeCategory,
+                request=self.request,
+                message=MessageOnSite.SUCCESS_INCOME_ADDED.value,
+            )
+            return JsonResponse(response_data)
 
 
 class IncomeUpdateView(
@@ -209,10 +212,7 @@ class IncomeDeleteView(DeleteView, DeletionMixin):
             return super().form_valid(form)
 
 
-class IncomeCategoryCreateView(
-    ExpenseIncomeFormValidCreateMixin,
-    IncomeExpenseCreateViewMixin,
-):
+class IncomeCategoryCreateView(ExpenseIncomeCategoryCreateViewMixin):
     model = IncomeCategory
     template_name = TemplateHTMLView.INCOME_TEMPLATE.value
     success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)
