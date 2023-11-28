@@ -31,13 +31,13 @@ python-dateutil = "^2.8.2"
 django-debug-toolbar = "^4.2.0"
 wemake-python-styleguide = "^0.18.0"
 daphne = "^4.0.0"
-sentry-sdk = {extras = ["django"], version = "^1.37.1"}
+sentry-sdk = "^1.37.1"
 
 [tool.poetry.dev-dependencies]
 Faker = "^13.7.0"
 coverage = "^7.3.2"
 Sphinx = "^6.2.1"
-sphinx-rtd-theme = "^1.2.0"
+sphinx-rtd-theme = "^2.0.0"
 furo = "^2023.3.27"
 myst-parser = "^2.0.0"
 black = "^23.7.0"
