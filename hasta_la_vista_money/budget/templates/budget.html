@@ -27,29 +27,39 @@
         </div>
         <!-- /.row -->
         <div class="row">
-            <div class="col-xl-12">
-                <form action=""
-                      class="form" method="post">
-                    {% csrf_token %}
-                    {% if select_date_form %}
-                            {% for field in select_date_form %}
-                                <div class="form-group {% if field.errors %} has-error{% endif %}">
-                                    {% bootstrap_field field layout="horizontal" horizontal_label_class='col-xl-12' horizontal_field_class='col-xl-10' %}
-                                    {% if field.errors %}
-                                        {% for error in field.errors %}
-                                            <p class="help-block">{{ error }}</p>
-                                        {% endfor %}
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr class="table-light">
+                        {% for item_date in list_date %}
+                            <th colspan="2"
+                                class="th-date text-nowrap">{{ item_date.date | date:"F Y" }}</th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for _ in list_date %}
+                            <td>Факт</td>
+                            <td>План</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for item_date in list_date %}
+                            <td>
+                                {% for expense in queryset_expense %}
+                                    {% if expense.month|date:"Y-m" == item_date.date|date:"Y-m" %}
+                                        {{ expense.total_amount }}
                                     {% endif %}
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-                    <button class="btn btn-primary" type="submit" name="create_months">Показать</button>
-                </form>
-                <!-- /.form -->
+                                {% endfor %}
+                            </td>
+                            <td></td>
+                        {% endfor %}
+                    </tr>
+                    </tbody>
+                </table>
+                <!-- /.table -->
             </div>
-            <!-- /.col-xl-12 -->
+            <!-- /.table-responsive -->
         </div>
-        <!-- /.row -->
     </div>
     <!-- /.container -->
 {% endblock %}
