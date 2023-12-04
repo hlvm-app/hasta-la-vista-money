@@ -71,9 +71,9 @@ class AddCategoryForm(BaseForm):
     def __init__(self, user, depth, *args, **kwargs):
         """Конструктор формы."""
         super().__init__(*args, **kwargs)
-        user = get_object_or_404(User, username=user)
+        current_user = get_object_or_404(User, username=user)
         categories = (
-            user.category_expense_users.select_related('user')
+            current_user.category_expense_users.select_related('user')
             .order_by('parent_category_id')
             .all()
         )

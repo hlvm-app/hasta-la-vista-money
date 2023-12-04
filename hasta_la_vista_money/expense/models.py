@@ -22,13 +22,6 @@ class ExpenseCategory(models.Model):
         related_name='subcategories',
         on_delete=models.SET_NULL,
     )
-    parent_category_self = models.ForeignKey(
-        'ParentCategoryExpense',
-        blank=True,
-        null=True,
-        related_name='subcategories',
-        on_delete=models.SET_NULL,
-    )
 
     class Meta:
         ordering = ['name']
@@ -38,13 +31,6 @@ class ExpenseCategory(models.Model):
 
     def __str__(self):
         return str(self.name)
-
-
-class ParentCategoryExpense(models.Model):
-    name = models.CharField(
-        max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
-        unique=True,
-    )
 
 
 class Expense(CommonIncomeExpense):

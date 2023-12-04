@@ -221,6 +221,12 @@ class ExpenseCategoryCreateView(ExpenseIncomeCategoryCreateViewMixin):
     form_class = AddCategoryForm
     depth = 3
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        kwargs['depth'] = self.depth
+        return kwargs
+
 
 class ExpenseCategoryDeleteView(DeleteCategoryMixin):
     model: type[ExpenseCategory] = ExpenseCategory
