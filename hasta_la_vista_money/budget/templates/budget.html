@@ -30,35 +30,31 @@
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <tbody>
-                    <tr class="table-light">
-                        <th></th>
-                        {% for item_date in list_date %}
-                            <th colspan="2"
-                                class="th-date text-nowrap">{{ item_date.date | date:"F Y" }}</th>
+                    <tr>
+                        <td></td>
+                        {% for date in list_dates %}
+                            <th colspan="2" class="text-nowrap">{{ date.date | date:"F Y" }}</th>
                         {% endfor %}
                     </tr>
                     <tr>
-                        <td></td>
-                        {% for _ in list_date %}
-                            <td>Факт</td>
-                            <td>План</td>
+                        <td>Категория</td>
+                        {% for _ in list_dates %}
+                            <th>Факт</th>
+                            <th>План</th>
                         {% endfor %}
                     </tr>
-                    {% for expense in filtered_queryset_expense %}
+                    {% for row in category_amount %}
                         <tr>
-                            <td>{{ expense.category__parent_category__name }}</td>
-                            {% for item_date in list_date %}
-                                <td>
-                                    {% if expense.month|date:"Y-m" == item_date.date|date:"Y-m" %}
-                                        {{ expense.total_amount }}
-                                    {% endif %}
-                                </td>
-                                <td></td>
+                            <td>{{ row.category }}</td>
+                            {% for amount in row.amounts %}
+                                <td>{{ amount }}</td>
+                                <td contenteditable="true">0,00</td>
                             {% endfor %}
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
+
 
                 <!-- /.table -->
             </div>

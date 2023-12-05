@@ -2,7 +2,7 @@ from django.db.models import Sum
 from django.db.models.functions import TruncMonth
 from django.views.generic import ListView
 from hasta_la_vista_money.budget.models import DateList, Planning
-from hasta_la_vista_money.expense.models import Expense
+from hasta_la_vista_money.expense.models import Expense, ExpenseCategory
 
 
 class BaseView(ListView):
@@ -12,29 +12,52 @@ class BaseView(ListView):
 class BudgetView(BaseView):
     model = Planning
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        list_date = DateList.objects.filter(user=self.request.user).order_by(
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        list_dates = DateList.objects.filter(user=self.request.user).order_by(
             'date',
         )
-        queryset_expense = (
-            Expense.objects.filter(user=self.request.user)  # noqa: WPS221
-            .annotate(month=TruncMonth('date'))
-            .values('category__parent_category__name', 'month')
-            .annotate(total_amount=Sum('amount'))
-            .order_by('category__parent_category__name', 'month')
-        )
 
-        filtered_queryset_expense = []
-        for category in queryset_expense:
-            for item_date in list_date:
-                if category['month'].strftime(
-                    '%Y-%m',
-                ) == item_date.date.strftime('%Y-%m'):
-                    filtered_queryset_expense.append(category)
-                    break
+        parent_categories = ExpenseCategory.objects.filter(
+            user=self.request.user,
+            parent_category=None,
+        ).order_by('name')
 
-        context = super().get_context_data(**kwargs)
-        context['filtered_queryset_expense'] = filtered_queryset_expense
-        context['list_date'] = list_date
+        expenses_dict = {}
+        for category in parent_categories:
+            expenses_dict[category.name] = {}
+
+            queryset_expense = (
+                Expense.objects.filter(
+                    user=self.request.user,
+                    category__parent_category=category,
+                )
+                .annotate(month=TruncMonth('date'))
+                .values('month')
+                .annotate(total_amount=Sum('amount'))
+                .order_by('month')
+            )
+
+            for expense in queryset_expense:
+                month_key = expense['month'].strftime('%Y-%m')
+                total_amount = expense['total_amount']
+                expenses_dict[category.name][month_key] = total_amount
+
+        category_amount = []
+        for category in parent_categories:
+            row = {'category': category.name, 'amounts': []}
+
+            for date in list_dates:
+                month_key = date.date.strftime('%Y-%m')
+                amount = expenses_dict.get(category.name, {}).get(
+                    month_key,
+                    '0,00',
+                )
+                row['amounts'].append(amount)
+
+            category_amount.append(row)
+        context['list_dates'] = list_dates
+        context['category_amount'] = category_amount
 
         return context
