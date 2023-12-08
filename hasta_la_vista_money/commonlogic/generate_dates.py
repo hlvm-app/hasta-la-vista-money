@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Union
 
 from dateutil.relativedelta import relativedelta
 from django.db.models import QuerySet
@@ -9,7 +9,7 @@ from hasta_la_vista_money.users.models import User
 
 
 def generate_date_list(
-    current_date: Optional[datetime, QuerySet],
+    current_date: Union[datetime, QuerySet],
     user: User,
 ):
     """Функция генерации первых 12 месяцев начиная с переданной даты."""
