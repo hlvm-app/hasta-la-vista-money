@@ -20,6 +20,7 @@ from django.views.generic import CreateView, TemplateView, UpdateView
 from hasta_la_vista_money.bot.send_message.send_message_tg_user import (
     SendMessageToTelegramUser,
 )
+from hasta_la_vista_money.commonlogic.generate_dates import generate_date_list
 from hasta_la_vista_money.constants import MessageOnSite, TemplateHTMLView
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
@@ -96,6 +97,13 @@ class CreateUser(SuccessMessageMixin, CreateView):
         context['title'] = _('Форма регистрации')
         context['button_text'] = _('Регистрация')
         return context
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        user = self.object
+        date_time_user_registration = user.date_joined
+        generate_date_list(date_time_user_registration, user)
+        return response
 
 
 class UpdateUserView(
