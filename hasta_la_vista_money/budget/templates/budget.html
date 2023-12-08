@@ -28,7 +28,13 @@
         <!-- /.row -->
         <div class="row">
             <div class="table-responsive">
+                <form action="{% url 'budget:generate_date' %}" class="form" method="post">
+                    {% csrf_token %}
+                    <button id="generateDateButton">Добавить</button>
+                </form>
+
                 <table class="table table-bordered">
+
                     <tbody>
                     <tr>
                         <td></td>

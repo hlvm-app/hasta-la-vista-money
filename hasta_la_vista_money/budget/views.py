@@ -1,19 +1,26 @@
 from django.db.models import Sum
 from django.db.models.functions import TruncMonth
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.views.generic import ListView
+from hasta_la_vista_money.budget.forms import GenerateDateForm
 from hasta_la_vista_money.budget.models import DateList, Planning
+from hasta_la_vista_money.commonlogic.generate_dates import generate_date_list
 from hasta_la_vista_money.expense.models import Expense, ExpenseCategory
+from hasta_la_vista_money.users.models import User
 
 
-class BaseView(ListView):
+class BaseView:
     template_name = 'budget.html'
 
 
-class BudgetView(BaseView):
+class BudgetView(BaseView, ListView):
     model = Planning
 
     def get_context_data(self, **kwargs):  # noqa: WPS210
         context = super().get_context_data(**kwargs)
+
+        date_form = GenerateDateForm()
 
         list_dates = DateList.objects.filter(user=self.request.user).order_by(
             'date',
@@ -63,5 +70,16 @@ class BudgetView(BaseView):
         context['list_dates'] = list_dates
         context['category_amount'] = category_amount
         context['total_sums'] = total_sums
+        context['form'] = date_form
 
         return context
+
+
+def generate_date_list_view(request):
+    """Функция представления генерации дат."""
+    if request.method == 'POST':
+        user = request.user
+        queryset_user = get_object_or_404(User, username=user)
+        queryset_last_date = queryset_user.budget_date_list_users.last().date
+        generate_date_list(queryset_last_date, queryset_user)
+        return redirect(reverse_lazy('budget:list'))
