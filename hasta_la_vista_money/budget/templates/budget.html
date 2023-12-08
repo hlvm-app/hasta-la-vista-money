@@ -28,13 +28,11 @@
         <!-- /.row -->
         <div class="row">
             <div class="table-responsive">
-                <form action="{% url 'budget:generate_date' %}" class="form" method="post">
+                <form action="{% url 'budget:generate_date' %}" class="form m-0" method="post">
                     {% csrf_token %}
-                    <button id="generateDateButton">Добавить</button>
+                    <button class="btn text-white">Добавить список дат</button>
                 </form>
-
                 <table class="table table-bordered">
-
                     <tbody>
                     <tr>
                         <td></td>
@@ -42,6 +40,7 @@
                             <th colspan="2" class="text-nowrap">{{ date.date | date:"F Y" }}</th>
                         {% endfor %}
                     </tr>
+
                     <tr>
                         <th>Итог</th>
                         {% for total_sum in total_sums %}
@@ -66,6 +65,7 @@
                             {% endfor %}
                         </tr>
                     {% endfor %}
+
                     </tbody>
                 </table>
 
