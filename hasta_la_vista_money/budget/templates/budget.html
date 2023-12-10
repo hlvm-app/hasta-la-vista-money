@@ -32,10 +32,10 @@
                     {% csrf_token %}
                     <button class="btn text-white">Добавить список дат</button>
                 </form>
-                <table class="table table-bordered">
-                    <tbody>
+                <table class="table table-dark">
+                    <tbody class="d-block">
                     <tr>
-                        <td></td>
+                        <td>Расход</td>
                         {% for date in list_dates %}
                             <th colspan="2" class="text-nowrap">{{ date.date | date:"F Y" }}</th>
                         {% endfor %}
@@ -44,7 +44,7 @@
                     <tr>
                         <th>Итог</th>
                         {% for total_sum in total_sums %}
-                            <td>{{ total_sum|floatformat:"2" }}</td>
+                            <td class="{% if total_sum != 0 %}fw-bold{% endif %}">{{ total_sum|floatformat:"2" }}</td>
                             <td>0,00</td>
                         {% endfor %}
                     </tr>
@@ -60,7 +60,41 @@
                         <tr>
                             <td>{{ row.category }}</td>
                             {% for amount in row.amounts %}
-                                <td>{{ amount }}</td>
+                                <td class="{% if amount != '0,00' %}fw-bold{% endif %}">{{ amount }}</td>
+                                <td contenteditable="true">0,00</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                    <tbody class="d-block mt-1">
+                    <tr>
+                        <td>Доход</td>
+                        {% for date in list_dates %}
+                            <th colspan="2" class="text-nowrap">{{ date.date | date:"F Y" }}</th>
+                        {% endfor %}
+                    </tr>
+
+                    <tr>
+                        <th>Итог</th>
+                        {% for total_sum in total_sums %}
+                            <td class="{% if total_sum != 0 %}fw-bold{% endif %}">{{ total_sum|floatformat:"2" }}</td>
+                            <td>0,00</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td></td>
+                        {% for _ in list_dates %}
+                            <th>Факт</th>
+                            <th>План</th>
+                        {% endfor %}
+                    </tr>
+
+                    {% for row in category_amount %}
+                        <tr>
+                            <td>{{ row.category }}</td>
+                            {% for amount in row.amounts %}
+                                <td class="{% if amount != '0,00' %}fw-bold{% endif %}">{{ amount }}</td>
                                 <td contenteditable="true">0,00</td>
                             {% endfor %}
                         </tr>
