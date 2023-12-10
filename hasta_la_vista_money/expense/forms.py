@@ -27,7 +27,7 @@ class AddExpenseForm(BaseForm):
         selected_user = get_object_or_404(User, username=self.user)
         categories = (
             selected_user.category_expense_users.select_related('user')
-            .order_by('parent_category_id')
+            .order_by('parent_category__name', 'name')
             .all()
         )
         category_choices = get_category_choices(
