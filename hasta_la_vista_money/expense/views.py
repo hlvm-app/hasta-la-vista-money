@@ -29,10 +29,18 @@ from hasta_la_vista_money.expense.models import Expense, ExpenseCategory
 from hasta_la_vista_money.users.models import User
 
 
-class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
+class ExpenseBaseView:
+    template_name = TemplateHTMLView.EXPENSE_TEMPLATE.value
+
+
+class ExpenseView(
+    CustomNoPermissionMixin,
+    ExpenseBaseView,
+    SuccessMessageMixin,
+    ListView,
+):
     paginate_by = 10
     model = Expense
-    template_name = TemplateHTMLView.EXPENSE_TEMPLATE.value
     context_object_name = 'expense'
     no_permission_url = reverse_lazy('login')
     success_url = SuccessUrlView.EXPENSE_URL.value
@@ -107,10 +115,10 @@ class ExpenseView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
 class ExpenseCreateView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
+    ExpenseBaseView,
     IncomeExpenseCreateViewMixin,
 ):
     model = Expense
-    template_name = TemplateHTMLView.EXPENSE_TEMPLATE.value
     no_permission_url = reverse_lazy('login')
     form_class = AddExpenseForm
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
@@ -191,9 +199,8 @@ class ExpenseUpdateView(
             return super().form_valid(form)
 
 
-class ExpenseDeleteView(DetailView, DeleteView):
+class ExpenseDeleteView(DetailView, DeleteView, ExpenseBaseView):
     model = Expense
-    template_name = TemplateHTMLView.EXPENSE_TEMPLATE.value
     context_object_name = 'expense'
     no_permission_url = reverse_lazy('login')
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
@@ -214,9 +221,11 @@ class ExpenseDeleteView(DetailView, DeleteView):
             return super().form_valid(form)
 
 
-class ExpenseCategoryCreateView(ExpenseIncomeCategoryCreateViewMixin):
+class ExpenseCategoryCreateView(
+    ExpenseBaseView,
+    ExpenseIncomeCategoryCreateViewMixin,
+):
     model: type[ExpenseCategory] = ExpenseCategory
-    template_name = TemplateHTMLView.EXPENSE_TEMPLATE.value
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
     form_class = AddCategoryForm
     depth = 3
