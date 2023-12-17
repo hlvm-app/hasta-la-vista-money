@@ -148,7 +148,11 @@ class ExpenseUpdateView(
     success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
 
     def get_object(self, queryset=None):  # noqa: WPS615
-        return get_object_or_404(Expense, pk=self.kwargs['pk'])
+        return get_object_or_404(
+            Expense,
+            pk=self.kwargs['pk'],
+            user=self.request.user,
+        )
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -157,9 +161,13 @@ class ExpenseUpdateView(
         return kwargs
 
     def get_context_data(self, **kwargs):
+        user = get_object_or_404(User, username=self.request.user)
         context = super().get_context_data(**kwargs)
         form_class = self.get_form_class()
         form = form_class(**self.get_form_kwargs())
+        form.fields['account'].queryset = user.account_users.select_related(
+            'user',
+        ).all()
         context['add_expense_form'] = form
         return context
 
