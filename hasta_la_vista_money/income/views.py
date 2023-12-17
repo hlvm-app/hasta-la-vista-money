@@ -138,20 +138,26 @@ class IncomeUpdateView(
     depth_limit = 3
 
     def get_object(self, queryset=None):  # noqa: WPS615
-        return get_object_or_404(Income, pk=self.kwargs['pk'])
-
-    def get_form(self, form_class=None):
-        form_class = self.get_form_class()
-        return form_class(
+        return get_object_or_404(
+            Income,
+            pk=self.kwargs['pk'],
             user=self.request.user,
-            depth=self.depth_limit,
-            **self.get_form_kwargs(),
         )
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        kwargs['depth'] = self.depth_limit
+        return kwargs
+
     def get_context_data(self, **kwargs):
+        user = get_object_or_404(User, username=self.request.user)
         context = super().get_context_data(**kwargs)
         form_class = self.get_form_class()
         form = form_class(**self.get_form_kwargs())
+        form.fields['account'].queryset = user.account_users.select_related(
+            'user',
+        ).all()
         context['income_form'] = form
         return context
 
