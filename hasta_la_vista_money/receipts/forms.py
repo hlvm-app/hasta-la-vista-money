@@ -9,7 +9,7 @@ from django.forms import (
 )
 from django.utils.translation import gettext_lazy as _
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.commonlogic.forms import BaseForm
+from hasta_la_vista_money.commonlogic.forms import BaseFieldsForm
 from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
 
 
@@ -65,7 +65,7 @@ class ReceiptFilter(django_filters.FilterSet):
         fields = ['name_seller', 'receipt_date', 'account']
 
 
-class CustomerForm(BaseForm):
+class CustomerForm(BaseFieldsForm):
     """Класс формы продавца."""
 
     name_seller = CharField(label='Имя продавца')
@@ -94,7 +94,7 @@ class CustomerForm(BaseForm):
         self.fields['retail_place'].required = False
 
 
-class ProductForm(BaseForm):
+class ProductForm(BaseFieldsForm):
     """Форма для внесения данных по продуктам."""
 
     labels = {
@@ -127,7 +127,7 @@ class ProductForm(BaseForm):
 ProductFormSet = formset_factory(ProductForm, extra=1)
 
 
-class ReceiptForm(BaseForm):
+class ReceiptForm(BaseFieldsForm):
     """Форма для внесения данных по чеку."""
 
     labels = {
