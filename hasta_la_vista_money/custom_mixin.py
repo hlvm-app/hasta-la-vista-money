@@ -67,6 +67,12 @@ class ExpenseIncomeCategoryCreateViewMixin(CreateView):
         super().__init__(*args, **kwargs)
         self.request = None
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        kwargs['depth'] = self.depth
+        return kwargs
+
     def form_valid(self, form):
         category_name = self.request.POST.get('name')
         categories = self.model.objects.filter(
