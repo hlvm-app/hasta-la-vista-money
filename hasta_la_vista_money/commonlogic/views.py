@@ -107,10 +107,3 @@ def get_queryset_type_income_expenses(type_id, model, form):
     if type_id:
         return get_object_or_404(model, id=type_id)
     return form.save(commit=False)
-
-
-def get_kwargs_form(user, depth, **kwargs):
-    """Get form kwargs."""
-    kwargs['user'] = user
-    kwargs['depth'] = depth
-    return kwargs
