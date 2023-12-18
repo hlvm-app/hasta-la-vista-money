@@ -44,7 +44,7 @@ class AddExpenseForm(BaseForm):
         category = cleaned_data.get('category')
 
         if account_form and amount and category:
-            account = get_object_or_404(Account, name_account=account_form)
+            account = get_object_or_404(Account, id=account_form.id)
             if amount > account.balance:
                 self.add_error(
                     'account',
