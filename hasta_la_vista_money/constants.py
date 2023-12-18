@@ -289,5 +289,4 @@ class TemplateHTMLView(Enum):
 
 class SuccessUrlView(Enum):
     INCOME_URL = 'income:list'
-    EXPENSE_URL = 'expense:list'
     RECEIPT_URL = 'receipts:list'

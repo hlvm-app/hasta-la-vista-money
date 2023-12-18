@@ -100,3 +100,10 @@ def change_account_balance(account, request, amount):
     else:
         account.balance -= amount
     account.save()
+
+
+def get_queryset_type_income_expenses(type_id, model, form):
+    """Функция получения queryset."""
+    if type_id:
+        return get_object_or_404(model, id=type_id)
+    return form.save(commit=False)

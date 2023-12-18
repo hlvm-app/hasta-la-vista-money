@@ -12,12 +12,9 @@ from hasta_la_vista_money.commonlogic.views import (
     IncomeExpenseCreateViewMixin,
     build_category_tree,
     create_object_view,
+    get_queryset_type_income_expenses,
 )
-from hasta_la_vista_money.constants import (
-    MessageOnSite,
-    SuccessUrlView,
-    TemplateHTMLView,
-)
+from hasta_la_vista_money.constants import MessageOnSite, TemplateHTMLView
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
     DeleteCategoryMixin,
@@ -29,8 +26,17 @@ from hasta_la_vista_money.expense.models import Expense, ExpenseCategory
 from hasta_la_vista_money.users.models import User
 
 
-class ExpenseBaseView:
+class BaseView:
     template_name = TemplateHTMLView.EXPENSE_TEMPLATE.value
+    success_url = reverse_lazy('expense:list')
+
+
+class ExpenseBaseView(BaseView):
+    model = Expense
+
+
+class ExpenseCategoryBaseView(BaseView):
+    model = ExpenseCategory
 
 
 class ExpenseView(
@@ -40,10 +46,8 @@ class ExpenseView(
     ListView,
 ):
     paginate_by = 10
-    model = Expense
     context_object_name = 'expense'
     no_permission_url = reverse_lazy('login')
-    success_url = SuccessUrlView.EXPENSE_URL.value
 
     def get_context_data(self, *args, **kwargs):
         """
@@ -118,10 +122,8 @@ class ExpenseCreateView(
     ExpenseBaseView,
     IncomeExpenseCreateViewMixin,
 ):
-    model = Expense
     no_permission_url = reverse_lazy('login')
     form_class = AddExpenseForm
-    success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
     depth_limit = 3
 
     def form_valid(self, form):
@@ -138,14 +140,13 @@ class ExpenseCreateView(
 class ExpenseUpdateView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
+    ExpenseBaseView,
     UpdateView,
     UpdateViewMixin,
 ):
-    model = Expense
     template_name = 'expense/change_expense.html'
     form_class = AddExpenseForm
     no_permission_url = reverse_lazy('login')
-    success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
 
     def get_object(self, queryset=None):
         return get_object_or_404(
@@ -172,11 +173,11 @@ class ExpenseUpdateView(
         return context
 
     def form_valid(self, form):
-        expense_id = self.get_object().id
-        if expense_id:
-            expense = get_object_or_404(Expense, id=expense_id)
-        else:
-            expense = form.save(commit=False)
+        expense = get_queryset_type_income_expenses(
+            self.object.id,
+            Expense,
+            form,
+        )
 
         amount = form.cleaned_data.get('amount')
         account = form.cleaned_data.get('account')
@@ -184,7 +185,7 @@ class ExpenseUpdateView(
         old_account_balance = get_object_or_404(Account, id=expense.account.id)
 
         if account_balance.user == self.request.user:
-            if expense_id:
+            if expense:
                 old_amount = expense.amount
                 account_balance.balance += old_amount
 
@@ -207,11 +208,9 @@ class ExpenseUpdateView(
             return super().form_valid(form)
 
 
-class ExpenseDeleteView(DetailView, DeleteView, ExpenseBaseView):
-    model = Expense
+class ExpenseDeleteView(ExpenseBaseView, DetailView, DeleteView):
     context_object_name = 'expense'
     no_permission_url = reverse_lazy('login')
-    success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
 
     def form_valid(self, form):
         expense = self.get_object()
@@ -230,11 +229,9 @@ class ExpenseDeleteView(DetailView, DeleteView, ExpenseBaseView):
 
 
 class ExpenseCategoryCreateView(
-    ExpenseBaseView,
+    ExpenseCategoryBaseView,
     ExpenseIncomeCategoryCreateViewMixin,
 ):
-    model: type[ExpenseCategory] = ExpenseCategory
-    success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
     form_class = AddCategoryForm
     depth = 3
 
@@ -245,6 +242,8 @@ class ExpenseCategoryCreateView(
         return kwargs
 
 
-class ExpenseCategoryDeleteView(DeleteCategoryMixin):
-    model: type[ExpenseCategory] = ExpenseCategory
-    success_url = reverse_lazy(SuccessUrlView.EXPENSE_URL.value)
+class ExpenseCategoryDeleteView(
+    ExpenseCategoryBaseView,
+    DeleteCategoryMixin,
+):
+    ...

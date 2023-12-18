@@ -13,6 +13,7 @@ from hasta_la_vista_money.commonlogic.views import (
     IncomeExpenseCreateViewMixin,
     build_category_tree,
     create_object_view,
+    get_queryset_type_income_expenses,
 )
 from hasta_la_vista_money.constants import (
     MessageOnSite,
@@ -162,18 +163,15 @@ class IncomeUpdateView(
         return context
 
     def form_valid(self, form):
-        income_id = self.object.id
-        if income_id:
-            income = get_object_or_404(Income, id=income_id)
-        else:
-            income = form.save(commit=False)
+        income = get_queryset_type_income_expenses(self.object.id, Income, form)
+
         amount = form.cleaned_data.get('amount')
         account = form.cleaned_data.get('account')
         account_balance = get_object_or_404(Account, id=account.id)
         old_account_balance = get_object_or_404(Account, id=income.account.id)
 
         if account_balance.user == self.request.user:
-            if income_id:
+            if income:
                 old_amount = income.amount
                 account_balance.balance -= old_amount
 
