@@ -137,7 +137,7 @@ class IncomeUpdateView(
     success_url = reverse_lazy(SuccessUrlView.INCOME_URL.value)
     depth_limit = 3
 
-    def get_object(self, queryset=None):  # noqa: WPS615
+    def get_object(self, queryset=None):
         return get_object_or_404(
             Income,
             pk=self.kwargs['pk'],
@@ -161,28 +161,27 @@ class IncomeUpdateView(
         context['income_form'] = form
         return context
 
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        return self.form_invalid(form)
-
     def form_valid(self, form):
         income_id = self.object.id
         if income_id:
             income = get_object_or_404(Income, id=income_id)
         else:
             income = form.save(commit=False)
-
         amount = form.cleaned_data.get('amount')
         account = form.cleaned_data.get('account')
         account_balance = get_object_or_404(Account, id=account.id)
+        old_account_balance = get_object_or_404(Account, id=income.account.id)
 
         if account_balance.user == self.request.user:
             if income_id:
                 old_amount = income.amount
                 account_balance.balance -= old_amount
+
+            if income.account != account:
+                old_account_balance.balance -= amount
+                account_balance.balance += amount
+
+            old_account_balance.save()
             account_balance.balance += amount
             account_balance.save()
             income.user = self.request.user
