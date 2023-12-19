@@ -23,6 +23,9 @@ Hasta La Vista, Money!
    :target: https://www.codefactor.io/repository/github/turtleold/hasta-la-vista-money
    :alt: CodeFactor
 
+.. image:: https://wakatime.com/badge/github/TurtleOld/hasta-la-vista-money.svg
+    :target: https://wakatime.com/badge/github/TurtleOld/hasta-la-vista-money
+
 |
 
 **Отказ от ответственности:**
