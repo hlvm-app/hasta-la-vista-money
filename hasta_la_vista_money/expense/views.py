@@ -73,9 +73,15 @@ class ExpenseView(
                 expense_categories,
                 depth=depth_limit,
             )
+            categories = (
+                user.category_expense_users.select_related('user')
+                .order_by('parent_category__name', 'name')
+                .all()
+            )
             add_expense_form = AddExpenseForm(
                 user=self.request.user,
                 depth=depth_limit,
+                category_queryset=categories,
             )
             add_expense_form.fields[
                 'account'

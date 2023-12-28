@@ -61,7 +61,18 @@ class IncomeView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
                 categories,
                 depth=depth_limit,
             )
-            income_form = IncomeForm(user=self.request.user, depth=depth_limit)
+
+            income_categories = (
+                user.category_income_users.select_related('user')
+                .order_by('parent_category__name', 'name')
+                .all()
+            )
+            income_form = IncomeForm(
+                user=self.request.user,
+                depth=depth_limit,
+                category_queryset=income_categories,
+            )
+
             income_form.fields[
                 'account'
             ].queryset = user.account_users.select_related('user').all()

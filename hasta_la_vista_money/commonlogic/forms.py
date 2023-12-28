@@ -61,7 +61,7 @@ class BaseFieldsForm(ModelForm):
 class BaseForm(BaseFieldsForm):
     field = None
 
-    def __init__(self, user=None, depth=None, *args, **kwargs):
+    def __init__(self, user=None, depth=None, category_queryset=None, *args, **kwargs):
         """
         Инициализирует экземпляр класса BaseForm.
 
@@ -75,14 +75,8 @@ class BaseForm(BaseFieldsForm):
         """
         self.user = user
         super().__init__(*args, **kwargs)
-        selected_user = get_object_or_404(User, username=self.user)
-        categories = (
-            selected_user.category_expense_users.select_related('user')
-            .order_by('parent_category__name', 'name')
-            .all()
-        )
         category_choices = get_category_choices(
-            queryset=categories,
+            queryset=category_queryset,
             max_level=depth,
         )
         category_choices.insert(0, ('', '----------'))
