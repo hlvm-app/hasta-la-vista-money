@@ -75,12 +75,13 @@ class BaseForm(BaseFieldsForm):
         """
         self.user = user
         super().__init__(*args, **kwargs)
-        category_choices = get_category_choices(
-            queryset=category_queryset,
-            max_level=depth,
-        )
-        category_choices.insert(0, ('', '----------'))
-        self.configure_category_choices(category_choices)
+        if category_queryset:
+            category_choices = get_category_choices(
+                queryset=category_queryset,
+                max_level=depth,
+            )
+            category_choices.insert(0, ('', '----------'))
+            self.configure_category_choices(category_choices)
 
     def configure_category_choices(self, category_choices):
         """Configure category choices for the form."""
