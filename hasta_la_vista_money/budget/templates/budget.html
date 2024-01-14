@@ -37,7 +37,7 @@
                     <tr>
                         <td class="fs-4 w-50">Расход</td>
                         {% for date in list_dates %}
-                            <th colspan="2" class="text-nowrap">{{ date.date | date:"F Y" }}</th>
+                            <th id="{{ date.id }}" class="date text-nowrap" colspan="2">{{ date.date | date:"F Y" }}</th>
                         {% endfor %}
                     </tr>
 
@@ -59,9 +59,11 @@
                     {% for row in expense_category_amount %}
                         <tr>
                             <td>{{ row.category }}</td>
+
                             {% for amount in row.amounts %}
+                                <input type="hidden" value="{{ row.date }}">
                                 <td class="{% if amount != '0,00' %}fw-bold{% endif %}">{{ amount }}</td>
-                                <td contenteditable="true">0,00</td>
+                                <td class="planning" contenteditable="true">0,00</td>
                             {% endfor %}
                         </tr>
                     {% endfor %}
@@ -95,7 +97,7 @@
                             <td>{{ row.category }}</td>
                             {% for amount in row.amounts %}
                                 <td class="{% if amount != '0,00' %}fw-bold{% endif %}">{{ amount }}</td>
-                                <td contenteditable="true">0,00</td>
+                                <td class="planning" contenteditable="true">0,00</td>
                             {% endfor %}
                         </tr>
                     {% endfor %}
