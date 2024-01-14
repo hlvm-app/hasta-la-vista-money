@@ -1,6 +1,4 @@
 from django.forms import ModelForm
-from django.shortcuts import get_object_or_404
-from hasta_la_vista_money.users.models import User
 
 
 def get_category_choices(queryset, parent=None, level=0, max_level=2):
@@ -61,7 +59,14 @@ class BaseFieldsForm(ModelForm):
 class BaseForm(BaseFieldsForm):
     field = None
 
-    def __init__(self, user=None, depth=None, category_queryset=None, *args, **kwargs):
+    def __init__(
+        self,
+        user=None,
+        depth=None,
+        category_queryset=None,
+        *args,
+        **kwargs,
+    ):
         """
         Инициализирует экземпляр класса BaseForm.
 
