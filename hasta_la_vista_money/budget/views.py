@@ -1,5 +1,8 @@
+import json
+
 from django.db.models import QuerySet, Sum
 from django.db.models.functions import TruncMonth
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView
@@ -158,3 +161,13 @@ def generate_date_list_view(request):
         queryset_last_date = queryset_user.budget_date_list_users.last().date
         generate_date_list(queryset_last_date, queryset_user)
         return redirect(reverse_lazy('budget:list'))
+
+
+def change_planning(request):
+    """Функция для изменения сумм планирования."""
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        planning_value = data.get('planning')
+        return JsonResponse({'planning_value': planning_value})
+    except json.JSONDecodeError as error:
+        return JsonResponse({'error': error})
