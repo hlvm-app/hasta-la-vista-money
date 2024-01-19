@@ -257,7 +257,7 @@ USE_L10N = True
 USE_TZ = False
 
 LANGUAGES = (
-    ('en', 'English'),
+    ('en-US', 'English'),
     ('ru', 'Russian'),
 )
 
