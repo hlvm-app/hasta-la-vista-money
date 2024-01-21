@@ -15,7 +15,7 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title">
-							Добавить кредит
+							{% translate 'Добавить кредит' %}
 						</h5>
 						<button type="button" class="btn-close"
 						        data-bs-dismiss="modal"
@@ -47,7 +47,7 @@
 		<div class="row mt-4">
 			<div class="col-xl-12">
 				<details class="ms-5 text-light">
-					<summary class="btn btn-primary mb-2">Подсказка</summary>
+					<summary class="btn btn-primary mb-2">{% translate 'Подсказка' %}</summary>
 					<p>
 						Раздел &laquo;Кредиты&raquo; предназначен для контроля
 						за взятыми кредитами.<br>
@@ -86,7 +86,7 @@
 				<button type="button" class="btn btn-outline-light ms-5"
 				        data-bs-toggle="modal" data-bs-target="#add-loan"
 				        title="Добавить кредит">
-					Добавить кредит
+					{% translate 'Добавить кредит' %}
 				</button>
 			</div>
 		</div>
@@ -96,18 +96,16 @@
 			<div class="col-xl-6">
 				<div class="d-grid gap-2">
 					{% if loan %}
-						<h2>Список моих кредитов:</h2>
+						<h2>{% translate 'Список моих кредитов:' %}</h2>
 						{% for item_loan in loan %}
 							<button type="button"
 							        class="btn btn-primary btn-danger"
 							        data-bs-toggle="modal"
 							        data-bs-target="#loan-{{ item_loan.pk }}">
-								Кредит №{{ item_loan.pk }}<br>
-								Сумма кредита: {{ item_loan.loan_amount }}
-								Годовая процентная
-								ставка: {{ item_loan.annual_interest_rate }}%
-								Срок кредита
-								(месяцы): {{ item_loan.period_loan }}
+								{% translate 'Кредит № ' %}{{ item_loan.pk }}<br>
+								{% translate 'Сумма кредита: ' %}{{ item_loan.loan_amount }}
+								{% translate 'Годовая процентная ставка: ' %}{{ item_loan.annual_interest_rate }}%
+								{% translate 'Срок кредита (месяцы): ' %}{{ item_loan.period_loan }}
 							</button>
 							<div id="loan-{{ item_loan.pk }}"
 							     class="ajax-modal modal fade">
@@ -115,14 +113,13 @@
 									<div class="modal-content">
 										<div class="modal-header">
 											<h5 class="modal-title">
-												Кредит №{{ item_loan.pk }}
+												{% translate 'Кредит № ' %}{{ item_loan.pk }}
 											</h5>
 											<button type="button"
 											        class="btn btn-outline-primary ms-5"
 											        data-bs-toggle="modal"
 											        data-bs-target="#payment-{{ item_loan.pk }}"
-											        title="Внести платеж">
-												Внести платеж
+											        title="{% translate 'Внести платеж' %}">
 											</button>
                                             <form class="ms-5 mb-0" method="post" action="{{ item_loan.get_absolute_url }}">
                                                 {% csrf_token %}
@@ -130,7 +127,7 @@
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                                                         <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
                                                     </svg>
-                                                    Удалить кредит
+                                                    {% translate 'Удалить кредит' %}
                                                 </button>
                                             </form>
 											<button type="button"
@@ -139,19 +136,18 @@
 											        aria-label="Close"></button>
 										</div>
 										<div class="modal-body">
-											<h3>График платежей:</h3>
-                                            <strong>Общая сумма кредита:</strong> {{ item_loan.calculate_total_amount_loan_with_interest }}
-                                            <strong class="ms-2">Сумма переплаты:</strong> {{ item_loan.calculate_sum_monthly_payment }}
+											<h3>{% translate 'График платежей:' %}</h3>
+                                            <strong>{% translate 'Общая сумма кредита:' %}</strong> {{ item_loan.calculate_total_amount_loan_with_interest }}
+                                            <strong class="ms-2">{% translate 'Сумма переплаты:' %}</strong> {{ item_loan.calculate_sum_monthly_payment }}
 											<table class="table"
 											       aria-describedby="table payment">
 												<thead>
 												<tr>
-													<th>Месяц</th>
-													<th>Остаток</th>
-													<th>Ежемесячный платеж</th>
-													<th>Проценты</th>
-													<th>Погашение основного
-														долга
+													<th>{% translate 'Месяц' %}</th>
+													<th>{% translate 'Остаток' %}</th>
+													<th>{% translate 'Ежемесячный платеж' %}</th>
+													<th>{% translate 'Проценты' %}</th>
+													<th>{% translate 'Погашение основного долга' %}
 													</th>
 												</tr>
 												</thead>
@@ -179,7 +175,7 @@
 									<div class="modal-content">
 										<div class="modal-header">
 											<h5 class="modal-title">
-												Внести платеж за кредит №{{ item_loan.pk }}
+												{% translate 'Внести платеж за кредит №' %}{{ item_loan.pk }}
 											</h5>
 											<button type="button"
 											        class="btn-close"
