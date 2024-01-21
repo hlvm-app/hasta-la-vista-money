@@ -7,7 +7,7 @@
     <div class="container d-flex min-vh-100 flex-column justify-content-center align-items-center">
         {% include 'error_modal.html' %}
         <h1 class="text-light text-uppercase">Hasta La Vista, Money!</h1>
-        <p class="text-light text-center">Удобная домашняя бухгалтерия. Управляй финансами семьи грамотно!</p>
+        <p class="text-light text-center">{% translate 'Удобная домашняя бухгалтерия. Управляй финансами семьи грамотно!' %}</p>
         <form method="post" class="form text-light">
             {% csrf_token %}
             <p class="my-4">
@@ -19,8 +19,8 @@
                 </div>
             </div>
         </form>
-        <p class='text-light mt-3'>Ещё не зарегистрированы?</p>
-        <p class='text-light'>Тогда нажимайте кнопку:</p>
+        <p class='text-light mt-3'>{% translate 'Ещё не зарегистрированы?' %}</p>
+        <p class='text-light'>{% translate 'Тогда нажимайте кнопку:' %}</p>
         <a class="btn btn-primary text-light" href="{% url 'users:registration' %}">{% translate 'Регистрация' %}</a>
         <button class="btn btn-primary mt-2 text-light" data-bs-toggle="modal" data-bs-target="#reset-password" >{% translate 'Восстановить пароль' %}</button>
         <div id="reset-password" class="modal fade" >
@@ -28,7 +28,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">
-                            Сбросить пароль
+                            {% translate 'Сбросить пароль' %}
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -47,7 +47,7 @@
 						            </div>
 						        {% endfor %}
 						    {% endif %}
-							<button type="submit" class="btn btn-primary">Выслать ссылку для сброса пароля</button>
+							<button type="submit" class="btn btn-primary">{% translate 'Выслать ссылку для сброса пароля' %}</button>
 						</form>
                     </div>
                 </div>
