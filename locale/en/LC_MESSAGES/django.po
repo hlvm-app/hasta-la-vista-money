@@ -8,16 +8,617 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-04 03:41+0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2024-01-21 22:44+0300\n"
+"PO-Revision-Date: 2024-01-21 20:45+0300\n"
+"Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Translated-Using: django-rosetta 0.10.0\n"
 
+#: hasta_la_vista_money/account/forms.py:109
+msgid "Дата перевода"
+msgstr ""
 
+#: hasta_la_vista_money/account/models.py:9
+msgid "Российский рубль"
+msgstr ""
+
+#: hasta_la_vista_money/account/templates/account/account.html:6
+msgid "Управляй финансами семьи грамотно!"
+msgstr ""
+
+#: hasta_la_vista_money/account/templates/account/account.html:21
+msgid "Название счёта"
+msgstr ""
+
+#: hasta_la_vista_money/account/templates/account/account.html:22
+msgid "Баланс счёта"
+msgstr ""
+
+#: hasta_la_vista_money/account/templates/account/account.html:23
+msgid "Валюта счёта"
+msgstr ""
+
+#: hasta_la_vista_money/account/templates/account/account.html:102
+msgid "Общая статистика пользователя "
+msgstr ""
+
+#: hasta_la_vista_money/account/templates/account/change_account.html:5
+msgid "Изменить счёт"
+msgstr ""
+
+#: hasta_la_vista_money/account/templates/account/change_account.html:15
+#: hasta_la_vista_money/expense/templates/expense/change_expense.html:15
+#: hasta_la_vista_money/income/templates/income/change_income.html:15
+#: hasta_la_vista_money/users/templates/users/registration.html:19
+msgid "Вернуться назад"
+msgstr ""
+
+#: hasta_la_vista_money/account/templates/account/modals/add_account.html:10
+msgid "Добавить счёт"
+msgstr ""
+
+#: hasta_la_vista_money/account/templates/account/modals/exchange_money_account.html:11
+msgid "Перевод со счёта на счёт"
+msgstr ""
+
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:10
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:28
+msgid "Статистика"
+msgstr ""
+
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:26
+msgid "Статистика по чекам"
+msgstr ""
+
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:37
+msgid "Статистика доходов и расходов"
+msgstr ""
+
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:48
+msgid "Статистика переводов"
+msgstr ""
+
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:61
+#: hasta_la_vista_money/income/templates/income/show_income.html:13
+#: hasta_la_vista_money/receipts/forms.py:26
+msgid "Период"
+msgstr ""
+
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:64
+msgid "Количество чеков"
+msgstr ""
+
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:67
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:93
+#: hasta_la_vista_money/expense/forms.py:14
+#: hasta_la_vista_money/expense/templates/expense/expense.html:25
+#: hasta_la_vista_money/income/forms.py:14
+#: hasta_la_vista_money/income/templates/income/show_income.html:14
+#: hasta_la_vista_money/receipts/forms.py:104
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:78
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:150
+msgid "Сумма"
+msgstr ""
+
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:70
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:94
+#: hasta_la_vista_money/expense/templates/expense/expense.html:26
+#: hasta_la_vista_money/income/templates/income/show_income.html:15
+#: hasta_la_vista_money/receipts/forms.py:36
+#: hasta_la_vista_money/receipts/forms.py:135
+msgid "Счёт"
+msgstr ""
+
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:91
+#: hasta_la_vista_money/expense/templates/expense/expense.html:23
+msgid "Категория"
+msgstr ""
+
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:92
+#: hasta_la_vista_money/expense/forms.py:13
+#: hasta_la_vista_money/expense/templates/expense/expense.html:24
+#: hasta_la_vista_money/income/forms.py:13
+msgid "Дата"
+msgstr ""
+
+#: hasta_la_vista_money/budget/templates/budget.html:8 templates/header.html:56
+msgid "Бюджет"
+msgstr "Budget"
+
+#: hasta_la_vista_money/budget/templates/budget.html:22
+msgid "Раздел с бюджетом находится в разработке"
+msgstr ""
+
+#: hasta_la_vista_money/budget/templates/budget.html:33
+msgid "Добавить список дат"
+msgstr ""
+
+#: hasta_la_vista_money/budget/templates/budget.html:38
+msgid "Расход"
+msgstr ""
+
+#: hasta_la_vista_money/budget/templates/budget.html:45
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:167
+msgid "Итог"
+msgstr ""
+
+#: hasta_la_vista_money/budget/templates/budget.html:54
+#: hasta_la_vista_money/budget/templates/budget.html:90
+msgid "Факт"
+msgstr ""
+
+#: hasta_la_vista_money/budget/templates/budget.html:55
+#: hasta_la_vista_money/budget/templates/budget.html:91
+msgid "План"
+msgstr ""
+
+#: hasta_la_vista_money/budget/templates/budget.html:74
+msgid "Доход"
+msgstr ""
+
+#: hasta_la_vista_money/expense/forms.py:11
+msgid "Категория расхода"
+msgstr ""
+
+#: hasta_la_vista_money/expense/forms.py:12
+#: hasta_la_vista_money/loan/forms.py:60
+msgid "Счёт списания"
+msgstr ""
+
+#: hasta_la_vista_money/expense/templates/expense/change_expense.html:5
+#: hasta_la_vista_money/income/templates/income/change_income.html:5
+msgid "Изменить доходную операцию"
+msgstr ""
+
+#: hasta_la_vista_money/expense/templates/expense/expense.html:9
+#: templates/header.html:47
+msgid "Информация о расходах"
+msgstr ""
+
+#: hasta_la_vista_money/expense/templates/expense/expense.html:28
+msgid "Добавить новую расходную операцию"
+msgstr ""
+
+#: hasta_la_vista_money/expense/templates/expense/expense.html:33
+#: hasta_la_vista_money/expense/templates/expense/modals/show_category_expense.html:23
+#: hasta_la_vista_money/income/templates/income/modals/show_category_income.html:22
+#: hasta_la_vista_money/income/templates/income/show_income.html:32
+msgid "Добавить категорию"
+msgstr ""
+
+#: hasta_la_vista_money/expense/templates/expense/modals/add_category_expense.html:9
+msgid "Добавить категорию расхода"
+msgstr ""
+
+#: hasta_la_vista_money/expense/templates/expense/modals/add_expense.html:9
+msgid "Добавить расход"
+msgstr ""
+
+#: hasta_la_vista_money/expense/templates/expense/modals/add_expense.html:31
+#: hasta_la_vista_money/income/templates/income/modals/add_income.html:31
+#: templates/base.html:21
+msgid "Добавить"
+msgstr ""
+
+#: hasta_la_vista_money/expense/templates/expense/modals/show_category_expense.html:9
+msgid "Управление категориями расхода"
+msgstr ""
+
+#: hasta_la_vista_money/income/forms.py:11
+#: hasta_la_vista_money/income/templates/income/show_income.html:12
+msgid "Категория дохода"
+msgstr ""
+
+#: hasta_la_vista_money/income/forms.py:12
+msgid "Счёт начисления"
+msgstr ""
+
+#: hasta_la_vista_money/income/templates/income/income.html:8
+msgid "Информация о доходе"
+msgstr ""
+
+#: hasta_la_vista_money/income/templates/income/modals/add_category_income.html:9
+msgid "Добавить категорию дохода"
+msgstr ""
+
+#: hasta_la_vista_money/income/templates/income/modals/add_income.html:9
+#: templates/base.html:16
+msgid "Добавить новый доход"
+msgstr ""
+
+#: hasta_la_vista_money/income/templates/income/modals/show_category_income.html:9
+msgid "Управление категориями дохода"
+msgstr ""
+
+#: hasta_la_vista_money/income/templates/income/show_income.html:20
+msgid "Добавить новую доходную операцию"
+msgstr ""
+
+#: hasta_la_vista_money/loan/forms.py:11
+msgid "Начальная дата кредита"
+msgstr ""
+
+#: hasta_la_vista_money/loan/forms.py:12
+msgid "Тип кредита"
+msgstr ""
+
+#: hasta_la_vista_money/loan/forms.py:13
+msgid "Сумма кредита"
+msgstr ""
+
+#: hasta_la_vista_money/loan/forms.py:14
+msgid "Годовая ставка в %"
+msgstr ""
+
+#: hasta_la_vista_money/loan/forms.py:15
+msgid "Срок кредита в месяцах"
+msgstr ""
+
+#: hasta_la_vista_money/loan/forms.py:59
+msgid "Дата платежа"
+msgstr "Payment date"
+
+#: hasta_la_vista_money/loan/forms.py:61
+msgid "Кредит"
+msgstr ""
+
+#: hasta_la_vista_money/loan/forms.py:62
+msgid "Сумма платежа"
+msgstr ""
+
+#: hasta_la_vista_money/loan/templates/loan/loan.html:9
+#: templates/header.html:64
+msgid "Кредиты"
+msgstr ""
+
+#: hasta_la_vista_money/loan/templates/loan/loan.html:18
+#: hasta_la_vista_money/loan/templates/loan/loan.html:89 templates/base.html:22
+msgid "Добавить кредит"
+msgstr ""
+
+#: hasta_la_vista_money/loan/templates/loan/loan.html:50
+msgid "Подсказка"
+msgstr ""
+
+#: hasta_la_vista_money/loan/templates/loan/loan.html:99
+msgid "Список моих кредитов:"
+msgstr ""
+
+#: hasta_la_vista_money/loan/templates/loan/loan.html:105
+#: hasta_la_vista_money/loan/templates/loan/loan.html:116
+msgid "Кредит № "
+msgstr ""
+
+#: hasta_la_vista_money/loan/templates/loan/loan.html:106
+msgid "Сумма кредита: "
+msgstr ""
+
+#: hasta_la_vista_money/loan/templates/loan/loan.html:107
+msgid "Годовая процентная ставка: "
+msgstr ""
+
+#: hasta_la_vista_money/loan/templates/loan/loan.html:108
+msgid "Срок кредита (месяцы): "
+msgstr ""
+
+#: hasta_la_vista_money/loan/templates/loan/loan.html:122
+#, fuzzy
+#| msgid "Дата платежа"
+msgid "Внести платеж"
+msgstr "Payment date"
+
+#: hasta_la_vista_money/loan/templates/loan/loan.html:130
+msgid "Удалить кредит"
+msgstr ""
+
+#: hasta_la_vista_money/loan/templates/loan/loan.html:139
+#, fuzzy
+#| msgid "Дата платежа"
+msgid "График платежей:"
+msgstr "Payment date"
+
+#: hasta_la_vista_money/loan/templates/loan/loan.html:140
+msgid "Общая сумма кредита:"
+msgstr ""
+
+#: hasta_la_vista_money/loan/templates/loan/loan.html:141
+msgid "Сумма переплаты:"
+msgstr ""
+
+#: hasta_la_vista_money/loan/templates/loan/loan.html:146
+msgid "Месяц"
+msgstr ""
+
+#: hasta_la_vista_money/loan/templates/loan/loan.html:147
+msgid "Остаток"
+msgstr ""
+
+#: hasta_la_vista_money/loan/templates/loan/loan.html:148
+msgid "Ежемесячный платеж"
+msgstr ""
+
+#: hasta_la_vista_money/loan/templates/loan/loan.html:149
+msgid "Проценты"
+msgstr ""
+
+#: hasta_la_vista_money/loan/templates/loan/loan.html:150
+msgid "Погашение основного долга"
+msgstr ""
+
+#: hasta_la_vista_money/loan/templates/loan/loan.html:178
+msgid "Внести платеж за кредит №"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/forms.py:22
+msgid "Продавец"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/forms.py:29
+msgid "YYYY-DD-MM"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/forms.py:101
+msgid "Наименование продукта"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/forms.py:102
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:148
+msgid "Цена"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/forms.py:103
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:149
+msgid "Количество"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/forms.py:122
 msgid "Количество должно быть больше 0."
 msgstr "Quantity should be greater than 0."
+
+#: hasta_la_vista_money/receipts/forms.py:134
+msgid "Имя продавца"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/forms.py:136
+msgid "Дата и время чека"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/forms.py:137
+msgid "Тип операции"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/forms.py:138
+msgid "Номер документа"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/forms.py:139
+msgid "НДС 10%"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/forms.py:140
+msgid "НДС 20%"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/forms.py:141
+msgid "Итоговая сумма по чеку"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/models.py:8
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:95
+msgid "Покупка"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/models.py:9
+msgid "Возврат средств за покупку"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/models.py:10
+msgid "Продажа\\Выигрыш"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/models.py:11
+msgid "Возврат выигрыша или продажи"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/templates/receipts/filter.html:4
+msgid "Фильтровать"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:9
+msgid "Список чеков"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:37
+msgid "Количество чеков:"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:39
+msgid "Сумма чеков:"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:46
+msgid "Часто покупаемые товары"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:57
+#: templates/base.html:20
+msgid "Добавить нового продавца"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:68
+msgid "Добавить чек вручную по наименованиям"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:77
+msgid "Дата: "
+msgstr ""
+
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:90
+msgid "Кассовый чек"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:97
+msgid "Возврат покупки"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:147
+msgid "Предмет расчёта"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:177
+#, python-format
+msgid "НДС 10%%"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:188
+#, python-format
+msgid "НДС 20%%"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:198
+msgid "Списано со счёта"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:207
+msgid "Место расчётов"
+msgstr ""
+
+#: hasta_la_vista_money/receipts/templates/receipts/receipts.html:216
+msgid "Адрес расчётов"
+msgstr ""
+
+#: hasta_la_vista_money/reports/templates/reports/reports.html:6
+#: templates/header.html:72
+msgid "Отчёты"
+msgstr ""
+
+#: hasta_la_vista_money/users/templates/users/login.html:5
+msgid "Страница входа"
+msgstr ""
+
+#: hasta_la_vista_money/users/templates/users/login.html:10
+msgid "Удобная домашняя бухгалтерия. Управляй финансами семьи грамотно!"
+msgstr ""
+
+#: hasta_la_vista_money/users/templates/users/login.html:22
+msgid "Ещё не зарегистрированы?"
+msgstr ""
+
+#: hasta_la_vista_money/users/templates/users/login.html:23
+msgid "Тогда нажимайте кнопку:"
+msgstr ""
+
+#: hasta_la_vista_money/users/templates/users/login.html:24
+#: hasta_la_vista_money/users/views.py:98
+msgid "Регистрация"
+msgstr ""
+
+#: hasta_la_vista_money/users/templates/users/login.html:25
+msgid "Восстановить пароль"
+msgstr ""
+
+#: hasta_la_vista_money/users/templates/users/login.html:31
+msgid "Сбросить пароль"
+msgstr ""
+
+#: hasta_la_vista_money/users/templates/users/login.html:50
+msgid "Выслать ссылку для сброса пароля"
+msgstr ""
+
+#: hasta_la_vista_money/users/templates/users/password_reset_confirm.html:5
+#: hasta_la_vista_money/users/templates/users/password_reset_confirm.html:11
+msgid "Установить новый пароль"
+msgstr ""
+
+#: hasta_la_vista_money/users/templates/users/password_reset_confirm.html:22
+msgid "Ссылка недействительна! Запросите новую ссылку"
+msgstr ""
+
+#: hasta_la_vista_money/users/templates/users/password_reset_confirm.html:22
+msgid "со страницы авторизации!"
+msgstr ""
+
+#: hasta_la_vista_money/users/templates/users/profile.html:6
+msgid "Личный кабинет пользователя "
+msgstr ""
+
+#: hasta_la_vista_money/users/views.py:72
+msgid "Войти"
+msgstr ""
+
+#: hasta_la_vista_money/users/views.py:97
+msgid "Форма регистрации"
+msgstr ""
+
+#: templates/404.html:6 templates/404.html:13
+msgid "404 - Страница не найдена"
+msgstr ""
+
+#: templates/404.html:17
+msgid "Извините, страница, которую вы ищете, не существует или была удалена."
+msgstr ""
+
+#: templates/500.html:7
+msgid "Ошибка на сервере"
+msgstr ""
+
+#: templates/base.html:14
+msgid "Добавить чек"
+msgstr ""
+
+#: templates/base.html:15
+msgid "Добавить ещё один товар"
+msgstr ""
+
+#: templates/base.html:17
+msgid "Добавить новый расход"
+msgstr ""
+
+#: templates/base.html:18
+msgid "Изменить"
+msgstr ""
+
+#: templates/base.html:19
+msgid "Удалить один товар"
+msgstr ""
+
+#: templates/base.html:23
+msgid "Внести"
+msgstr ""
+
+#: templates/base.html:24
+msgid "Сменить пароль"
+msgstr ""
+
+#: templates/base.html:25
+msgid "Перевести"
+msgstr ""
+
+#: templates/base.html:26
+msgid "Добавить новый счёт"
+msgstr ""
+
+#: templates/error_modal.html:7
+msgid "Ошибка"
+msgstr ""
+
+#: templates/error_modal.html:14
+msgid "Закрыть"
+msgstr ""
+
+#: templates/header.html:31
+msgid "Просмотр чеков"
+msgstr ""
+
+#: templates/header.html:39
+msgid "Информация о доходах"
+msgstr ""
+
+#: templates/header.html:81
+msgid "Выход"
+msgstr ""
