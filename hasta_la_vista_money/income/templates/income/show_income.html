@@ -1,4 +1,5 @@
 {% load comma %}
+{% load i18n %}
 
 <div class="row">
     <div class="col-xl-12">
@@ -8,10 +9,10 @@
                        aria-label="table income">
                     <thead>
                     <tr>
-                        <th class="col-2">Категория дохода</th>
-                        <th class="col-2">Период</th>
-                        <th class="col-2">Сумма</th>
-                        <th class="col-2">Счёт</th>
+                        <th class="col-2">{% translate 'Категория дохода' %}</th>
+                        <th class="col-2">{% translate 'Период' %}</th>
+                        <th class="col-2">{% translate 'Сумма' %}</th>
+                        <th class="col-2">{% translate 'Счёт' %}</th>
                         <th class="col-2">
                             <button type="button" class="btn btn-outline-light"
                                     data-bs-toggle="modal"
@@ -28,7 +29,7 @@
                             <button type="button" class="btn btn-outline-light"
                                     data-bs-toggle="modal"
                                     data-bs-target="#category-income"
-                                    title="Добавить категорию">
+                                    title="{% translate 'Добавить категорию' %}">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      width="16" height="16" fill="currentColor"
                                      class="bi bi-layout-text-sidebar-reverse"
