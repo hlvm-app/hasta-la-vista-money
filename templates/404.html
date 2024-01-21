@@ -3,21 +3,18 @@
 {% load django_bootstrap5 %}
 
 
-{% block title %}{% translate 'Страница не найдена - 404' %}{% endblock %}
+{% block title %}{% translate '404 - Страница не найдена' %}{% endblock %}
 
 
 {% block content %}
 <div class="container">
     <div class="row">
         <div class="col-xl-12 mt-5 d-flex justify-content-center">
-            <h1 class="text-404-error text-info">404 - Страница не найдена</h1>
+            <h1 class="text-404-error text-info">{% translate '404 - Страница не найдена' %}</h1>
         </div>
 		<!-- /.col-xl-12 mt-5 d-flex justify-content-center -->
         <div class="col-xl-12 d-flex justify-content-center">
-            <p class="text-info">
-                Извините, страница, которую вы ищете, не существует или была
-                удалена.
-            </p>
+            <p class="text-info">{% translate 'Извините, страница, которую вы ищете, не существует или была удалена.' %}</p>
         </div>
         <!-- /.col-xl-12 d-flex justify-content-center -->
     </div>
