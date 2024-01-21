@@ -25,7 +25,7 @@
                         class="d-flex align-items-center btn btn-primary me-5"
                         data-bs-toggle="modal"
                         data-bs-target="#receipts-statistics">
-                    Статистика
+                    {% translate 'Статистика' %}
                 </button>
             </div>
             <!-- /.d-flex justify-content-end -->
@@ -34,16 +34,16 @@
         <div class="row">
             <div class="d-grid gap-2 d-md-flex justify-content-center">
                 <ul class="count-receipt-list list-group list-group-horizontal d-flex align-items-center m-1">
-                    <span class="text-center">Количество чеков:</span>
+                    <span class="text-center">{% translate 'Количество чеков:' %}</span>
                     <li class="list-group-item rounded-3 me-2">{{ total_receipts.count }}</li>
-                    <span class="text-center">Сумма чеков:</span>
+                    <span class="text-center">{% translate 'Сумма чеков:' %}</span>
                     <li class="list-group-item rounded-3">{{ total_sum_receipts.total }}</li>
                 </ul>
                 <button type="button"
                         class="d-flex align-items-center btn btn-sm btn-primary m-xl-1 m-1"
                         data-bs-toggle="modal"
                         data-bs-target="#frequently-purchased-products">
-                    Часто покупаемые товары
+                    {% translate 'Часто покупаемые товары' %}
                 </button>
                 <button type="button"
                         class="d-flex align-items-center btn btn-sm btn-info m-xl-1 m-1"
@@ -54,7 +54,7 @@
                         <path fill-rule="evenodd"
                               d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"></path>
                     </svg>
-                    Добавить нового продавца
+                    {% translate 'Добавить нового продавца' %}
                 </button>
                 <button type="button"
                         class="d-flex align-items-center add-receipt-button btn btn-sm btn-danger m-xl-1 m-1"
@@ -65,7 +65,7 @@
                         <path fill-rule="evenodd"
                               d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"></path>
                     </svg>
-                    Добавить чек вручную по наименованиям
+                    {% translate 'Добавить чек вручную по наименованиям' %}
                 </button>
             </div>
             {% for receipt in receipts %}
@@ -74,8 +74,8 @@
                         <button class="button-receipt btn btn-light text-dark  mb-2"
                                 data-bs-toggle="modal"
                                 data-bs-target="#receipt-{{ receipt.id }}">{{ receipt.customer.name_seller }}<br>
-                            <strong>Дата: </strong>{{ receipt.receipt_date | date:"d.m.Y H:i" }}
-                            <strong>Сумма
+                            <strong>{% translate 'Дата: ' %}</strong>{{ receipt.receipt_date | date:"d.m.Y H:i" }}
+                            <strong>{% translate 'Сумма' %}
                                 чека: </strong>{{ receipt.total_sum | comma }}
                         </button>
                         <!-- /.btn btn-light text-dark -->
@@ -87,14 +87,14 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <div class="col-xl-4">
-                                    Кассовый чек
+                                    {% translate 'Кассовый чек' %}
                                 </div>
                                 <!-- /.col-xl-4 -->
                                 <div class="col-xl-4">
                                     {% if receipt.operation_type == 1 %}
-                                        Покупка
+                                        {% translate 'Покупка' %}
                                     {% elif receipt.operation_type == 2 %}
-                                        Возврат покупки
+                                        {% translate 'Возврат покупки' %}
                                     {% endif %}
                                 </div>
                                 <!-- /.col-xl-4 -->
@@ -144,10 +144,10 @@
                                        aria-describedby="table for receipt">
                                     <thead>
                                     <tr>
-                                        <th>Предмет расчёта</th>
-                                        <th>Цена</th>
-                                        <th>Количество</th>
-                                        <th>Сумма</th>
+                                        <th>{% translate 'Предмет расчёта' %}</th>
+                                        <th>{% translate 'Цена' %}</th>
+                                        <th>{% translate 'Количество' %}</th>
+                                        <th>{% translate 'Сумма' %}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -164,7 +164,7 @@
                                 <!-- /.table -->
                                 <div class="row justify-content-between align-items-center">
                                     <div class="ms-2 col-xl-3">
-                                        <strong class="fs-4">Итог</strong>
+                                        <strong class="fs-4">{% translate 'Итог' %}</strong>
                                     </div>
                                     <div class="col-3">
                                         <strong class="fs-4">{{ receipt.total_sum }}</strong>
@@ -174,7 +174,7 @@
                                 {% if receipt.nds10 %}
                                     <div class="row justify-content-between align-items-center mt-3">
                                         <div class="ms-2 col-xl-3">
-                                            НДС 10%
+                                            {% translate 'НДС 10%' %}
                                         </div>
                                         <div class="col-3">
                                             {{ receipt.nds10 }}
@@ -185,7 +185,7 @@
                                 {% if receipt.nds20 %}
                                     <div class="row justify-content-between align-items-center">
                                         <div class="ms-2 col-xl-3">
-                                            НДС 20%
+                                            {% translate 'НДС 20%' %}
                                         </div>
                                         <div class="col-3">
                                             {{ receipt.nds20 }}
@@ -195,7 +195,7 @@
                                 <!-- /.d-flex justify-content-between align-items-center-->
                                 <div class="row justify-content-between align-items-center">
                                     <div class="ms-2 col-xl-3">
-                                        Списано со счёта
+                                        {% translate 'Списано со счёта' %}
                                     </div>
                                     <div class="col-3">
                                         {{ receipt.account }}
@@ -204,7 +204,7 @@
                                 <!-- /.d-flex justify-content-between align-items-center-->
                                 <div class="row justify-content-between align-items-center mt-5">
                                     <div class="ms-2 col-xl-3">
-                                        Место расчётов
+                                        {% translate 'Место расчётов' %}
                                     </div>
                                     <div class="col-8">
                                         {{ receipt.customer.retail_place }}
@@ -213,7 +213,7 @@
                                 <!-- /.d-flex justify-content-between align-items-center-->
                                 <div class="row justify-content-between align-items-center mt-1">
                                     <div class="ms-2 col-xl-3">
-                                        Адрес расчётов
+                                        {% translate 'Адрес расчётов' %}
                                     </div>
                                     <div class="col-8">
                                         {% if receipt.customer.retail_place_address %}
