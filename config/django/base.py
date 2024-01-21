@@ -81,6 +81,7 @@ INSTALLED_APPS = [
     'hasta_la_vista_money.templatags.thousand_comma',
     'hasta_la_vista_money.templatags.generate_hash',
     'locale',
+    'rosetta',
 ]
 
 if DEBUG:
@@ -247,7 +248,7 @@ AUTHENTICATION_BACKENDS = (
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'ru-ru'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'Europe/Moscow'
 
@@ -257,8 +258,8 @@ USE_L10N = True
 USE_TZ = False
 
 LANGUAGES = (
-    ('en-US', 'English'),
-    ('ru', 'Russian'),
+    ('en', 'English'),
+    ('ru-RU', 'Russian'),
 )
 
 BOOTSTRAP_DATEPICKER_PLUS = {
@@ -300,3 +301,11 @@ sentry_sdk.init(
     traces_sample_rate=RATE,
     environment=os.getenv('SENTRY_ENVIRONMENT'),
 )
+
+
+# Rosetta
+ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True
+ROSETTA_MESSAGES_SOURCE_LANGUAGE_CODE = 'ru'
+ROSETTA_MESSAGES_SOURCE_LANGUAGE_NAME = 'Russian'
+ROSETTA_LANGUAGE_GROUPS = True
+ROSETTA_STORAGE_CLASS = 'rosetta.storage.CacheRosettaStorage'

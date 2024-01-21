@@ -92,5 +92,7 @@ urlpatterns = [
     path('adminushka/', admin.site.urls),
 ]
 
+if 'rosetta' in settings.INSTALLED_APPS:
+    urlpatterns += [re_path(r'^rosetta/', include('rosetta.urls'))]
 if settings.DEBUG:
     urlpatterns += (path('__debug__/', include('debug_toolbar.urls')),)

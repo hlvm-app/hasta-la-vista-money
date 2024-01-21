@@ -28,3 +28,7 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.redirects.RedirectsPanel',
     'debug_toolbar.panels.profiling.ProfilingPanel',
 ]
+
+# Rosetta
+ROSETTA_WSGI_AUTO_RELOAD = True
+ROSETTA_UWSGI_AUTO_RELOAD = True

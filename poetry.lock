@@ -877,6 +877,22 @@ files = [
 Django = ">=3.2"
 
 [[package]]
+name = "django-rosetta"
+version = "0.10.0"
+description = "A Django application that eases the translation of Django projects"
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-rosetta-0.10.0.tar.gz", hash = "sha256:e0380c456e807b5954afaa54ed43c1dbaf29a2af8dd773ec332c8c2fe5465418"},
+    {file = "django_rosetta-0.10.0-py3-none-any.whl", hash = "sha256:a42ed265a976a8e5e907f20bad56239e701084a4b9936810e85ffb27bf9a1f15"},
+]
+
+[package.dependencies]
+Django = ">=4.2"
+polib = ">=1.1.0"
+requests = ">=2.30.0"
+
+[[package]]
 name = "docutils"
 version = "0.19"
 description = "Docutils -- Python Documentation Utilities"
@@ -1846,6 +1862,17 @@ files = [
 [package.extras]
 docs = ["furo (>=2023.7.26)", "proselint (>=0.13)", "sphinx (>=7.1.1)", "sphinx-autodoc-typehints (>=1.24)"]
 test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=7.4)", "pytest-cov (>=4.1)", "pytest-mock (>=3.11.1)"]
+
+[[package]]
+name = "polib"
+version = "1.2.0"
+description = "A library to manipulate gettext files (po and mo files)."
+optional = false
+python-versions = "*"
+files = [
+    {file = "polib-1.2.0-py2.py3-none-any.whl", hash = "sha256:1c77ee1b81feb31df9bca258cbc58db1bbb32d10214b173882452c73af06d62d"},
+    {file = "polib-1.2.0.tar.gz", hash = "sha256:f3ef94aefed6e183e342a8a269ae1fc4742ba193186ad76f175938621dbfc26b"},
+]
 
 [[package]]
 name = "pre-commit"
@@ -2948,4 +2975,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "3.11.2"
-content-hash = "739b57aeb4dc6471b74c11a2aadebada8b32a0ac33607238cbe63fc7113d7e0d"
+content-hash = "37f96fd900c05c6f0b8247461e5b253eab88f39feadc1965f0b230731c7d7231"
