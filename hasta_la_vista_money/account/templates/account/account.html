@@ -18,9 +18,9 @@
                                aria-label="table account">
                             <thead>
                             <tr class="align-middle">
-                                <th scope="col">Название счёта</th>
-                                <th scope="col">Баланс счёта</th>
-                                <th scope="col">Валюта счёта</th>
+                                <th scope="col">{% translate 'Название счёта' %}</th>
+                                <th scope="col">{% translate 'Баланс счёта' %}</th>
+                                <th scope="col">{% translate 'Валюта счёта' %}</th>
                                 <th>
                                     <div class="d-flex justify-content-center">
                                         <button type="button"
@@ -99,7 +99,7 @@
                 <button type="button"
                         class="btn btn-purple btn mt-2 mt-xl-0 fs-6"
                         data-bs-toggle="modal" data-bs-target="#statistics">
-                    Общая статистика пользователя {{ user.username }}
+                    {% translate 'Общая статистика пользователя ' %}{{ user.username }}
                 </button>
             </div>
 

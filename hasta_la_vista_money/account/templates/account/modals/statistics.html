@@ -7,7 +7,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">
-                    Статистика
+                    {% translate 'Статистика' %}
                 </h5>
                 <button type="button" class="btn-close"
                         data-bs-dismiss="modal"
@@ -22,8 +22,8 @@
                                 data-bs-target="#receipts-info"
                                 type="button" role="tab"
                                 aria-controls="receipts-info"
-                                aria-selected="true">Статистика по
-                            чекам
+                                aria-selected="true"
+                                title="{% translate 'Статистика по чекам' %}">
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -33,8 +33,8 @@
                                 data-bs-target="#income-expense"
                                 type="button" role="tab"
                                 aria-controls="income-expense"
-                                aria-selected="false">Статистика
-                            доходов и расходов
+                                aria-selected="false"
+                                title="{% translate 'Статистика доходов и расходов' %}">
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -44,7 +44,8 @@
                                 data-bs-target="#transfer"
                                 type="button" role="tab"
                                 aria-controls="transfer"
-                                aria-selected="false">Статистика переводов
+                                aria-selected="false"
+                                title="{% translate 'Статистика переводов' %}">
                         </button>
                     </li>
                 </ul>
@@ -57,16 +58,16 @@
                                    aria-label="table about receipts">
                                 <tr>
                                     <th>
-                                        Период
+                                        {% translate 'Период' %}
                                     </th>
                                     <th>
-                                        Количество чеков
+                                        {% translate 'Количество чеков' %}
                                     </th>
                                     <th>
-                                        Сумма
+                                        {% translate 'Сумма' %}
                                     </th>
                                     <th>
-                                        Счёт
+                                        {% translate 'Счёт' %}
                                     </th>
                                 </tr>
                                 {% for receipt in receipt_info_by_month %}
@@ -87,10 +88,10 @@
                             <table class="table table-sm table-expense table-hover align-middle text-center text-dark table-bordered shadow"
                                    aria-label="table expense">
                                 <tr>
-                                    <th>Категория</th>
-                                    <th>Дата</th>
-                                    <th>Сумма</th>
-                                    <th>Счёт</th>
+                                    <th>{% translate 'Категория' %}</th>
+                                    <th>{% translate 'Дата' %}</th>
+                                    <th>{% translate 'Сумма' %}</th>
+                                    <th>{% translate 'Счёт' %}</th>
                                 </tr>
                                 {% for item in income_expense %}
                                     <tr>

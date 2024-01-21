@@ -12,7 +12,7 @@
                     {% bootstrap_form add_account_form layout='horizontal' horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
                     <div class="wrapper-button-change-account position-relative">
                         {% bootstrap_button 'Изменить счёт' %}
-                        <a class="btn btn-warning text-light position-absolute end-0" href="{% url 'applications:list' %}">Вернуться назад</a>
+                        <a class="btn btn-warning text-light position-absolute end-0" href="{% url 'applications:list' %}">{% translate 'Вернуться назад' %}</a>
                     </div>
 
                 </form>

@@ -19,7 +19,7 @@
                              viewBox="0 0 16 16">
                             <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"></path>
                         </svg>
-                        Раздел с бюджетом находится в разработке
+                        {% translate 'Раздел с бюджетом находится в разработке' %}
                     </p>
                 </h4>
             </div>
@@ -30,19 +30,19 @@
             <div class="table-responsive">
                 <form action="{% url 'budget:generate_date' %}" class="form m-0" method="post">
                     {% csrf_token %}
-                    <button class="btn text-white">Добавить список дат</button>
+                    <button class="btn text-white">{% translate 'Добавить список дат' %}</button>
                 </form>
                 <table class="table table-dark budget-table">
                     <tbody>
                     <tr>
-                        <td class="fs-4 w-50">Расход</td>
+                        <td class="fs-4 w-50">{% translate 'Расход' %}</td>
                         {% for date in list_dates %}
                             <th id="{{ date.id }}" class="date text-nowrap" colspan="2">{{ date.date | date:"F Y" }}</th>
                         {% endfor %}
                     </tr>
 
                     <tr>
-                        <th>Итог</th>
+                        <th>{% translate 'Итог' %}</th>
                         {% for total_sum in total_sum_list_expense %}
                             <td class="{% if total_sum != 0 %}fw-bold{% endif %}">{{ total_sum|floatformat:"2" }}</td>
                             <td>0,00</td>
@@ -51,8 +51,8 @@
                     <tr>
                         <td></td>
                         {% for _ in list_dates %}
-                            <th>Факт</th>
-                            <th>План</th>
+                            <th>{% translate 'Факт' %}</th>
+                            <th>{% translate 'План' %}</th>
                         {% endfor %}
                     </tr>
 
@@ -71,7 +71,7 @@
                     </tbody>
                     <tbody>
                     <tr>
-                        <td class="fs-4 w-50">Доход</td>
+                        <td class="fs-4 w-50">{% translate '' %}Доход</td>
                         {% for date in list_dates %}
                             <th colspan="2" class="text-nowrap">{{ date.date | date:"F Y" }}</th>
                         {% endfor %}
@@ -87,8 +87,8 @@
                     <tr>
                         <td></td>
                         {% for _ in list_dates %}
-                            <th>Факт</th>
-                            <th>План</th>
+                            <th>{% translate 'Факт' %}</th>
+                            <th>{% translate 'План' %}</th>
                         {% endfor %}
                     </tr>
 

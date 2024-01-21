@@ -7,7 +7,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">
-                    Добавить счёт
+                    {% translate 'Добавить счёт' %}
                 </h5>
                 <button type="button" class="btn-close"
                         data-bs-dismiss="modal"
@@ -34,7 +34,7 @@
                             </div>
                         {% endfor %}
                     {% endif %}
-                    {% bootstrap_button 'Добавить новый счёт' %}
+                    {% bootstrap_button add_new_account_button %}
                 </form>
             </div>
         </div>
