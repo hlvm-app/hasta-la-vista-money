@@ -2,11 +2,12 @@ from dataclasses import dataclass
 from typing import Any
 
 from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
+from hasta_la_vista_money.users.models import User
 
 
 @dataclass
 class ProductData:
-    user: str
+    user: User
     product_name: str
     price: float
     quantity: int
@@ -17,7 +18,7 @@ class ProductData:
 
 @dataclass
 class CustomerData:
-    user: str
+    user: User
     name_seller: str
     retail_place_address: str
     retail_place: str
@@ -25,7 +26,7 @@ class CustomerData:
 
 @dataclass
 class ReceiptData:
-    user: str
+    user: User
     account: Any
     receipt_date: str
     number_receipt: int
