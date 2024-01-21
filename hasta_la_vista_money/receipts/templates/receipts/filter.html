@@ -1,6 +1,8 @@
 {% load i18n %}
 {% load django_bootstrap5 %}
 
+{% translate 'Фильтровать' as filter_button %}
+
 <div class="container">
     <div class="row">
         <div class="col-12">
@@ -8,7 +10,7 @@
                 <summary class="btn btn-primary mb-2">Фильтр</summary>
                 <form action="" method="get" class="form">
                     {{ receipt_filter.form }}
-                    {% bootstrap_button 'Фильтровать' %}
+                    {% bootstrap_button filter_button %}
                 </form>
             </details>
         </div>
