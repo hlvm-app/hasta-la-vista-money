@@ -290,3 +290,12 @@ class TemplateHTMLView(Enum):
 class SuccessUrlView(Enum):
     INCOME_URL = 'income:list'
     RECEIPT_URL = 'receipts:list'
+
+
+class Placeholders(Enum):
+    ACCOUNT_FORM_NOTES = ''.join(
+                    (
+                        'Введите заметку не более 250 символов.\n',
+                        'Поле необязательное!',
+                    ),
+                )

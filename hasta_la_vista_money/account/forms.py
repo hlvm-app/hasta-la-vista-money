@@ -8,7 +8,8 @@ from django.forms import (
 )
 from django.utils.translation import gettext_lazy as _
 from hasta_la_vista_money.account.models import Account, TransferMoneyLog
-from hasta_la_vista_money.constants import MessageOnSite, NumericParameter
+from hasta_la_vista_money.constants import MessageOnSite, NumericParameter, \
+    Placeholders
 
 
 class AddAccountForm(ModelForm):
@@ -16,32 +17,27 @@ class AddAccountForm(ModelForm):
         model = Account
         fields = ['name_account', 'balance', 'currency']
         labels = {
-            'name_account': 'Наименование счёта',
-            'balance': 'Начальный баланс',
-            'currency': 'Валюта счёта',
+            'name_account': _('Наименование счёта'),
+            'balance': _('Начальный баланс'),
+            'currency': _('Валюта счёта'),
         }
 
 
 class TransferMoneyAccountForm(ModelForm):
-    from_account = ModelChoiceField(label='Со счёта:', queryset=None)
-    to_account = ModelChoiceField(label='На счёт:', queryset=None)
+    from_account = ModelChoiceField(label=_('Со счёта:'), queryset=None)
+    to_account = ModelChoiceField(label=_('На счёт:'), queryset=None)
     amount = DecimalField(
-        label='Сумма перевода:',
+        label=_('Сумма перевода:'),
         max_digits=NumericParameter.TWENTY.value,
         decimal_places=NumericParameter.TWO.value,
     )
     notes = CharField(
-        label='Заметка',
+        label=_('Заметка'),
         required=False,
         widget=Textarea(
             attrs={
                 'rows': 3,
-                'placeholder': ''.join(
-                    (
-                        'Введите заметку не более 250 символов.\n',
-                        'Поле необязательное!',
-                    ),
-                ),
+                'placeholder': _(Placeholders.ACCOUNT_FORM_NOTES.value),
                 'maxlength': NumericParameter.TWO_HUNDRED_FIFTY.value,
             },
         ),

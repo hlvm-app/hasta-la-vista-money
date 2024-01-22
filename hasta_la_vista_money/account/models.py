@@ -15,7 +15,7 @@ class Account(models.Model):
     )
     name_account = models.CharField(
         max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
-        default='Основной счёт',
+        default=_('Основной счёт'),
     )
     balance = models.DecimalField(
         max_digits=NumericParameter.TWENTY.value,
@@ -71,10 +71,10 @@ class TransferMoneyLog(models.Model):
         ordering = ['-exchange_date']
 
     def __str__(self):
-        return ''.join(
+        return _(''.join(
             (
                 f'{self.exchange_date:%d-%m-%Y %H:%M}. ',
                 f'Перевод суммы {self.amount} ',
                 f'со счёта "{self.from_account}" на счёт "{self.to_account}". ',
             ),
-        )
+        ))

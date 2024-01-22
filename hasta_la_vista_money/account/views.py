@@ -7,6 +7,7 @@ from django.db.models import ProtectedError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from hasta_la_vista_money.account.forms import (
     AddAccountForm,
@@ -210,8 +211,8 @@ class DeleteAccountView(DeleteView):
         try:
             account = self.get_object()
             account.delete()
-            messages.success(self.request, 'Счёт успешно удалён!')
+            messages.success(self.request, _('Счёт успешно удалён!'))
             return super().form_valid(form)
         except ProtectedError:
-            messages.error(self.request, 'Счёт не может быть удалён!')
+            messages.error(self.request, _('Счёт не может быть удалён!'))
             return redirect(self.success_url)
