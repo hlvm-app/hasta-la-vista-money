@@ -37,8 +37,7 @@ class TransferMoneyAccountForm(ModelForm):
             attrs={
                 'rows': 3,
                 'maxlength': constants.TWO_HUNDRED_FIFTY,
-                'placeholder': _(Placeholders.ACCOUNT_FORM_NOTES.value),
-
+                'placeholder': constants.ACCOUNT_FORM_NOTES,
             },
         ),
     )

@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse_lazy
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.constants import HTTPStatus
 from hasta_la_vista_money.expense.models import Expense
 from hasta_la_vista_money.income.models import Income
 from hasta_la_vista_money.users.models import User
@@ -30,7 +30,7 @@ class TestAccount(TestCase):
     def test_account_list(self):
         self.client.force_login(self.user)
         response = self.client.get(reverse_lazy('applications:list'))
-        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+        self.assertEqual(response.status_code, constants.SUCCESS_CODE)
         account_list = list(response.context['accounts'])
         self.assertQuerySetEqual(account_list, [self.account1, self.account2])
 
@@ -46,7 +46,7 @@ class TestAccount(TestCase):
         }
 
         response = self.client.post(url, data=new_account, follow=True)
-        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+        self.assertEqual(response.status_code, constants.SUCCESS_CODE)
 
         created_account = Account.objects.get(
             name_account='Банковская карта *8090',
@@ -71,7 +71,7 @@ class TestAccount(TestCase):
         self.assertRedirects(
             response,
             '/hasta-la-vista-money/',
-            status_code=HTTPStatus.REDIRECTS.value,
+            status_code=constants.REDIRECTS,
         )
 
     def test_account_delete(self):
@@ -103,5 +103,5 @@ class TestAccount(TestCase):
             response,
             'Счёт не может быть удалён!',
         )
-        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+        self.assertEqual(response.status_code, constants.SUCCESS_CODE)
         self.assertTrue(Account.objects.filter(pk=self.account1.pk).exists())

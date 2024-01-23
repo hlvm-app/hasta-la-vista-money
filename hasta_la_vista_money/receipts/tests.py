@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse_lazy
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.constants import HTTPStatus
 from hasta_la_vista_money.receipts.forms import ReceiptForm
 from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
 from hasta_la_vista_money.users.models import User
@@ -26,7 +26,7 @@ class TestReceipt(TestCase):
     def test_receipt_list(self):
         self.client.force_login(self.user)
         response = self.client.get(reverse_lazy('receipts:list'))
-        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+        self.assertEqual(response.status_code, constants.SUCCESS_CODE)
 
     def test_receipt_create(self):
         self.client.force_login(self.user)
@@ -69,7 +69,7 @@ class TestReceipt(TestCase):
         response_receipt = self.client.post(url, data=form_receipt.data)
         self.assertEqual(
             response_receipt.status_code,
-            HTTPStatus.SUCCESS_CODE.value,
+            constants.SUCCESS_CODE,
         )
 
     def test_receipt_delete(self):

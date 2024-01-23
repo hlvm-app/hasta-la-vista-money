@@ -1,14 +1,14 @@
 import os
 
 from dotenv import load_dotenv
-from hasta_la_vista_money.constants import SessionCookie
+from hasta_la_vista_money import constants
 
 load_dotenv()
 
 
 SESSION_COOKIE_AGE = os.environ.get(
     'SESSION_COOKIE_AGE',
-    default=SessionCookie.SESSION_COOKIE_AGE.value,
+    default=constants.SESSION_COOKIE_AGE,
 )
 SESSION_COOKIE_HTTPONLY = os.environ.get(
     'SESSION_COOKIE_HTTPONLY',

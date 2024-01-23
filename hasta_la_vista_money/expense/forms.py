@@ -32,7 +32,7 @@ class AddExpenseForm(BaseForm):
             if amount > account.balance:
                 self.add_error(
                     'account',
-                    f'Недостаточно средств на счёте {account}',
+                    _(f'Недостаточно средств на счёте {account}'),
                 )
         return cleaned_data
 
@@ -48,8 +48,8 @@ class AddExpenseForm(BaseForm):
 
 class AddCategoryForm(BaseForm):
     labels = {
-        'name': 'Название категории',
-        'parent_category': 'Вложенность',
+        'name': _('Название категории'),
+        'parent_category': _('Вложенность'),
     }
     field = 'parent_category'
 

@@ -1,11 +1,11 @@
 from django.db import models
-from hasta_la_vista_money.constants import NumericParameter
+from hasta_la_vista_money import constants
 
 
 class CommonIncomeExpense(models.Model):
     date = models.DateTimeField()
     amount = models.DecimalField(
-        max_digits=NumericParameter.TWENTY.value,
+        max_digits=constants.TWENTY,
         decimal_places=2,
     )
 

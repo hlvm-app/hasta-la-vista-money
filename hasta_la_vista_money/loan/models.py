@@ -2,8 +2,8 @@ import decimal
 
 from django.db import models
 from django.urls import reverse
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.constants import NumericParameter
 from hasta_la_vista_money.users.models import User
 
 
@@ -25,11 +25,11 @@ class Loan(models.Model):
     )
     date = models.DateTimeField()
     loan_amount = models.FloatField(
-        max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
+        max_length=constants.TWO_HUNDRED_FIFTY,
     )
     annual_interest_rate = models.DecimalField(
-        max_digits=NumericParameter.TWO_HUNDRED_FIFTY.value,
-        decimal_places=NumericParameter.TWO.value,
+        max_digits=constants.TWO_HUNDRED_FIFTY,
+        decimal_places=constants.TWO,
     )
     period_loan = models.IntegerField()
     type_loan = models.CharField(choices=TYPE_LOAN, default=TYPE_LOAN[0][0])
@@ -83,8 +83,8 @@ class PaymentMakeLoan(models.Model):
         related_name='loans',
     )
     amount = models.DecimalField(
-        max_digits=NumericParameter.TWO_HUNDRED_FIFTY.value,
-        decimal_places=NumericParameter.TWO.value,
+        max_digits=constants.TWO_HUNDRED_FIFTY,
+        decimal_places=constants.TWO,
     )
 
 
@@ -101,18 +101,18 @@ class PaymentSchedule(models.Model):
     )
     date = models.DateTimeField()
     balance = models.DecimalField(
-        max_digits=NumericParameter.SIXTY.value,
-        decimal_places=NumericParameter.TWO.value,
+        max_digits=constants.SIXTY,
+        decimal_places=constants.TWO,
     )
     monthly_payment = models.DecimalField(
-        max_digits=NumericParameter.SIXTY.value,
-        decimal_places=NumericParameter.TWO.value,
+        max_digits=constants.SIXTY,
+        decimal_places=constants.TWO,
     )
     interest = models.DecimalField(
-        max_digits=NumericParameter.SIXTY.value,
-        decimal_places=NumericParameter.TWO.value,
+        max_digits=constants.SIXTY,
+        decimal_places=constants.TWO,
     )
     principal_payment = models.DecimalField(
-        max_digits=NumericParameter.SIXTY.value,
-        decimal_places=NumericParameter.TWO.value,
+        max_digits=constants.SIXTY,
+        decimal_places=constants.TWO,
     )

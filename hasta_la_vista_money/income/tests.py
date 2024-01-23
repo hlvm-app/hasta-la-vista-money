@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse_lazy
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.constants import HTTPStatus
 from hasta_la_vista_money.income.forms import AddCategoryIncomeForm, IncomeForm
 from hasta_la_vista_money.income.models import Income, IncomeCategory
 from hasta_la_vista_money.users.models import User
@@ -28,7 +28,7 @@ class TestIncome(TestCase):
     def test_list_income(self):
         self.client.force_login(self.user)
         response = self.client.get(reverse_lazy('income:list'))
-        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+        self.assertEqual(response.status_code, constants.SUCCESS_CODE)
 
     def test_income_create(self):
         self.client.force_login(self.user)
@@ -47,7 +47,7 @@ class TestIncome(TestCase):
         self.assertTrue(form.is_valid())
 
         response = self.client.post(url, data=form.data, follow=True)
-        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+        self.assertEqual(response.status_code, constants.SUCCESS_CODE)
 
     def test_income_update(self):
         self.client.force_login(self.user)
@@ -64,7 +64,7 @@ class TestIncome(TestCase):
         self.assertTrue(form.is_valid())
 
         response = self.client.post(url, form.data)
-        self.assertEqual(response.status_code, HTTPStatus.REDIRECTS.value)
+        self.assertEqual(response.status_code, constants.REDIRECTS)
 
         updated_expense = Income.objects.get(pk=self.income.id)
         self.assertEqual(updated_expense.amount, NEW_TEST_AMOUNT)
@@ -75,7 +75,7 @@ class TestIncome(TestCase):
         url = reverse_lazy('income:delete_income', args=(self.income.pk,))
 
         response = self.client.post(url, follow=True)
-        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+        self.assertEqual(response.status_code, constants.SUCCESS_CODE)
 
     def test_category_income_create(self):
         self.client.force_login(self.user)
@@ -97,4 +97,4 @@ class TestIncome(TestCase):
         )
 
         response = self.client.post(url, follow=True)
-        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+        self.assertEqual(response.status_code, constants.SUCCESS_CODE)

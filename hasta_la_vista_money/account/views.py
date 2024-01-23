@@ -7,7 +7,6 @@ from django.db.models import ProtectedError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.forms import (

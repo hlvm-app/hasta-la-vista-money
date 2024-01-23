@@ -2,6 +2,7 @@ import json
 
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.bot.bot_handler.bot_commands_handler import (
     handle_receipt,
     handle_select_account,
@@ -10,7 +11,6 @@ from hasta_la_vista_money.bot.bot_handler.bot_commands_handler import (
 )
 from hasta_la_vista_money.bot.config_bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.log_config import logger
-from hasta_la_vista_money.constants import HTTPStatus, ResponseText
 from telebot import types
 
 bot_admin.add_message_handler(handle_receipt)
@@ -33,8 +33,8 @@ def webhooks(request) -> HttpResponse:
             update = types.Update.de_json(json_data)
             bot_admin.process_new_updates([update])
             return HttpResponse(
-                ResponseText.SUCCESS_WEBHOOKS.value,
-                status=HTTPStatus.SUCCESS_CODE.value,
+                constants.SUCCESS_WEBHOOKS,
+                status=constants.SUCCESS_CODE,
             )
         except TypeError:
             # Скрываем ошибку 'function' object is not subscriptable.
@@ -45,6 +45,6 @@ def webhooks(request) -> HttpResponse:
             logger.error(error)
 
     return HttpResponse(
-        ResponseText.WEBHOOKS_TELEGRAM.value,
-        status=HTTPStatus.SUCCESS_CODE.value,
+        constants.WEBHOOKS_TELEGRAM,
+        status=constants.SUCCESS_CODE,
     )

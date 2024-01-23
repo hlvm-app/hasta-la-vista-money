@@ -57,7 +57,7 @@ ANOTHER_ACCRUAL_ACCOUNT: Final[str] = ' '.join(
 SUCCESS_MESSAGE_ADDED_ACCOUNT: Final[str] = 'Счёт успешно создан!'
 SUCCESS_MESSAGE_CHANGED_ACCOUNT: Final[str] = 'Счёт успешно изменён!'
 SUCCESS_MESSAGE_DELETE_ACCOUNT: Final[str] = 'Счёт успешно удалён!'
-UNSUCCESSFULLY_MESSAGE_DELETE_ACCOUNT: Final[str] = 'Счёт успешно удалён!'
+UNSUCCESSFULLY_MESSAGE_DELETE_ACCOUNT: Final[str] = 'Счёт не может быть удалён!'
 SUCCESS_MESSAGE_CHANGED_PROFILE: Final[str] = 'Профиль успешно обновлён!'
 SUCCESS_MESSAGE_CHANGED_PASSWORD: Final[str] = ''.join(
     'Новый пароль успешно установлен!',
@@ -98,7 +98,12 @@ SUCCESS_MESSAGE_INSUFFICIENT_FUNDS: Final[str] = 'Недостаточно ср�
 SUCCESS_MESSAGE_LOAN_CREATE: Final[str] = 'Кредит успешно добавлен'
 SUCCESS_MESSAGE_LOAN_DELETE: Final[str] = 'Кредит успешно удалён'
 SUCCESS_MESSAGE_PAYMENT_MAKE: Final[str] = 'Платеж успешно внесён'
-
+ACCOUNT_FORM_NOTES: Final[str] = ''.join(
+    (
+        'Введите заметку не более 250 символов.\n',
+        'Поле необязательное!',
+    ),
+)
 
 # Сообщения для телеграма
 SAFE_LOGIN_PASSWORD: Final[str] = ''.join(

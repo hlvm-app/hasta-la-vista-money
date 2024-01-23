@@ -1,7 +1,7 @@
 from django.db import models
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.models import CommonIncomeExpense
-from hasta_la_vista_money.constants import NumericParameter
 from hasta_la_vista_money.users.models import User
 
 
@@ -12,7 +12,7 @@ class ExpenseCategory(models.Model):
         related_name='category_expense_users',
     )
     name = models.CharField(
-        max_length=NumericParameter.TWO_HUNDRED_FIFTY.value,
+        max_length=constants.TWO_HUNDRED_FIFTY,
         unique=True,
     )
     parent_category = models.ForeignKey(

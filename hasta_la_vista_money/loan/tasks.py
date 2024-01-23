@@ -3,7 +3,7 @@ import datetime
 
 from dateutil.relativedelta import relativedelta
 from django.shortcuts import get_object_or_404
-from hasta_la_vista_money.constants import NumberMonthOfYear
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.loan.models import Loan, PaymentSchedule
 from hasta_la_vista_money.users.models import User
 
@@ -28,11 +28,7 @@ def calculate_annuity_loan(
     :return:
     """
     monthly_interest_rate = float(
-        (
-            annual_interest_rate
-            / NumberMonthOfYear.NUMBER_TWELFTH_MONTH_YEAR.value
-        )
-        / 100,
+        (annual_interest_rate / constants.NUMBER_TWELFTH_MONTH_YEAR) / 100,
     )
 
     monthly_payment = (
@@ -103,11 +99,7 @@ def calculate_differentiated_loan(
     loan = Loan.objects.filter(id=loan_id).first()
 
     monthly_interest_rate = float(
-        (
-            annual_interest_rate
-            / NumberMonthOfYear.NUMBER_TWELFTH_MONTH_YEAR.value
-        )
-        / 100,
+        (annual_interest_rate / constants.NUMBER_TWELFTH_MONTH_YEAR) / 100,
     )
 
     balance = loan_amount

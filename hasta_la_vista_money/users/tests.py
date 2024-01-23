@@ -1,7 +1,7 @@
 from django.test import Client, TestCase
 from django.urls import reverse_lazy
 from faker import Faker
-from hasta_la_vista_money.constants import HTTPStatus
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.users.models import User
 
 LENGTH_PASSWORD = 12
@@ -21,7 +21,7 @@ class TestUser(TestCase):
         self.client.force_login(self.user2)
         url = reverse_lazy('users:registration')
         response = self.client.get(url)
-        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+        self.assertEqual(response.status_code, constants.SUCCESS_CODE)
 
         Faker.seed(0)
         username = self.faker.user_name()

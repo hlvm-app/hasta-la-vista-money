@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse_lazy
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.constants import HTTPStatus
 from hasta_la_vista_money.expense.forms import AddCategoryForm, AddExpenseForm
 from hasta_la_vista_money.expense.models import Expense, ExpenseCategory
 from hasta_la_vista_money.users.models import User
@@ -28,7 +28,7 @@ class TestExpense(TestCase):
     def test_list_expense(self):
         self.client.force_login(self.user)
         response = self.client.get(reverse_lazy('expense:list'))
-        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+        self.assertEqual(response.status_code, constants.SUCCESS_CODE)
 
     def test_expense_create(self):
         self.client.force_login(self.user)
@@ -61,7 +61,7 @@ class TestExpense(TestCase):
         self.assertTrue(form.is_valid())
 
         response = self.client.post(url, form.data)
-        self.assertEqual(response.status_code, HTTPStatus.REDIRECTS.value)
+        self.assertEqual(response.status_code, constants.REDIRECTS)
 
         updated_expense = Expense.objects.get(pk=self.expense.id)
         self.assertEqual(updated_expense.amount, NEW_TEST_AMOUNT)
@@ -72,7 +72,7 @@ class TestExpense(TestCase):
         url = reverse_lazy('expense:delete', args=(self.expense.pk,))
 
         response = self.client.post(url, follow=True)
-        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+        self.assertEqual(response.status_code, constants.SUCCESS_CODE)
 
     def test_category_expense_create(self):
         self.client.force_login(self.user)
@@ -94,4 +94,4 @@ class TestExpense(TestCase):
         )
 
         response = self.client.post(url, follow=True)
-        self.assertEqual(response.status_code, HTTPStatus.SUCCESS_CODE.value)
+        self.assertEqual(response.status_code, constants.SUCCESS_CODE)

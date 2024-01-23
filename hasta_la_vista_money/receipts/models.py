@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext as _
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.constants import NumericParameter
 from hasta_la_vista_money.users.models import User
 
 OPERATION_TYPES = (
@@ -55,15 +55,15 @@ class Receipt(models.Model):
     number_receipt = models.IntegerField(default=None, null=True)
     nds10 = models.DecimalField(
         blank=True,
-        max_digits=NumericParameter.SIXTY.value,
+        max_digits=constants.SIXTY,
         null=True,
-        decimal_places=NumericParameter.TWO.value,
+        decimal_places=constants.TWO,
     )
     nds20 = models.DecimalField(
         blank=True,
-        max_digits=NumericParameter.SIXTY.value,
+        max_digits=constants.SIXTY,
         null=True,
-        decimal_places=NumericParameter.TWO.value,
+        decimal_places=constants.TWO,
     )
     operation_type = models.IntegerField(
         default=0,
