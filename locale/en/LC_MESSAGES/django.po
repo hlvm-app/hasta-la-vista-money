@@ -3,14 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: hasta_la_vista_money/account/models.py:84
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-23 23:12+0300\n"
-"PO-Revision-Date: 2024-01-21 20:45+0300\n"
+"POT-Creation-Date: 2024-01-23 23:47+0300\n"
+"PO-Revision-Date: 2024-01-23 23:53+0300\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -184,7 +183,8 @@ msgstr ""
 msgid "Дата"
 msgstr ""
 
-#: hasta_la_vista_money/budget/templates/budget.html:8 templates/header.html:56
+#: hasta_la_vista_money/budget/templates/budget.html:8
+#: templates/header.html:56
 msgid "Бюджет"
 msgstr "Budget"
 
@@ -290,9 +290,9 @@ msgstr ""
 
 #: hasta_la_vista_money/constants.py:67
 msgid ""
-"Пароли хранятся в зашифрованном виде, поэтому нет возможности посмотреть ваш "
-"пароль, но вы можете поменять его на новый перейдя на вкладку<br>\"Изменить "
-"пароль\""
+"Пароли хранятся в зашифрованном виде, поэтому нет возможности посмотреть ваш"
+" пароль, но вы можете поменять его на новый перейдя на вкладку<br>\"Изменить"
+" пароль\""
 msgstr ""
 
 #: hasta_la_vista_money/constants.py:75
@@ -335,7 +335,8 @@ msgid "Категория успешно удалена!"
 msgstr ""
 
 #: hasta_la_vista_money/constants.py:89
-msgid "Категория не может быть удалена, так как связана с доходом или расходом"
+msgid ""
+"Категория не может быть удалена, так как связана с доходом или расходом"
 msgstr ""
 
 #: hasta_la_vista_money/constants.py:92
@@ -415,8 +416,7 @@ msgstr ""
 
 #: hasta_la_vista_money/constants.py:164
 msgid ""
-"Чтобы добавить чек используя данные с чека, введите поочередно - Дату в "
-"формате ГГГГ-ММ-ДД ЧЧ:ММ:СС, сумму чека, ФН, ФД, ФП.\n"
+"Чтобы добавить чек используя данные с чека, введите поочередно - Дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС, сумму чека, ФН, ФД, ФП.\n"
 "Сначала введите дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС"
 msgstr ""
 
@@ -555,7 +555,8 @@ msgid "Кредиты"
 msgstr ""
 
 #: hasta_la_vista_money/loan/templates/loan/loan.html:18
-#: hasta_la_vista_money/loan/templates/loan/loan.html:89 templates/base.html:22
+#: hasta_la_vista_money/loan/templates/loan/loan.html:89
+#: templates/base.html:22
 msgid "Добавить кредит"
 msgstr ""
 
@@ -585,20 +586,18 @@ msgid "Срок кредита (месяцы): "
 msgstr ""
 
 #: hasta_la_vista_money/loan/templates/loan/loan.html:122
-#, fuzzy
 #| msgid "Дата платежа"
 msgid "Внести платеж"
-msgstr "Payment date"
+msgstr "Make a payment"
 
 #: hasta_la_vista_money/loan/templates/loan/loan.html:130
 msgid "Удалить кредит"
 msgstr ""
 
 #: hasta_la_vista_money/loan/templates/loan/loan.html:139
-#, fuzzy
 #| msgid "Дата платежа"
 msgid "График платежей:"
-msgstr "Payment date"
+msgstr "Payment schedule:"
 
 #: hasta_la_vista_money/loan/templates/loan/loan.html:140
 msgid "Общая сумма кредита:"
@@ -814,11 +813,8 @@ msgid "Установить новый пароль"
 msgstr ""
 
 #: hasta_la_vista_money/users/templates/users/password_reset_confirm.html:22
-msgid "Ссылка недействительна! Запросите новую ссылку"
-msgstr ""
-
-#: hasta_la_vista_money/users/templates/users/password_reset_confirm.html:22
-msgid "со страницы авторизации!"
+msgid ""
+"Ссылка недействительна! Запросите новую ссылку со страницы авторизации!"
 msgstr ""
 
 #: hasta_la_vista_money/users/templates/users/profile.html:6
@@ -875,7 +871,7 @@ msgstr ""
 
 #: templates/base.html:25
 msgid "Перевести"
-msgstr ""
+msgstr "Transfer"
 
 #: templates/base.html:26
 msgid "Добавить новый счёт"
@@ -899,4 +895,4 @@ msgstr ""
 
 #: templates/header.html:81
 msgid "Выход"
-msgstr ""
+msgstr "Exit"
