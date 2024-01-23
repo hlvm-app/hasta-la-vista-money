@@ -169,5 +169,5 @@ def change_planning(request):
         data = json.loads(request.body.decode('utf-8'))
         planning_value = data.get('planning')
         return JsonResponse({'planning_value': planning_value})
-    except json.JSONDecodeError as error:
-        return JsonResponse({'error': error})
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'error'})
