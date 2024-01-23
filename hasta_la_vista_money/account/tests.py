@@ -42,7 +42,7 @@ class TestAccount(TestCase):
             'user': self.user,
             'name_account': 'Банковская карта *8090',
             'balance': BALANCE_TEST,
-            'currency': 'RU',
+            'currency': 'RUB',
         }
 
         response = self.client.post(url, data=new_account, follow=True)
@@ -52,7 +52,7 @@ class TestAccount(TestCase):
             name_account='Банковская карта *8090',
         )
         self.assertEqual(created_account.balance, BALANCE_TEST)
-        self.assertEqual(created_account.currency, 'RU')
+        self.assertEqual(created_account.currency, 'RUB')
 
     def test_update_account(self):
         self.client.force_login(self.user)
@@ -61,7 +61,7 @@ class TestAccount(TestCase):
             'user': self.user,
             'name_account': 'Основной счёт',
             'balance': NEW_BALANCE_TEST,
-            'currency': 'RU',
+            'currency': 'RUB',
         }
         response = self.client.post(url, update_account, follow=True)
         self.assertEqual(

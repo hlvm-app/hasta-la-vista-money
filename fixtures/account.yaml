@@ -4,10 +4,10 @@
         "pk": 1,
         "fields": {
             "user": 1,
-            
+
             "name_account": "Банковская карта",
             "balance": "300000.00",
-            "currency": "RU"
+            "currency": "RUB"
         }
     },
     {
@@ -17,7 +17,7 @@
             "user": 1,
             "name_account": "Основной счёт",
             "balance": "200000.00",
-            "currency": "RU"
+            "currency": "RUB"
         }
     }
 ]
