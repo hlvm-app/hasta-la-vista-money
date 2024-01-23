@@ -1,5 +1,5 @@
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.bot.config_bot.config_bot import bot_admin
-from hasta_la_vista_money.constants import TelegramMessage
 from hasta_la_vista_money.users.models import TelegramUser, User
 
 
@@ -12,7 +12,7 @@ def handle_auth(message):
     """
     auth_data = message.text.split(':')
     if len(auth_data) != 2:
-        bot_admin.reply_to(message, TelegramMessage.INCORRECT_FORMAT.value)
+        bot_admin.reply_to(message, constants.INCORRECT_FORMAT)
         return
 
     username, password = map(str, auth_data)
@@ -23,7 +23,7 @@ def handle_auth(message):
     else:
         bot_admin.reply_to(
             message,
-            TelegramMessage.INVALID_USERNAME_PASSWORD.value,
+            constants.INVALID_USERNAME_PASSWORD,
         )
         bot_admin.delete_message(message.from_user.id, message.message_id)
 
@@ -43,6 +43,6 @@ def create_telegram_user(message, user):
     )
     bot_admin.reply_to(
         message,
-        TelegramMessage.AUTHORIZATION_SUCCESSFUL.value,
+        constants.AUTHORIZATION_SUCCESSFUL,
     )
     bot_admin.delete_message(message.from_user.id, message.message_id)

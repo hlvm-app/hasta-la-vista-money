@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, DetailView, ListView, UpdateView
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.custom_paginator import (
     paginator_custom_view,
@@ -14,7 +15,6 @@ from hasta_la_vista_money.commonlogic.views import (
     create_object_view,
     get_queryset_type_income_expenses,
 )
-from hasta_la_vista_money.constants import MessageOnSite, TemplateHTMLView
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
     DeleteCategoryMixin,
@@ -27,7 +27,7 @@ from hasta_la_vista_money.users.models import User
 
 
 class BaseView:
-    template_name = TemplateHTMLView.EXPENSE_TEMPLATE.value
+    template_name = 'expense/expense.html'
     success_url = reverse_lazy('expense:list')
 
 
@@ -138,7 +138,7 @@ class ExpenseCreateView(
                 form=form,
                 model=ExpenseCategory,
                 request=self.request,
-                message=MessageOnSite.SUCCESS_EXPENSE_ADDED.value,
+                message=constants.SUCCESS_EXPENSE_ADDED,
             )
             return JsonResponse(response_data)
 
@@ -209,7 +209,7 @@ class ExpenseUpdateView(
 
             messages.success(
                 self.request,
-                MessageOnSite.SUCCESS_EXPENSE_UPDATE.value,
+                constants.SUCCESS_EXPENSE_UPDATE,
             )
             return super().form_valid(form)
 
@@ -229,7 +229,7 @@ class ExpenseDeleteView(ExpenseBaseView, DetailView, DeleteView):
             account_balance.save()
             messages.success(
                 self.request,
-                MessageOnSite.SUCCESS_EXPENSE_DELETED.value,
+                constants.SUCCESS_EXPENSE_DELETED,
             )
             return super().form_valid(form)
 

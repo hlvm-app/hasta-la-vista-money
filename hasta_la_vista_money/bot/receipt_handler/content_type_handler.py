@@ -1,3 +1,4 @@
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.bot.config_bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.receipt_handler.receipt_parser_json import (
     handle_receipt_json,
@@ -11,7 +12,6 @@ from hasta_la_vista_money.bot.receipt_handler.text_qr_code_handler import (
 from hasta_la_vista_money.bot.send_message.send_message_tg_user import (
     SendMessageToTelegramUser,
 )
-from hasta_la_vista_money.constants import TelegramMessage
 
 
 def telegram_content_type(message, user, account):
@@ -33,5 +33,5 @@ def telegram_content_type(message, user, account):
     else:
         SendMessageToTelegramUser.send_message_to_telegram_user(
             message.chat.id,
-            text=TelegramMessage.ACCEPTED_FORMAT_JSON.value,
+            text=constants.ACCEPTED_FORMAT_JSON,
         )

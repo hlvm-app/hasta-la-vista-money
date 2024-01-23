@@ -7,9 +7,8 @@ from django.forms import (
     Textarea,
 )
 from django.utils.translation import gettext_lazy as _
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account, TransferMoneyLog
-from hasta_la_vista_money.constants import MessageOnSite, NumericParameter, \
-    Placeholders
 
 
 class AddAccountForm(ModelForm):
@@ -27,9 +26,9 @@ class TransferMoneyAccountForm(ModelForm):
     from_account = ModelChoiceField(label=_('Со счёта:'), queryset=None)
     to_account = ModelChoiceField(label=_('На счёт:'), queryset=None)
     amount = DecimalField(
-        label=_('Сумма перевода:'),
-        max_digits=NumericParameter.TWENTY.value,
-        decimal_places=NumericParameter.TWO.value,
+        label='Сумма перевода:',
+        max_digits=constants.TWENTY,
+        decimal_places=constants.TWO,
     )
     notes = CharField(
         label=_('Заметка'),
@@ -37,8 +36,9 @@ class TransferMoneyAccountForm(ModelForm):
         widget=Textarea(
             attrs={
                 'rows': 3,
+                'maxlength': constants.TWO_HUNDRED_FIFTY,
                 'placeholder': _(Placeholders.ACCOUNT_FORM_NOTES.value),
-                'maxlength': NumericParameter.TWO_HUNDRED_FIFTY.value,
+
             },
         ),
     )
@@ -64,12 +64,12 @@ class TransferMoneyAccountForm(ModelForm):
         if from_account and to_account and from_account == to_account:
             self.add_error(
                 'to_account',
-                MessageOnSite.ANOTHER_ACCRUAL_ACCOUNT.value,
+                constants.ANOTHER_ACCRUAL_ACCOUNT,
             )
         if from_account and amount and amount > from_account.balance:
             self.add_error(
                 'from_account',
-                MessageOnSite.SUCCESS_MESSAGE_INSUFFICIENT_FUNDS.value,
+                constants.SUCCESS_MESSAGE_INSUFFICIENT_FUNDS,
             )
 
         return cleaned_data

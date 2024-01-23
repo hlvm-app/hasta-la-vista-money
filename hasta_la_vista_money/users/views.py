@@ -17,11 +17,11 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, TemplateView, UpdateView
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.bot.send_message.send_message_tg_user import (
     SendMessageToTelegramUser,
 )
 from hasta_la_vista_money.commonlogic.generate_dates import generate_date_list
-from hasta_la_vista_money.constants import MessageOnSite, TemplateHTMLView
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
     CustomSuccessURLUserMixin,
@@ -44,7 +44,7 @@ class IndexView(TemplateView):
 
 class ListUsers(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
     model = User
-    template_name = TemplateHTMLView.USERS_TEMPLATE_PROFILE.value
+    template_name = 'users/profile.html'
     context_object_name = 'users'
     no_permission_url = reverse_lazy('login')
 
@@ -64,7 +64,7 @@ class LoginUser(SuccessMessageMixin, LoginView):
     model = User
     template_name = 'users/login.html'
     form_class = UserLoginForm
-    success_message = MessageOnSite.SUCCESS_MESSAGE_LOGIN.value
+    success_message = constants.SUCCESS_MESSAGE_LOGIN
     next_page = '/hasta-la-vista-money'
 
     def get_context_data(self, **kwargs):
@@ -80,7 +80,7 @@ class LogoutUser(LogoutView, SuccessMessageMixin):
         messages.add_message(
             request,
             messages.SUCCESS,
-            MessageOnSite.SUCCESS_MESSAGE_LOGOUT.value,
+            constants.SUCCESS_MESSAGE_LOGOUT,
         )
         return super().dispatch(request, *args, **kwargs)
 
@@ -89,7 +89,7 @@ class CreateUser(SuccessMessageMixin, CreateView):
     model = User
     template_name = 'users/registration.html'
     form_class = RegisterUserForm
-    success_message = MessageOnSite.SUCCESS_MESSAGE_REGISTRATION.value
+    success_message = constants.SUCCESS_MESSAGE_REGISTRATION
     success_url = reverse_lazy('login')
 
     def get_context_data(self, **kwargs):
@@ -112,9 +112,9 @@ class UpdateUserView(
     UpdateView,
 ):
     model = User
-    template_name = TemplateHTMLView.USERS_TEMPLATE_PROFILE.value
+    template_name = 'users/profile.html'
     form_class = UpdateUserForm
-    success_message = MessageOnSite.SUCCESS_MESSAGE_CHANGED_PROFILE.value
+    success_message = constants.SUCCESS_MESSAGE_CHANGED_PROFILE
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -142,9 +142,9 @@ class UpdateUserPasswordView(
     PasswordChangeView,
 ):
     model = User
-    template_name = TemplateHTMLView.USERS_TEMPLATE_PROFILE.value
+    template_name = 'users/profile.html'
     form_class = PasswordChangeForm
-    success_message = MessageOnSite.SUCCESS_MESSAGE_CHANGED_PASSWORD.value
+    success_message = constants.SUCCESS_MESSAGE_CHANGED_PASSWORD
 
     def post(self, request, *args, **kwargs):
         user_update_pass_form = PasswordChangeForm(

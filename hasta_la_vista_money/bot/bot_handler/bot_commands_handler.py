@@ -1,3 +1,4 @@
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.bot.bot_handler.auth_user_handler import handle_auth
 from hasta_la_vista_money.bot.bot_handler.keyboards import (
@@ -21,7 +22,6 @@ from hasta_la_vista_money.bot.services import (
     check_account_exist,
     get_telegram_user,
 )
-from hasta_la_vista_money.constants import TelegramMessage
 from hasta_la_vista_money.users.models import TelegramUser
 
 bot_admin.setup_middleware(AccessMiddleware())
@@ -37,7 +37,7 @@ def handle_start_help(message):
     """
     SendMessageToTelegramUser.send_message_to_telegram_user(
         message.chat.id,
-        TelegramMessage.HELP_TEXT_START.value,
+        constants.HELP_TEXT_START,
     )
 
 
@@ -53,12 +53,12 @@ def handle_start(message):
     if telegram_user:
         SendMessageToTelegramUser.send_message_to_telegram_user(
             message.chat.id,
-            TelegramMessage.ALREADY_LOGGED.value,
+            constants.ALREADY_LOGGED,
         )
     else:
         SendMessageToTelegramUser.send_message_to_telegram_user(
             message.chat.id,
-            TelegramMessage.REQUIRED_AUTHORIZATION.value,
+            constants.REQUIRED_AUTHORIZATION,
         )
         bot_admin.register_next_step_handler(message, handle_auth)
 
@@ -110,7 +110,7 @@ def start_process_add_manual_receipt(message):
     """
     SendMessageToTelegramUser.send_message_to_telegram_user(
         message.chat.id,
-        TelegramMessage.START_MANUAL_HANDLER_RECEIPT.value,
+        constants.START_MANUAL_HANDLER_RECEIPT,
     )
     receipt_manual = HandleReceiptManual(message)
     bot_admin.register_next_step_handler(

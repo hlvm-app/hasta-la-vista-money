@@ -3,6 +3,7 @@ import decimal
 from django.db import IntegrityError
 from django.http import Http404
 from django.shortcuts import get_object_or_404
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.bot.json_parser.json_parser import JsonParser
 from hasta_la_vista_money.bot.log_config import logger
@@ -22,7 +23,6 @@ from hasta_la_vista_money.bot.send_message.send_message_tg_user import (
     SendMessageToTelegramUser,
 )
 from hasta_la_vista_money.bot.services import convert_date_time, convert_number
-from hasta_la_vista_money.constants import ReceiptConstants, TelegramMessage
 from hasta_la_vista_money.users.models import User
 
 
@@ -87,37 +87,37 @@ class ReceiptParser:
         try:
             products_list = self.parser.parse_json(
                 self.json_data,
-                ReceiptConstants.ITEMS_PRODUCT.value,
+                constants.ITEMS_PRODUCT,
             )
             for product in products_list:
                 product_name = self.parser.parse_json(
                     product,
-                    ReceiptConstants.PRODUCT_NAME.value,
+                    constants.PRODUCT_NAME,
                 )
                 price = convert_number(
                     self.parser.parse_json(
                         product,
-                        ReceiptConstants.PRICE.value,
+                        constants.PRICE,
                     ),
                 )
                 quantity = self.parser.parse_json(
                     product,
-                    ReceiptConstants.QUANTITY.value,
+                    constants.QUANTITY,
                 )
                 amount = convert_number(
                     self.parser.parse_json(
                         product,
-                        ReceiptConstants.AMOUNT.value,
+                        constants.AMOUNT,
                     ),
                 )
                 nds_type = self.parser.parse_json(
                     product,
-                    ReceiptConstants.NDS_TYPE.value,
+                    constants.NDS_TYPE,
                 )
                 nds_sum = convert_number(
                     self.parser.parse_json(
                         product,
-                        ReceiptConstants.NDS_SUM.value,
+                        constants.NDS_SUM,
                     ),
                 )
 
@@ -149,15 +149,15 @@ class ReceiptParser:
         try:
             name_seller = self.parser.parse_json(
                 self.json_data,
-                ReceiptConstants.NAME_SELLER.value,
+                constants.NAME_SELLER,
             )
             retail_place_address = self.parser.parse_json(
                 self.json_data,
-                ReceiptConstants.RETAIL_PLACE_ADDRESS.value,
+                constants.RETAIL_PLACE_ADDRESS,
             )
             retail_place = self.parser.parse_json(
                 self.json_data,
-                ReceiptConstants.RETAIL_PLACE.value,
+                constants.RETAIL_PLACE,
             )
 
             customer_data = CustomerData(
@@ -230,7 +230,7 @@ class ReceiptParser:
             else:
                 SendMessageToTelegramUser.send_message_to_telegram_user(
                     chat_id,
-                    ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
+                    constants.RECEIPT_ALREADY_EXISTS,
                 )
                 return
 
@@ -242,7 +242,7 @@ class ReceiptParser:
         except Http404:
             SendMessageToTelegramUser.send_message_to_telegram_user(
                 chat_id,
-                TelegramMessage.NOT_CREATE_ACCOUNT.value,
+                constants.NOT_CREATE_ACCOUNT,
             )
 
     def process_receipt_data(
@@ -255,7 +255,7 @@ class ReceiptParser:
         total_sum,
     ):
         if 'query' in self.json_data and number_receipt is None:
-            logger.error(ReceiptConstants.RECEIPT_NOT_ACCEPTED.value)
+            logger.error(constants.RECEIPT_NOT_ACCEPTED)
             return
         self.parse_customer()
         account_balance = get_object_or_404(Account, id=self.account)
@@ -280,36 +280,36 @@ class ReceiptParser:
         receipt_date = convert_date_time(
             self.parser.parse_json(
                 self.json_data,
-                ReceiptConstants.RECEIPT_DATE_TIME.value,
+                constants.RECEIPT_DATE_TIME,
             ),
         )
         number_receipt = self.parser.parse_json(
             self.json_data,
-            ReceiptConstants.NUMBER_RECEIPT.value,
+            constants.NUMBER_RECEIPT,
         )
 
         nds10 = convert_number(
             self.parser.parse_json(
                 self.json_data,
-                ReceiptConstants.NDS10.value,
+                constants.NDS10,
             ),
         )
 
         nds20 = convert_number(
             self.parser.parse_json(
                 self.json_data,
-                ReceiptConstants.NDS20.value,
+                constants.NDS20,
             ),
         )
 
         operation_type = self.parser.parse_json(
             self.json_data,
-            ReceiptConstants.OPERATION_TYPE.value,
+            constants.OPERATION_TYPE,
         )
         total_sum = convert_number(
             self.parser.parse_json(
                 self.json_data,
-                ReceiptConstants.TOTAL_SUM.value,
+                constants.TOTAL_SUM,
             ),
         )
         return (

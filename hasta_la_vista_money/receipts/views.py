@@ -6,17 +6,12 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView
 from django_filters.views import FilterView
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.custom_paginator import (
     paginator_custom_view,
 )
 from hasta_la_vista_money.commonlogic.views import collect_info_receipt
-from hasta_la_vista_money.constants import (
-    MessageOnSite,
-    ReceiptConstants,
-    SuccessUrlView,
-    TemplateHTMLView,
-)
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.receipts.forms import (
     CustomerForm,
@@ -28,19 +23,23 @@ from hasta_la_vista_money.receipts.models import Customer, Receipt
 from hasta_la_vista_money.users.models import User
 
 
+class BaseView:
+    template_name = 'receipts/receipts.html'
+    success_url = reverse_lazy('receipts:list')
+
+
 class ReceiptView(
     CustomNoPermissionMixin,
+    BaseView,
     SuccessMessageMixin,
     FilterView,
 ):
     """Класс представления чека на сайте."""
 
     paginate_by = 10
-    template_name = 'receipts/receipts.html'
     model = Receipt
     filterset_class = ReceiptFilter
     no_permission_url = reverse_lazy('login')
-    success_url = 'receipts:list'
 
     def get_context_data(self, *args, **kwargs):
         user = get_object_or_404(User, username=self.request.user)
@@ -106,9 +105,8 @@ class ReceiptView(
             return context
 
 
-class CustomerCreateView(SuccessMessageMixin, CreateView):
+class CustomerCreateView(SuccessMessageMixin, BaseView, CreateView):
     model = Customer
-    template_name = 'receipts/receipts.html'
     form_class = CustomerForm
 
     def post(self, request, *args, **kwargs):
@@ -119,7 +117,7 @@ class CustomerCreateView(SuccessMessageMixin, CreateView):
             customer.save()
             messages.success(
                 self.request,
-                MessageOnSite.SUCCESS_MESSAGE_CREATE_CUSTOMER.value,
+                constants.SUCCESS_MESSAGE_CREATE_CUSTOMER,
             )
             response_data = {'success': True}
         else:
@@ -129,15 +127,11 @@ class CustomerCreateView(SuccessMessageMixin, CreateView):
             }
         return JsonResponse(response_data)
 
-    def get_success_url(self):
-        return reverse_lazy('receipts:list')
 
-
-class ReceiptCreateView(SuccessMessageMixin, CreateView):
+class ReceiptCreateView(SuccessMessageMixin, BaseView, CreateView):
     model = Receipt
-    template_name = 'receipts/receipts.html'
     form_class = ReceiptForm
-    success_message = MessageOnSite.SUCCESS_MESSAGE_CREATE_RECEIPT.value
+    success_message = constants.SUCCESS_MESSAGE_CREATE_RECEIPT
 
     def __init__(self, *args, **kwargs):
         """
@@ -182,7 +176,7 @@ class ReceiptCreateView(SuccessMessageMixin, CreateView):
         if number_receipt:
             messages.error(
                 self.request,
-                ReceiptConstants.RECEIPT_ALREADY_EXISTS.value,
+                constants.RECEIPT_ALREADY_EXISTS,
             )
         else:
             self.create_receipt(
@@ -193,7 +187,7 @@ class ReceiptCreateView(SuccessMessageMixin, CreateView):
             )
             messages.success(
                 self.request,
-                MessageOnSite.SUCCESS_MESSAGE_CREATE_RECEIPT.value,
+                constants.SUCCESS_MESSAGE_CREATE_RECEIPT,
             )
             return {'success': True}
 
@@ -224,16 +218,10 @@ class ReceiptCreateView(SuccessMessageMixin, CreateView):
             }
         return JsonResponse(response_data)
 
-    def get_success_url(self):
-        return reverse_lazy('receipts:list')
 
-
-class ReceiptDeleteView(DetailView, DeleteView):
+class ReceiptDeleteView(BaseView, DetailView, DeleteView):
     model = Receipt
-    template_name = TemplateHTMLView.RECEIPT_TEMPLATE.value
     context_object_name = 'receipts'
-    no_permission_url = reverse_lazy('login')
-    success_url = SuccessUrlView.RECEIPT_URL.value
 
     def form_valid(self, form):
         receipt = self.get_object()

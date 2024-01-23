@@ -4,7 +4,7 @@ from django.contrib.auth.forms import (
     UserCreationForm,
 )
 from django.forms import CharField, ModelForm, forms
-from hasta_la_vista_money.constants import MessageOnSite
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.users.models import User
 
 
@@ -27,14 +27,14 @@ class RegisterUserForm(UserCreationForm):
 class ForgotPasswordForm(forms.Form):
     username = CharField(
         label='Имя пользователя',
-        help_text=MessageOnSite.HELP_TEXT_FORGOT_PASSWORD.value,
+        help_text=constants.HELP_TEXT_FORGOT_PASSWORD,
     )
 
 
 class UpdateUserForm(ModelForm):
     password = ReadOnlyPasswordHashField(
         label='',
-        help_text=MessageOnSite.HELP_TEXT_PASSWORD.value,
+        help_text=constants.HELP_TEXT_PASSWORD,
     )
 
     class Meta:

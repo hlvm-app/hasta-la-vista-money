@@ -3,8 +3,8 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.commonlogic.views import create_object_view
-from hasta_la_vista_money.constants import MessageOnSite
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.loan.forms import LoanForm, PaymentMakeLoanForm
 from hasta_la_vista_money.loan.models import Loan, PaymentMakeLoan
@@ -46,7 +46,7 @@ class LoanCreateView(CustomNoPermissionMixin, SuccessMessageMixin, CreateView):
     model = Loan
     form_class = LoanForm
     success_url = reverse_lazy('loan:list')
-    success_message = MessageOnSite.SUCCESS_MESSAGE_LOAN_CREATE.value
+    success_message = constants.SUCCESS_MESSAGE_LOAN_CREATE
 
     def post(self, request, *args, **kwargs):
         loan_form = LoanForm(
@@ -101,7 +101,7 @@ class LoanDeleteView(CustomNoPermissionMixin, SuccessMessageMixin, DeleteView):
     template_name = 'loan/loan.html'
     model = Loan
     success_url = reverse_lazy('loan:list')
-    success_message = MessageOnSite.SUCCESS_MESSAGE_LOAN_DELETE.value
+    success_message = constants.SUCCESS_MESSAGE_LOAN_DELETE
 
     def form_valid(self, form):
         loan = self.get_object()
@@ -121,6 +121,7 @@ class PaymentMakeCreateView(CreateView):
         payment_make_form = self.form_class(request.user, request.POST)
         return create_object_view(
             form=payment_make_form,
+            model=self.model,
             request=request,
-            message=MessageOnSite.SUCCESS_MESSAGE_PAYMENT_MAKE.value,
+            message=constants.SUCCESS_MESSAGE_PAYMENT_MAKE,
         )

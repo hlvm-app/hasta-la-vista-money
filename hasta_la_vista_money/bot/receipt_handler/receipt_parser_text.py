@@ -8,10 +8,10 @@ import os
 import re
 
 import requests
+from hasta_la_vista_money import constants
 from hasta_la_vista_money.bot.receipt_handler.receipt_parser import (
     ReceiptParser,
 )
-from hasta_la_vista_money.constants import TelegramMessage
 
 
 def handle_receipt_text(url, message, bot, user, account):
@@ -58,7 +58,7 @@ def handle_receipt_text(url, message, bot, user, account):
         if json_data.get('code') != 1:
             bot.send_message(
                 message.chat.id,
-                TelegramMessage.NO_INFORMATION_BY_RECEIPT.value,
+                constants.NO_INFORMATION_BY_RECEIPT,
             )
             return
         parse = ReceiptParser(json_data, user, account)
