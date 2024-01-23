@@ -3,6 +3,7 @@ import decimal
 from django.db import IntegrityError
 from django.http import Http404
 from django.shortcuts import get_object_or_404
+from django.utils.translation import gettext as _
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.bot.json_parser.json_parser import JsonParser
@@ -230,7 +231,7 @@ class ReceiptParser:
             else:
                 SendMessageToTelegramUser.send_message_to_telegram_user(
                     chat_id,
-                    constants.RECEIPT_ALREADY_EXISTS,
+                    _(constants.RECEIPT_ALREADY_EXISTS),
                 )
                 return
 

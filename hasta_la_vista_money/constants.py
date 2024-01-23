@@ -1,6 +1,8 @@
 import datetime
 from typing import Final
 
+from django.utils.translation import gettext_lazy as _
+
 # Константы для парсинга json чека
 NAME_SELLER: Final[str] = 'user'
 RETAIL_PLACE_ADDRESS: Final[str] = 'retailPlaceAddress'
@@ -21,181 +23,150 @@ NDS20: Final[str] = 'nds18'
 ITEMS_PRODUCT: Final[str] = 'items'
 
 # Константы строк для парсинга чека
-RECEIPT_ALREADY_EXISTS: Final[str] = 'Такой чек уже существует!'
-RECEIPT_BE_ADDED: Final[str] = 'Чек успешно добавлен!'
-RECEIPT_CANNOT_BE_ADDED: Final[str] = ''.join(
+RECEIPT_ALREADY_EXISTS: Final[str] = _('Такой чек уже существует!')
+RECEIPT_BE_ADDED: Final[str] = _('Чек успешно добавлен!')
+RECEIPT_CANNOT_BE_ADDED: Final[str] = _(
     'Чек не корректен, перепроверьте в приложении налоговой!',
 )
-RECEIPT_NOT_ACCEPTED: Final[str] = ''.join(
-    (
-        'Чек не прошёл валидацию!\n',
-        'Вероятно он ещё не попал в базу данных налоговой!\n',
-        'Обычно чек попадает в базу не позже суток.\n',
-        'Попробуйте позже или внесите данные вручную на сайте.',
-    ),
+RECEIPT_NOT_ACCEPTED: Final[str] = _(
+    'Чек не прошёл валидацию! '
+    'Вероятно он ещё не попал в базу данных налоговой! '
+    'Обычно чек попадает в базу не позже суток. '
+    'Попробуйте позже или внесите данные вручную на сайте.',
 )
-QR_CODE_NOT_CONSIDERED: Final[str] = ''.join(
-    (
-        'QR-код не считался, попробуйте ещё раз или ',
-        'воспользуйтесь сторонним приложением ',
-        'и передайте текст из QR-кода боту',
-    ),
+QR_CODE_NOT_CONSIDERED: Final[str] = _(
+    'QR-код не считался, попробуйте ещё раз или воспользуйтесь '
+    'сторонним приложением и передайте текст из QR-кода боту',
 )
 
 # Сообщения для сайта
-SUCCESS_MESSAGE_LOGIN: Final[str] = 'Вы успешно авторизовались!'
-SUCCESS_MESSAGE_REGISTRATION: Final[str] = 'Регистрация прошла успешно!'
-SUCCESS_MESSAGE_CREATE_RECEIPT: Final[str] = ''.join(
-    'Чек успешно добавлен!',
-)
-SUCCESS_MESSAGE_CREATE_CUSTOMER: Final[str] = ''.join(
+SUCCESS_MESSAGE_LOGIN: Final[str] = _('Вы успешно авторизовались!')
+SUCCESS_MESSAGE_REGISTRATION: Final[str] = _('Регистрация прошла успешно!')
+SUCCESS_MESSAGE_CREATE_RECEIPT: Final[str] = _('Чек успешно добавлен!')
+SUCCESS_MESSAGE_CREATE_CUSTOMER: Final[str] = _(
     'Новый продавец успешно добавлен!',
 )
-ANOTHER_ACCRUAL_ACCOUNT: Final[str] = ' '.join(
+
+ANOTHER_ACCRUAL_ACCOUNT: Final[str] = _(
     'Нельзя выбирать одинаковые счета для перевода.',
 )
-SUCCESS_MESSAGE_ADDED_ACCOUNT: Final[str] = 'Счёт успешно создан!'
-SUCCESS_MESSAGE_CHANGED_ACCOUNT: Final[str] = 'Счёт успешно изменён!'
-SUCCESS_MESSAGE_DELETE_ACCOUNT: Final[str] = 'Счёт успешно удалён!'
-UNSUCCESSFULLY_MESSAGE_DELETE_ACCOUNT: Final[str] = 'Счёт не может быть удалён!'
-SUCCESS_MESSAGE_CHANGED_PROFILE: Final[str] = 'Профиль успешно обновлён!'
-SUCCESS_MESSAGE_CHANGED_PASSWORD: Final[str] = ''.join(
+SUCCESS_MESSAGE_ADDED_ACCOUNT: Final[str] = _('Счёт успешно создан!')
+SUCCESS_MESSAGE_CHANGED_ACCOUNT: Final[str] = _('Счёт успешно изменён!')
+SUCCESS_MESSAGE_DELETE_ACCOUNT: Final[str] = _('Счёт успешно удалён!')
+UNSUCCESSFULLY_MESSAGE_DELETE_ACCOUNT: Final[str] = _(
+    'Счёт не может быть удалён!',
+)
+SUCCESS_MESSAGE_CHANGED_PROFILE: Final[str] = _('Профиль успешно обновлён!')
+SUCCESS_MESSAGE_CHANGED_PASSWORD: Final[str] = _(
     'Новый пароль успешно установлен!',
 )
-SUCCESS_MESSAGE_LOGOUT: Final[str] = 'Вы успешно вышли из своей учётной записи!'
-HELP_TEXT_PASSWORD: Final[str] = ''.join(
-    (
-        'Пароли хранятся в зашифрованном виде, ',
-        'поэтому нет возможности посмотреть ваш пароль, ',
-        'но вы можете поменять его на новый перейдя на вкладку<br>',
-        '"Изменить пароль"',
-    ),
+SUCCESS_MESSAGE_LOGOUT: Final[str] = _(
+    'Вы успешно вышли из своей учётной записи!',
 )
-HELP_TEXT_FORGOT_PASSWORD: Final[str] = ''.join(
-    (
-        'Укажите логин, который указывали при регистрации.<br>',
-        'Ссылка для восстановления пароля будет выслана в чат с ботом.<br>',
-        'После нажатия на кнопку ниже, ',
-        'произойдёт переадресация в телеграм.',
-    ),
+HELP_TEXT_PASSWORD: Final[str] = _(
+    'Пароли хранятся в зашифрованном виде, '
+    'поэтому нет возможности посмотреть ваш пароль, '
+    'но вы можете поменять его на новый перейдя на вкладку<br>'
+    '"Изменить пароль"',
 )
-SUCCESS_CATEGORY_ADDED: Final[str] = 'Категория добавлена!'
-SUCCESS_EXPENSE_ADDED: Final[str] = 'Операция расхода успешно добавлена!'
-SUCCESS_INCOME_ADDED: Final[str] = 'Операция дохода успешно добавлена!'
-SUCCESS_INCOME_UPDATE: Final[str] = 'Операция дохода успешно обновлена!'
-SUCCESS_EXPENSE_UPDATE: Final[str] = 'Операция расхода успешно обновлена!'
-SUCCESS_EXPENSE_DELETED: Final[str] = 'Операция расхода успешно удалена!'
-SUCCESS_INCOME_DELETED: Final[str] = 'Операция дохода успешно удалена!'
-SUCCESS_CATEGORY_DELETED: Final[str] = 'Категория успешно удалена!'
-ACCESS_DENIED_DELETE_CATEGORY: Final[str] = ''.join(
-    (
-        'Категория не может быть удалена, ',
-        'так как связана с доходом или расходом',
-    ),
+
+
+HELP_TEXT_FORGOT_PASSWORD: Final[str] = _(
+    'Укажите логин, который указывали при регистрации.<br>'
+    'Ссылка для восстановления пароля будет выслана в чат с ботом.<br>'
+    'После нажатия на кнопку ниже, '
+    'произойдёт переадресация в телеграм.',
 )
-SUCCESS_MESSAGE_TRANSFER_MONEY: Final[str] = 'Средства успешно переведены'
-SUCCESS_MESSAGE_INSUFFICIENT_FUNDS: Final[str] = 'Недостаточно средств'
-SUCCESS_MESSAGE_LOAN_CREATE: Final[str] = 'Кредит успешно добавлен'
-SUCCESS_MESSAGE_LOAN_DELETE: Final[str] = 'Кредит успешно удалён'
-SUCCESS_MESSAGE_PAYMENT_MAKE: Final[str] = 'Платеж успешно внесён'
-ACCOUNT_FORM_NOTES: Final[str] = ''.join(
-    (
-        'Введите заметку не более 250 символов.\n',
-        'Поле необязательное!',
-    ),
+SUCCESS_CATEGORY_ADDED: Final[str] = _('Категория добавлена!')
+SUCCESS_EXPENSE_ADDED: Final[str] = _('Операция расхода успешно добавлена!')
+SUCCESS_INCOME_ADDED: Final[str] = _('Операция дохода успешно добавлена!')
+SUCCESS_INCOME_UPDATE: Final[str] = _('Операция дохода успешно обновлена!')
+SUCCESS_EXPENSE_UPDATE: Final[str] = _('Операция расхода успешно обновлена!')
+SUCCESS_EXPENSE_DELETED: Final[str] = _('Операция расхода успешно удалена!')
+SUCCESS_INCOME_DELETED: Final[str] = _('Операция дохода успешно удалена!')
+SUCCESS_CATEGORY_DELETED: Final[str] = _('Категория успешно удалена!')
+ACCESS_DENIED_DELETE_CATEGORY: Final[str] = _(
+    'Категория не может быть удалена, '
+    'так как связана с доходом или расходом',
+)
+SUCCESS_MESSAGE_TRANSFER_MONEY: Final[str] = _('Средства успешно переведены')
+SUCCESS_MESSAGE_INSUFFICIENT_FUNDS: Final[str] = _('Недостаточно средств')
+SUCCESS_MESSAGE_LOAN_CREATE: Final[str] = _('Кредит успешно добавлен')
+SUCCESS_MESSAGE_LOAN_DELETE: Final[str] = _('Кредит успешно удалён')
+SUCCESS_MESSAGE_PAYMENT_MAKE: Final[str] = _('Платеж успешно внесён')
+ACCOUNT_FORM_NOTES: Final[str] = _(
+    'Введите заметку не более 250 символов. Поле необязательное!',
 )
 
 # Сообщения для телеграма
-SAFE_LOGIN_PASSWORD: Final[str] = ''.join(
-    (
-        'Ваш логин и пароль был удалены для обеспечения сохранности ',
-        'конфиденциальных данных!',
-    ),
+SAFE_LOGIN_PASSWORD: Final[str] = _(
+    'Ваш логин и пароль был удалены для обеспечения сохранности ',
+    'конфиденциальных данных!',
 )
-ALREADY_LOGGING_LINK_ACCOUNT: Final[str] = ''.join(
-    (
-        'Вы уже авторизованы и связаны с этим аккаунтом.\n',
-        SAFE_LOGIN_PASSWORD,
-    ),
+ALREADY_LOGGING_LINK_ACCOUNT: Final[str] = _(
+    'Вы уже авторизованы и связаны с этим аккаунтом.\n',
+    SAFE_LOGIN_PASSWORD,
 )
 
-ALREADY_LINK_ANOTHER_ACCOUNT: Final[str] = ''.join(
-    (
-        'Ваш аккаунт уже связан с другим Telegram аккаунтом.\n',
-        SAFE_LOGIN_PASSWORD,
-    ),
+ALREADY_LINK_ANOTHER_ACCOUNT: Final[str] = _(
+    'Ваш аккаунт уже связан с другим Telegram аккаунтом.\n',
+    SAFE_LOGIN_PASSWORD,
 )
 
-AUTHORIZATION_SUCCESSFUL: Final[str] = ''.join(
-    (
-        'Авторизация прошла успешно. Вы привязаны к своему аккаунту.\n',
-        SAFE_LOGIN_PASSWORD,
-    ),
+AUTHORIZATION_SUCCESSFUL: Final[str] = _(
+    'Авторизация прошла успешно. Вы привязаны к своему аккаунту.\n',
+    SAFE_LOGIN_PASSWORD,
 )
 
-INVALID_USERNAME_PASSWORD: Final[str] = ''.join(
-    (
-        'Неверный логин или пароль. Попробуйте ещё раз.\n',
-        SAFE_LOGIN_PASSWORD,
-    ),
+INVALID_USERNAME_PASSWORD: Final[str] = _(
+    'Неверный логин или пароль. Попробуйте ещё раз.\n',
+    SAFE_LOGIN_PASSWORD,
 )
 
-INCORRECT_FORMAT: Final[str] = ''.join(
-    (
-        'Некорректный формат. Повторите ввод логина и пароля.\n',
-        SAFE_LOGIN_PASSWORD,
-    ),
+INCORRECT_FORMAT: Final[str] = _(
+    'Некорректный формат. Повторите ввод логина и пароля.\n',
+    SAFE_LOGIN_PASSWORD,
 )
 
-REQUIRED_AUTHORIZATION: Final[str] = ''.join(
-    (
-        'Требуется авторизация.\n',
-        'Введите логин и пароль в формате: логин:пароль',
-    ),
+REQUIRED_AUTHORIZATION: Final[str] = _(
+    'Требуется авторизация.\nВведите логин и пароль в формате: логин:пароль',
 )
 
-ACCEPTED_FORMAT_JSON: Final[str] = ''.join(
+ACCEPTED_FORMAT_JSON: Final[str] = _(
     'Принимаются файлы JSON, текст по формату и фотографии QR-кодов',
 )
 
-NOT_CREATE_ACCOUNT: Final[str] = ''.join(
-    (
-        'Не выбран счёт! ',
-        'Сначала выберите его используя команду /select_account',
-    ),
+NOT_CREATE_ACCOUNT: Final[str] = _(
+    'Не выбран счёт! Сначала выберите его используя команду /select_account',
 )
-ERROR_DATABASE_RECORD: Final[str] = 'Ошибка записи в базу данных!'
-ALREADY_LOGGED: Final[str] = ''.join(
+ERROR_DATABASE_RECORD: Final[str] = _('Ошибка записи в базу данных!')
+ALREADY_LOGGED: Final[str] = _(
     'Вы уже авторизованы! Повторная авторизация не требуется!',
 )
-ACCESS_DENIED: Final[str] = ''.join(
-    (
-        'У вас нет доступа к использованию бота, ',
-        'сначала надо авторизоваться - /auth',
-    ),
+ACCESS_DENIED: Final[str] = _(
+    'У вас нет доступа к использованию бота, '
+    'сначала надо авторизоваться - /auth',
 )
-HELP_TEXT_START: Final[str] = ''.join(
+HELP_TEXT_START: Final[str] = _(
     (
-        'Описание команд:\n',
-        '/start и /help выводят этот текст;\n',
-        '/auth - позволяет авторизоваться в боте для доступа к ',
-        'остальным командам;\n',
-        '/select_account - выводит список счетов для выбора. ',
-        'Счета добавляются через сайт;\n',
-        '/manual - позволяет добавить чек с помощью параметров ',
+        'Описание команд:\n'
+        '/start и /help выводят этот текст;\n'
+        '/auth - позволяет авторизоваться в боте для доступа к '
+        'остальным командам;\n'
+        '/select_account - выводит список счетов для выбора. '
+        'Счета добавляются через сайт;\n'
+        '/manual - позволяет добавить чек с помощью параметров '
         'самого чека, если, например, QR-код не считывается;\n'
         '/deauthorize - отвязывает телеграм аккаунт от бота.',
     ),
 )
-START_MANUAL_HANDLER_RECEIPT: Final[str] = ''.join(
-    (
-        'Чтобы добавить чек используя данные с чека, ',
-        'введите поочередно - Дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС, ',
-        'сумму чека, ФН, ФД, ФП.\n',
-        'Сначала введите дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС',
-    ),
+START_MANUAL_HANDLER_RECEIPT: Final[str] = _(
+    'Чтобы добавить чек используя данные с чека, '
+    'введите поочередно - Дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС, '
+    'сумму чека, ФН, ФД, ФП.\n'
+    'Сначала введите дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС',
 )
-NO_INFORMATION_BY_RECEIPT: Final[str] = ''.join(
+NO_INFORMATION_BY_RECEIPT: Final[str] = _(
     'Нет информации по чеку.\nПопробуйте позже или внесите данные на сайте',
 )
 

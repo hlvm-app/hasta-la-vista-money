@@ -6,7 +6,16 @@ from hasta_la_vista_money.users.models import User
 
 
 class Account(models.Model):
-    CURRENCY = [('RU', _('Российский рубль'))]
+    CURRENCY_LIST = [
+        ('RUB', _('Российский рубль')),
+        ('USD', _('Доллар США')),
+        ('EUR', _('Евро')),
+        ('GBP', _('Британский фунт')),
+        ('CZK', _('Чешская крона')),
+        ('PLN', _('Польский злотый')),
+        ('TRY', _('Турецкая лира')),
+        ('CNH', _('Китайский юань')),
+    ]
 
     user = models.ForeignKey(
         User,
@@ -22,7 +31,7 @@ class Account(models.Model):
         decimal_places=2,
         default=0,
     )
-    currency = models.CharField(choices=CURRENCY)
+    currency = models.CharField(choices=CURRENCY_LIST)
 
     class Meta:
         ordering = ['name_account']
@@ -65,7 +74,7 @@ class TransferMoneyLog(models.Model):
         decimal_places=constants.TWO,
     )
     exchange_date = models.DateTimeField()
-    notes = models.TextField(blank=True, null=True)
+    notes = models.TextField(blank=True)
 
     class Meta:
         ordering = ['-exchange_date']
@@ -74,8 +83,8 @@ class TransferMoneyLog(models.Model):
         return _(
             ''.join(
                 (
-                    f'{self.exchange_date:%d-%m-%Y %H:%M}. ',
-                    f'Перевод суммы {self.amount} ',
+                    f'{self.exchange_date:%d-%m-%Y %H:%M}. '
+                    f'Перевод суммы {self.amount} '
                     f'со счёта "{self.from_account}" '
                     f'на счёт "{self.to_account}". ',
                 ),

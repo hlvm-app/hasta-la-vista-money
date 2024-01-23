@@ -7,6 +7,7 @@ from django.db.models import ProtectedError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.forms import (
@@ -156,7 +157,7 @@ class ChangeAccountView(
     form_class = AddAccountForm
     template_name = 'account/change_account.html'
     success_url = reverse_lazy('applications:list')
-    success_message = constants.SUCCESS_MESSAGE_CHANGED_ACCOUNT
+    success_message = _(constants.SUCCESS_MESSAGE_CHANGED_ACCOUNT)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -174,7 +175,7 @@ class TransferMoneyAccountView(
     model = Account
     template_name = 'account/account.html'
     form_class = TransferMoneyAccountForm
-    success_message = constants.SUCCESS_MESSAGE_TRANSFER_MONEY
+    success_message = _(constants.SUCCESS_MESSAGE_TRANSFER_MONEY)
 
     def post(self, request: WSGIRequest, *args, **kwargs) -> JsonResponse:
         transfer_money_form = TransferMoneyAccountForm(
@@ -212,12 +213,12 @@ class DeleteAccountView(DeleteView):
             account.delete()
             messages.success(
                 self.request,
-                constants.SUCCESS_MESSAGE_DELETE_ACCOUNT,
+                _(constants.SUCCESS_MESSAGE_DELETE_ACCOUNT),
             )
             return super().form_valid(form)
         except ProtectedError:
             messages.error(
                 self.request,
-                constants.UNSUCCESSFULLY_MESSAGE_DELETE_ACCOUNT,
+                _(constants.UNSUCCESSFULLY_MESSAGE_DELETE_ACCOUNT),
             )
             return redirect(self.success_url)

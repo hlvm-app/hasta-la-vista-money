@@ -26,7 +26,7 @@ class TransferMoneyAccountForm(ModelForm):
     from_account = ModelChoiceField(label=_('Со счёта:'), queryset=None)
     to_account = ModelChoiceField(label=_('На счёт:'), queryset=None)
     amount = DecimalField(
-        label='Сумма перевода:',
+        label=_('Сумма перевода:'),
         max_digits=constants.TWENTY,
         decimal_places=constants.TWO,
     )

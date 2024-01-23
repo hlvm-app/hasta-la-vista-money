@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#: hasta_la_vista_money/account/models.py:84
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-21 22:44+0300\n"
+"POT-Creation-Date: 2024-01-23 23:12+0300\n"
 "PO-Revision-Date: 2024-01-21 20:45+0300\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,12 +20,73 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Translated-Using: django-rosetta 0.10.0\n"
 
-#: hasta_la_vista_money/account/forms.py:109
+#: hasta_la_vista_money/account/forms.py:19
+msgid "Наименование счёта"
+msgstr ""
+
+#: hasta_la_vista_money/account/forms.py:20
+msgid "Начальный баланс"
+msgstr ""
+
+#: hasta_la_vista_money/account/forms.py:21
+#: hasta_la_vista_money/account/templates/account/account.html:23
+msgid "Валюта счёта"
+msgstr ""
+
+#: hasta_la_vista_money/account/forms.py:26
+msgid "Со счёта:"
+msgstr ""
+
+#: hasta_la_vista_money/account/forms.py:27
+msgid "На счёт:"
+msgstr ""
+
+#: hasta_la_vista_money/account/forms.py:29
+msgid "Сумма перевода:"
+msgstr ""
+
+#: hasta_la_vista_money/account/forms.py:34
+msgid "Заметка"
+msgstr ""
+
+#: hasta_la_vista_money/account/forms.py:104
 msgid "Дата перевода"
 msgstr ""
 
-#: hasta_la_vista_money/account/models.py:9
+#: hasta_la_vista_money/account/models.py:10
 msgid "Российский рубль"
+msgstr ""
+
+#: hasta_la_vista_money/account/models.py:11
+msgid "Доллар США"
+msgstr ""
+
+#: hasta_la_vista_money/account/models.py:12
+msgid "Евро"
+msgstr ""
+
+#: hasta_la_vista_money/account/models.py:13
+msgid "Британский фунт"
+msgstr ""
+
+#: hasta_la_vista_money/account/models.py:14
+msgid "Чешская крона"
+msgstr ""
+
+#: hasta_la_vista_money/account/models.py:15
+msgid "Польский злотый"
+msgstr ""
+
+#: hasta_la_vista_money/account/models.py:16
+msgid "Турецкая лира"
+msgstr ""
+
+#: hasta_la_vista_money/account/models.py:17
+msgid "Китайский юань"
+msgstr ""
+
+#: hasta_la_vista_money/account/models.py:27
+msgid "Основной счёт"
 msgstr ""
 
 #: hasta_la_vista_money/account/templates/account/account.html:6
@@ -37,10 +99,6 @@ msgstr ""
 
 #: hasta_la_vista_money/account/templates/account/account.html:22
 msgid "Баланс счёта"
-msgstr ""
-
-#: hasta_la_vista_money/account/templates/account/account.html:23
-msgid "Валюта счёта"
 msgstr ""
 
 #: hasta_la_vista_money/account/templates/account/account.html:102
@@ -161,6 +219,213 @@ msgstr ""
 msgid "Доход"
 msgstr ""
 
+#: hasta_la_vista_money/constants.py:26
+msgid "Такой чек уже существует!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:27 hasta_la_vista_money/constants.py:45
+msgid "Чек успешно добавлен!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:29
+msgid "Чек не корректен, перепроверьте в приложении налоговой!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:32
+msgid ""
+"Чек не прошёл валидацию! Вероятно он ещё не попал в базу данных налоговой! "
+"Обычно чек попадает в базу не позже суток. Попробуйте позже или внесите "
+"данные вручную на сайте."
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:38
+msgid ""
+"QR-код не считался, попробуйте ещё раз или воспользуйтесь сторонним "
+"приложением и передайте текст из QR-кода боту"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:43
+msgid "Вы успешно авторизовались!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:44
+msgid "Регистрация прошла успешно!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:47
+msgid "Новый продавец успешно добавлен!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:51
+msgid "Нельзя выбирать одинаковые счета для перевода."
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:53
+msgid "Счёт успешно создан!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:54
+msgid "Счёт успешно изменён!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:55
+msgid "Счёт успешно удалён!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:57
+msgid "Счёт не может быть удалён!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:59
+msgid "Профиль успешно обновлён!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:61
+msgid "Новый пароль успешно установлен!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:64
+msgid "Вы успешно вышли из своей учётной записи!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:67
+msgid ""
+"Пароли хранятся в зашифрованном виде, поэтому нет возможности посмотреть ваш "
+"пароль, но вы можете поменять его на новый перейдя на вкладку<br>\"Изменить "
+"пароль\""
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:75
+msgid ""
+"Укажите логин, который указывали при регистрации.<br>Ссылка для "
+"восстановления пароля будет выслана в чат с ботом.<br>После нажатия на "
+"кнопку ниже, произойдёт переадресация в телеграм."
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:80
+msgid "Категория добавлена!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:81
+msgid "Операция расхода успешно добавлена!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:82
+msgid "Операция дохода успешно добавлена!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:83
+msgid "Операция дохода успешно обновлена!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:84
+msgid "Операция расхода успешно обновлена!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:85
+msgid "Операция расхода успешно удалена!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:86
+msgid "Операция дохода успешно удалена!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:87
+msgid "Категория успешно удалена!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:89
+msgid "Категория не может быть удалена, так как связана с доходом или расходом"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:92
+msgid "Средства успешно переведены"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:93
+msgid "Недостаточно средств"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:94
+msgid "Кредит успешно добавлен"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:95
+msgid "Кредит успешно удалён"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:96
+msgid "Платеж успешно внесён"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:98
+msgid "Введите заметку не более 250 символов. Поле необязательное!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:103
+msgid "Ваш логин и пароль был удалены для обеспечения сохранности "
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:107
+msgid "Вы уже авторизованы и связаны с этим аккаунтом.\n"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:112
+msgid "Ваш аккаунт уже связан с другим Telegram аккаунтом.\n"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:117
+msgid "Авторизация прошла успешно. Вы привязаны к своему аккаунту.\n"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:122
+msgid "Неверный логин или пароль. Попробуйте ещё раз.\n"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:127
+msgid "Некорректный формат. Повторите ввод логина и пароля.\n"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:132
+msgid ""
+"Требуется авторизация.\n"
+"Введите логин и пароль в формате: логин:пароль"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:136
+msgid "Принимаются файлы JSON, текст по формату и фотографии QR-кодов"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:140
+msgid "Не выбран счёт! Сначала выберите его используя команду /select_account"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:142
+msgid "Ошибка записи в базу данных!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:144
+msgid "Вы уже авторизованы! Повторная авторизация не требуется!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:147
+msgid ""
+"У вас нет доступа к использованию бота, сначала надо авторизоваться - /auth"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:164
+msgid ""
+"Чтобы добавить чек используя данные с чека, введите поочередно - Дату в "
+"формате ГГГГ-ММ-ДД ЧЧ:ММ:СС, сумму чека, ФН, ФД, ФП.\n"
+"Сначала введите дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:170
+msgid ""
+"Нет информации по чеку.\n"
+"Попробуйте позже или внесите данные на сайте"
+msgstr ""
+
 #: hasta_la_vista_money/expense/forms.py:11
 msgid "Категория расхода"
 msgstr ""
@@ -168,6 +433,19 @@ msgstr ""
 #: hasta_la_vista_money/expense/forms.py:12
 #: hasta_la_vista_money/loan/forms.py:60
 msgid "Счёт списания"
+msgstr ""
+
+#: hasta_la_vista_money/expense/forms.py:35
+#, python-brace-format
+msgid "Недостаточно средств на счёте {account}"
+msgstr ""
+
+#: hasta_la_vista_money/expense/forms.py:51
+msgid "Название категории"
+msgstr ""
+
+#: hasta_la_vista_money/expense/forms.py:52
+msgid "Вложенность"
 msgstr ""
 
 #: hasta_la_vista_money/expense/templates/expense/change_expense.html:5

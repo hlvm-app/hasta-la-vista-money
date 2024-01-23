@@ -4,6 +4,7 @@ from django.db.models import Count, ProtectedError, Sum
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, DeleteView, DetailView
 from django_filters.views import FilterView
 from hasta_la_vista_money import constants
@@ -176,7 +177,7 @@ class ReceiptCreateView(SuccessMessageMixin, BaseView, CreateView):
         if number_receipt:
             messages.error(
                 self.request,
-                constants.RECEIPT_ALREADY_EXISTS,
+                _(constants.RECEIPT_ALREADY_EXISTS),
             )
         else:
             self.create_receipt(
