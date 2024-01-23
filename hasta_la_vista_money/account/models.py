@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext as _
 from hasta_la_vista_money.constants import NumericParameter
 from hasta_la_vista_money.users.models import User
 
