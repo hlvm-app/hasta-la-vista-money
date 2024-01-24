@@ -3,7 +3,6 @@ import decimal
 from django.db import IntegrityError
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-from django.utils.translation import gettext as _
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.bot.json_parser.json_parser import JsonParser
@@ -92,52 +91,50 @@ class ReceiptParser:
             )
             if isinstance(products_list, list):
                 for product in products_list:
-                    if isinstance(product, dict):
-                        product_name = self.parser.parse_json(
+                    product_name = self.parser.parse_json(
+                        product,
+                        constants.PRODUCT_NAME,
+                    )
+                    price = convert_number(
+                        self.parser.parse_json(
                             product,
-                            constants.PRODUCT_NAME,
-                        )
-                        price = convert_number(
-                            self.parser.parse_json(
-                                product,
-                                constants.PRICE,
-                            ),
-                        )
-                        quantity = self.parser.parse_json(
+                            constants.PRICE,
+                        ),
+                    )
+                    quantity = self.parser.parse_json(
+                        product,
+                        constants.QUANTITY,
+                    )
+                    amount = convert_number(
+                        self.parser.parse_json(
                             product,
-                            constants.QUANTITY,
-                        )
-                        amount = convert_number(
-                            self.parser.parse_json(
-                                product,
-                                constants.AMOUNT,
-                            ),
-                        )
-                        nds_type = self.parser.parse_json(
+                            constants.AMOUNT,
+                        ),
+                    )
+                    nds_type = self.parser.parse_json(
+                        product,
+                        constants.NDS_TYPE,
+                    )
+                    nds_sum = convert_number(
+                        self.parser.parse_json(
                             product,
-                            constants.NDS_TYPE,
-                        )
-                        nds_sum = convert_number(
-                            self.parser.parse_json(
-                                product,
-                                constants.NDS_SUM,
-                            ),
-                        )
+                            constants.NDS_SUM,
+                        ),
+                    )
 
-                        product_data = ProductData(
-                            user=self.user,
-                            product_name=product_name,
-                            price=price,
-                            quantity=quantity,
-                            amount=amount,
-                            nds_type=nds_type,
-                            nds_sum=nds_sum,
-                        )
-                        products = ReceiptDataWriter.create_product(
-                            product_data
-                        )
-                        self.product_list.append(products)
-            if self.receipt:
+                    product_data = ProductData(
+                        user=self.user,
+                        product_name=product_name,
+                        price=price,
+                        quantity=quantity,
+                        amount=amount,
+                        nds_type=nds_type,
+                        nds_sum=nds_sum,
+                    )
+                    products = ReceiptDataWriter.create_product(
+                        product_data,
+                    )
+                    self.product_list.append(products)
                 self.receipt.product.set(self.product_list)
         except IntegrityError as integrity_error:
             logger.error(
@@ -214,7 +211,7 @@ class ReceiptParser:
                 number_receipt=number_receipt,
             )
 
-            if check_number_receipt is None and self.receipt:
+            if check_number_receipt is None:
                 self.process_receipt_data(
                     receipt_date,
                     number_receipt,
@@ -236,7 +233,7 @@ class ReceiptParser:
             else:
                 SendMessageToTelegramUser.send_message_to_telegram_user(
                     chat_id,
-                    _(constants.RECEIPT_ALREADY_EXISTS),
+                    constants.RECEIPT_ALREADY_EXISTS,
                 )
                 return
 

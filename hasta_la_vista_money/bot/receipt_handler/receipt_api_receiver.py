@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Optional, Mapping, Union
+from typing import Mapping, Optional, Union
 
 import requests
 from dotenv import load_dotenv
