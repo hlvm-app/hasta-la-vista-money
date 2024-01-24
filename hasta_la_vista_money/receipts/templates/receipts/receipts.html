@@ -37,7 +37,7 @@
                     <span class="text-center">{% translate 'Количество чеков:' %}</span>
                     <li class="list-group-item rounded-3 me-2">{{ total_receipts.count }}</li>
                     <span class="text-center">{% translate 'Сумма чеков:' %}</span>
-                    <li class="list-group-item rounded-3">{{ total_sum_receipts.total }}</li>
+                    <li class="list-group-item rounded-3">{% if total_sum_receipts.total is not None  %}{{ total_sum_receipts.total }}{% else %}0{% endif %}</li>
                 </ul>
                 <button type="button"
                         class="d-flex align-items-center btn btn-sm btn-primary m-xl-1 m-1"
