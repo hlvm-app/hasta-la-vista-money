@@ -7,7 +7,7 @@ from hasta_la_vista_money.bot.send_message.send_message_tg_user import (
 from hasta_la_vista_money.users.models import User
 
 
-def get_string_result_receipt(**kwargs):
+def get_string_result_receipt(**kwargs) -> str:
     """
     Формирование строки с краткой информацией о добавленном чеке.
 
@@ -15,7 +15,9 @@ def get_string_result_receipt(**kwargs):
     :return:
     """
     account_balance = get_object_or_404(Account, id=kwargs.get('account'))
-    products = [product.product_name for product in kwargs.get('product_list')]
+    products = [
+        product.product_name for product in kwargs.get('product_list', [])
+    ]
     newline_char = '\n'
     return ''.join(
         (

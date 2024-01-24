@@ -1,5 +1,6 @@
 import json
 import os
+from typing import Optional, Mapping, Union
 
 import requests
 from dotenv import load_dotenv
@@ -119,7 +120,7 @@ class ReceiptApiReceiver:
         ):
             logger.error('Недоступен сервис авторизации. Попробуйте позже!')
 
-    def get_receipt(self, qr: str) -> dict | None:
+    def get_receipt(self, qr: str) -> Optional[dict]:
         """
         Получает информацию о чеке по QR-коду.
 
@@ -138,9 +139,9 @@ class ReceiptApiReceiver:
         """
         ticket_id = self._get_receipt_id(qr)
         url = f'https://{self.host}/v2/tickets/{ticket_id}'
-        headers = {
+        headers: Mapping[str, Union[str, bytes]] = {
             'Host': self.host,
-            'sessionId': self._session_id,
+            'sessionId': self._session_id or '',
             'Device-OS': self.device_os,
             'clientVersion': self.client_version,
             'Device-Id': self.device_id,
@@ -168,14 +169,14 @@ class ReceiptApiReceiver:
         """
         url = f'https://{self.host}/v2/ticket'
         payload = {'qr': qr}
-        headers = {
+        headers: Mapping[str, Union[str, bytes]] = {
             'Host': self.host,
             'Accept': self.accept,
             'Device-OS': self.device_os,
             'Device-Id': self.device_id,
             'clientVersion': self.client_version,
             'Accept-Language': self.accept_language,
-            'sessionId': self._session_id,
+            'sessionId': self._session_id or '',
             'User-Agent': self.user_agent,
         }
         resp = requests.post(url, json=payload, headers=headers, timeout=10)

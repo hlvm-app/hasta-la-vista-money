@@ -1,5 +1,5 @@
 import datetime
-from typing import Union
+from typing import Any, Optional, Union
 
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.bot.log_config import logger
@@ -7,7 +7,9 @@ from hasta_la_vista_money.users.models import TelegramUser
 
 
 # Выделяем дату из json
-def convert_date_time(date_time: Union[str, int]) -> Union[str, None]:
+def convert_date_time(
+    date_time: list[dict[Any, Any]] | int | str | None,
+) -> Optional[str]:
     """
     Конвертация unix time числа в читабельное представление даты и времени.
 
@@ -34,7 +36,9 @@ def convert_date_time(date_time: Union[str, int]) -> Union[str, None]:
         logger.error(f'Из JSON пришло неправильное число у даты чека: {error}')
 
 
-def convert_number(number: int) -> Union[int, float]:
+def convert_number(
+    number: list[dict[Any, Any]] | int | str | None,
+) -> Union[int, float]:
     """
     Конвертация числа полученного из JSON в число с плавающей точкой.
 

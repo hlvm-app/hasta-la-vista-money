@@ -10,9 +10,9 @@ class ProductData:
     user: User
     product_name: str
     price: float
-    quantity: int
+    quantity: float
     amount: float
-    nds_type: int
+    nds_type: float
     nds_sum: float
 
 

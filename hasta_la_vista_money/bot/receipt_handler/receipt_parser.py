@@ -70,7 +70,7 @@ class ReceiptParser:
 
     def __init__(self, json_data, user, account):
         """Метод-конструктор инициализирующий аргумент json_data."""
-        self.json_data: [list | dict] = json_data
+        self.json_data = json_data
         self.user: User = user
         self.account: Account = account
         self.parser = JsonParser(self.json_data)
@@ -90,50 +90,55 @@ class ReceiptParser:
                 self.json_data,
                 constants.ITEMS_PRODUCT,
             )
-            for product in products_list:
-                product_name = self.parser.parse_json(
-                    product,
-                    constants.PRODUCT_NAME,
-                )
-                price = convert_number(
-                    self.parser.parse_json(
-                        product,
-                        constants.PRICE,
-                    ),
-                )
-                quantity = self.parser.parse_json(
-                    product,
-                    constants.QUANTITY,
-                )
-                amount = convert_number(
-                    self.parser.parse_json(
-                        product,
-                        constants.AMOUNT,
-                    ),
-                )
-                nds_type = self.parser.parse_json(
-                    product,
-                    constants.NDS_TYPE,
-                )
-                nds_sum = convert_number(
-                    self.parser.parse_json(
-                        product,
-                        constants.NDS_SUM,
-                    ),
-                )
+            if isinstance(products_list, list):
+                for product in products_list:
+                    if isinstance(product, dict):
+                        product_name = self.parser.parse_json(
+                            product,
+                            constants.PRODUCT_NAME,
+                        )
+                        price = convert_number(
+                            self.parser.parse_json(
+                                product,
+                                constants.PRICE,
+                            ),
+                        )
+                        quantity = self.parser.parse_json(
+                            product,
+                            constants.QUANTITY,
+                        )
+                        amount = convert_number(
+                            self.parser.parse_json(
+                                product,
+                                constants.AMOUNT,
+                            ),
+                        )
+                        nds_type = self.parser.parse_json(
+                            product,
+                            constants.NDS_TYPE,
+                        )
+                        nds_sum = convert_number(
+                            self.parser.parse_json(
+                                product,
+                                constants.NDS_SUM,
+                            ),
+                        )
 
-                product_data = ProductData(
-                    user=self.user,
-                    product_name=product_name,
-                    price=price,
-                    quantity=quantity,
-                    amount=amount,
-                    nds_type=nds_type,
-                    nds_sum=nds_sum,
-                )
-                products = ReceiptDataWriter.create_product(product_data)
-                self.product_list.append(products)
-            self.receipt.product.set(self.product_list)
+                        product_data = ProductData(
+                            user=self.user,
+                            product_name=product_name,
+                            price=price,
+                            quantity=quantity,
+                            amount=amount,
+                            nds_type=nds_type,
+                            nds_sum=nds_sum,
+                        )
+                        products = ReceiptDataWriter.create_product(
+                            product_data
+                        )
+                        self.product_list.append(products)
+            if self.receipt:
+                self.receipt.product.set(self.product_list)
         except IntegrityError as integrity_error:
             logger.error(
                 f'Ошибка записи товаров в базу данных: {integrity_error}',
@@ -209,7 +214,7 @@ class ReceiptParser:
                 number_receipt=number_receipt,
             )
 
-            if check_number_receipt is None:
+            if check_number_receipt is None and self.receipt:
                 self.process_receipt_data(
                     receipt_date,
                     number_receipt,
