@@ -131,9 +131,7 @@ class ReceiptParser:
                         nds_type=nds_type,
                         nds_sum=nds_sum,
                     )
-                    products = ReceiptDataWriter.create_product(
-                        product_data,
-                    )
+                    products = ReceiptDataWriter.create_product(product_data)
                     self.product_list.append(products)
                 self.receipt.product.set(self.product_list)
         except IntegrityError as integrity_error:
