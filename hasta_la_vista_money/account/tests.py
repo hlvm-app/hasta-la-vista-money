@@ -105,3 +105,36 @@ class TestAccount(TestCase):
         )
         self.assertEqual(response.status_code, constants.SUCCESS_CODE)
         self.assertTrue(Account.objects.filter(pk=self.account1.pk).exists())
+
+    def test_transfer_money(self):
+        self.client.force_login(self.user)
+        url = reverse_lazy('account:transfer_money')
+
+        transfer_money = {
+            'from_account': self.account1.pk,
+            'to_account': self.account2.pk,
+            'amount': constants.ONE_HUNDRED,
+            'exchange_date': '2024-01-24',
+            'notes': 'Test transfer',
+        }
+        initial_balance_account1 = self.account1.balance
+        initial_balance_account2 = self.account2.balance
+
+        response = self.client.post(
+            url,
+            data=transfer_money,
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(response.status_code, constants.SUCCESS_CODE)
+
+        account1 = Account.objects.get(pk=self.account1.pk)
+        account2 = Account.objects.get(pk=self.account2.pk)
+
+        self.assertEqual(
+            account1.balance,
+            initial_balance_account1 - transfer_money['amount'],
+        )
+        self.assertEqual(
+            account2.balance,
+            initial_balance_account2 + transfer_money['amount'],
+        )
