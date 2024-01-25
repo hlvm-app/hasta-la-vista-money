@@ -54,6 +54,9 @@ staticfiles:
 start:
 		@poetry run python manage.py runserver
 
+startbot:
+		@poetry run python manage.py startbot
+
 secretkey:
 		@poetry run python -c 'from django.utils.crypto import get_random_string; print(get_random_string(40))'
 
