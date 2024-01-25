@@ -20,7 +20,7 @@ class IncomeCategory(models.Model):
         blank=True,
         null=True,
         related_name='subcategories',
-        on_delete=models.SET_NULL,
+        on_delete=models.PROTECT,
     )
 
     class Meta:
