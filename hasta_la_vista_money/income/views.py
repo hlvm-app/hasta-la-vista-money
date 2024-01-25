@@ -18,7 +18,7 @@ from hasta_la_vista_money.commonlogic.views import (
 )
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
-    DeleteCategoryMixin,
+    DeleteObjectMixin,
     ExpenseIncomeCategoryCreateViewMixin,
     UpdateViewMixin,
 )
@@ -234,5 +234,7 @@ class IncomeCategoryCreateView(BaseView, ExpenseIncomeCategoryCreateViewMixin):
     depth = 3
 
 
-class IncomeCategoryDeleteView(BaseView, DeleteCategoryMixin):
+class IncomeCategoryDeleteView(BaseView, DeleteObjectMixin):
     model = IncomeCategory
+    success_message = constants.SUCCESS_CATEGORY_INCOME_DELETED
+    error_message = constants.ACCESS_DENIED_DELETE_INCOME_CATEGORY

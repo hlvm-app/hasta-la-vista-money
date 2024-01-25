@@ -242,4 +242,4 @@ class ReceiptDeleteView(BaseView, DetailView, DeleteView):
                 return redirect(self.success_url)
         except ProtectedError:
             messages.error(self.request, 'Чек не может быть удалён!')
-            return redirect(reverse_lazy(self.success_url))
+            return redirect(self.success_url)

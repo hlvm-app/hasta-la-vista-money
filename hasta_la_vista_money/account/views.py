@@ -3,12 +3,10 @@ from operator import itemgetter
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.handlers.wsgi import WSGIRequest
-from django.db.models import ProtectedError
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.utils.translation import gettext_lazy as _
-from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+from django.views.generic import CreateView, ListView, UpdateView
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.forms import (
     AddAccountForm,
@@ -16,7 +14,10 @@ from hasta_la_vista_money.account.forms import (
 )
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.views import collect_info_receipt
-from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
+from hasta_la_vista_money.custom_mixin import (
+    CustomNoPermissionMixin,
+    DeleteObjectMixin,
+)
 from hasta_la_vista_money.users.models import User
 
 
@@ -158,7 +159,7 @@ class ChangeAccountView(
     UpdateView,
 ):
     form_class = AddAccountForm
-    success_message = _(constants.SUCCESS_MESSAGE_CHANGED_ACCOUNT)
+    success_message = constants.SUCCESS_MESSAGE_CHANGED_ACCOUNT
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -175,7 +176,7 @@ class TransferMoneyAccountView(
     UpdateView,
 ):
     form_class = TransferMoneyAccountForm
-    success_message = _(constants.SUCCESS_MESSAGE_TRANSFER_MONEY)
+    success_message = constants.SUCCESS_MESSAGE_TRANSFER_MONEY
 
     def post(self, request: WSGIRequest, *args, **kwargs) -> JsonResponse:
         transfer_money_form = TransferMoneyAccountForm(
@@ -203,19 +204,6 @@ class TransferMoneyAccountView(
         return JsonResponse(response_data)
 
 
-class DeleteAccountView(AccountBaseView, DeleteView):
-    def form_valid(self, form):
-        try:
-            account = self.get_object()
-            account.delete()
-            messages.success(
-                self.request,
-                constants.SUCCESS_MESSAGE_DELETE_ACCOUNT,
-            )
-            return super().form_valid(form)
-        except ProtectedError:
-            messages.error(
-                self.request,
-                constants.UNSUCCESSFULLY_MESSAGE_DELETE_ACCOUNT,
-            )
-            return redirect(self.success_url)
+class DeleteAccountView(AccountBaseView, DeleteObjectMixin):
+    success_message = constants.SUCCESS_MESSAGE_DELETE_ACCOUNT
+    error_message = constants.UNSUCCESSFULLY_MESSAGE_DELETE_ACCOUNT

@@ -6,7 +6,6 @@ from django.db.models import ProtectedError
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView
-from hasta_la_vista_money import constants
 
 
 class CustomNoPermissionMixin(LoginRequiredMixin):
@@ -20,9 +19,11 @@ class CustomNoPermissionMixin(LoginRequiredMixin):
         return redirect(self.no_permission_url)
 
 
-class DeleteCategoryMixin(DeleteView):
+class DeleteObjectMixin(DeleteView):
     model = Optional[None]
     success_url = None
+    success_message = ''
+    error_message = ''
 
     def form_valid(self, form):
         try:
@@ -30,13 +31,13 @@ class DeleteCategoryMixin(DeleteView):
             category.delete()
             messages.success(
                 self.request,
-                constants.SUCCESS_CATEGORY_DELETED,
+                self.success_message,
             )
             return super().form_valid(form)
         except ProtectedError:
             messages.error(
                 self.request,
-                constants.ACCESS_DENIED_DELETE_CATEGORY,
+                self.error_message,
             )
             return redirect(self.success_url)
 
