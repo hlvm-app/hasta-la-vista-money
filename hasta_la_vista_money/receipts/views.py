@@ -222,7 +222,6 @@ class ReceiptCreateView(SuccessMessageMixin, BaseView, CreateView):
 
 class ReceiptDeleteView(BaseView, DetailView, DeleteView):
     model = Receipt
-    context_object_name = 'receipts'
 
     def form_valid(self, form):
         receipt = self.get_object()
@@ -240,7 +239,7 @@ class ReceiptDeleteView(BaseView, DetailView, DeleteView):
 
                 receipt.delete()
                 messages.success(self.request, 'Чек успешно удалён!')
-                return redirect(reverse_lazy(self.success_url))
+                return redirect(self.success_url)
         except ProtectedError:
             messages.error(self.request, 'Чек не может быть удалён!')
             return redirect(reverse_lazy(self.success_url))
