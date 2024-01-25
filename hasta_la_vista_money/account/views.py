@@ -67,21 +67,27 @@ def sort_expense_income(expenses, income):
     )
 
 
+class BaseView:
+    template_name = 'account/account.html'
+    success_url = reverse_lazy('applications:list')
+
+
+class AccountBaseView(BaseView):
+    model = Account
+
+
 class AccountView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
+    AccountBaseView,
     ListView,
 ):
     """Отображает список приложений в проекте на сайте."""
 
-    model = Account
-    template_name = 'account/account.html'
     context_object_name = 'applications'
     no_permission_url = reverse_lazy('login')
 
     def get_context_data(self, **kwargs) -> dict:
-        self.request: WSGIRequest = self.request
-
         if self.request.user.is_authenticated:
             user = get_object_or_404(
                 User,
@@ -119,15 +125,12 @@ class AccountView(
             context['receipt_info_by_month'] = receipt_info_by_month
             context['income_expense'] = income_expense
             context['transfer_money_log'] = transfer_money_log
-        return context
+            return context
 
 
-class AccountCreateView(SuccessMessageMixin, CreateView):
-    model = Account
-    template_name = 'account/account.html'
+class AccountCreateView(SuccessMessageMixin, AccountBaseView, CreateView):
     form_class = AddAccountForm
     no_permission_url = reverse_lazy('login')
-    success_url = reverse_lazy('applications:list')
 
     def post(self, request: WSGIRequest, *args, **kwargs) -> JsonResponse:
         account_form = AddAccountForm(request.POST)
@@ -151,12 +154,10 @@ class AccountCreateView(SuccessMessageMixin, CreateView):
 class ChangeAccountView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
+    AccountBaseView,
     UpdateView,
 ):
-    model = Account
     form_class = AddAccountForm
-    template_name = 'account/change_account.html'
-    success_url = reverse_lazy('applications:list')
     success_message = _(constants.SUCCESS_MESSAGE_CHANGED_ACCOUNT)
 
     def get_context_data(self, **kwargs):
@@ -170,10 +171,9 @@ class ChangeAccountView(
 class TransferMoneyAccountView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
+    AccountBaseView,
     UpdateView,
 ):
-    model = Account
-    template_name = 'account/account.html'
     form_class = TransferMoneyAccountForm
     success_message = _(constants.SUCCESS_MESSAGE_TRANSFER_MONEY)
 
@@ -203,22 +203,19 @@ class TransferMoneyAccountView(
         return JsonResponse(response_data)
 
 
-class DeleteAccountView(DeleteView):
-    model = Account
-    success_url = reverse_lazy('applications:list')
-
+class DeleteAccountView(AccountBaseView, DeleteView):
     def form_valid(self, form):
         try:
             account = self.get_object()
             account.delete()
             messages.success(
                 self.request,
-                _(constants.SUCCESS_MESSAGE_DELETE_ACCOUNT),
+                constants.SUCCESS_MESSAGE_DELETE_ACCOUNT,
             )
             return super().form_valid(form)
         except ProtectedError:
             messages.error(
                 self.request,
-                _(constants.UNSUCCESSFULLY_MESSAGE_DELETE_ACCOUNT),
+                constants.UNSUCCESSFULLY_MESSAGE_DELETE_ACCOUNT,
             )
             return redirect(self.success_url)
