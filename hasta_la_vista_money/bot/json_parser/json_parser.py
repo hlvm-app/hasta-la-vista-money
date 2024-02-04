@@ -72,7 +72,10 @@ class JsonParser:
         if isinstance(dictionary, dict):
             dictionary_values = dictionary.values()
             dict_value = dictionary.get(key, None)
-        elif isinstance(dictionary, list):
+        elif isinstance(dictionary, list) and not isinstance(
+            dictionary[0],
+            str,
+        ):
             dictionary_values = dictionary[0].values()
             dict_value = dictionary[0].get(key, None)
         else:

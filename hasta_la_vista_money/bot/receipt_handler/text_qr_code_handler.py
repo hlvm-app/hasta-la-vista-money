@@ -57,6 +57,7 @@ def handle_receipt_text_qrcode(url, message, bot, user, account):
                 timeout=10,
             )
             json_data = response.json()
+            json_data = json_data.get('data').get('json')
 
             chat_id = message.chat.id
 
