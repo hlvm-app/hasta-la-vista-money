@@ -23,18 +23,18 @@ NDS20: Final[str] = 'nds18'
 ITEMS_PRODUCT: Final[str] = 'items'
 
 # Константы строк для парсинга чека
-RECEIPT_ALREADY_EXISTS: Final[str] = _('Такой чек уже существует!')
-RECEIPT_BE_ADDED: Final[str] = _('Чек успешно добавлен!')
-RECEIPT_CANNOT_BE_ADDED: Final[str] = _(
+RECEIPT_ALREADY_EXISTS: Final[str] = 'Такой чек уже существует!'
+RECEIPT_BE_ADDED: Final[str] = 'Чек успешно добавлен!'
+RECEIPT_CANNOT_BE_ADDED: Final[tuple[str]] = (
     'Чек не корректен, перепроверьте в приложении налоговой!',
 )
-RECEIPT_NOT_ACCEPTED: Final[str] = _(
+RECEIPT_NOT_ACCEPTED: Final[tuple[str]] = (
     'Чек не прошёл валидацию! '
     'Вероятно он ещё не попал в базу данных налоговой! '
     'Обычно чек попадает в базу не позже суток. '
     'Попробуйте позже или внесите данные вручную на сайте.',
 )
-QR_CODE_NOT_CONSIDERED: Final[str] = _(
+QR_CODE_NOT_CONSIDERED: Final[tuple[str]] = (
     'QR-код не считался, попробуйте ещё раз или воспользуйтесь '
     'сторонним приложением и передайте текст из QR-кода боту',
 )
