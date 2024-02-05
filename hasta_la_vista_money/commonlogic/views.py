@@ -8,23 +8,34 @@ from hasta_la_vista_money.users.models import User
 
 
 def build_category_tree(categories, parent_id=None, depth=2, current_depth=1):
-    """Формирование дерева категория для отображения на сайте."""
-    tree = []
+    """
+    Формирование дерева категория для отображения на сайте.
+
+    Yields:
+        - yield
+    """
     for category in categories:
         if category['parent_category'] == parent_id:
-            children = []
             if current_depth < depth:
-                children = build_category_tree(
-                    categories,
-                    category['id'],
-                    depth,
-                    current_depth + 1,
-                )
-            category_copy = category.copy()
-            if children:
-                category_copy['children'] = children
-            tree.append(category_copy)
-    return tree
+                yield {
+                    'id': category['id'],
+                    'name': category['name'],
+                    'parent_category': category['parent_category'],
+                    'parent_category__name': category['parent_category__name'],
+                    'children': build_category_tree(
+                        categories,
+                        category['id'],
+                        depth,
+                        current_depth + 1,
+                    ),
+                }
+            else:
+                yield {
+                    'id': category['id'],
+                    'name': category['name'],
+                    'parent_category': category['parent_category'],
+                    'parent_category__name': category['parent_category__name'],
+                }
 
 
 def collect_info_receipt(user: User) -> QuerySet:
