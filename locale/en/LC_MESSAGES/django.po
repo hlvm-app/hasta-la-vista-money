@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#: hasta_la_vista_money/account/models.py:84
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-23 23:47+0300\n"
+"POT-Creation-Date: 2024-02-05 06:08+0300\n"
 "PO-Revision-Date: 2024-01-23 23:53+0300\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -100,7 +101,11 @@ msgstr ""
 msgid "Баланс счёта"
 msgstr ""
 
-#: hasta_la_vista_money/account/templates/account/account.html:102
+#: hasta_la_vista_money/account/templates/account/account.html:94
+msgid "Счета ещё не созданы!"
+msgstr ""
+
+#: hasta_la_vista_money/account/templates/account/account.html:106
 msgid "Общая статистика пользователя "
 msgstr ""
 
@@ -129,29 +134,32 @@ msgid "Статистика"
 msgstr ""
 
 #: hasta_la_vista_money/account/templates/account/modals/statistics.html:26
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:27
 msgid "Статистика по чекам"
 msgstr ""
 
-#: hasta_la_vista_money/account/templates/account/modals/statistics.html:37
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:38
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:39
 msgid "Статистика доходов и расходов"
 msgstr ""
 
-#: hasta_la_vista_money/account/templates/account/modals/statistics.html:48
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:50
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:51
 msgid "Статистика переводов"
 msgstr ""
 
-#: hasta_la_vista_money/account/templates/account/modals/statistics.html:61
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:64
 #: hasta_la_vista_money/income/templates/income/show_income.html:13
 #: hasta_la_vista_money/receipts/forms.py:26
 msgid "Период"
 msgstr ""
 
-#: hasta_la_vista_money/account/templates/account/modals/statistics.html:64
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:67
 msgid "Количество чеков"
 msgstr ""
 
-#: hasta_la_vista_money/account/templates/account/modals/statistics.html:67
-#: hasta_la_vista_money/account/templates/account/modals/statistics.html:93
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:70
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:96
 #: hasta_la_vista_money/expense/forms.py:14
 #: hasta_la_vista_money/expense/templates/expense/expense.html:25
 #: hasta_la_vista_money/income/forms.py:14
@@ -162,8 +170,8 @@ msgstr ""
 msgid "Сумма"
 msgstr ""
 
-#: hasta_la_vista_money/account/templates/account/modals/statistics.html:70
-#: hasta_la_vista_money/account/templates/account/modals/statistics.html:94
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:73
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:97
 #: hasta_la_vista_money/expense/templates/expense/expense.html:26
 #: hasta_la_vista_money/income/templates/income/show_income.html:15
 #: hasta_la_vista_money/receipts/forms.py:36
@@ -171,20 +179,19 @@ msgstr ""
 msgid "Счёт"
 msgstr ""
 
-#: hasta_la_vista_money/account/templates/account/modals/statistics.html:91
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:94
 #: hasta_la_vista_money/expense/templates/expense/expense.html:23
 msgid "Категория"
 msgstr ""
 
-#: hasta_la_vista_money/account/templates/account/modals/statistics.html:92
+#: hasta_la_vista_money/account/templates/account/modals/statistics.html:95
 #: hasta_la_vista_money/expense/forms.py:13
 #: hasta_la_vista_money/expense/templates/expense/expense.html:24
 #: hasta_la_vista_money/income/forms.py:13
 msgid "Дата"
 msgstr ""
 
-#: hasta_la_vista_money/budget/templates/budget.html:8
-#: templates/header.html:56
+#: hasta_la_vista_money/budget/templates/budget.html:8 templates/header.html:56
 msgid "Бюджет"
 msgstr "Budget"
 
@@ -219,37 +226,16 @@ msgstr ""
 msgid "Доход"
 msgstr ""
 
-#: hasta_la_vista_money/constants.py:26
-msgid "Такой чек уже существует!"
-msgstr ""
-
-#: hasta_la_vista_money/constants.py:27 hasta_la_vista_money/constants.py:45
-msgid "Чек успешно добавлен!"
-msgstr ""
-
-#: hasta_la_vista_money/constants.py:29
-msgid "Чек не корректен, перепроверьте в приложении налоговой!"
-msgstr ""
-
-#: hasta_la_vista_money/constants.py:32
-msgid ""
-"Чек не прошёл валидацию! Вероятно он ещё не попал в базу данных налоговой! "
-"Обычно чек попадает в базу не позже суток. Попробуйте позже или внесите "
-"данные вручную на сайте."
-msgstr ""
-
-#: hasta_la_vista_money/constants.py:38
-msgid ""
-"QR-код не считался, попробуйте ещё раз или воспользуйтесь сторонним "
-"приложением и передайте текст из QR-кода боту"
-msgstr ""
-
 #: hasta_la_vista_money/constants.py:43
 msgid "Вы успешно авторизовались!"
 msgstr ""
 
 #: hasta_la_vista_money/constants.py:44
 msgid "Регистрация прошла успешно!"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:45
+msgid "Чек успешно добавлен!"
 msgstr ""
 
 #: hasta_la_vista_money/constants.py:47
@@ -290,9 +276,9 @@ msgstr ""
 
 #: hasta_la_vista_money/constants.py:67
 msgid ""
-"Пароли хранятся в зашифрованном виде, поэтому нет возможности посмотреть ваш"
-" пароль, но вы можете поменять его на новый перейдя на вкладку<br>\"Изменить"
-" пароль\""
+"Пароли хранятся в зашифрованном виде, поэтому нет возможности посмотреть ваш "
+"пароль, но вы можете поменять его на новый перейдя на вкладку<br>\"Изменить "
+"пароль\""
 msgstr ""
 
 #: hasta_la_vista_money/constants.py:75
@@ -330,97 +316,119 @@ msgstr ""
 msgid "Операция дохода успешно удалена!"
 msgstr ""
 
-#: hasta_la_vista_money/constants.py:87
-msgid "Категория успешно удалена!"
+#: hasta_la_vista_money/constants.py:88
+msgid "Категория расхода успешно удалена!"
 msgstr ""
 
-#: hasta_la_vista_money/constants.py:89
-msgid ""
-"Категория не может быть удалена, так как связана с доходом или расходом"
-msgstr ""
-
-#: hasta_la_vista_money/constants.py:92
-msgid "Средства успешно переведены"
-msgstr ""
-
-#: hasta_la_vista_money/constants.py:93
-msgid "Недостаточно средств"
+#: hasta_la_vista_money/constants.py:91
+msgid "Категория дохода успешно удалена!"
 msgstr ""
 
 #: hasta_la_vista_money/constants.py:94
+msgid "Категория не может быть удалена, так как связана с расходом"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:97
+msgid "Категория не может быть удалена, так как связана с доходом"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:99
+msgid "Средства успешно переведены"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:100
+msgid "Недостаточно средств"
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:101
 msgid "Кредит успешно добавлен"
 msgstr ""
 
-#: hasta_la_vista_money/constants.py:95
+#: hasta_la_vista_money/constants.py:102
 msgid "Кредит успешно удалён"
 msgstr ""
 
-#: hasta_la_vista_money/constants.py:96
+#: hasta_la_vista_money/constants.py:103
 msgid "Платеж успешно внесён"
 msgstr ""
 
-#: hasta_la_vista_money/constants.py:98
+#: hasta_la_vista_money/constants.py:105
 msgid "Введите заметку не более 250 символов. Поле необязательное!"
 msgstr ""
 
-#: hasta_la_vista_money/constants.py:103
-msgid "Ваш логин и пароль был удалены для обеспечения сохранности "
+#: hasta_la_vista_money/constants.py:110
+msgid ""
+"Ваш логин и пароль был удалены для обеспечения сохранности конфиденциальных "
+"данных!"
 msgstr ""
 
-#: hasta_la_vista_money/constants.py:107
+#: hasta_la_vista_money/constants.py:114
 msgid "Вы уже авторизованы и связаны с этим аккаунтом.\n"
 msgstr ""
 
-#: hasta_la_vista_money/constants.py:112
+#: hasta_la_vista_money/constants.py:119
 msgid "Ваш аккаунт уже связан с другим Telegram аккаунтом.\n"
 msgstr ""
 
-#: hasta_la_vista_money/constants.py:117
+#: hasta_la_vista_money/constants.py:125
 msgid "Авторизация прошла успешно. Вы привязаны к своему аккаунту.\n"
 msgstr ""
 
-#: hasta_la_vista_money/constants.py:122
+#: hasta_la_vista_money/constants.py:130
 msgid "Неверный логин или пароль. Попробуйте ещё раз.\n"
 msgstr ""
 
-#: hasta_la_vista_money/constants.py:127
+#: hasta_la_vista_money/constants.py:136
 msgid "Некорректный формат. Повторите ввод логина и пароля.\n"
 msgstr ""
 
-#: hasta_la_vista_money/constants.py:132
+#: hasta_la_vista_money/constants.py:141
 msgid ""
 "Требуется авторизация.\n"
 "Введите логин и пароль в формате: логин:пароль"
 msgstr ""
 
-#: hasta_la_vista_money/constants.py:136
+#: hasta_la_vista_money/constants.py:145
 msgid "Принимаются файлы JSON, текст по формату и фотографии QR-кодов"
 msgstr ""
 
-#: hasta_la_vista_money/constants.py:140
+#: hasta_la_vista_money/constants.py:149
 msgid "Не выбран счёт! Сначала выберите его используя команду /select_account"
 msgstr ""
 
-#: hasta_la_vista_money/constants.py:142
+#: hasta_la_vista_money/constants.py:151
 msgid "Ошибка записи в базу данных!"
 msgstr ""
 
-#: hasta_la_vista_money/constants.py:144
+#: hasta_la_vista_money/constants.py:153
 msgid "Вы уже авторизованы! Повторная авторизация не требуется!"
 msgstr ""
 
-#: hasta_la_vista_money/constants.py:147
+#: hasta_la_vista_money/constants.py:156
 msgid ""
 "У вас нет доступа к использованию бота, сначала надо авторизоваться - /auth"
 msgstr ""
 
-#: hasta_la_vista_money/constants.py:164
+#: hasta_la_vista_money/constants.py:160
 msgid ""
-"Чтобы добавить чек используя данные с чека, введите поочередно - Дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС, сумму чека, ФН, ФД, ФП.\n"
+"Описание команд:\n"
+"/start и /help выводят этот текст;\n"
+"/auth - позволяет авторизоваться в боте для доступа к остальным командам;\n"
+"/select_account - выводит список счетов для выбора. Счета добавляются через "
+"сайт;\n"
+"/manual - позволяет добавить чек с помощью параметров самого чека, если, "
+"например, QR-код не считывается;\n"
+"/deauthorize - отвязывает телеграм аккаунт от бота."
+msgstr ""
+
+#: hasta_la_vista_money/constants.py:171
+msgid ""
+"Чтобы добавить чек используя данные с чека, введите поочередно - Дату в "
+"формате ГГГГ-ММ-ДД ЧЧ:ММ:СС, сумму чека, ФН, ФД, ФП.\n"
 "Сначала введите дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС"
 msgstr ""
 
-#: hasta_la_vista_money/constants.py:170
+#: hasta_la_vista_money/constants.py:177
 msgid ""
 "Нет информации по чеку.\n"
 "Попробуйте позже или внесите данные на сайте"
@@ -464,9 +472,14 @@ msgstr ""
 
 #: hasta_la_vista_money/expense/templates/expense/expense.html:33
 #: hasta_la_vista_money/expense/templates/expense/modals/show_category_expense.html:23
+#: hasta_la_vista_money/expense/templates/expense/modals/show_category_expense.html:24
 #: hasta_la_vista_money/income/templates/income/modals/show_category_income.html:22
 #: hasta_la_vista_money/income/templates/income/show_income.html:32
 msgid "Добавить категорию"
+msgstr ""
+
+#: hasta_la_vista_money/expense/templates/expense/expense.html:71
+msgid "Информация о расходах ещё не добавлена!"
 msgstr ""
 
 #: hasta_la_vista_money/expense/templates/expense/modals/add_category_expense.html:9
@@ -517,6 +530,10 @@ msgstr ""
 msgid "Добавить новую доходную операцию"
 msgstr ""
 
+#: hasta_la_vista_money/income/templates/income/show_income.html:88
+msgid "Информация о доходах ещё не добавлена!"
+msgstr ""
+
 #: hasta_la_vista_money/loan/forms.py:11
 msgid "Начальная дата кредита"
 msgstr ""
@@ -555,8 +572,7 @@ msgid "Кредиты"
 msgstr ""
 
 #: hasta_la_vista_money/loan/templates/loan/loan.html:18
-#: hasta_la_vista_money/loan/templates/loan/loan.html:89
-#: templates/base.html:22
+#: hasta_la_vista_money/loan/templates/loan/loan.html:89 templates/base.html:22
 msgid "Добавить кредит"
 msgstr ""
 
@@ -586,7 +602,6 @@ msgid "Срок кредита (месяцы): "
 msgstr ""
 
 #: hasta_la_vista_money/loan/templates/loan/loan.html:122
-#| msgid "Дата платежа"
 msgid "Внести платеж"
 msgstr "Make a payment"
 
@@ -595,7 +610,6 @@ msgid "Удалить кредит"
 msgstr ""
 
 #: hasta_la_vista_money/loan/templates/loan/loan.html:139
-#| msgid "Дата платежа"
 msgid "График платежей:"
 msgstr "Payment schedule:"
 
@@ -813,8 +827,7 @@ msgid "Установить новый пароль"
 msgstr ""
 
 #: hasta_la_vista_money/users/templates/users/password_reset_confirm.html:22
-msgid ""
-"Ссылка недействительна! Запросите новую ссылку со страницы авторизации!"
+msgid "Ссылка недействительна! Запросите новую ссылку со страницы авторизации!"
 msgstr ""
 
 #: hasta_la_vista_money/users/templates/users/profile.html:6
