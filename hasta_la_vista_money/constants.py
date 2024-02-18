@@ -120,7 +120,6 @@ ALREADY_LINK_ANOTHER_ACCOUNT: Final[tuple] = (
     SAFE_LOGIN_PASSWORD,
 )
 
-
 AUTHORIZATION_SUCCESSFUL: Final[tuple] = (
     _('Авторизация прошла успешно. Вы привязаны к своему аккаунту.\n'),
     SAFE_LOGIN_PASSWORD,
@@ -130,7 +129,6 @@ INVALID_USERNAME_PASSWORD: Final[tuple] = (
     _('Неверный логин или пароль. Попробуйте ещё раз.\n'),
     SAFE_LOGIN_PASSWORD,
 )
-
 
 INCORRECT_FORMAT: Final[tuple] = (
     _('Некорректный формат. Повторите ввод логина и пароля.\n'),
@@ -171,11 +169,13 @@ START_MANUAL_HANDLER_RECEIPT: Final[str] = _(
     'Чтобы добавить чек используя данные с чека, '
     'введите поочередно - Дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС, '
     'сумму чека, ФН, ФД, ФП.\n'
+    'Ввод можно отменить командой /cancel\n'
     'Сначала введите дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС',
 )
 NO_INFORMATION_BY_RECEIPT: Final[str] = _(
     'Нет информации по чеку.\nПопробуйте позже или внесите данные на сайте',
 )
+CANCEL_MANUAL_RECEIPT: Final[str] = 'Вы отменили ввод данных чека'
 
 # HTTP Status
 SUCCESS_CODE: Final[int] = 200

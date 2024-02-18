@@ -23,7 +23,7 @@ class Command(BaseCommand):
         :return: None
         """
         try:
-            bot_admin.infinity_polling(none_stop=True, skip_pending=False)
+            bot_admin.infinity_polling(skip_pending=False)
         except TypeError:
             # Заглушка нужна для того, чтобы не выводилась ошибка
             # TypeError: 'function' object is not subscriptable

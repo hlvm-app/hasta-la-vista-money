@@ -1,155 +1,120 @@
-import decimal
+import os
 
-from dateutil.parser import ParserError, parse
+import requests
+from dateutil.parser import parse
 from hasta_la_vista_money.bot.config_bot.config_bot import bot_admin
-from hasta_la_vista_money.bot.receipt_handler.receipt_api_receiver import (
-    ReceiptApiReceiver,
-)
 from hasta_la_vista_money.bot.receipt_handler.receipt_parser import (
     ReceiptParser,
 )
-from hasta_la_vista_money.bot.send_message.send_message_tg_user import (
-    SendMessageToTelegramUser,
-)
 from hasta_la_vista_money.bot.services import get_telegram_user
+from hasta_la_vista_money.constants import (
+    CANCEL_MANUAL_RECEIPT,
+    START_MANUAL_HANDLER_RECEIPT,
+)
+from telebot.handler_backends import State, StatesGroup
 
 
-class HandleReceiptManual:
-    def __init__(self, message):
-        """
-        Конструктов класса инициализирующий аргументы класса.
+class ReceiptStates(StatesGroup):
+    date = State()
+    amount = State()
+    fn = State()
+    fd = State()
+    fp = State()
 
-        :param message:
-        """
-        self.message = message
-        self.dictionary_string_from_qrcode = {}
 
-    def process_date_receipt(self, message):
-        """
-        Получение даты от пользователя.
-
-        :param message:
-        :return:
-        """
-        try:
-            date = parse(message.text)
-            self.dictionary_string_from_qrcode['date'] = f'{date:%Y%m%dT%H%M%S}'
-            SendMessageToTelegramUser.send_message_to_telegram_user(
-                message.chat.id,
-                'Введите сумму чека',
-            )
-            bot_admin.register_next_step_handler(
-                message,
-                self.process_amount_receipt,
-            )
-        except ParserError:
-            SendMessageToTelegramUser.send_message_to_telegram_user(
-                message.chat.id,
-                'Неверный формат даты! Повторите ввод сначала /manual',
-            )
-
-    def process_amount_receipt(self, message):
-        """
-        Получение суммы от пользователя.
-
-        :param message:
-        :return:
-        """
-        amount_receipt = message.text
-        amount_receipt = amount_receipt.replace(',', '.')
-
-        self.dictionary_string_from_qrcode['amount'] = decimal.Decimal(
-            amount_receipt,
-        )
-        SendMessageToTelegramUser.send_message_to_telegram_user(
+@bot_admin.message_handler(commands=['manual'])
+def manual_handler_receipt(message):
+    """Start handler command manual."""
+    if message:
+        bot_admin.set_state(
+            message.from_user.id,
+            ReceiptStates.date,
             message.chat.id,
-            'Введите номер ФН',
         )
-        bot_admin.register_next_step_handler(
-            message,
-            self.process_fiscal_number_receipt,
+        bot_admin.send_message(message.chat.id, START_MANUAL_HANDLER_RECEIPT[:])
+
+
+@bot_admin.message_handler(state='*', commands=['cancel'])
+def any_state(message):
+    """Cancel state."""
+    bot_admin.send_message(message.chat.id, CANCEL_MANUAL_RECEIPT)
+    bot_admin.delete_state(message.from_user.id, message.chat.id)
+
+
+@bot_admin.message_handler(state=ReceiptStates.date)
+def receipt_date_get(message):
+    """Handle receipt date."""
+    bot_admin.send_message(message.chat.id, 'Введите сумму чека')
+    bot_admin.set_state(
+        message.from_user.id,
+        ReceiptStates.amount,
+        message.chat.id,
+    )
+    with bot_admin.retrieve_data(message.from_user.id, message.chat.id) as data:
+        date = parse(message.text)
+        data['date'] = f'{date:%Y%m%dT%H%M%S}'
+
+
+@bot_admin.message_handler(state=ReceiptStates.amount)
+def receipt_amount_get(message):
+    """Handle receipt amount."""
+    bot_admin.send_message(message.chat.id, 'Введите номер ФН')
+    bot_admin.set_state(
+        message.from_user.id,
+        ReceiptStates.fn,
+        message.chat.id,
+    )
+    with bot_admin.retrieve_data(message.from_user.id, message.chat.id) as data:
+        data['amount'] = message.text
+
+
+@bot_admin.message_handler(state=ReceiptStates.fn)
+def receipt_fn_get(message):
+    """Handle receipt fn."""
+    bot_admin.send_message(message.chat.id, 'Введите номер ФД')
+    bot_admin.set_state(
+        message.from_user.id,
+        ReceiptStates.fd,
+        message.chat.id,
+    )
+    with bot_admin.retrieve_data(message.from_user.id, message.chat.id) as data:
+        data['fn'] = message.text
+
+
+@bot_admin.message_handler(state=ReceiptStates.fd)
+def receipt_fd_get(message):
+    """Handle receipt fd."""
+    bot_admin.send_message(message.chat.id, 'Введите номер ФП')
+    bot_admin.set_state(
+        message.from_user.id,
+        ReceiptStates.fp,
+        message.chat.id,
+    )
+    with bot_admin.retrieve_data(message.from_user.id, message.chat.id) as data:
+        data['fd'] = message.text
+
+
+@bot_admin.message_handler(state=ReceiptStates.fp)
+def receipt_fp_get(message):
+    """Handle receipt fp and result send user and record to database info."""
+    with bot_admin.retrieve_data(message.from_user.id, message.chat.id) as data:
+        msg = f't={data["date"]}&s={data["amount"]}&fn={data["fn"]}&i={data["fd"]}&fp={message.text}&n=1'  # noqa: E501, WPS221
+        bot_admin.send_message(
+            message.chat.id,
+            f'Получилась строка:\n{msg[0]}',
+            parse_mode='html',
         )
-
-    def process_fiscal_number_receipt(self, message):
-        """
-        Получение ФН от пользователя.
-
-        :param message:
-        :return:
-        """
-        try:
-            fn_receipt = message.text
-            self.dictionary_string_from_qrcode['fn'] = int(fn_receipt)
-            SendMessageToTelegramUser.send_message_to_telegram_user(
-                message.chat.id,
-                'Введите номер ФД',
-            )
-            bot_admin.register_next_step_handler(
-                message,
-                self.process_fiscal_doc_receipt,
-            )
-        except ValueError:
-            SendMessageToTelegramUser.send_message_to_telegram_user(
-                message.chat.id,
-                'Введите корректный номер ФН!',
-            )
-
-    def process_fiscal_doc_receipt(self, message):
-        """
-        Получение ФД от пользователя.
-
-        :param message:
-        :return:
-        """
-        try:
-            fd_receipt = message.text
-            self.dictionary_string_from_qrcode['fd'] = int(fd_receipt)
-            SendMessageToTelegramUser.send_message_to_telegram_user(
-                message.chat.id,
-                'Введите номер ФП',
-            )
-            bot_admin.register_next_step_handler(
-                message,
-                self.process_fp_receipt,
-            )
-        except ValueError:
-            SendMessageToTelegramUser.send_message_to_telegram_user(
-                message.chat.id,
-                'Введите корректный номер ФД!',
-            )
-
-    def process_fp_receipt(self, message):
-        """
-        Получение ФП от пользователя.
-
-        :param message:
-        :return:
-        """
-        try:
-            fp_receipt = message.text
-            self.dictionary_string_from_qrcode['fp'] = int(fp_receipt)
-
-            telegram_user = get_telegram_user(message)
-
-            if telegram_user:
-                user = telegram_user.user
-                account = telegram_user.selected_account_id
-                client = ReceiptApiReceiver()
-                json_data = client.get_receipt(
-                    ''.join(
-                        (
-                            f't={self.dictionary_string_from_qrcode["date"]}',
-                            f'&s={self.dictionary_string_from_qrcode["amount"]}',  # noqa: E501
-                            f'&fn={self.dictionary_string_from_qrcode["fn"]}',
-                            f'&i={self.dictionary_string_from_qrcode["fd"]}',
-                            f'&fp={self.dictionary_string_from_qrcode["fp"]}&n=1',  # noqa: E501
-                        ),
-                    ),
-                )
-                parser = ReceiptParser(json_data, user, account)
-                parser.parse_receipt(message.chat.id)
-        except ValueError as error:
-            SendMessageToTelegramUser.send_message_to_telegram_user(
-                message.chat.id,
-                f'{error}',
-            )
+        telegram_user = get_telegram_user(message)
+        if telegram_user:
+            user = telegram_user.user
+            account = telegram_user.selected_account_id
+            data = {
+                'token': os.getenv('TOKEN', None),
+                'qrraw': msg,
+            }
+            url = 'https://proverkacheka.com/api/v1/check/get'
+            response = requests.post(url, data=data, timeout=10)
+            json_data = response.json()
+            parser = ReceiptParser(json_data, user, account)
+            parser.parse_receipt(message.chat.id)
+    bot_admin.delete_state(message.from_user.id, message.chat.id)
