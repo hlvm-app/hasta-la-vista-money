@@ -134,7 +134,6 @@ def handle_text_qr(message):
     bot_admin.register_next_step_handler(message, handle_text)
 
 
-@bot_admin.message_handler()
 def handle_text(message):
     """Handle text command from text QR-code."""
     telegram_user = get_telegram_user(message)
