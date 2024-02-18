@@ -7,16 +7,29 @@ from hasta_la_vista_money.bot.bot_handler.bot_commands_handler import (
     handle_receipt,
     handle_select_account,
     handle_start,
-    start_process_add_manual_receipt,
+)
+from hasta_la_vista_money.bot.bot_handler.receipt_manual_handler import (
+    manual_handler_receipt,
+    receipt_amount_get,
+    receipt_date_get,
+    receipt_fd_get,
+    receipt_fn_get,
+    receipt_fp_get,
 )
 from hasta_la_vista_money.bot.config_bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.log_config import logger
-from telebot import types
+from telebot import custom_filters, types
 
 bot_admin.add_message_handler(handle_receipt)
 bot_admin.add_message_handler(handle_start)
-bot_admin.add_message_handler(start_process_add_manual_receipt)
+bot_admin.add_message_handler(manual_handler_receipt)
+bot_admin.add_message_handler(receipt_date_get)
+bot_admin.add_message_handler(receipt_amount_get)
+bot_admin.add_message_handler(receipt_fn_get)
+bot_admin.add_message_handler(receipt_fd_get)
+bot_admin.add_message_handler(receipt_fp_get)
 bot_admin.add_callback_query_handler(handle_select_account)
+bot_admin.add_custom_filter(custom_filters.StateFilter(bot_admin))
 
 
 @csrf_exempt
