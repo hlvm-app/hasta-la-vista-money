@@ -7,9 +7,6 @@ from hasta_la_vista_money.bot.bot_handler.keyboards import (
 from hasta_la_vista_money.bot.bot_handler.pin_message_handler import (
     pin_message,
 )
-from hasta_la_vista_money.bot.bot_handler.receipt_manual_handler import (
-    HandleReceiptManual,
-)
 from hasta_la_vista_money.bot.config_bot.config_bot import bot_admin
 from hasta_la_vista_money.bot.middleware.middleware import AccessMiddleware
 from hasta_la_vista_money.bot.receipt_handler.content_type_handler import (
@@ -100,25 +97,6 @@ def handle_select_account(call):
     pin_message(call, account)
 
 
-@bot_admin.message_handler(commands=['manual'])
-def start_process_add_manual_receipt(message):
-    """
-    Функция обработчик команды manual.
-
-    :param message:
-    :return:
-    """
-    SendMessageToTelegramUser.send_message_to_telegram_user(
-        message.chat.id,
-        constants.START_MANUAL_HANDLER_RECEIPT,
-    )
-    receipt_manual = HandleReceiptManual(message)
-    bot_admin.register_next_step_handler(
-        message,
-        receipt_manual.process_date_receipt,
-    )
-
-
 @bot_admin.message_handler(commands=['deauthorize'])
 def process_deauthorize(message):
     """
@@ -134,7 +112,7 @@ def process_deauthorize(message):
     )
 
 
-@bot_admin.message_handler(content_types=['text', 'document', 'photo'])
+@bot_admin.message_handler(content_types=['document', 'photo'])
 def handle_receipt(message):
     """
     Проверка того, зарегистрированный ли пользователь пишет боту.
@@ -142,6 +120,23 @@ def handle_receipt(message):
     :param message:
     :return:
     """
+    telegram_user = get_telegram_user(message)
+    if telegram_user:
+        user = telegram_user.user
+        account = telegram_user.selected_account_id
+        telegram_content_type(message, user, account)
+
+
+@bot_admin.message_handler(commands=['text'])
+def handle_text_qr(message):
+    """Start handler command text."""
+    bot_admin.send_message(message.chat.id, 'Пришли текст из QR-кода')
+    bot_admin.register_next_step_handler(message, handle_text)
+
+
+@bot_admin.message_handler()
+def handle_text(message):
+    """Handle text command from text QR-code."""
     telegram_user = get_telegram_user(message)
     if telegram_user:
         user = telegram_user.user
