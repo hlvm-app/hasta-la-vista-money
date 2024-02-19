@@ -206,7 +206,9 @@ class ReceiptParser:
 
             check_number_receipt = check_exists_number_receipt(
                 user=self.user,
+                receipt_date=receipt_date,
                 number_receipt=number_receipt,
+                total_sum=total_sum,
             )
 
             if check_number_receipt is None:
