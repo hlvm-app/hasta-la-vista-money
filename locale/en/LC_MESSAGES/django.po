@@ -3,15 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: hasta_la_vista_money/account/models.py:84
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-05 06:08+0300\n"
-"PO-Revision-Date: 2024-01-23 23:53+0300\n"
-"Last-Translator:   <>\n"
+"PO-Revision-Date: 2024-02-25 18:56+0300\n"
+"Last-Translator: Александр Павлов <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -22,11 +21,11 @@ msgstr ""
 
 #: hasta_la_vista_money/account/forms.py:19
 msgid "Наименование счёта"
-msgstr ""
+msgstr "Account name"
 
 #: hasta_la_vista_money/account/forms.py:20
 msgid "Начальный баланс"
-msgstr ""
+msgstr "Initial balance"
 
 #: hasta_la_vista_money/account/forms.py:21
 #: hasta_la_vista_money/account/templates/account/account.html:23
@@ -87,19 +86,19 @@ msgstr ""
 
 #: hasta_la_vista_money/account/models.py:27
 msgid "Основной счёт"
-msgstr ""
+msgstr "Main Account"
 
 #: hasta_la_vista_money/account/templates/account/account.html:6
 msgid "Управляй финансами семьи грамотно!"
-msgstr ""
+msgstr "Manage your family's finances competently!"
 
 #: hasta_la_vista_money/account/templates/account/account.html:21
 msgid "Название счёта"
-msgstr ""
+msgstr "Account name"
 
 #: hasta_la_vista_money/account/templates/account/account.html:22
 msgid "Баланс счёта"
-msgstr ""
+msgstr "Account Balance"
 
 #: hasta_la_vista_money/account/templates/account/account.html:94
 msgid "Счета ещё не созданы!"
@@ -136,17 +135,17 @@ msgstr ""
 #: hasta_la_vista_money/account/templates/account/modals/statistics.html:26
 #: hasta_la_vista_money/account/templates/account/modals/statistics.html:27
 msgid "Статистика по чекам"
-msgstr ""
+msgstr "Statistics on receipts"
 
 #: hasta_la_vista_money/account/templates/account/modals/statistics.html:38
 #: hasta_la_vista_money/account/templates/account/modals/statistics.html:39
 msgid "Статистика доходов и расходов"
-msgstr ""
+msgstr "Income and expense statistics"
 
 #: hasta_la_vista_money/account/templates/account/modals/statistics.html:50
 #: hasta_la_vista_money/account/templates/account/modals/statistics.html:51
 msgid "Статистика переводов"
-msgstr ""
+msgstr "Transfer money statistics"
 
 #: hasta_la_vista_money/account/templates/account/modals/statistics.html:64
 #: hasta_la_vista_money/income/templates/income/show_income.html:13
@@ -191,7 +190,8 @@ msgstr ""
 msgid "Дата"
 msgstr ""
 
-#: hasta_la_vista_money/budget/templates/budget.html:8 templates/header.html:56
+#: hasta_la_vista_money/budget/templates/budget.html:8
+#: templates/header.html:56
 msgid "Бюджет"
 msgstr "Budget"
 
@@ -276,9 +276,9 @@ msgstr ""
 
 #: hasta_la_vista_money/constants.py:67
 msgid ""
-"Пароли хранятся в зашифрованном виде, поэтому нет возможности посмотреть ваш "
-"пароль, но вы можете поменять его на новый перейдя на вкладку<br>\"Изменить "
-"пароль\""
+"Пароли хранятся в зашифрованном виде, поэтому нет возможности посмотреть ваш"
+" пароль, но вы можете поменять его на новый перейдя на вкладку<br>\"Изменить"
+" пароль\""
 msgstr ""
 
 #: hasta_la_vista_money/constants.py:75
@@ -414,17 +414,14 @@ msgid ""
 "Описание команд:\n"
 "/start и /help выводят этот текст;\n"
 "/auth - позволяет авторизоваться в боте для доступа к остальным командам;\n"
-"/select_account - выводит список счетов для выбора. Счета добавляются через "
-"сайт;\n"
-"/manual - позволяет добавить чек с помощью параметров самого чека, если, "
-"например, QR-код не считывается;\n"
+"/select_account - выводит список счетов для выбора. Счета добавляются через сайт;\n"
+"/manual - позволяет добавить чек с помощью параметров самого чека, если, например, QR-код не считывается;\n"
 "/deauthorize - отвязывает телеграм аккаунт от бота."
 msgstr ""
 
 #: hasta_la_vista_money/constants.py:171
 msgid ""
-"Чтобы добавить чек используя данные с чека, введите поочередно - Дату в "
-"формате ГГГГ-ММ-ДД ЧЧ:ММ:СС, сумму чека, ФН, ФД, ФП.\n"
+"Чтобы добавить чек используя данные с чека, введите поочередно - Дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС, сумму чека, ФН, ФД, ФП.\n"
 "Сначала введите дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС"
 msgstr ""
 
@@ -572,7 +569,8 @@ msgid "Кредиты"
 msgstr ""
 
 #: hasta_la_vista_money/loan/templates/loan/loan.html:18
-#: hasta_la_vista_money/loan/templates/loan/loan.html:89 templates/base.html:22
+#: hasta_la_vista_money/loan/templates/loan/loan.html:89
+#: templates/base.html:22
 msgid "Добавить кредит"
 msgstr ""
 
@@ -827,7 +825,8 @@ msgid "Установить новый пароль"
 msgstr ""
 
 #: hasta_la_vista_money/users/templates/users/password_reset_confirm.html:22
-msgid "Ссылка недействительна! Запросите новую ссылку со страницы авторизации!"
+msgid ""
+"Ссылка недействительна! Запросите новую ссылку со страницы авторизации!"
 msgstr ""
 
 #: hasta_la_vista_money/users/templates/users/profile.html:6
