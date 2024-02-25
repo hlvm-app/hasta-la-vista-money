@@ -44,11 +44,11 @@
                     <tbody>
                     {% for income in income_by_month %}
                         <tr>
-                            <td class="text-nowrap">{% if income.category__parent_category__name %}<strong>{{ income.category__parent_category__name }} </strong> \ {% endif %}{{ income.category__name }}</td>
-                            <td class="text-nowrap"
+                            <td>{% if income.category__parent_category__name %}<strong>{{ income.category__parent_category__name }} </strong> \ {% endif %}{{ income.category__name }}</td>
+                            <td
                                 title="{{ income.date }}">{{ income.date | date:"F Y" }}</td>
                             <td class="text-nowrap">{{ income.amount | comma }}</td>
-                            <td class="text-nowrap">{{ income.account__name_account }}</td>
+                            <td>{{ income.account__name_account }}</td>
                             <td>
                                 <div class="table-buttons">
                                     <a href="{% url 'income:change' income.id %}"
