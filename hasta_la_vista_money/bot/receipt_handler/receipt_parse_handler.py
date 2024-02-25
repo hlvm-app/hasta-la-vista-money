@@ -42,9 +42,6 @@ def check_exists_number_receipt(user, receipt_date, number_receipt, total_sum):
     :param total_sum:
     :return:
     """
-    print(receipt_date)
-    print(number_receipt)
-    print(total_sum)
     user = get_object_or_404(User, username=user)
     return (
         user.receipt_users.select_related('user')
