@@ -2,6 +2,7 @@ import json
 
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Sum
+from django.db.models.functions import TruncMonth
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
@@ -89,6 +90,30 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
     def unique_income_data(cls, income_dates, income_amounts):
         return cls.unique_data(income_dates, income_amounts)
 
+    @classmethod
+    def expense_category_month(cls, request):
+        category_month = (
+            Expense.objects.filter(user=request.user)  # noqa: WPS221
+            .annotate(month=TruncMonth('date'))
+            .values(
+                'month',
+                'category__parent_category__name',
+            )
+            .annotate(total_amount=Sum('amount'))
+            .order_by(
+                'month',
+                'category__parent_category__name',
+            )
+        )
+
+        grouped_category_month = {}
+        for item in category_month:
+            month_key = item['month']
+            if month_key not in grouped_category_month:
+                grouped_category_month[month_key] = []
+            grouped_category_month[month_key].append(item)
+        return grouped_category_month
+
     def get(self, request, *args, **kwargs):
         expense_dataset, income_dataset = self.collect_datasets(request)
 
@@ -163,12 +188,13 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
 
         dump_expense = json.dumps(chart_expense)
         dump_income = json.dumps(chart_income)
-
+        category_month = self.expense_category_month(request)
         return render(
             request,
             self.template_name,
             {
                 'chart_expense': dump_expense,
                 'chart_income': dump_income,
+                'category_month': category_month,
             },
         )
