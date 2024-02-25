@@ -43,9 +43,9 @@
 	                            {% for expense in expenses %}
 	                                <tr>
 	                                    <td>{% if expense.category__parent_category__name %}<strong>{{ expense.category__parent_category__name }}</strong> \ {% endif %}{{ expense.category__name }}</td>
-	                                    <td class="text-nowrap" title="{{ expense.date }}">{{ expense.date | date:'F Y'}}</td>
+	                                    <td title="{{ expense.date }}">{{ expense.date | date:'F Y'}}</td>
 	                                    <td class="text-nowrap">{{ expense.amount | comma }}</td>
-	                                    <td class="text-nowrap">{{ expense.account__name_account }}</td>
+	                                    <td>{{ expense.account__name_account }}</td>
 	                                    <td>
                                             <div class="table-buttons">
                                                 <a href="{% url 'expense:change' expense.id %}" class="change-object-button btn btn-info border-0 btn-sm me-1">

@@ -46,8 +46,14 @@
     .button-receipt {
         height: auto !important;
     }
-    table th {
-        font-size: .8rem;
+    table {
+         th {
+             font-size: .7rem;
+         }
+        td {
+            font-size: .4rem;
+        }
+
     }
 
 }
