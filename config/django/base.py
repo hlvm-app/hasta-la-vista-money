@@ -309,3 +309,6 @@ ROSETTA_MESSAGES_SOURCE_LANGUAGE_CODE = 'ru'
 ROSETTA_MESSAGES_SOURCE_LANGUAGE_NAME = 'Russian'
 ROSETTA_LANGUAGE_GROUPS = True
 ROSETTA_STORAGE_CLASS = 'rosetta.storage.CacheRosettaStorage'
+
+
+BOOTSTRAP5 = {'css_url': {'url': ''}, 'javascript_url': {'url': ''}}
