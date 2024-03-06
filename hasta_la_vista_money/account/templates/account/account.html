@@ -12,9 +12,9 @@
         {% include 'error_modal.html' %}
         <div class="row d-flex justify-content-between justify-content-xl-start mt-5">
             <div class="col-xl-4 t-5 pe-xl-5">
-                <div class="account bg-light overflow-auto border shadow border-2 rounded-4 pb-3 pt-1">
+                <div class="account overflow-auto shadow rounded-4">
                     <div class="table-responsive">
-                        <table class="table table-sm text-center mb-0 table-borderless"
+                        <table class="table table-dark table-striped-columns table-sm text-center mb-0 table-borderless"
                                aria-label="table account">
                             <thead>
                             <tr class="align-middle">
@@ -60,7 +60,7 @@
                                     <td>{{ account.name_account }}</td>
                                     <td class="text-nowrap">{{ account.balance | comma }}</td>
                                     <td class="text-nowrap">{{ account.currency }}</td>
-                                    <td class="d-inline-flex justify-content-center align-items-center">
+                                    <td>
                                         <a href="{{ account.get_absolute_url }}"
                                            class="change-object-button btn btn-outline-primary border-0 btn-sm">
                                             <svg xmlns="http://www.w3.org/2000/svg"
