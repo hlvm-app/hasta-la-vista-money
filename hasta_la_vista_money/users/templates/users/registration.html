@@ -10,11 +10,11 @@
         <form method="post" class="text-light help-text-form">
             {% csrf_token %}
             <p class="my-4">
-                {% bootstrap_form form %}
+                {{ form | crispy }}
             </p>
             <div class="row align-items-center justify-content-center">
                 <div class="col-xl-3">
-                    {% bootstrap_button button_text button_type="submit" button_class="btn btn-danger" %}
+                    <button type="submit" class="btn btn-primary">{% translate 'Зарегистрировать пользователя' %}</button>
                 </div>
 	            <div class="col-xl-3">
 		            <a class="btn btn-warning text-light text-nowrap" href="{% url 'login' %}">{% translate 'Вернуться назад' %}</a>

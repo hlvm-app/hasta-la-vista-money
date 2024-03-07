@@ -38,7 +38,7 @@
 									</div>
 								{% endfor %}
 							{% endif %}
-							{% bootstrap_button button_add_loan button_type="submit" button_class='btn btn-primary' %}
+							<button type="submit" class="btn btn-primary">{% translate 'Добавить кредит' %}</button>
 						</form>
 					</div>
 				</div>
@@ -119,7 +119,8 @@
 											        class="btn btn-outline-primary ms-5"
 											        data-bs-toggle="modal"
 											        data-bs-target="#payment-{{ item_loan.pk }}"
-											        title="{% translate 'Внести платеж' %}">
+											        title="{% translate 'Внести платёж' %}">
+                                                {% translate 'Внести платёж' %}
 											</button>
                                             <form class="ms-5 mb-0" method="post" action="{{ item_loan.get_absolute_url }}">
                                                 {% csrf_token %}
@@ -200,7 +201,7 @@
 														</div>
 													{% endfor %}
 												{% endif %}
-												{% bootstrap_button button_add_payment button_type="submit" button_class='btn btn-primary' %}
+												<button type="submit" class="btn btn-primary">{% translate 'Добавить платеж' %}</button>
 											</form>
 										</div>
 									</div>

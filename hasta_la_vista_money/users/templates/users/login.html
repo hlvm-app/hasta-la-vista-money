@@ -11,11 +11,11 @@
         <form method="post" class="form text-light">
             {% csrf_token %}
             <p class="my-4">
-                {% bootstrap_form user_login_form %}
+                {{ user_login_form | crispy }}
             </p>
             <div class="row align-items-center justify-content-center">
                 <div class="row justify-content-center align-items-center">
-                    {% bootstrap_button button_text button_type="submit" button_class="btn btn-danger" %}
+                    <button type="submit" class="btn btn-primary">{% translate 'Войти' %}</button>
                 </div>
             </div>
         </form>
