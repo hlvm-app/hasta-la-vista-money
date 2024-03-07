@@ -10,8 +10,8 @@
                 {{ add_expense_form.media }}
                 <form class="form" method="post">
                     {% csrf_token %}
-                    {% bootstrap_form add_expense_form layout='horizontal' horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
-                    {% bootstrap_button button_text_change button_type="submit" button_class="change-income btn btn-primary"  %}
+                    {{ add_expense_form | crispy }}
+                    <button type="submit" class="btn btn-primary">{% translate 'Изменить' %}</button>
                     <a class="btn btn-warning text-light position-absolute end-0" href="{% url 'expense:list' %}">{% translate 'Вернуться назад' %}</a>
                 </form>
             </div>

@@ -15,8 +15,8 @@
                 <form class="form" method="post"
                       action="{% url 'expense:create_category' %}">
                     {% csrf_token %}
-                    {% bootstrap_form add_category_form %}
-                    {% bootstrap_button button_add_category button_type="submit" button_class='add-category-expense btn btn-primary' %}
+                    {{ add_category_form | crispy}}
+                    <button type="submit" class="btn btn-primary">{% translate 'Добавить' %}</button>
                 </form>
             </div>
         </div>
