@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load django_bootstrap5 %}
+{% load crispy_forms_tags %}
 {% load i18n %}
 {% load static %}
 
@@ -38,7 +38,7 @@
 										{% if user_update %}
 									        {% for field in user_update %}
 									            <div class="form-group {% if field.errors %} has-error{% endif %}">
-									                {% bootstrap_field field %}
+									                {{ field | as_crispy_field }}
 									                {% if field.errors %}
 									                    {% for error in field.errors %}
 									                        <p class="help-block">{{ error }}</p>
@@ -56,7 +56,7 @@
 										{% if user_update_pass_form %}
 								            {% for field in user_update_pass_form %}
 									            <div class="form-group {% if field.errors %} has-error{% endif %}">
-									                {% bootstrap_field field %}
+									                {{ field | as_crispy_field }}
 									                {% if field.errors %}
 									                    {% for error in field.errors %}
 									                        <p class="help-block">{{ error }}</p>

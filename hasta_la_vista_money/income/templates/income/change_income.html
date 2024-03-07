@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load django_bootstrap5 %}
+{% load crispy_forms_tags %}
 {% load i18n %}
 
 {% block title %}{% translate 'Изменить доходную операцию' %}{% endblock %}
@@ -10,8 +10,8 @@
                 {{ income_form.media }}
                 <form class="form" method="post">
                     {% csrf_token %}
-                    {% bootstrap_form income_form layout='horizontal' horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
-                    {% bootstrap_button button_text_change button_type="submit" button_class="change-income btn btn-primary"  %}
+                    {{ income_form | crispy }}
+                    <button type="submit" class="btn btn-primary">{% translate 'Изменить' %}</button>
                     <a class="btn btn-warning text-light position-absolute end-0" href="{% url 'income:list' %}">{% translate 'Вернуться назад' %}</a>
                 </form>
             </div>

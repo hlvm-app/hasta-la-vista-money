@@ -1,5 +1,5 @@
 {% load i18n %}
-{% load django_bootstrap5 %}
+{% load crispy_forms_tags %}
 
 <div id="add-expense" class="ajax-modal modal fade">
     <div class="modal-dialog modal-dialog-centered">
@@ -19,7 +19,7 @@
                     {% if add_expense_form %}
                         {% for field in add_expense_form %}
                             <div class="form-group {% if field.errors %} has-error{% endif %}">
-                                {% bootstrap_field field %}
+                                {{ field | as_crispy_field }}
                                 {% if field.errors %}
                                     {% for error in field.errors %}
                                         <p class="help-block">{{ error }}</p>

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% load django_bootstrap5 %}
+{% load crispy_forms_tags %}
 {% load static %}
 {% load humanize %}
 {% load l10n %}
@@ -29,7 +29,7 @@
 							{% if loan_form %}
 								{% for field in loan_form %}
 									<div class="form-group {% if field.errors %} has-error{% endif %}">
-										{% bootstrap_field field %}
+										{{ field | as_crispy_field }}
 										{% if field.errors %}
 											{% for error in field.errors %}
 												<p class="help-block">{{ error }}</p>
@@ -191,7 +191,7 @@
 												{% if payment_make_loan_form %}
 													{% for field in payment_make_loan_form %}
 														<div class="form-group {% if field.errors %} has-error{% endif %}">
-															{% bootstrap_field field %}
+															{{ field | as_crispy_field }}
 															{% if field.errors %}
 																{% for error in field.errors %}
 																	<p class="help-block">{{ error }}</p>

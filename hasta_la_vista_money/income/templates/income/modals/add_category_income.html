@@ -1,5 +1,5 @@
 {% load i18n %}
-{% load django_bootstrap5 %}
+{% load crispy_forms_tags %}
 
 <div id="add-category-income" class="modal fade ajax-modal">
     <div class="modal-dialog modal-dialog-centered">
@@ -18,7 +18,7 @@
                     {% if add_category_income_form %}
                         {% for field in add_category_income_form %}
                             <div class="form-group {% if field.errors %} has-error{% endif %}">
-                                {% bootstrap_field field %}
+                                {{ field | as_crispy_field }}
                                 {% if field.errors %}
                                     {% for error in field.errors %}
                                         <p class="help-block">{{ error }}</p>
@@ -27,7 +27,7 @@
                             </div>
                         {% endfor %}
                     {% endif %}
-                    {% bootstrap_button button_add_category button_type="submit" button_class='add-category-income btn btn-primary' %}
+                    <button type="button" class="add-product-btn btn btn-outline-warning">{% translate 'Добавить новый доход' %}</button>
                 </form>
             </div>
         </div>

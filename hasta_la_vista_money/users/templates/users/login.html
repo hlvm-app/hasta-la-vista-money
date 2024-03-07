@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% load django_bootstrap5 %}
+{% load crispy_forms_tags %}
 
 {% block title %}{% translate 'Страница входа' %}{% endblock %}
 {% block content %}
@@ -38,7 +38,7 @@
 							{% if reset_password_form %}
 						        {% for field in reset_password_form %}
 						            <div class="form-group {% if field.errors %} has-error{% endif %}">
-						                {% bootstrap_field field %}
+						                {{ field | as_crispy_field }}
 						                {% if field.errors %}
 						                    {% for error in field.errors %}
 						                        <p class="help-block">{{ error }}</p>
