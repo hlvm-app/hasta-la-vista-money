@@ -6,16 +6,6 @@
 {% load i18n %}
 {% load word_hash %}
 
-{% translate 'Добавить чек' as button_text_create_receipt %}
-{% translate 'Добавить ещё один товар' as button_text_add_product %}
-{% translate 'Добавить новый доход' as button_text_create_income %}
-{% translate 'Добавить новый расход' as button_text_create_expense %}
-{% translate 'Изменить' as button_text_change %}
-{% translate 'Удалить один товар' as button_text_remove_receipt %}
-{% translate 'Добавить нового продавца' as add_new_seller_btn %}
-{% translate 'Добавить кредит' as button_add_loan %}
-{% translate 'Внести' as button_add_payment %}
-{% translate 'Сменить пароль' as change_password_button %}
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -38,23 +28,29 @@
         {% if user.is_authenticated %}
             {% include 'header.html' %}
             {% if messages %}
-                <div class="container position-absolute start-50 translate-middle mt-3 text-center">
-                    {{ message }}
-                </div>
+                {% for message in messages %}
+                    <div class="alert container position-absolute start-50 translate-middle mt-3 text-center {% if message.tags %}{{ message.tags }}{% endif %}">
+                        <span{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</span>
+                    </div>
+                {% endfor %}
             {% endif %}
         {% endif %}
         {% if user.is_registered %}
             {% include 'header.html' %}
             {% if messages %}
-                <div class="container position-absolute start-50 translate-middle mt-5 text-center">
-                    {{ message }}
-                </div>
+                {% for message in messages %}
+                    <div class="alert container position-absolute start-50 translate-middle mt-5 text-center {% if message.tags %}{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
             {% endif %}
         {% elif not user.last_login %}
             {% if messages %}
-                <div class="container position-absolute start-50 translate-middle mt-5 text-center">
-                    {{ message }}
-                </div>
+                {% for message in messages %}
+                    <div class="alert container position-absolute start-50 translate-middle mt-5 text-center {% if message.tags %}{{ message.tags }}{% endif %}">
+                        <span{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</span>
+                    </div>
+                {% endfor %}
             {% endif %}
         {% endif %}
 

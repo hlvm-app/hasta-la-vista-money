@@ -205,5 +205,5 @@ class TransferMoneyAccountView(
 
 
 class DeleteAccountView(AccountBaseView, DeleteObjectMixin):
-    success_message = constants.SUCCESS_MESSAGE_DELETE_ACCOUNT
-    error_message = constants.UNSUCCESSFULLY_MESSAGE_DELETE_ACCOUNT
+    success_message = constants.SUCCESS_MESSAGE_DELETE_ACCOUNT[:]
+    error_message = constants.UNSUCCESSFULLY_MESSAGE_DELETE_ACCOUNT[:]

@@ -118,7 +118,18 @@ html, body {
         background-color: #05b055;
     }
 }
-
+.error {
+    background-color: #dc3545;
+    color: #ffffff;
+    border-radius: 1rem;
+    padding: 1rem 0 1rem 0;
+}
+.success {
+    background-color: #009944;
+    color: #ffffff;
+    border-radius: 1rem;
+    padding: 1rem 0 1rem 0;
+}
 
 @import "account";
 @import "buttons";

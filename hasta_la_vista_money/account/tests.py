@@ -98,7 +98,6 @@ class TestAccount(TestCase):
         self.assertTrue(expense_exists)
 
         response = self.client.post(url2, follow=True)
-
         self.assertContains(
             response,
             'Счёт не может быть удалён!',
