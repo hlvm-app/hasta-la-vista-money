@@ -1,5 +1,5 @@
 {% load i18n %}
-{% load django_bootstrap5 %}
+{% load crispy_forms_tags %}
 
 <div id="add-receipt" class="modal modal-lg fade ajax-modal">
     <div class="modal-dialog modal-dialog-centered">
@@ -22,7 +22,7 @@
                         {% if receipt_form %}
                             {% for field in receipt_form %}
                                 <div class="form-group {% if field.errors %} has-error{% endif %}">
-                                    {% bootstrap_field field layout="horizontal" horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
+                                    {{ field | as_crispy_field }}
                                     {% if field.errors %}
                                         {% for error in field.errors %}
                                             <p class="help-block">{{ error }}</p>
@@ -36,7 +36,7 @@
                     {% if product_formset %}
                         {% for product_form in product_formset %}
                             <div class="form-group form-product p-3 border {% if product_form.errors %} has-error{% endif %}">
-                                {% bootstrap_form product_form layout="horizontal" horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
+                                {{ product_form | crispy }}
                                 {% if product_form.errors %}
                                     {% for error in product_form.errors %}
                                         <p class="help-block">{{ error }}</p>
@@ -45,9 +45,9 @@
                             </div>
                         {% endfor %}
                     {% endif %}
-                    {% bootstrap_button button_text_add_product id="add-form" button_type="button" button_class="add-product-btn btn btn-outline-warning" %}
-                    {% bootstrap_button button_text_remove_receipt id="remove-form" button_type="button" button_class="remove-product-btn btn btn-outline-danger" %}
-                    {% bootstrap_button button_text_create_receipt button_type="submit" button_class="add-receipt-btn mx-auto btn btn-outline-primary" %}
+                    <button type="button" class="add-product-btn btn btn-outline-warning">Добавить ещё один товар</button>
+                    <button type="button" class="remove-product-btn btn btn-outline-danger">Удалить один товар</button>
+                    <button type="submit" class="add-receipt-btn mx-auto btn btn-outline-primary">Добавить чек</button>
                 </form>
             </div>
         </div>

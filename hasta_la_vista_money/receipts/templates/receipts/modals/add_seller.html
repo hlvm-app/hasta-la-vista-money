@@ -1,5 +1,5 @@
 {% load i18n %}
-{% load django_bootstrap5 %}
+{% load crispy_forms_tags %}
 
 <div id="add-customer" class="modal modal-lg fade ajax-modal">
     <div class="modal-dialog modal-dialog-centered">
@@ -19,7 +19,7 @@
                     {% if seller_form %}
                         {% for field in seller_form %}
                             <div class="form-group {% if field.errors %} has-error{% endif %}">
-                                {% bootstrap_field field layout="horizontal" horizontal_label_class='col-xl-4' horizontal_field_class='col-xl-8' %}
+                                {{ field | as_crispy_field }}
                                 {% if field.errors %}
                                     {% for error in field.errors %}
                                         <p class="help-block">{{ error }}</p>

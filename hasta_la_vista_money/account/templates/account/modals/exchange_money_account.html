@@ -24,7 +24,7 @@
                         {% for field in transfer_money_form %}
                             {{ field.errors }}
                             <div class="form-group{% if field.errors %} has-error{% endif %}">
-                                {{ field | crispy }}
+                                {{ field | as_crispy_field }}
                                 {% if field.errors %}
                                     {% for error in field.errors %}
                                         <p class="help-block">{{ error }}</p>

@@ -24,7 +24,7 @@
                                 {% if field == 'balance' %}
                                     {{ field | comma }}
                                 {% else %}
-                                    {{ field | crispy }}
+                                    {{ field | as_crispy_field }}
                                 {% endif %}
                                 {% if field.errors %}
                                     {% for error in field.errors %}
@@ -34,7 +34,7 @@
                             </div>
                         {% endfor %}
                     {% endif %}
-                    <button type="submit">Добавить новый счёт</button>
+                    <button type="submit" class="btn btn-primary">Добавить новый счёт</button>
                 </form>
             </div>
         </div>

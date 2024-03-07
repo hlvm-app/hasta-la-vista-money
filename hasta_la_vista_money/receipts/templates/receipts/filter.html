@@ -1,7 +1,7 @@
 {% load i18n %}
-{% load django_bootstrap5 %}
+{% load crispy_forms_tags %}
 
-{% translate 'Фильтровать' as filter_button %}
+
 
 <div class="container">
     <div class="row">
@@ -9,8 +9,8 @@
             <details>
                 <summary class="btn btn-primary mb-2">Фильтр</summary>
                 <form action="" method="get" class="form">
-                    {{ receipt_filter.form }}
-                    {% bootstrap_button filter_button %}
+                    {{ receipt_filter.form | crispy }}
+                    <button type="button" class="add-product-btn btn btn-outline-warning">{% translate 'Фильтровать' %}</button>
                 </form>
             </details>
         </div>
