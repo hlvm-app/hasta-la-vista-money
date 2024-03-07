@@ -1,5 +1,5 @@
 {% load i18n %}
-{% load django_bootstrap5 %}
+{% load crispy_forms_tags %}
 {% load comma %}
 
 <div id="add-account" class="ajax-modal modal fade">
@@ -24,7 +24,7 @@
                                 {% if field == 'balance' %}
                                     {{ field | comma }}
                                 {% else %}
-                                    {% bootstrap_field field %}
+                                    {{ field | crispy }}
                                 {% endif %}
                                 {% if field.errors %}
                                     {% for error in field.errors %}
@@ -34,7 +34,7 @@
                             </div>
                         {% endfor %}
                     {% endif %}
-                    {% bootstrap_button add_new_account_button %}
+                    <button type="submit">Добавить новый счёт</button>
                 </form>
             </div>
         </div>

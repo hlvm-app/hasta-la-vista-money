@@ -1,5 +1,5 @@
 {% load i18n %}
-{% load django_bootstrap5 %}
+{% load crispy_forms_tags %}
 {% load comma %}
 
 <div id="exchange-account"
@@ -24,7 +24,7 @@
                         {% for field in transfer_money_form %}
                             {{ field.errors }}
                             <div class="form-group{% if field.errors %} has-error{% endif %}">
-                                {% bootstrap_field field %}
+                                {{ field | crispy }}
                                 {% if field.errors %}
                                     {% for error in field.errors %}
                                         <p class="help-block">{{ error }}</p>
@@ -33,7 +33,7 @@
                             </div>
                         {% endfor %}
                     {% endif %}
-                    {% bootstrap_button change_money_button %}
+                    <button type="submit">Перевести</button>
                 </form>
             </div>
         </div>

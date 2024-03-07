@@ -666,6 +666,24 @@ files = [
 toml = ["tomli"]
 
 [[package]]
+name = "crispy-bootstrap5"
+version = "2024.2"
+description = "Bootstrap5 template pack for django-crispy-forms"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "crispy-bootstrap5-2024.2.tar.gz", hash = "sha256:7d1fa40c6faf472e30e85c72551a3d2c9eedbf0abfff920683315e4e6f670f2b"},
+    {file = "crispy_bootstrap5-2024.2-py3-none-any.whl", hash = "sha256:3867e320920a6ef156e94f9e0f06a80344c453e1b3bd96cd9dc0522ae9e9afb8"},
+]
+
+[package.dependencies]
+django = ">=4.2"
+django-crispy-forms = ">=2"
+
+[package.extras]
+test = ["pytest", "pytest-django"]
+
+[[package]]
 name = "cryptography"
 version = "42.0.5"
 description = "cryptography is a package which provides cryptographic recipes and primitives to Python developers."
@@ -814,18 +832,18 @@ setuptools = "*"
 ipware = ["django-ipware (>=3)"]
 
 [[package]]
-name = "django-bootstrap5"
-version = "23.4"
-description = "Bootstrap 5 for Django"
+name = "django-crispy-forms"
+version = "2.1"
+description = "Best way to have Django DRY forms"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "django-bootstrap5-23.4.tar.gz", hash = "sha256:fbf9942a17e1f48b4142e78df9e85afb65e4066a20e38ec7c497d36ae5ef7256"},
-    {file = "django_bootstrap5-23.4-py3-none-any.whl", hash = "sha256:5181bf1e97afae6211e963f28f48d4a90c937a3b036b3f752f52260f0029f3bc"},
+    {file = "django-crispy-forms-2.1.tar.gz", hash = "sha256:4d7ec431933ad4d4b5c5a6de4a584d24613c347db9ac168723c9aaf63af4bb96"},
+    {file = "django_crispy_forms-2.1-py3-none-any.whl", hash = "sha256:d592044771412ae1bd539cc377203aa61d4eebe77fcbc07fbc8f12d3746d4f6b"},
 ]
 
 [package.dependencies]
-Django = ">=3.2"
+django = ">=4.2"
 
 [[package]]
 name = "django-csp"
@@ -3006,4 +3024,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "3.11.2"
-content-hash = "5baaf8981fcd93f8d52d4048432f68475728db22cf754ee705a019b0be7d99f4"
+content-hash = "3ab4fe4767236fc91b76f39a5cbfd05cca48300638406320b12a3036274f2a05"

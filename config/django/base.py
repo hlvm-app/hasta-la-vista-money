@@ -65,7 +65,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
-    'django_bootstrap5',
+    'crispy_forms',
+    'crispy_bootstrap5',
     'django_filters',
     'hasta_la_vista_money',
     'hasta_la_vista_money.account',
@@ -311,4 +312,6 @@ ROSETTA_LANGUAGE_GROUPS = True
 ROSETTA_STORAGE_CLASS = 'rosetta.storage.CacheRosettaStorage'
 
 
-BOOTSTRAP5 = {'css_url': {'url': ''}, 'javascript_url': {'url': ''}}
+# Crispy
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
