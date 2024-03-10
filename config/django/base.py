@@ -131,14 +131,11 @@ CSP_SCRIPT_SRC = (
     "'self'",
     '127.0.0.1',
     'https://money.pavlovteam.ru',
-    'https://cdn.jsdelivr.net',
-    'https://code.jquery.com',
     'https://code.highcharts.com',
 )
 
 CSP_STYLE_SRC = (
     "'self'",
-    'https://cdn.jsdelivr.net',
     'https://money.pavlovteam.ru',
     'https://code.highcharts.com',
 )
@@ -147,7 +144,6 @@ CSP_IMG_SRC = ("'self'", 'data:', 'https://money.pavlovteam.ru')
 CSP_FONT_SRC = (
     "'self'",
     'https://money.pavlovteam.ru',
-    'https://cdn.jsdelivr.net',
 )
 CSP_CONNECT_SRC = ("'self'", 'https://api.telegram.org')
 CSP_FRAME_SRC = ("'none'",)
