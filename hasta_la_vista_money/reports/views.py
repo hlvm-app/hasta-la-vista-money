@@ -1,4 +1,5 @@
 import json
+from collections import defaultdict
 
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Sum
@@ -134,6 +135,38 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             income_amounts,
         )
 
+        expense_data = defaultdict(lambda: defaultdict(float))
+
+        for expense in Expense.objects.all():
+            parent_category_name = (
+                expense.category.parent_category.name
+                if expense.category.parent_category
+                else expense.category.name
+            )
+            month = expense.date.strftime('%B %Y')
+            expense_amount = float(expense.amount)
+            expense_data[parent_category_name][month] += expense_amount
+
+        charts_data = []
+
+        for parent_category, subcategories in expense_data.items():
+            data = [
+                {'name': month, 'y': amount}
+                for month, amount in subcategories.items()
+            ]
+            chart_data = {
+                'chart': {'type': 'pie'},
+                'title': {'text': f'Статистика расходов для {parent_category}'},
+                'series': [{'name': f'{parent_category}', 'data': data}],
+                'credits': {
+                    'enabled': False,
+                },
+                'exporting': {
+                    'enabled': False,
+                },
+            }
+            charts_data.append(chart_data)
+
         chart_expense = {
             'chart': {'type': 'line'},
             'title': {'text': 'Статистика по расходам'},
@@ -196,5 +229,6 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 'chart_expense': dump_expense,
                 'chart_income': dump_income,
                 'category_month': category_month,
+                'charts_data': charts_data,
             },
         )

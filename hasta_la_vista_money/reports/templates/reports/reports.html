@@ -45,14 +45,36 @@
             <!-- /.col-xl-6 -->
         </div>
         <!-- /.row -->
+        <div class="row">
+            {% for chart_data in charts_data %}
+            <div class="col-xl-6">
+                <div id="pie-chart-{{ forloop.counter }}" class="w-100 mt-5"></div>
+            </div>
+            {% endfor %}
+            <!-- /.col-xl-6 -->
+        </div>
+        <!-- /.row -->
+
+
     </div>
     <!-- /.container-fluid -->
 
+
+
     <script nonce="{{request.csp_nonce}}" src="https://code.highcharts.com/highcharts.js"></script>
+    <script nonce="{{request.csp_nonce}}">
+        {% for chart_data in charts_data %}
+            Highcharts.chart('pie-chart-{{ forloop.counter }}', {
+                chart: {{ chart_data.chart|safe }},
+                title: {{ chart_data.title|safe }},
+                series: {{ chart_data.series|safe }},
+            });
+        {% endfor %}
+    </script>
     <script nonce="{{request.csp_nonce}}">
         Highcharts.chart('container-chart-expense', {{ chart_expense|safe }})
     </script>
     <script nonce="{{request.csp_nonce}}">
         Highcharts.chart('container-chart-income', {{ chart_income|safe }})
     </script>
-{% endblock %}
+    {% endblock %}
