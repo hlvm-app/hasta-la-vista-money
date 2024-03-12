@@ -9,8 +9,9 @@
             <details>
                 <summary class="btn btn-primary mb-2">Фильтр</summary>
                 <form action="" method="get" class="form">
+                    {% csrf_token %}
                     {{ receipt_filter.form | crispy }}
-                    <button type="button" class="add-product-btn btn btn-outline-warning">{% translate 'Фильтровать' %}</button>
+                    <button type="submit" class="add-product-btn btn btn-outline-warning">{% translate 'Фильтровать' %}</button>
                 </form>
             </details>
         </div>

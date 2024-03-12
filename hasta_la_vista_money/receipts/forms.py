@@ -26,8 +26,8 @@ class ReceiptFilter(django_filters.FilterSet):
         label=_('Период'),
         widget=django_filters.widgets.RangeWidget(
             attrs={
-                'placeholder': _('YYYY-DD-MM'),
                 'class': 'form-control',
+                'type': 'date',
             },
         ),
     )
