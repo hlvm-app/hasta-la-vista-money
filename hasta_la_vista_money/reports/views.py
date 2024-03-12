@@ -137,7 +137,7 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
 
         expense_data = defaultdict(lambda: defaultdict(float))
 
-        for expense in Expense.objects.all():
+        for expense in Expense.objects.filter(user=request.user).all():
             parent_category_name = (
                 expense.category.parent_category.name
                 if expense.category.parent_category
