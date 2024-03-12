@@ -92,6 +92,41 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
         return cls.unique_data(income_dates, income_amounts)
 
     @classmethod
+    def pie_expense_category(cls, request):
+        expense_data = defaultdict(lambda: defaultdict(float))
+
+        for expense in Expense.objects.filter(user=request.user).all():
+            parent_category_name = (
+                expense.category.parent_category.name
+                if expense.category.parent_category
+                else expense.category.name
+            )
+            month = expense.date.strftime('%B %Y')
+            expense_amount = float(expense.amount)
+            expense_data[parent_category_name][month] += expense_amount
+
+        charts_data = []
+
+        for parent_category, subcategories in expense_data.items():
+            data = [
+                {'name': month, 'y': amount}
+                for month, amount in subcategories.items()
+            ]
+            chart_data = {
+                'chart': {'type': 'pie'},
+                'title': {'text': f'Статистика расходов для {parent_category}'},
+                'series': [{'name': f'{parent_category}', 'data': data}],
+                'credits': {
+                    'enabled': False,
+                },
+                'exporting': {
+                    'enabled': False,
+                },
+            }
+            charts_data.append(chart_data)
+        return charts_data
+
+    @classmethod
     def expense_category_month(cls, request):
         category_month = (
             Expense.objects.filter(user=request.user)  # noqa: WPS221
@@ -135,37 +170,7 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             income_amounts,
         )
 
-        expense_data = defaultdict(lambda: defaultdict(float))
-
-        for expense in Expense.objects.filter(user=request.user).all():
-            parent_category_name = (
-                expense.category.parent_category.name
-                if expense.category.parent_category
-                else expense.category.name
-            )
-            month = expense.date.strftime('%B %Y')
-            expense_amount = float(expense.amount)
-            expense_data[parent_category_name][month] += expense_amount
-
-        charts_data = []
-
-        for parent_category, subcategories in expense_data.items():
-            data = [
-                {'name': month, 'y': amount}
-                for month, amount in subcategories.items()
-            ]
-            chart_data = {
-                'chart': {'type': 'pie'},
-                'title': {'text': f'Статистика расходов для {parent_category}'},
-                'series': [{'name': f'{parent_category}', 'data': data}],
-                'credits': {
-                    'enabled': False,
-                },
-                'exporting': {
-                    'enabled': False,
-                },
-            }
-            charts_data.append(chart_data)
+        charts_data = self.pie_expense_category(request)
 
         chart_expense = {
             'chart': {'type': 'line'},
