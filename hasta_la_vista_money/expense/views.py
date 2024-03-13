@@ -21,6 +21,7 @@ from hasta_la_vista_money.custom_mixin import (
     ExpenseIncomeCategoryCreateViewMixin,
     UpdateViewMixin,
 )
+from hasta_la_vista_money.expense.filters import ExpenseFilter
 from hasta_la_vista_money.expense.forms import AddCategoryForm, AddExpenseForm
 from hasta_la_vista_money.expense.models import Expense, ExpenseCategory
 from hasta_la_vista_money.users.models import User
@@ -69,6 +70,11 @@ class ExpenseView(
                 .order_by('name', 'parent_category')
                 .all()
             )
+            expense_filter = ExpenseFilter(
+                self.request.GET,
+                queryset=Expense.objects.all(),
+                user=self.request.user,
+            )
             flattened_categories = build_category_tree(
                 expense_categories,
                 depth=depth_limit,
@@ -114,6 +120,7 @@ class ExpenseView(
 
             context = super().get_context_data(**kwargs)
             context['add_category_form'] = add_category_form
+            context['expense_filter'] = expense_filter
             context['categories'] = expense_categories
             context['expenses'] = pages_expense
             context['add_expense_form'] = add_expense_form
