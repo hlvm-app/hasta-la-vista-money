@@ -1,7 +1,6 @@
 import django_filters
 from django.forms import Select
 from django.utils.translation import gettext_lazy as _
-
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.expense.models import Expense, ExpenseCategory
 
@@ -49,32 +48,8 @@ class ExpenseFilter(django_filters.FilterSet):
     @property
     def qs(self):
         queryset = super().qs
-        if self.user:
-            queryset = queryset.filter(user=self.user).distinct()
-        category_filter = self.form.cleaned_data.get('category')
-        if category_filter:
-            queryset = (
-                queryset.filter(
-                    user=self.user,
-                    category=category_filter,
-                )
-                .distinct()
-                .values(
-                    'id',
-                    'date',
-                    'account__name_account',
-                    'category__name',
-                    'category__parent_category__name',
-                    'amount',
-                )
-            )
-
-        account_filter = self.form.cleaned_data.get('account')
-        queryset = (
-            queryset.filter(
-                user=self.user,
-                account=account_filter,
-            )
+        return (
+            queryset.filter(user=self.user)
             .distinct()
             .values(
                 'id',
@@ -85,7 +60,6 @@ class ExpenseFilter(django_filters.FilterSet):
                 'amount',
             )
         )
-        return queryset
 
     class Meta:
         model = Expense

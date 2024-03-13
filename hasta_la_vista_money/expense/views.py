@@ -3,7 +3,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, DetailView, ListView, UpdateView
+from django.views.generic import DeleteView, DetailView, UpdateView
+from django_filters.views import FilterView
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.custom_paginator import (
@@ -44,10 +45,11 @@ class ExpenseView(
     CustomNoPermissionMixin,
     ExpenseBaseView,
     SuccessMessageMixin,
-    ListView,
+    FilterView,
 ):
     paginate_by = 10
     context_object_name = 'expense'
+    filterset_class = ExpenseFilter
     no_permission_url = reverse_lazy('login')
 
     def get_context_data(self, *args, **kwargs):
@@ -98,17 +100,7 @@ class ExpenseView(
                 depth=depth_limit,
             )
 
-            expenses = user.expense_users.select_related(
-                'user',
-                'account',
-            ).values(
-                'id',
-                'date',
-                'account__name_account',
-                'category__name',
-                'category__parent_category__name',
-                'amount',
-            )
+            expenses = expense_filter.qs
 
             # Paginator expense table
             pages_expense = paginator_custom_view(
