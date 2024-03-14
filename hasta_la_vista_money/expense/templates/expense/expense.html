@@ -79,23 +79,21 @@
                     {% if expenses.has_other_pages %}
                         <div class="btn-group mb-5" role="group" aria-label="Item pagination">
                             {% if expenses.has_previous %}
-                                <a href="?expenses={{ expenses.previous_page_number }}" class="btn btn-outline-light">&laquo;</a>
+                                <a href="?{{ request.GET.urlencode }}&expenses={{ expenses.previous_page_number }}" class="btn btn-outline-light">&laquo;</a>
                             {% endif %}
-
                             {% for page_number in expenses.paginator.page_range %}
                                 {% if expenses.number == page_number %}
                                     <button class="btn btn-outline-light active">
                                         <span>{{ page_number }} <span class="visually-hidden">(current)</span></span>
                                     </button>
                                 {% elif page_number >= expenses.number|add:-5 and page_number <= expenses.number|add:5 %}
-                                    <a href="?expenses={{ page_number }}" class="btn btn-outline-light">
+                                    <a href="?{{ request.GET.urlencode }}&expenses={{ page_number }}" class="btn btn-outline-light">
                                         {{ page_number }}
                                     </a>
                                 {% endif %}
                             {% endfor %}
-
                             {% if expenses.has_next %}
-                                <a href="?expenses={{ expenses.next_page_number }}" class="btn btn-outline-light">&raquo;</a>
+                                <a href="?{{ request.GET.urlencode }}&expenses={{ expenses.next_page_number }}" class="btn btn-outline-light">&raquo;</a>
                             {% endif %}
                         </div>
                     {% endif %}
