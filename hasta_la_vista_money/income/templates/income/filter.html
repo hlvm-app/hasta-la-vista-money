@@ -1,0 +1,19 @@
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <details>
+                <summary class="btn btn-primary mb-2">Фильтр</summary>
+                <form action="" method="get" class="form">
+                    {% csrf_token %}
+                    {{ income_filter.form | crispy }}
+                    <button type="submit" class="add-product-btn btn btn-outline-warning">{% translate 'Фильтровать' %}</button>
+                </form>
+            </details>
+        </div>
+    </div>
+</div>

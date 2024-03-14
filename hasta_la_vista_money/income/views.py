@@ -3,8 +3,10 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, ListView, UpdateView
+from django.views.generic import DeleteView, UpdateView
 from django.views.generic.edit import DeletionMixin
+from django_filters.views import FilterView
+
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.custom_paginator import (
@@ -22,6 +24,7 @@ from hasta_la_vista_money.custom_mixin import (
     ExpenseIncomeCategoryCreateViewMixin,
     UpdateViewMixin,
 )
+from hasta_la_vista_money.income.filters import IncomeFilter
 from hasta_la_vista_money.income.forms import AddCategoryIncomeForm, IncomeForm
 from hasta_la_vista_money.income.models import Income, IncomeCategory
 from hasta_la_vista_money.users.models import User
@@ -36,12 +39,13 @@ class IncomeView(
     CustomNoPermissionMixin,
     SuccessMessageMixin,
     BaseView,
-    ListView,
+    FilterView,
 ):
     """Представление просмотра доходов из модели, на сайте."""
 
     paginate_by = 10
     model = Income
+    filterset_class = IncomeFilter
     context_object_name = 'incomes'
     no_permission_url = reverse_lazy('login')
 
@@ -59,6 +63,11 @@ class IncomeView(
                 )
                 .order_by('parent_category_id')
                 .all()
+            )
+            income_filter = IncomeFilter(
+                self.request.GET,
+                queryset=Income.objects.all(),
+                user=self.request.user,
             )
 
             flattened_categories = build_category_tree(
@@ -86,17 +95,7 @@ class IncomeView(
                 depth=depth_limit,
             )
 
-            income_by_month = user.income_users.select_related(
-                'user',
-                'account',
-            ).values(
-                'id',
-                'date',
-                'account__name_account',
-                'category__name',
-                'category__parent_category__name',
-                'amount',
-            )
+            income_by_month = income_filter.qs
 
             pages_income = paginator_custom_view(
                 self.request,
@@ -108,6 +107,7 @@ class IncomeView(
             context = super().get_context_data(**kwargs)
             context['add_category_income_form'] = add_category_income_form
             context['categories'] = categories
+            context['income_filter'] = income_filter
             context['income_by_month'] = pages_income
             context['income_form'] = income_form
             context['flattened_categories'] = flattened_categories

@@ -85,7 +85,7 @@
                         </tr>
                     {% empty %}
                         <tr>
-                            <td colspan="5">{% translate 'Информация о доходах ещё не добавлена!' %}</td>
+                            <td colspan="5">{% translate 'Информация о доходах отсутствует!' %}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -95,7 +95,7 @@
                 <div class="btn-group mb-5" role="group"
                      aria-label="Item pagination">
                     {% if income_by_month.has_previous %}
-                        <a href="?income={{ income_by_month.previous_page_number }}"
+                        <a href="?{{ request.GET.urlencode }}&income={{ income_by_month.previous_page_number }}"
                            class="btn btn-outline-light">&laquo;</a>
                     {% endif %}
 
@@ -105,7 +105,7 @@
                                 <span>{{ page_number }} <span class="visually-hidden">(current)</span></span>
                             </button>
                         {% elif page_number >= income_by_month.number|add:-5 and page_number <= income_by_month.number|add:5 %}
-                            <a href="?income={{ page_number }}"
+                            <a href="?{{ request.GET.urlencode }}&income={{ page_number }}"
                                class="btn btn-outline-light">
                                 {{ page_number }}
                             </a>
@@ -113,7 +113,7 @@
                     {% endfor %}
 
                     {% if income_by_month.has_next %}
-                        <a href="?income={{ income_by_month.next_page_number }}"
+                        <a href="?{{ request.GET.urlencode }}&income={{ income_by_month.next_page_number }}"
                            class="btn btn-outline-light">&raquo;</a>
                     {% endif %}
                 </div>
