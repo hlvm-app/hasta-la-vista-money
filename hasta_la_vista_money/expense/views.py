@@ -25,7 +25,7 @@ from hasta_la_vista_money.custom_mixin import (
 from hasta_la_vista_money.expense.filters import ExpenseFilter
 from hasta_la_vista_money.expense.forms import AddCategoryForm, AddExpenseForm
 from hasta_la_vista_money.expense.models import Expense, ExpenseCategory
-from hasta_la_vista_money.users.models import CustomUser
+from hasta_la_vista_money.users.models import User
 
 
 class BaseView:
@@ -58,7 +58,7 @@ class ExpenseView(
 
         :return: Рендеринг данных на странице сайта.
         """
-        user = get_object_or_404(CustomUser, username=self.request.user)
+        user = get_object_or_404(User, username=self.request.user)
         depth_limit = 3
         if user:
             expense_categories = (

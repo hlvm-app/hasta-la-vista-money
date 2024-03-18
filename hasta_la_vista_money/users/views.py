@@ -32,7 +32,7 @@ from hasta_la_vista_money.users.forms import (
     UpdateUserForm,
     UserLoginForm,
 )
-from hasta_la_vista_money.users.models import TelegramUser, CustomUser
+from hasta_la_vista_money.users.models import TelegramUser, User
 
 
 class IndexView(TemplateView):
@@ -43,7 +43,7 @@ class IndexView(TemplateView):
 
 
 class ListUsers(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
-    model = CustomUser
+    model = User
     template_name = 'users/profile.html'
     context_object_name = 'users'
     no_permission_url = reverse_lazy('login')
@@ -61,7 +61,7 @@ class ListUsers(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
 
 
 class LoginUser(SuccessMessageMixin, LoginView):
-    model = CustomUser
+    model = User
     template_name = 'users/login.html'
     form_class = UserLoginForm
     success_message = constants.SUCCESS_MESSAGE_LOGIN
@@ -86,7 +86,7 @@ class LogoutUser(LogoutView, SuccessMessageMixin):
 
 
 class CreateUser(SuccessMessageMixin, CreateView):
-    model = CustomUser
+    model = User
     template_name = 'users/registration.html'
     form_class = RegisterUserForm
     success_message = constants.SUCCESS_MESSAGE_REGISTRATION
@@ -111,7 +111,7 @@ class UpdateUserView(
     SuccessMessageMixin,
     UpdateView,
 ):
-    model = CustomUser
+    model = User
     template_name = 'users/profile.html'
     form_class = UpdateUserForm
     success_message = constants.SUCCESS_MESSAGE_CHANGED_PROFILE
@@ -141,7 +141,7 @@ class UpdateUserPasswordView(
     SuccessMessageMixin,
     PasswordChangeView,
 ):
-    model = CustomUser
+    model = User
     template_name = 'users/profile.html'
     form_class = PasswordChangeForm
     success_message = constants.SUCCESS_MESSAGE_CHANGED_PASSWORD
@@ -188,7 +188,7 @@ class ForgotPasswordView(
         reset_password_form = ForgotPasswordForm(request.POST)
         if reset_password_form.is_valid():
             username = reset_password_form.cleaned_data.get('username')
-            user = CustomUser.objects.filter(username=username).first()
+            user = User.objects.filter(username=username).first()
             telegram_user = TelegramUser.objects.filter(user=user).first()
             if telegram_user:
                 token = default_token_generator.make_token(user)

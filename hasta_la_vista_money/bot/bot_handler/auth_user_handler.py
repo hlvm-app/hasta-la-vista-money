@@ -1,6 +1,6 @@
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.bot.config_bot.config_bot import bot_admin
-from hasta_la_vista_money.users.models import TelegramUser, CustomUser
+from hasta_la_vista_money.users.models import TelegramUser, User
 
 
 def handle_auth(message):
@@ -16,7 +16,7 @@ def handle_auth(message):
         return
 
     username, password = map(str, auth_data)
-    user = CustomUser.objects.filter(username=username).first()
+    user = User.objects.filter(username=username).first()
 
     if user and user.check_password(password):
         create_telegram_user(message, user)

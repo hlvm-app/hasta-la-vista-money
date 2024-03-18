@@ -23,7 +23,7 @@ from hasta_la_vista_money.bot.send_message.send_message_tg_user import (
     SendMessageToTelegramUser,
 )
 from hasta_la_vista_money.bot.services import convert_date_time, convert_number
-from hasta_la_vista_money.users.models import CustomUser
+from hasta_la_vista_money.users.models import User
 
 
 class ReceiptParser:
@@ -70,7 +70,7 @@ class ReceiptParser:
     def __init__(self, json_data, user, account):
         """Метод-конструктор инициализирующий аргумент json_data."""
         self.json_data = json_data
-        self.user: CustomUser = user
+        self.user: User = user
         self.account: Account = account
         self.parser = JsonParser(self.json_data)
         self.customer = None

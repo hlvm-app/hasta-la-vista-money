@@ -2,12 +2,12 @@ from django.db import models
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.models import CommonIncomeExpense
-from hasta_la_vista_money.users.models import CustomUser
+from hasta_la_vista_money.users.models import User
 
 
 class IncomeCategory(models.Model):
     user = models.ForeignKey(
-        CustomUser,
+        User,
         on_delete=models.PROTECT,
         related_name='category_income_users',
     )
@@ -35,7 +35,7 @@ class Income(CommonIncomeExpense):
     """Модель доходов."""
 
     user = models.ForeignKey(
-        CustomUser,
+        User,
         on_delete=models.PROTECT,
         related_name='income_users',
     )

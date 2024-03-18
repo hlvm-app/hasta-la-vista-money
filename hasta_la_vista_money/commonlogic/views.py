@@ -4,7 +4,7 @@ from django.db.models.functions import TruncMonth
 from django.shortcuts import get_object_or_404
 from django.views.generic import CreateView
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.users.models import CustomUser
+from hasta_la_vista_money.users.models import User
 
 
 def build_category_tree(categories, parent_id=None, depth=2, current_depth=1):
@@ -38,7 +38,7 @@ def build_category_tree(categories, parent_id=None, depth=2, current_depth=1):
                 }
 
 
-def collect_info_receipt(user: CustomUser) -> QuerySet:
+def collect_info_receipt(user: User) -> QuerySet:
     """
     Сбор информации о чеках для отображения на страницах сайта.
 

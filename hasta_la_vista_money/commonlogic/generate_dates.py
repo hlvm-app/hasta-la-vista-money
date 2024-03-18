@@ -5,12 +5,12 @@ from dateutil.relativedelta import relativedelta
 from django.db.models import QuerySet
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.budget.models import DateList
-from hasta_la_vista_money.users.models import CustomUser
+from hasta_la_vista_money.users.models import User
 
 
 def generate_date_list(
     current_date: Union[datetime, QuerySet],
-    user: CustomUser,
+    user: User,
 ):
     """Функция генерации первых 12 месяцев начиная с переданной даты."""
     if isinstance(current_date, datetime):

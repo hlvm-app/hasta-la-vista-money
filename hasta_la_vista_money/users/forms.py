@@ -5,18 +5,18 @@ from django.contrib.auth.forms import (
 )
 from django.forms import CharField, ModelForm, forms
 from hasta_la_vista_money import constants
-from hasta_la_vista_money.users.models import CustomUser
+from hasta_la_vista_money.users.models import User
 
 
 class UserLoginForm(AuthenticationForm):
-    username = CustomUser.username
-    password = CustomUser.password
+    username = User.username
+    password = User.password
     fields = ['username', 'password']
 
 
 class RegisterUserForm(UserCreationForm):
     class Meta:
-        model = CustomUser
+        model = User
         fields = [
             'username',
             'password1',
@@ -38,7 +38,7 @@ class UpdateUserForm(ModelForm):
     )
 
     class Meta:
-        model = CustomUser
+        model = User
         fields = [
             'username',
         ]

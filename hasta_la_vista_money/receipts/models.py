@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext as _
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.users.models import CustomUser
+from hasta_la_vista_money.users.models import User
 
 OPERATION_TYPES = (
     (1, _('Покупка')),
@@ -16,7 +16,7 @@ class Customer(models.Model):
     """Модель продавца."""
 
     user = models.ForeignKey(
-        CustomUser,
+        User,
         on_delete=models.PROTECT,
         related_name='customer_users',
     )
@@ -42,7 +42,7 @@ class Receipt(models.Model):
     """Модель чека."""
 
     user = models.ForeignKey(
-        CustomUser,
+        User,
         on_delete=models.PROTECT,
         related_name='receipt_users',
     )
@@ -104,7 +104,7 @@ class Product(models.Model):
     """Модель продуктов."""
 
     user = models.ForeignKey(
-        CustomUser,
+        User,
         on_delete=models.PROTECT,
         related_name='product_users',
     )

@@ -21,7 +21,7 @@ from hasta_la_vista_money.receipts.forms import (
     ReceiptForm,
 )
 from hasta_la_vista_money.receipts.models import Customer, Receipt
-from hasta_la_vista_money.users.models import CustomUser
+from hasta_la_vista_money.users.models import User
 
 
 class BaseView:
@@ -43,7 +43,7 @@ class ReceiptView(
     no_permission_url = reverse_lazy('login')
 
     def get_context_data(self, *args, **kwargs):
-        user = get_object_or_404(CustomUser, username=self.request.user)
+        user = get_object_or_404(User, username=self.request.user)
         if user.is_authenticated:
             seller_form = CustomerForm()
             receipt_filter = ReceiptFilter(

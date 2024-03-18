@@ -12,7 +12,7 @@ from hasta_la_vista_money.loan.tasks import (
     calculate_annuity_loan,
     calculate_differentiated_loan,
 )
-from hasta_la_vista_money.users.models import CustomUser
+from hasta_la_vista_money.users.models import User
 
 
 class LoanView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
@@ -21,7 +21,7 @@ class LoanView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
     no_permission_url = reverse_lazy('login')
 
     def get_context_data(self, *args, **kwargs):
-        user = get_object_or_404(CustomUser, username=self.request.user)
+        user = get_object_or_404(User, username=self.request.user)
         if user:
             loan_form = LoanForm()
             payment_make_loan_form = PaymentMakeLoanForm(user=self.request.user)

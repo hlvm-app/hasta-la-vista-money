@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from hasta_la_vista_money import constants
-from hasta_la_vista_money.users.models import CustomUser
+from hasta_la_vista_money.users.models import User
 
 
 class Account(models.Model):
@@ -18,7 +18,7 @@ class Account(models.Model):
     ]
 
     user = models.ForeignKey(
-        CustomUser,
+        User,
         on_delete=models.PROTECT,
         related_name='account_users',
     )
@@ -55,7 +55,7 @@ class Account(models.Model):
 
 class TransferMoneyLog(models.Model):
     user = models.ForeignKey(
-        CustomUser,
+        User,
         on_delete=models.CASCADE,
         related_name='transfer_money',
     )

@@ -11,7 +11,7 @@ from hasta_la_vista_money.commonlogic.generate_dates import generate_date_list
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.expense.models import Expense
 from hasta_la_vista_money.income.models import Income
-from hasta_la_vista_money.users.models import CustomUser
+from hasta_la_vista_money.users.models import User
 
 
 def get_queryset_budget_type_operation(model, user, category):
@@ -38,7 +38,7 @@ def get_queryset_budget_type_operation(model, user, category):
 def category_amount_date_dict(
     model,
     parent_categories: QuerySet,
-    user: CustomUser,
+    user: User,
 ) -> dict:
     """
     Функция по формированию словаря с категориями и их суммой и датой.
@@ -105,7 +105,7 @@ class BudgetView(CustomNoPermissionMixin, BaseView, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        user = get_object_or_404(CustomUser, username=self.request.user)
+        user = get_object_or_404(User, username=self.request.user)
 
         list_dates = user.budget_date_list_users.order_by('date')
         total_sum_list_expense = [0] * len(list_dates)  # noqa: WPS435
@@ -157,7 +157,7 @@ def generate_date_list_view(request):
     """Функция представления генерации дат."""
     if request.method == 'POST':
         user = request.user
-        queryset_user = get_object_or_404(CustomUser, username=user)
+        queryset_user = get_object_or_404(User, username=user)
         queryset_last_date = queryset_user.budget_date_list_users.last().date
         generate_date_list(queryset_last_date, queryset_user)
         return redirect(reverse_lazy('budget:list'))
