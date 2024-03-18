@@ -5,7 +5,7 @@ from dateutil.relativedelta import relativedelta
 from django.shortcuts import get_object_or_404
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.loan.models import Loan, PaymentSchedule
-from hasta_la_vista_money.users.models import User
+from hasta_la_vista_money.users.models import CustomUser
 
 
 def calculate_annuity_loan(
@@ -44,7 +44,7 @@ def calculate_annuity_loan(
 
     start_date = start_date + relativedelta(months=1)
 
-    user = get_object_or_404(User, id=user_id)
+    user = get_object_or_404(CustomUser, id=user_id)
 
     loan = get_object_or_404(
         Loan,
@@ -94,7 +94,7 @@ def calculate_differentiated_loan(
     :param period_loan:
     :return:
     """
-    user = get_object_or_404(User, id=user_id)
+    user = get_object_or_404(CustomUser, id=user_id)
 
     loan = Loan.objects.filter(id=loan_id).first()
 

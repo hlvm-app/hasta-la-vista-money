@@ -4,7 +4,7 @@ from django.db import models
 from django.urls import reverse
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.users.models import User
+from hasta_la_vista_money.users.models import CustomUser
 
 
 class Loan(models.Model):
@@ -14,7 +14,7 @@ class Loan(models.Model):
     ]
 
     user = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.PROTECT,
         related_name='loan_users',
     )
@@ -67,7 +67,7 @@ class Loan(models.Model):
 
 class PaymentMakeLoan(models.Model):
     user = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.PROTECT,
         related_name='payment_make_loan_users',
     )
@@ -90,7 +90,7 @@ class PaymentMakeLoan(models.Model):
 
 class PaymentSchedule(models.Model):
     user = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.PROTECT,
         related_name='payment_schedule_users',
     )

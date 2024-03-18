@@ -3,14 +3,14 @@ from django.db import models
 from hasta_la_vista_money import constants
 
 
-class User(AbstractUser):
+class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
 
 
 class TelegramUser(models.Model):
     user = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.PROTECT,
         related_name='telegram_users',
     )

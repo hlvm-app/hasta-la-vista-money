@@ -4,7 +4,7 @@ from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.bot.send_message.send_message_tg_user import (
     SendMessageToTelegramUser,
 )
-from hasta_la_vista_money.users.models import User
+from hasta_la_vista_money.users.models import CustomUser
 
 
 def get_string_result_receipt(**kwargs) -> str:
@@ -42,7 +42,7 @@ def check_exists_number_receipt(user, receipt_date, number_receipt, total_sum):
     :param total_sum:
     :return:
     """
-    user = get_object_or_404(User, username=user)
+    user = get_object_or_404(CustomUser, username=user)
     return (
         user.receipt_users.select_related('user')
         .filter(

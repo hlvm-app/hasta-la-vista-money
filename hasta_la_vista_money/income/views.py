@@ -27,7 +27,7 @@ from hasta_la_vista_money.custom_mixin import (
 from hasta_la_vista_money.income.filters import IncomeFilter
 from hasta_la_vista_money.income.forms import AddCategoryIncomeForm, IncomeForm
 from hasta_la_vista_money.income.models import Income, IncomeCategory
-from hasta_la_vista_money.users.models import User
+from hasta_la_vista_money.users.models import CustomUser
 
 
 class BaseView:
@@ -50,7 +50,7 @@ class IncomeView(
     no_permission_url = reverse_lazy('login')
 
     def get_context_data(self, *args, **kwargs):
-        user = get_object_or_404(User, username=self.request.user)
+        user = get_object_or_404(CustomUser, username=self.request.user)
         depth_limit = 3
         if user:
             categories = (

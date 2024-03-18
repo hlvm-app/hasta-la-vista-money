@@ -18,10 +18,10 @@ from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
     DeleteObjectMixin,
 )
-from hasta_la_vista_money.users.models import User
+from hasta_la_vista_money.users.models import CustomUser
 
 
-def collect_info_income(user: User):
+def collect_info_income(user: CustomUser):
     """
     Сбор информации о доходах из базы данных, фильтруемая по пользователю.
 
@@ -37,7 +37,7 @@ def collect_info_income(user: User):
     )
 
 
-def collect_info_expense(user: User):
+def collect_info_expense(user: CustomUser):
     """
     Сбор информации о расходах из базы данных, фильтруемая по пользователю.
 
