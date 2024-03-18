@@ -1,3 +1,5 @@
+import json
+
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
@@ -33,6 +35,10 @@ from hasta_la_vista_money.users.forms import (
     UserLoginForm,
 )
 from hasta_la_vista_money.users.models import TelegramUser, User
+from rest_framework import status
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 
 class IndexView(TemplateView):
@@ -73,6 +79,26 @@ class LoginUser(SuccessMessageMixin, LoginView):
         context['user_login_form'] = UserLoginForm()
         context['reset_password_form'] = ForgotPasswordForm()
         return context
+
+
+class LoginUserAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            user = None
+
+        if user is not None and user.check_password(password):
+            token, _ = Token.objects.get_or_create(user=user)
+            return Response({'token': token.key}, status=status.HTTP_200_OK)
+        return Response(
+            {'error': 'Invalid credentials'},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
 
 
 class LogoutUser(LogoutView, SuccessMessageMixin):

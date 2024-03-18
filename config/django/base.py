@@ -68,6 +68,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'django_filters',
+    'rest_framework',
+    'rest_framework.authtoken',
     'hasta_la_vista_money',
     'hasta_la_vista_money.account',
     'hasta_la_vista_money.bot',
@@ -182,6 +184,9 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend'
     ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
 }
 
 # Database
