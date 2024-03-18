@@ -159,6 +159,7 @@ class ChangeAccountView(
     UpdateView,
 ):
     form_class = AddAccountForm
+    template_name = 'account/change_account.html'
     success_message = constants.SUCCESS_MESSAGE_CHANGED_ACCOUNT
 
     def get_context_data(self, **kwargs):
