@@ -6,29 +6,6 @@
 {% block title %}{% translate 'Отчёты' %}{% endblock %}
 {% block content %}
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-4">
-                {% if category_month %}
-                    {% for month_item, category_items in category_month.items %}
-                        <div class="month-expenses border border-1 mt-1">
-                            <h5>В {{ month_item | date:"F Y" }} было потрачено:</h5>
-                            {% for category_item in category_items %}
-                                <div class="category-expense">
-                                    {% if category_item.category__parent_category__name %}
-                                        <span class="category-name">{{ category_item.category__parent_category__name }}:</span>
-                                        <span class="amount">{{ category_item.total_amount }}</span>
-                                    {% endif %}
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            </div>
-
-        </div>
-
-
-
 
         <div class="row mt-5">
             {% if chart_expense %}
