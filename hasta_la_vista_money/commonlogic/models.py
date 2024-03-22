@@ -8,6 +8,12 @@ class CommonIncomeExpense(models.Model):
         max_digits=constants.TWENTY,
         decimal_places=2,
     )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        null=True,
+        blank=True,
+        verbose_name='Date created',
+    )
 
     class Meta:
         abstract = True

@@ -33,6 +33,12 @@ class Customer(models.Model):
         null=True,
         max_length=1000,
     )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        null=True,
+        blank=True,
+        verbose_name='Date created',
+    )
 
     def __str__(self):
         return self.name_seller
@@ -84,6 +90,12 @@ class Receipt(models.Model):
     )
     product = models.ManyToManyField('Product', related_name='receipt_products')
     manual = models.BooleanField(null=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        null=True,
+        blank=True,
+        verbose_name='Date created',
+    )
 
     class Meta:
         ordering = ['-receipt_date']
@@ -123,6 +135,12 @@ class Product(models.Model):
         null=True,
         max_digits=10,
         decimal_places=2,
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        null=True,
+        blank=True,
+        verbose_name='Date created',
     )
 
     def __str__(self):

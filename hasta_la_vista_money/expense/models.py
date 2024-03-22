@@ -22,6 +22,12 @@ class ExpenseCategory(models.Model):
         related_name='subcategories',
         on_delete=models.PROTECT,
     )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        null=True,
+        blank=True,
+        verbose_name='Date created',
+    )
 
     class Meta:
         ordering = ['name']

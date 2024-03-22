@@ -49,6 +49,12 @@ class Income(CommonIncomeExpense):
         on_delete=models.PROTECT,
         related_name='income_categories',
     )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        null=True,
+        blank=True,
+        verbose_name='Date created',
+    )
 
     def __str__(self):
         return str(self.category)

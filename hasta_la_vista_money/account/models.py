@@ -32,6 +32,12 @@ class Account(models.Model):
         default=0,
     )
     currency = models.CharField(choices=CURRENCY_LIST)
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        null=True,
+        blank=True,
+        verbose_name=_('Date created'),
+    )
 
     class Meta:
         ordering = ['name_account']
@@ -75,6 +81,12 @@ class TransferMoneyLog(models.Model):
     )
     exchange_date = models.DateTimeField()
     notes = models.TextField(blank=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        null=True,
+        blank=True,
+        verbose_name='Date created',
+    )
 
     class Meta:
         ordering = ['-exchange_date']
