@@ -1,7 +1,7 @@
 import json
 
 from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import update_session_auth_hash, authenticate
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import (
@@ -79,6 +79,13 @@ class LoginUser(SuccessMessageMixin, LoginView):
         context['user_login_form'] = UserLoginForm()
         context['reset_password_form'] = ForgotPasswordForm()
         return context
+
+    def form_invalid(self, form):
+        messages.error(
+            self.request,
+            _("Неверный логин или пароль. Пожалуйста, попробуйте снова."),
+        )
+        return super().form_invalid(form)
 
 
 class LoginUserAPIView(APIView):
