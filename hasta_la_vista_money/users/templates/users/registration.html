@@ -7,6 +7,7 @@
 {% block content %}
     <title>{{ title }}</title>
     <div class="container d-flex min-vh-100 flex-column justify-content-center align-items-center">
+        <h1 class="text-white">Регистрация нового пользователя</h1>
         <form method="post" class="text-light help-text-form">
             {% csrf_token %}
             <p class="my-4">

@@ -8,6 +8,7 @@
         {% include 'error_modal.html' %}
         <h1 class="text-light text-uppercase">Hasta La Vista, Money!</h1>
         <p class="text-light text-center">{% translate 'Удобная домашняя бухгалтерия. Управляй финансами семьи грамотно!' %}</p>
+        <h5 class="text-white">Вход в приложение</h5>
         <form method="post" class="form text-light">
             {% csrf_token %}
             <p class="my-4">
@@ -22,6 +23,7 @@
         <p class='text-light mt-3'>{% translate 'Ещё не зарегистрированы?' %}</p>
         <p class='text-light'>{% translate 'Тогда нажимайте кнопку:' %}</p>
         <a class="btn btn-primary text-light" href="{% url 'users:registration' %}">{% translate 'Регистрация' %}</a>
+        <p class='text-light mt-3 mb-0'>{% translate 'Забыли пароль?' %}</p>
         <button class="btn btn-primary mt-2 text-light" data-bs-toggle="modal" data-bs-target="#reset-password" >{% translate 'Восстановить пароль' %}</button>
         <div id="reset-password" class="modal fade" >
             <div class="modal-dialog modal-dialog-centered">
