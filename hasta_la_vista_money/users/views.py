@@ -1,7 +1,7 @@
 import json
 
 from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash, authenticate
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import (
@@ -23,6 +23,7 @@ from hasta_la_vista_money import constants
 from hasta_la_vista_money.bot.send_message.send_message_tg_user import (
     SendMessageToTelegramUser,
 )
+from hasta_la_vista_money.commonlogic.check_user import check_user
 from hasta_la_vista_money.commonlogic.generate_dates import generate_date_list
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
@@ -83,7 +84,7 @@ class LoginUser(SuccessMessageMixin, LoginView):
     def form_invalid(self, form):
         messages.error(
             self.request,
-            _("Неверный логин или пароль. Пожалуйста, попробуйте снова."),
+            form.errors['__all__'][0],
         )
         return super().form_invalid(form)
 
@@ -94,10 +95,7 @@ class LoginUserAPIView(APIView):
         username = data.get('username')
         password = data.get('password')
 
-        try:
-            user = User.objects.get(username=username)
-        except User.DoesNotExist:
-            user = None
+        user = check_user(username)
 
         if user is not None and user.check_password(password):
             token, _ = Token.objects.get_or_create(user=user)
