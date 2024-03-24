@@ -40,6 +40,7 @@ class Account(models.Model):
     )
 
     class Meta:
+        db_table = 'account'
         ordering = ['name_account']
         indexes = [models.Index(fields=['name_account'])]
 

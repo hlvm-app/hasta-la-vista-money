@@ -1,5 +1,3 @@
-from operator import itemgetter
-
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.handlers.wsgi import WSGIRequest
@@ -13,59 +11,22 @@ from hasta_la_vista_money.account.forms import (
     TransferMoneyAccountForm,
 )
 from hasta_la_vista_money.account.models import Account
+from hasta_la_vista_money.account.prepare import (
+    collect_info_expense,
+    collect_info_income,
+    sort_expense_income,
+)
+from hasta_la_vista_money.account.serializers import AccountSerializer
 from hasta_la_vista_money.commonlogic.views import collect_info_receipt
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
     DeleteObjectMixin,
 )
 from hasta_la_vista_money.users.models import User
-
-
-def collect_info_income(user: User):
-    """
-    Сбор информации о доходах из базы данных, фильтруемая по пользователю.
-
-    :param user: User
-    :return: Queryset
-    """
-    return user.income_users.select_related('user').values(
-        'id',
-        'date',
-        'account__name_account',
-        'category__name',
-        'amount',
-    )
-
-
-def collect_info_expense(user: User):
-    """
-    Сбор информации о расходах из базы данных, фильтруемая по пользователю.
-
-    :param user: User
-    :return: Queryset
-    """
-    return user.expense_users.select_related('user').values(
-        'id',
-        'date',
-        'account__name_account',
-        'category__name',
-        'amount',
-    )
-
-
-def sort_expense_income(expenses, income):
-    """
-    Создание отсортированного списка с расходам и доходами.
-
-    :param expenses: Queryset
-    :param income: Queryset
-    :return: list
-    """
-    return sorted(
-        list(expenses) + list(income),
-        key=itemgetter('date'),
-        reverse=True,
-    )
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.generics import ListCreateAPIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 
 class BaseView:
@@ -127,6 +88,21 @@ class AccountView(
             context['income_expense'] = income_expense
             context['transfer_money_log'] = transfer_money_log
             return context
+
+
+class AccountListCreateAPIView(ListCreateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = AccountSerializer
+    permission_classes = (IsAuthenticated,)
+
+    @property
+    def queryset(self):
+        return Account.objects.filter(user=self.request.user)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = AccountSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class AccountCreateView(SuccessMessageMixin, AccountBaseView, CreateView):
