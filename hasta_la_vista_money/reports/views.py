@@ -3,7 +3,6 @@ from collections import defaultdict
 
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Sum
-from django.db.models.functions import TruncMonth
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
