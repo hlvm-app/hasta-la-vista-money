@@ -26,7 +26,7 @@ urlpatterns = [
         name='create_category',
     ),
     path(
-        'expense/<int:pk>/copy/',
+        '<int:pk>/copy/',
         ExpenseCopyView.as_view(),
         name='expense_copy',
     ),

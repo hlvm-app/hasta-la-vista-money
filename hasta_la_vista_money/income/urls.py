@@ -26,7 +26,7 @@ urlpatterns = [
         name='delete_category_income',
     ),
     path(
-        'income/<int:pk>/copy/',
+        '<int:pk>/copy/',
         IncomeCopyView.as_view(),
         name='income_copy',
     ),
