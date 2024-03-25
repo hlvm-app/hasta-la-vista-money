@@ -20,7 +20,7 @@
     <div class="container">
 
         <div class="row mt-5">
-            <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-start">
                 <button type="button"
                         class="d-flex align-items-center btn btn-primary me-5"
                         data-bs-toggle="modal"
@@ -32,7 +32,7 @@
         </div>
         <!-- /.row mt-5 -->
         <div class="row">
-            <div class="d-grid gap-2 d-md-flex justify-content-center">
+            <div class="d-grid gap-2 d-md-flex justify-content-around">
                 <ul class="count-receipt-list list-group list-group-horizontal d-flex align-items-center m-1">
                     <span class="text-center">{% translate 'Количество чеков:' %}</span>
                     <li class="list-group-item rounded-3 me-2">{{ total_receipts.count }}</li>
