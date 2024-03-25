@@ -150,10 +150,12 @@ class IncomeCopyView(
 
     def post(self, request, *args, **kwargs):
         income_id = kwargs.get('pk')
-        new_income = get_new_type_operation(Income, income_id, request.user)
+        new_income = get_new_type_operation(Income, income_id, request)
 
         messages.success(request, 'Расход успешно скопирован.')
-        return redirect(reverse_lazy('income:list'), pk=new_income.pk)
+        return redirect(
+            reverse_lazy('income:change', kwargs={'pk': new_income.pk}),
+        )
 
 
 class IncomeUpdateView(

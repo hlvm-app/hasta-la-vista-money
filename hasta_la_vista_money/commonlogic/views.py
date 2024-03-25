@@ -120,9 +120,13 @@ def get_queryset_type_income_expenses(type_id, model, form):
     return form.save(commit=False)
 
 
-def get_new_type_operation(model, id_type_operation, user):
-    expense = get_object_or_404(model, pk=id_type_operation, user=user)
-
+def get_new_type_operation(model, id_type_operation, request):
+    expense = get_object_or_404(model, pk=id_type_operation, user=request.user)
+    if 'income' in request.path:
+        expense.account.balance += expense.amount
+    else:
+        expense.account.balance -= expense.amount
+    expense.account.save()
     return model.objects.create(
         user=expense.user,
         account=expense.account,
