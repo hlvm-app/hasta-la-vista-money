@@ -16,8 +16,8 @@ from hasta_la_vista_money.commonlogic.views import (
     IncomeExpenseCreateViewMixin,
     build_category_tree,
     create_object_view,
-    get_queryset_type_income_expenses,
     get_new_type_operation,
+    get_queryset_type_income_expenses,
 )
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
