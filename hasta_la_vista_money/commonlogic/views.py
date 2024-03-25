@@ -121,6 +121,7 @@ def get_queryset_type_income_expenses(type_id, model, form):
 
 
 def get_new_type_operation(model, id_type_operation, request):
+    """Get new type operation."""
     expense = get_object_or_404(model, pk=id_type_operation, user=request.user)
     if 'income' in request.path:
         expense.account.balance += expense.amount
