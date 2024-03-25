@@ -1,8 +1,9 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import DeleteView, DetailView, UpdateView
 from django_filters.views import FilterView
 from hasta_la_vista_money import constants
@@ -15,6 +16,7 @@ from hasta_la_vista_money.commonlogic.views import (
     build_category_tree,
     create_object_view,
     get_queryset_type_income_expenses,
+    get_new_type_operation,
 )
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
@@ -119,6 +121,22 @@ class ExpenseView(
             context['flattened_categories'] = flattened_categories
 
             return context
+
+
+class ExpenseCopyView(
+    CustomNoPermissionMixin,
+    SuccessMessageMixin,
+    ExpenseBaseView,
+    View,
+):
+    no_permission_url = reverse_lazy('login')
+
+    def post(self, request, *args, **kwargs):
+        expense_id = kwargs.get('pk')
+        new_expense = get_new_type_operation(Expense, expense_id, request.user)
+
+        messages.success(request, 'Расход успешно скопирован.')
+        return redirect(reverse_lazy('expense:list'), pk=new_expense.pk)
 
 
 class ExpenseCreateView(

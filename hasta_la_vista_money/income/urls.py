@@ -6,6 +6,7 @@ from hasta_la_vista_money.income.views import (
     IncomeDeleteView,
     IncomeUpdateView,
     IncomeView,
+    IncomeCopyView,
 )
 
 app_name = 'income'
@@ -23,5 +24,10 @@ urlpatterns = [
         'category/<int:pk>/',
         IncomeCategoryDeleteView.as_view(),
         name='delete_category_income',
+    ),
+    path(
+        'income/<int:pk>/copy/',
+        IncomeCopyView.as_view(),
+        name='income_copy',
     ),
 ]

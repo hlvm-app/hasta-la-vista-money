@@ -1,8 +1,9 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import DeleteView, UpdateView
 from django.views.generic.edit import DeletionMixin
 from django_filters.views import FilterView
@@ -16,6 +17,7 @@ from hasta_la_vista_money.commonlogic.views import (
     build_category_tree,
     create_object_view,
     get_queryset_type_income_expenses,
+    get_new_type_operation,
 )
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
@@ -136,6 +138,22 @@ class IncomeCreateView(
                 message=constants.SUCCESS_INCOME_ADDED,
             )
             return JsonResponse(response_data)
+
+
+class IncomeCopyView(
+    CustomNoPermissionMixin,
+    SuccessMessageMixin,
+    BaseView,
+    View,
+):
+    no_permission_url = reverse_lazy('login')
+
+    def post(self, request, *args, **kwargs):
+        income_id = kwargs.get('pk')
+        new_income = get_new_type_operation(Income, income_id, request.user)
+
+        messages.success(request, 'Расход успешно скопирован.')
+        return redirect(reverse_lazy('income:list'), pk=new_income.pk)
 
 
 class IncomeUpdateView(

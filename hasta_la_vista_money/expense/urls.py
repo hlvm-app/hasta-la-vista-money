@@ -6,6 +6,7 @@ from hasta_la_vista_money.expense.views import (
     ExpenseDeleteView,
     ExpenseUpdateView,
     ExpenseView,
+    ExpenseCopyView,
 )
 
 app_name = 'expense'
@@ -23,5 +24,10 @@ urlpatterns = [
         'create/category/',
         ExpenseCategoryCreateView.as_view(),
         name='create_category',
+    ),
+    path(
+        'expense/<int:pk>/copy/',
+        ExpenseCopyView.as_view(),
+        name='expense_copy',
     ),
 ]

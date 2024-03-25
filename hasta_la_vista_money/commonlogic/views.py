@@ -118,3 +118,15 @@ def get_queryset_type_income_expenses(type_id, model, form):
     if type_id:
         return get_object_or_404(model, id=type_id)
     return form.save(commit=False)
+
+
+def get_new_type_operation(model, id_type_operation, user):
+    expense = get_object_or_404(model, pk=id_type_operation, user=user)
+
+    return model.objects.create(
+        user=expense.user,
+        account=expense.account,
+        category=expense.category,
+        amount=expense.amount,
+        date=expense.date,
+    )
