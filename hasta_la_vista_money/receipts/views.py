@@ -7,6 +7,9 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, DeleteView, DetailView
 from django_filters.views import FilterView
+from rest_framework import status, generics
+from rest_framework.response import Response
+
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.custom_paginator import (
@@ -21,6 +24,10 @@ from hasta_la_vista_money.receipts.forms import (
     ReceiptForm,
 )
 from hasta_la_vista_money.receipts.models import Customer, Receipt
+from hasta_la_vista_money.receipts.serializers import (
+    ProductSerializer,
+    ReceiptSerializer,
+)
 from hasta_la_vista_money.users.models import User
 
 
@@ -218,6 +225,32 @@ class ReceiptCreateView(SuccessMessageMixin, BaseView, CreateView):
                 'errors': product_formset.errors,
             }
         return JsonResponse(response_data)
+
+
+class ReceiptListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Receipt.objects.all()
+    serializer_class = ReceiptSerializer
+
+    def perform_create(self, serializer):
+        customer = serializer.validated_data.get('customer')
+        products_data = serializer.validated_data.get('products', [])
+        print(customer)
+        receipt = serializer.save(
+            user=self.request.user,
+            manual=False,
+            customer=customer,
+        )
+
+        for product_data in products_data:
+            product_serializer = ProductSerializer(data=product_data)
+            if product_serializer.is_valid():
+                product_serializer.save(user=self.request.user, receipt=receipt)
+            else:
+                # Handle invalid product data
+                pass
+
+        # You can return whatever response you want here
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class ReceiptDeleteView(BaseView, DetailView, DeleteView):
