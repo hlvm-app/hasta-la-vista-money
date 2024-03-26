@@ -7,9 +7,6 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, DeleteView, DetailView
 from django_filters.views import FilterView
-from rest_framework import status, generics
-from rest_framework.response import Response
-
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.custom_paginator import (
@@ -29,6 +26,8 @@ from hasta_la_vista_money.receipts.serializers import (
     ReceiptSerializer,
 )
 from hasta_la_vista_money.users.models import User
+from rest_framework import generics, status
+from rest_framework.response import Response
 
 
 class BaseView:
@@ -234,7 +233,6 @@ class ReceiptListCreateAPIView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         customer = serializer.validated_data.get('customer')
         products_data = serializer.validated_data.get('products', [])
-        print(customer)
         receipt = serializer.save(
             user=self.request.user,
             manual=False,
@@ -247,7 +245,7 @@ class ReceiptListCreateAPIView(generics.ListCreateAPIView):
                 product_serializer.save(user=self.request.user, receipt=receipt)
             else:
                 # Handle invalid product data
-                pass
+                pass  # noqa: WPS420
 
         # You can return whatever response you want here
         return Response(serializer.data, status=status.HTTP_201_CREATED)

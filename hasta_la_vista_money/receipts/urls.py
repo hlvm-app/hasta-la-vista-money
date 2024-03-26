@@ -3,8 +3,8 @@ from hasta_la_vista_money.receipts.views import (
     CustomerCreateView,
     ReceiptCreateView,
     ReceiptDeleteView,
-    ReceiptView,
     ReceiptListCreateAPIView,
+    ReceiptView,
 )
 
 app_name = 'receipts'

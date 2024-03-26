@@ -1,6 +1,5 @@
+from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
 from rest_framework import serializers
-
-from hasta_la_vista_money.receipts.models import Product, Customer, Receipt
 
 
 class ProductSerializer(serializers.ModelSerializer):
