@@ -30,3 +30,18 @@ class TelegramUser(models.Model):
         blank=True,
         related_name='selected_account_telegram_users',
     )
+
+
+class SelectedAccount(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        related_name='selected_account_users',
+    )
+    name = models.ForeignKey(
+        'account.Account',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='selected_account_name',
+    )
