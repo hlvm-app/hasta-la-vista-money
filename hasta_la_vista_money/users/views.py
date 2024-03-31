@@ -36,8 +36,12 @@ from hasta_la_vista_money.users.forms import (
     UserLoginForm,
 )
 from hasta_la_vista_money.users.models import TelegramUser, User
+from hasta_la_vista_money.users.serializers import UserSerializer
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
+from rest_framework.generics import ListCreateAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -65,6 +69,19 @@ class ListUsers(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             context['user_update'] = user_update
             context['user_update_pass_form'] = user_update_pass_form
         return context
+
+
+class ListUsersAPIView(ListCreateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = UserSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        return Response(
+            {'id': user.id, 'username': user.username},
+            status=status.HTTP_200_OK,
+        )
 
 
 class LoginUser(SuccessMessageMixin, LoginView):

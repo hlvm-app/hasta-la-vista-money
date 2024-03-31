@@ -4,6 +4,7 @@ from hasta_la_vista_money.users.views import (
     CustomPasswordResetConfirmView,
     ForgotPasswordView,
     ListUsers,
+    ListUsersAPIView,
     LoginUserAPIView,
     UpdateUserPasswordView,
     UpdateUserView,
@@ -29,5 +30,10 @@ urlpatterns = [
         'reset-password/<str:uidb64>/<str:token>/',
         CustomPasswordResetConfirmView.as_view(),
         name='custom-password-reset-confirm',
+    ),
+    path(
+        'list/user',
+        ListUsersAPIView.as_view(),
+        name='list_user',
     ),
 ]
