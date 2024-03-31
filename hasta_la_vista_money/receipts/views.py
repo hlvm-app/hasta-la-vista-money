@@ -22,12 +22,13 @@ from hasta_la_vista_money.receipts.forms import (
 )
 from hasta_la_vista_money.receipts.models import Customer, Receipt
 from hasta_la_vista_money.receipts.serializers import (
-    ProductSerializer,
+    CustomerSerializer,
     ReceiptSerializer,
 )
 from hasta_la_vista_money.users.models import User
-from rest_framework import generics, status
+from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 
 class BaseView:
@@ -59,9 +60,9 @@ class ReceiptView(
             )
             receipt_form = ReceiptForm()
             receipt_form.fields['account'].queryset = user.account_users
-            receipt_form.fields[
-                'customer'
-            ].queryset = user.customer_users.distinct('name_seller')
+            receipt_form.fields['customer'].queryset = (
+                user.customer_users.distinct('name_seller')
+            )
 
             product_formset = ProductFormSet()
 
@@ -226,29 +227,39 @@ class ReceiptCreateView(SuccessMessageMixin, BaseView, CreateView):
         return JsonResponse(response_data)
 
 
-class ReceiptListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Receipt.objects.all()
-    serializer_class = ReceiptSerializer
+class CustomerCreateAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = CustomerSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def perform_create(self, serializer):
-        customer = serializer.validated_data.get('customer')
-        products_data = serializer.validated_data.get('products', [])
-        receipt = serializer.save(
-            user=self.request.user,
-            manual=False,
-            customer=customer,
+
+class ReceiptCreateAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        customer_data = request.data.get('customer')
+        customer_serializer = CustomerSerializer(data=customer_data)
+        if customer_serializer.is_valid():
+            customer_serializer.save()
+            request.data['customer'] = (
+                customer_data  # Оставляем данные заказчика в запросе
+            )
+            receipt_serializer = ReceiptSerializer(data=request.data)
+            if receipt_serializer.is_valid():
+                receipt_serializer.save()
+                return Response(
+                    receipt_serializer.data,
+                    status=status.HTTP_201_CREATED,
+                )
+            return Response(
+                receipt_serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        return Response(
+            customer_serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST,
         )
-
-        for product_data in products_data:
-            product_serializer = ProductSerializer(data=product_data)
-            if product_serializer.is_valid():
-                product_serializer.save(user=self.request.user, receipt=receipt)
-            else:
-                # Handle invalid product data
-                pass  # noqa: WPS420
-
-        # You can return whatever response you want here
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class ReceiptDeleteView(BaseView, DetailView, DeleteView):

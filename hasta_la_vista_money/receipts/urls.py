@@ -1,9 +1,10 @@
 from django.urls import path
 from hasta_la_vista_money.receipts.views import (
+    CustomerCreateAPIView,
     CustomerCreateView,
+    ReceiptCreateAPIView,
     ReceiptCreateView,
     ReceiptDeleteView,
-    ReceiptListCreateAPIView,
     ReceiptView,
 )
 
@@ -19,7 +20,12 @@ urlpatterns = [
     path('<int:pk>/', ReceiptDeleteView.as_view(), name='delete'),
     path(
         'api/create',
-        ReceiptListCreateAPIView.as_view(),
+        ReceiptCreateAPIView.as_view(),
+        name='api_list',
+    ),
+    path(
+        'customer/api/create',
+        CustomerCreateAPIView.as_view(),
         name='api_list',
     ),
 ]
