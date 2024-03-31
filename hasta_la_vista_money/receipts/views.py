@@ -1,3 +1,5 @@
+import json
+
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count, ProtectedError, Sum
@@ -20,13 +22,14 @@ from hasta_la_vista_money.receipts.forms import (
     ReceiptFilter,
     ReceiptForm,
 )
-from hasta_la_vista_money.receipts.models import Customer, Receipt
+from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
 from hasta_la_vista_money.receipts.serializers import (
     CustomerSerializer,
     ReceiptSerializer,
 )
 from hasta_la_vista_money.users.models import User
 from rest_framework import status
+from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -236,30 +239,61 @@ class CustomerCreateAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ReceiptCreateAPIView(APIView):
+class ReceiptCreateAPIView(ListCreateAPIView):
     def post(self, request, *args, **kwargs):
-        customer_data = request.data.get('customer')
-        customer_serializer = CustomerSerializer(data=customer_data)
-        if customer_serializer.is_valid():
-            customer_serializer.save()
-            request.data['customer'] = (
-                customer_data  # Оставляем данные заказчика в запросе
+        request_data = json.loads(request.body)
+        user_id = request_data.get('user')
+        account_id = request_data.get('account')
+        receipt_date = request_data.get('receipt_date')
+        total_sum = request_data.get('total_sum')
+        number_receipt = request_data.get('number_receipt')
+        operation_type = request_data.get('operation_type')
+        nds10 = request_data.get('nds10')
+        nds20 = request_data.get('nds20')
+        customer_data = request_data.get('customer')
+        products_data = request_data.get('product')
+
+        try:
+            user = User.objects.get(id=user_id)
+            customer_data['user'] = user
+
+            account = Account.objects.get(id=account_id)
+            request_data['account'] = account
+
+            customer = Customer.objects.create(**customer_data)
+            receipt = Receipt.objects.create(
+                user=user,
+                account=account,
+                receipt_date=receipt_date,
+                customer=customer,
+                total_sum=total_sum,
+                number_receipt=number_receipt,
+                operation_type=operation_type,
+                nds10=nds10,
+                nds20=nds20,
             )
-            receipt_serializer = ReceiptSerializer(data=request.data)
-            if receipt_serializer.is_valid():
-                receipt_serializer.save()
-                return Response(
-                    receipt_serializer.data,
-                    status=status.HTTP_201_CREATED,
-                )
+
+            for product_data in products_data:
+                # Удаляем receipt из product_data, чтобы избежать ошибки
+                product_data.pop('receipt', None)
+                product_data['user'] = user
+                # Создаем продукт
+                product = Product.objects.create(**product_data)
+                # Добавляем продукт к чеку
+                receipt.product.add(product)
+
             return Response(
-                receipt_serializer.errors,
+                ReceiptSerializer(receipt).data,
+                status=status.HTTP_201_CREATED,
+            )
+
+        except Exception as error:
+            return Response(
+                {
+                    'error': str(error),
+                },
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        return Response(
-            customer_serializer.errors,
-            status=status.HTTP_400_BAD_REQUEST,
-        )
 
 
 class ReceiptDeleteView(BaseView, DetailView, DeleteView):

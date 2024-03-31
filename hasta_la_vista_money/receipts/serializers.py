@@ -1,4 +1,5 @@
 from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
+from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import ModelSerializer
 
 
@@ -25,13 +26,14 @@ class ReceiptSerializer(ModelSerializer):
         products_data = validated_data.pop('product')
         customer_data = validated_data.pop('customer')
         customer_serializer = CustomerSerializer(data=customer_data)
-        if customer_serializer.is_valid():
-            customer = customer_serializer.save()
-            receipt = Receipt.objects.create(
-                customer=customer,
-                **validated_data,
-            )
-            for product_data in products_data:
-                created_product = Product.objects.create(**product_data)
-                receipt.product.add(created_product)
-            return receipt
+        if not customer_serializer.is_valid():
+            raise ValidationError('Invalid customer data')
+        customer = customer_serializer.save()
+        receipt = Receipt.objects.create(customer=customer, **validated_data)
+        for product_data in products_data:
+            product_serializer = ProductSerializer(data=product_data)
+            if not product_serializer.is_valid():
+                raise ValidationError('Invalid product data')
+            product = product_serializer.save()
+            receipt.product.add(product)
+        return receipt
