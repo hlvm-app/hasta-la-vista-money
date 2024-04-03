@@ -258,8 +258,8 @@ class ReceiptCreateAPIView(ListCreateAPIView):
                 receipt_date=receipt_date,
                 total_sum=total_sum,
             ).first()
-            print(check_existing_receipt)
-            if check_existing_receipt:
+
+            if not check_existing_receipt:
                 user = User.objects.get(id=user_id)
                 customer_data['user'] = user
 
