@@ -20,9 +20,6 @@
                 </div>
             </div>
         </form>
-        <p class='text-light mt-3'>{% translate 'Ещё не зарегистрированы?' %}</p>
-        <p class='text-light'>{% translate 'Тогда нажимайте кнопку:' %}</p>
-        <a class="btn btn-primary text-light" href="{% url 'users:registration' %}">{% translate 'Регистрация' %}</a>
         <p class='text-light mt-3 mb-0'>{% translate 'Забыли пароль?' %}</p>
         <button class="btn btn-primary mt-2 text-light" data-bs-toggle="modal" data-bs-target="#reset-password" >{% translate 'Восстановить пароль' %}</button>
         <div id="reset-password" class="modal fade" >

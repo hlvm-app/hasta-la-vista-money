@@ -143,6 +143,11 @@ class CreateUser(SuccessMessageMixin, CreateView):
     success_message = constants.SUCCESS_MESSAGE_REGISTRATION
     success_url = reverse_lazy('login')
 
+    def dispatch(self, request, *args, **kwargs):
+        if User.objects.filter(is_superuser=True).exists():
+            return redirect('login')
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = _('Форма регистрации')
@@ -151,9 +156,11 @@ class CreateUser(SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        user = self.object
-        date_time_user_registration = user.date_joined
-        generate_date_list(date_time_user_registration, user)
+        self.object.is_superuser = True
+        self.object.is_staff = True
+        self.object.save()
+        date_time_user_registration = self.object.date_joined
+        generate_date_list(date_time_user_registration, self.object)
         return response
 
 

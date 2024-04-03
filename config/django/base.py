@@ -105,6 +105,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'axes.middleware.AxesMiddleware',
+    'hasta_la_vista_money.users.middleware.CheckAdminMiddleware',
 ]
 
 INTERNAL_IPS = [
