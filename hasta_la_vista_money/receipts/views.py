@@ -63,9 +63,9 @@ class ReceiptView(
             )
             receipt_form = ReceiptForm()
             receipt_form.fields['account'].queryset = user.account_users
-            receipt_form.fields['customer'].queryset = (
-                user.customer_users.distinct('name_seller')
-            )
+            receipt_form.fields[
+                'customer'
+            ].queryset = user.customer_users.distinct('name_seller')
 
             product_formset = ProductFormSet()
 
@@ -254,38 +254,48 @@ class ReceiptCreateAPIView(ListCreateAPIView):
         products_data = request_data.get('product')
 
         try:
-            user = User.objects.get(id=user_id)
-            customer_data['user'] = user
-
-            account = Account.objects.get(id=account_id)
-            request_data['account'] = account
-
-            customer = Customer.objects.create(**customer_data)
-            receipt = Receipt.objects.create(
-                user=user,
-                account=account,
+            check_existing_receipt = Receipt.objects.filter(
                 receipt_date=receipt_date,
-                customer=customer,
                 total_sum=total_sum,
-                number_receipt=number_receipt,
-                operation_type=operation_type,
-                nds10=nds10,
-                nds20=nds20,
             )
+            if check_existing_receipt:
+                user = User.objects.get(id=user_id)
+                customer_data['user'] = user
 
-            for product_data in products_data:
-                # Удаляем receipt из product_data, чтобы избежать ошибки
-                product_data.pop('receipt', None)
-                product_data['user'] = user
-                # Создаем продукт
-                product = Product.objects.create(**product_data)
-                # Добавляем продукт к чеку
-                receipt.product.add(product)
+                account = Account.objects.get(id=account_id)
+                request_data['account'] = account
 
-            return Response(
-                ReceiptSerializer(receipt).data,
-                status=status.HTTP_201_CREATED,
-            )
+                customer = Customer.objects.create(**customer_data)
+                receipt = Receipt.objects.create(
+                    user=user,
+                    account=account,
+                    receipt_date=receipt_date,
+                    customer=customer,
+                    total_sum=total_sum,
+                    number_receipt=number_receipt,
+                    operation_type=operation_type,
+                    nds10=nds10,
+                    nds20=nds20,
+                )
+
+                for product_data in products_data:
+                    # Удаляем receipt из product_data, чтобы избежать ошибки
+                    product_data.pop('receipt', None)
+                    product_data['user'] = user
+                    # Создаем продукт
+                    product = Product.objects.create(**product_data)
+                    # Добавляем продукт к чеку
+                    receipt.product.add(product)
+
+                return Response(
+                    ReceiptSerializer(receipt).data,
+                    status=status.HTTP_201_CREATED,
+                )
+            else:
+                return Response(
+                    'Такой чек уже был добавлен ранее',
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
 
         except Exception as error:
             return Response(
