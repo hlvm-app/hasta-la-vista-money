@@ -9,6 +9,9 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, DeleteView, DetailView
 from django_filters.views import FilterView
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.custom_paginator import (
@@ -114,6 +117,20 @@ class ReceiptView(
             context['frequently_purchased_products'] = purchased_products
 
             return context
+
+
+class ReceiptListAPIView(ListCreateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = ReceiptSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return Receipt.objects.filter(user=self.request.user)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = ReceiptSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class CustomerCreateView(SuccessMessageMixin, BaseView, CreateView):

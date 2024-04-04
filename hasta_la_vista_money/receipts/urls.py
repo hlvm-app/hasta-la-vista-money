@@ -6,6 +6,7 @@ from hasta_la_vista_money.receipts.views import (
     ReceiptCreateView,
     ReceiptDeleteView,
     ReceiptView,
+    ReceiptListAPIView,
 )
 
 app_name = 'receipts'
@@ -19,9 +20,14 @@ urlpatterns = [
     ),
     path('<int:pk>/', ReceiptDeleteView.as_view(), name='delete'),
     path(
+        'api/list',
+        ReceiptListAPIView.as_view(),
+        name='api_list',
+    ),
+    path(
         'api/create',
         ReceiptCreateAPIView.as_view(),
-        name='api_list',
+        name='receipt_api_create',
     ),
     path(
         'customer/api/create',
