@@ -35,7 +35,10 @@ from hasta_la_vista_money.receipts.serializers import (
     CustomerSerializer,
     ReceiptSerializer,
 )
-from hasta_la_vista_money.receipts.services import convert_date_time, convert_number
+from hasta_la_vista_money.receipts.services import (
+    convert_date_time,
+    convert_number,
+)
 from hasta_la_vista_money.users.models import User
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView
