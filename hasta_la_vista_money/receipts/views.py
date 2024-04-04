@@ -1,5 +1,7 @@
 import json
+import os
 
+import requests
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count, ProtectedError, Sum
@@ -7,11 +9,12 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import CreateView, DeleteView, DetailView
+from django.views.generic import CreateView, DeleteView, DetailView, FormView
 from django_filters.views import FilterView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-
+from PIL import Image
+from pyzbar.pyzbar import decode
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.custom_paginator import (
@@ -24,12 +27,15 @@ from hasta_la_vista_money.receipts.forms import (
     ProductFormSet,
     ReceiptFilter,
     ReceiptForm,
+    FileFieldForm,
 )
+from hasta_la_vista_money.receipts.json_parser.json_parser import parse_json
 from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
 from hasta_la_vista_money.receipts.serializers import (
     CustomerSerializer,
     ReceiptSerializer,
 )
+from hasta_la_vista_money.receipts.services import convert_date_time, convert_number
 from hasta_la_vista_money.users.models import User
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView
@@ -347,3 +353,109 @@ class ReceiptDeleteView(BaseView, DetailView, DeleteView):
         except ProtectedError:
             messages.error(self.request, 'Чек не может быть удалён!')
             return redirect(self.success_url)
+
+
+class FileFieldFormView(BaseView, FormView):
+    form_class = FileFieldForm
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        files = form.cleaned_data["file_field"]
+        for f in files:
+            text = decode_qrcode(f)
+            json_data = get_json_by_text_qrcode(text)
+        return super().form_valid(form=form)
+
+
+def decode_qrcode(image):
+    """
+    Функцию по декодированию изображения QR-кода в текст.
+
+    :param image: Байт-код изображения.
+    :type image: str
+    :return: Строка текста извлеченная из QR-кода.
+    :rtype: str
+    """
+    try:
+        decode_image = decode(Image.open(image))
+        if len(decode_image) != 0:  # noqa: WPS507
+            return decode_image[0].data.decode()
+
+    except FileNotFoundError:
+        print('Файл не загрузился, попробуйте ещё раз!')
+
+
+def get_json_by_text_qrcode(text):
+    url = 'https://proverkacheka.com/api/v1/check/get'
+    data = {
+        'token': os.getenv('TOKEN', None),
+        'qrraw': text,
+    }
+    response = requests.post(url, data=data, timeout=10)
+    json_data = response.json()
+    if json_data.get('code') != 1:
+        return None
+    return json_data['data']['json']
+
+
+def prepare_json(json_data):
+    name_seller = parse_json(json_data, 'user')
+    retail_place_address = parse_json(json_data, 'retailPlaceAddress')
+    retail_place = parse_json(json_data, 'retailPlace')
+    items = parse_json(json_data, 'items')
+    receipt_date = convert_date_time(parse_json(json_data, 'dateTime'))
+    number_receipt = parse_json(json_data, 'fiscalDocumentNumber')
+    nds10 = convert_number(parse_json(json_data, 'nds10'))
+    nds20 = convert_number(parse_json(json_data, 'nds20'))
+    total_sum = convert_number(parse_json(json_data, 'totalSum'))
+    operation_type = parse_json(json_data, 'operationType')
+
+    products = []
+
+    for item in items:
+        name = parse_json(item, 'name')
+        amount = convert_number(parse_json(item, 'sum'))
+        quantity = parse_json(item, 'quantity')
+        price = convert_number(parse_json(item, 'price'))
+        nds_type = parse_json(item, 'nds')
+        nds_num = convert_number(parse_json(item, 'ndsSum'))
+        products.append(
+            {
+                # 'user': user['id'],
+                'product_name': name,
+                'amount': amount,
+                'quantity': quantity,
+                'price': price,
+                'nds_type': nds_type,
+                'nds_sum': nds_num,
+            }
+        )
+
+    customer = {
+        # 'user': user['id'],
+        'name_seller': name_seller,
+        'retail_place_address': retail_place_address,
+        'retail_place': retail_place,
+    }
+
+    request = {
+        # 'user': user['id'],
+        # 'account': selectedAccount,
+        'receipt_date': receipt_date,
+        'number_receipt': number_receipt,
+        'nds10': nds10,
+        'nds20': nds20,
+        'operation_type': operation_type,
+        'total_sum': total_sum,
+        'customer': customer,
+        'product': products,
+    }
+
+    return request

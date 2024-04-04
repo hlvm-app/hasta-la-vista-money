@@ -6,6 +6,9 @@ from django.forms import (
     Select,
     TextInput,
     formset_factory,
+    Form,
+    FileField,
+    ClearableFileInput,
 )
 from django.utils.translation import gettext_lazy as _
 from hasta_la_vista_money.account.models import Account
@@ -161,3 +164,25 @@ class ReceiptForm(BaseFieldsForm):
         }
 
     products = ProductFormSet()
+
+
+class MultipleFileInput(ClearableFileInput):
+    allow_multiple_selected = True
+
+
+class MultipleFileField(FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleFileInput())
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            result = [single_file_clean(d, initial) for d in data]
+        else:
+            result = single_file_clean(data, initial)
+        return result
+
+
+class FileFieldForm(Form):
+    file_field = MultipleFileField()

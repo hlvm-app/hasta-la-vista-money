@@ -7,6 +7,7 @@ from hasta_la_vista_money.receipts.views import (
     ReceiptDeleteView,
     ReceiptView,
     ReceiptListAPIView,
+    FileFieldFormView,
 )
 
 app_name = 'receipts'
@@ -33,5 +34,10 @@ urlpatterns = [
         'customer/api/create',
         CustomerCreateAPIView.as_view(),
         name='api_list',
+    ),
+    path(
+        'upload/image',
+        FileFieldFormView.as_view(),
+        name='upload',
     ),
 ]
