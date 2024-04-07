@@ -148,6 +148,14 @@ class SellerListAPIView(ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
     lookup_field = 'id'
 
+    def get_queryset(self):
+        return Customer.objects.filter(user=self.request.user)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = CustomerSerializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 class CustomerCreateView(SuccessMessageMixin, BaseView, CreateView):
     model = Customer
