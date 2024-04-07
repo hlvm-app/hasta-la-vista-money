@@ -2,12 +2,13 @@ from django.urls import path
 from hasta_la_vista_money.receipts.views import (
     CustomerCreateAPIView,
     CustomerCreateView,
+    FileFieldFormView,
     ReceiptCreateAPIView,
     ReceiptCreateView,
     ReceiptDeleteView,
-    ReceiptView,
     ReceiptListAPIView,
-    FileFieldFormView,
+    ReceiptView,
+    SellerListAPIView,
 )
 
 app_name = 'receipts'
@@ -39,5 +40,10 @@ urlpatterns = [
         'upload/image',
         FileFieldFormView.as_view(),
         name='upload',
+    ),
+    path(
+        'seller/<int:id>',
+        SellerListAPIView.as_view(),
+        name='seller',
     ),
 ]

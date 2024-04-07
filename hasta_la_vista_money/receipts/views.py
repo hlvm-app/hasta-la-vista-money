@@ -11,10 +11,6 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, DeleteView, DetailView, FormView
 from django_filters.views import FilterView
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
-from PIL import Image
-from pyzbar.pyzbar import decode
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.custom_paginator import (
@@ -24,10 +20,10 @@ from hasta_la_vista_money.commonlogic.views import collect_info_receipt
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.receipts.forms import (
     CustomerForm,
+    FileFieldForm,
     ProductFormSet,
     ReceiptFilter,
     ReceiptForm,
-    FileFieldForm,
 )
 from hasta_la_vista_money.receipts.json_parser.json_parser import parse_json
 from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
@@ -40,8 +36,12 @@ from hasta_la_vista_money.receipts.services import (
     convert_number,
 )
 from hasta_la_vista_money.users.models import User
+from PIL import Image
+from pyzbar.pyzbar import decode
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.generics import ListCreateAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -75,9 +75,9 @@ class ReceiptView(
             )
             receipt_form = ReceiptForm()
             receipt_form.fields['account'].queryset = user.account_users
-            receipt_form.fields[
-                'customer'
-            ].queryset = user.customer_users.distinct('name_seller')
+            receipt_form.fields['customer'].queryset = (
+                user.customer_users.distinct('name_seller')
+            )
 
             product_formset = ProductFormSet()
 
@@ -140,6 +140,13 @@ class ReceiptListAPIView(ListCreateAPIView):
         queryset = self.get_queryset()
         serializer = ReceiptSerializer(queryset, many=True)
         return Response(serializer.data)
+
+
+class SellerListAPIView(ListCreateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = ReceiptSerializer
+    permission_classes = (IsAuthenticated,)
+    lookup_field = 'id'
 
 
 class CustomerCreateView(SuccessMessageMixin, BaseView, CreateView):
@@ -318,17 +325,13 @@ class ReceiptCreateAPIView(ListCreateAPIView):
                     ReceiptSerializer(receipt).data,
                     status=status.HTTP_201_CREATED,
                 )
-            else:
-                return Response(
-                    'Такой чек уже был добавлен ранее',
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
-
+            return Response(
+                'Такой чек уже был добавлен ранее',
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         except Exception as error:
             return Response(
-                {
-                    'error': str(error),
-                },
+                {'error': str(error)},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -366,14 +369,13 @@ class FileFieldFormView(BaseView, FormView):
         form = self.get_form(form_class)
         if form.is_valid():
             return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
+        return self.form_invalid(form)
 
     def form_valid(self, form):
-        files = form.cleaned_data["file_field"]
-        for f in files:
-            text = decode_qrcode(f)
-            json_data = get_json_by_text_qrcode(text)
+        files = form.cleaned_data['file_field']
+        for file in files:
+            text = decode_qrcode(file)
+            json_data = get_json_by_text_qrcode(text)  # noqa: F841
         return super().form_valid(form=form)
 
 
@@ -392,10 +394,11 @@ def decode_qrcode(image):
             return decode_image[0].data.decode()
 
     except FileNotFoundError:
-        print('Файл не загрузился, попробуйте ещё раз!')
+        print('Файл не загрузился, попробуйте ещё раз!')  # noqa: WPS421
 
 
 def get_json_by_text_qrcode(text):
+    """Получить json из сервиса API."""
     url = 'https://proverkacheka.com/api/v1/check/get'
     data = {
         'token': os.getenv('TOKEN', None),
@@ -408,7 +411,10 @@ def get_json_by_text_qrcode(text):
     return json_data['data']['json']
 
 
-def prepare_json(json_data):
+def prepare_json(json_data):  # noqa: WPS210
+    """Подготовить json для дальнейшей обработки."""
+    user = parse_json(json_data, 'name')
+    selected_account = parse_json(json_data, 'selected_account')
     name_seller = parse_json(json_data, 'user')
     retail_place_address = parse_json(json_data, 'retailPlaceAddress')
     retail_place = parse_json(json_data, 'retailPlace')
@@ -424,6 +430,7 @@ def prepare_json(json_data):
 
     for item in items:
         name = parse_json(item, 'name')
+
         amount = convert_number(parse_json(item, 'sum'))
         quantity = parse_json(item, 'quantity')
         price = convert_number(parse_json(item, 'price'))
@@ -431,26 +438,26 @@ def prepare_json(json_data):
         nds_num = convert_number(parse_json(item, 'ndsSum'))
         products.append(
             {
-                # 'user': user['id'],
+                'user': user['id'],
                 'product_name': name,
                 'amount': amount,
                 'quantity': quantity,
                 'price': price,
                 'nds_type': nds_type,
                 'nds_sum': nds_num,
-            }
+            },
         )
 
     customer = {
-        # 'user': user['id'],
+        'user': user['id'],
         'name_seller': name_seller,
         'retail_place_address': retail_place_address,
         'retail_place': retail_place,
     }
 
-    request = {
-        # 'user': user['id'],
-        # 'account': selectedAccount,
+    return {
+        'user': user['id'],
+        'account': selected_account,
         'receipt_date': receipt_date,
         'number_receipt': number_receipt,
         'nds10': nds10,
@@ -460,5 +467,3 @@ def prepare_json(json_data):
         'customer': customer,
         'product': products,
     }
-
-    return request
