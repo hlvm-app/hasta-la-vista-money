@@ -303,14 +303,11 @@ class ReceiptCreateAPIView(ListCreateAPIView):
             if not check_existing_receipt:
                 user = User.objects.get(id=user_id)
                 customer_data['user'] = user
-
                 account = Account.objects.get(id=account_id)
-                request_data['account'] = account
-
-                customer = Customer.objects.create(**customer_data)
-
                 account.balance -= total_sum
-
+                account.save()
+                request_data['account'] = account
+                customer = Customer.objects.create(**customer_data)
                 receipt = Receipt.objects.create(
                     user=user,
                     account=account,
@@ -323,13 +320,12 @@ class ReceiptCreateAPIView(ListCreateAPIView):
                     nds20=nds20,
                 )
 
-                account.save()
-
                 for product_data in products_data:
                     # Удаляем receipt из product_data, чтобы избежать ошибки
                     product_data.pop('receipt', None)
                     product_data['user'] = user
                     # Создаем продукт
+                    print(product_data)
                     product = Product.objects.create(**product_data)
                     # Добавляем продукт к чеку
                     receipt.product.add(product)
@@ -344,7 +340,7 @@ class ReceiptCreateAPIView(ListCreateAPIView):
             )
         except Exception as error:
             return Response(
-                {'error': str(error)},
+                str(error),
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
