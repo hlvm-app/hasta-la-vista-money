@@ -369,12 +369,18 @@ class ReceiptDeleteView(BaseView, DetailView, DeleteView):
             return redirect(self.success_url)
 
 
-class FileFieldFormView(BaseView, FormView):
+class FileFieldFormView(FormView):
     form_class = FileFieldForm
+    template_name = 'receipts/receipts.html'
+    success_url = reverse_lazy('receipts:list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form_file'] = self.form_class(user=self.request.user)
+        return context
 
     def post(self, request, *args, **kwargs):
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
+        form = self.get_form()
         if form.is_valid():
             return self.form_valid(form)
         return self.form_invalid(form)

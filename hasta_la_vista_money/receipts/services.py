@@ -1,10 +1,6 @@
 import datetime
 from typing import Optional, Union
 
-from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.bot.log_config import logger
-from hasta_la_vista_money.users.models import TelegramUser
-
 
 # Выделяем дату из json
 def convert_date_time(date_time: int) -> Optional[str]:

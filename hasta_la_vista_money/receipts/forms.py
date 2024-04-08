@@ -1,14 +1,15 @@
 import django_filters
 from django.forms import (
     CharField,
+    ClearableFileInput,
     DateTimeInput,
+    FileField,
+    Form,
+    ModelChoiceField,
     NumberInput,
     Select,
     TextInput,
     formset_factory,
-    Form,
-    FileField,
-    ClearableFileInput,
 )
 from django.utils.translation import gettext_lazy as _
 from hasta_la_vista_money.account.models import Account
@@ -172,13 +173,14 @@ class MultipleFileInput(ClearableFileInput):
 
 class MultipleFileField(FileField):
     def __init__(self, *args, **kwargs):
-        kwargs.setdefault("widget", MultipleFileInput())
+        """init."""
+        kwargs.setdefault('widget', MultipleFileInput())
         super().__init__(*args, **kwargs)
 
     def clean(self, data, initial=None):
         single_file_clean = super().clean
         if isinstance(data, (list, tuple)):
-            result = [single_file_clean(d, initial) for d in data]
+            result = [single_file_clean(item, initial) for item in data]
         else:
             result = single_file_clean(data, initial)
         return result
@@ -186,3 +188,11 @@ class MultipleFileField(FileField):
 
 class FileFieldForm(Form):
     file_field = MultipleFileField()
+    account_field = ModelChoiceField(queryset=Account.objects.all())
+
+    def __init__(self, user=None, *args, **kwargs):
+        """init."""
+        super().__init__(*args, **kwargs)
+        self.fields['account_field'].queryset = Account.objects.filter(
+            user=user,
+        )
