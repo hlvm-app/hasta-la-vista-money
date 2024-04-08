@@ -1,3 +1,4 @@
+import decimal
 import json
 import os
 
@@ -304,7 +305,7 @@ class ReceiptCreateAPIView(ListCreateAPIView):
                 user = User.objects.get(id=user_id)
                 customer_data['user'] = user
                 account = Account.objects.get(id=account_id)
-                account.balance -= total_sum
+                account.balance -= decimal.Decimal(total_sum)
                 account.save()
                 request_data['account'] = account
                 customer = Customer.objects.create(**customer_data)
@@ -325,7 +326,6 @@ class ReceiptCreateAPIView(ListCreateAPIView):
                     product_data.pop('receipt', None)
                     product_data['user'] = user
                     # Создаем продукт
-                    print(product_data)
                     product = Product.objects.create(**product_data)
                     # Добавляем продукт к чеку
                     receipt.product.add(product)
