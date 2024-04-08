@@ -38,8 +38,6 @@ from hasta_la_vista_money.receipts.services import (
     convert_number,
 )
 from hasta_la_vista_money.users.models import User
-from PIL import Image
-from pyzbar.pyzbar import decode
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.generics import ListCreateAPIView
@@ -77,9 +75,9 @@ class ReceiptView(
             )
             receipt_form = ReceiptForm()
             receipt_form.fields['account'].queryset = user.account_users
-            receipt_form.fields[
-                'customer'
-            ].queryset = user.customer_users.distinct('name_seller')
+            receipt_form.fields['customer'].queryset = (
+                user.customer_users.distinct('name_seller')
+            )
 
             product_formset = ProductFormSet()
 
@@ -387,7 +385,6 @@ class FileFieldFormView(BaseView, FormView):
             with tempfile.TemporaryDirectory() as tmp_dir:
                 tmp_file = f'{tmp_dir}/{file}'
                 with open(tmp_file, 'wb+') as path_tmp_file:
-                    print(path_tmp_file)
                     json_data = get_json_by_qrcode(self.request, path_tmp_file)
                     prepare_json(self.request, json_data)
         return super().form_valid(form=form)
@@ -409,59 +406,59 @@ def get_json_by_qrcode(request, file):
     return json_data['data']['json']
 
 
-def prepare_json(request, json_data):  # noqa: WPS210
+def prepare_json(request, json_data):
     """Подготовить json для дальнейшей обработки."""
-    user = request.user
-    selected_account = parse_json(json_data, 'selected_account')
-    name_seller = parse_json(json_data, 'user')
-    retail_place_address = parse_json(json_data, 'retailPlaceAddress')
-    retail_place = parse_json(json_data, 'retailPlace')
-    items = parse_json(json_data, 'items')
-    receipt_date = convert_date_time(parse_json(json_data, 'dateTime'))
-    number_receipt = parse_json(json_data, 'fiscalDocumentNumber')
-    nds10 = convert_number(parse_json(json_data, 'nds10'))
-    nds20 = convert_number(parse_json(json_data, 'nds20'))
-    total_sum = convert_number(parse_json(json_data, 'totalSum'))
-    operation_type = parse_json(json_data, 'operationType')
+    if json_data:
+        selected_account = parse_json(json_data, 'selected_account')
+        name_seller = parse_json(json_data, 'user')
+        retail_place_address = parse_json(json_data, 'retailPlaceAddress')
+        retail_place = parse_json(json_data, 'retailPlace')
+        items = parse_json(json_data, 'items')
+        receipt_date = convert_date_time(parse_json(json_data, 'dateTime'))
+        number_receipt = parse_json(json_data, 'fiscalDocumentNumber')
+        nds10 = convert_number(parse_json(json_data, 'nds10'))
+        nds20 = convert_number(parse_json(json_data, 'nds20'))
+        total_sum = convert_number(parse_json(json_data, 'totalSum'))
+        operation_type = parse_json(json_data, 'operationType')
 
-    products = []
+        products = []
 
-    for item in items:
-        product_name = parse_json(item, 'product_name')
+        for item in items:
+            product_name = parse_json(item, 'product_name')
 
-        amount = convert_number(parse_json(item, 'sum'))
-        quantity = parse_json(item, 'quantity')
-        price = convert_number(parse_json(item, 'price'))
-        nds_type = parse_json(item, 'nds')
-        nds_num = convert_number(parse_json(item, 'ndsSum'))
-        products.append(
-            {
-                'user': request.user.id,
-                'product_name': product_name,
-                'amount': amount,
-                'quantity': quantity,
-                'price': price,
-                'nds_type': nds_type,
-                'nds_sum': nds_num,
-            },
-        )
+            amount = convert_number(parse_json(item, 'sum'))
+            quantity = parse_json(item, 'quantity')
+            price = convert_number(parse_json(item, 'price'))
+            nds_type = parse_json(item, 'nds')
+            nds_num = convert_number(parse_json(item, 'ndsSum'))
+            products.append(
+                {
+                    'user': request.user.id,
+                    'product_name': product_name,
+                    'amount': amount,
+                    'quantity': quantity,
+                    'price': price,
+                    'nds_type': nds_type,
+                    'nds_sum': nds_num,
+                },
+            )
 
-    customer = {
-        'user': request.user.id,
-        'name_seller': name_seller,
-        'retail_place_address': retail_place_address,
-        'retail_place': retail_place,
-    }
+        customer = {
+            'user': request.user.id,
+            'name_seller': name_seller,
+            'retail_place_address': retail_place_address,
+            'retail_place': retail_place,
+        }
 
-    return {
-        'user': request.user.id,
-        'account': selected_account,
-        'receipt_date': receipt_date,
-        'number_receipt': number_receipt,
-        'nds10': nds10,
-        'nds20': nds20,
-        'operation_type': operation_type,
-        'total_sum': total_sum,
-        'customer': customer,
-        'product': products,
-    }
+        return {
+            'user': request.user.id,
+            'account': selected_account,
+            'receipt_date': receipt_date,
+            'number_receipt': number_receipt,
+            'nds10': nds10,
+            'nds20': nds20,
+            'operation_type': operation_type,
+            'total_sum': total_sum,
+            'customer': customer,
+            'product': products,
+        }
