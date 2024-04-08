@@ -389,7 +389,7 @@ class FileFieldFormView(BaseView, FormView):
                 with open(tmp_file, 'wb+') as path_tmp_file:
                     print(path_tmp_file)
                     json_data = get_json_by_qrcode(self.request, path_tmp_file)
-                    print(json_data)
+                    prepare_json(self.request, json_data)
         return super().form_valid(form=form)
 
 
@@ -409,9 +409,9 @@ def get_json_by_qrcode(request, file):
     return json_data['data']['json']
 
 
-def prepare_json(json_data):  # noqa: WPS210
+def prepare_json(request, json_data):  # noqa: WPS210
     """Подготовить json для дальнейшей обработки."""
-    user = parse_json(json_data, 'name')
+    user = request.user
     selected_account = parse_json(json_data, 'selected_account')
     name_seller = parse_json(json_data, 'user')
     retail_place_address = parse_json(json_data, 'retailPlaceAddress')
@@ -427,7 +427,7 @@ def prepare_json(json_data):  # noqa: WPS210
     products = []
 
     for item in items:
-        name = parse_json(item, 'name')
+        product_name = parse_json(item, 'product_name')
 
         amount = convert_number(parse_json(item, 'sum'))
         quantity = parse_json(item, 'quantity')
@@ -436,8 +436,8 @@ def prepare_json(json_data):  # noqa: WPS210
         nds_num = convert_number(parse_json(item, 'ndsSum'))
         products.append(
             {
-                'user': user['id'],
-                'product_name': name,
+                'user': request.user.id,
+                'product_name': product_name,
                 'amount': amount,
                 'quantity': quantity,
                 'price': price,
@@ -447,14 +447,14 @@ def prepare_json(json_data):  # noqa: WPS210
         )
 
     customer = {
-        'user': user['id'],
+        'user': request.user.id,
         'name_seller': name_seller,
         'retail_place_address': retail_place_address,
         'retail_place': retail_place,
     }
 
     return {
-        'user': user['id'],
+        'user': request.user.id,
         'account': selected_account,
         'receipt_date': receipt_date,
         'number_receipt': number_receipt,
