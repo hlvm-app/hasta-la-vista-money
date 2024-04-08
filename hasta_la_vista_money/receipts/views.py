@@ -308,6 +308,9 @@ class ReceiptCreateAPIView(ListCreateAPIView):
                 request_data['account'] = account
 
                 customer = Customer.objects.create(**customer_data)
+
+                account.balance -= total_sum
+
                 receipt = Receipt.objects.create(
                     user=user,
                     account=account,
@@ -319,6 +322,8 @@ class ReceiptCreateAPIView(ListCreateAPIView):
                     nds10=nds10,
                     nds20=nds20,
                 )
+
+                account.save()
 
                 for product_data in products_data:
                     # Удаляем receipt из product_data, чтобы избежать ошибки
