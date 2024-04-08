@@ -1,6 +1,7 @@
 import decimal
 import json
 import os
+import tempfile
 
 import requests
 from django.contrib import messages
@@ -383,40 +384,28 @@ class FileFieldFormView(BaseView, FormView):
     def form_valid(self, form):
         files = form.cleaned_data['file_field']
         for file in files:
-            text = decode_qrcode(file)
-            json_data = get_json_by_text_qrcode(text)  # noqa: F841
+            with tempfile.TemporaryDirectory() as tmp_dir:
+                tmp_file = f'{tmp_dir}/{file}'
+                with open(tmp_file, 'wb+') as path_tmp_file:
+                    print(path_tmp_file)
+                    json_data = get_json_by_qrcode(self.request, path_tmp_file)
+                    print(json_data)
         return super().form_valid(form=form)
 
 
-def decode_qrcode(image):
-    """
-    Функцию по декодированию изображения QR-кода в текст.
-
-    :param image: Байт-код изображения.
-    :type image: str
-    :return: Строка текста извлеченная из QR-кода.
-    :rtype: str
-    """
-    try:
-        decode_image = decode(Image.open(image))
-        if len(decode_image) != 0:  # noqa: WPS507
-            return decode_image[0].data.decode()
-
-    except FileNotFoundError:
-        print('Файл не загрузился, попробуйте ещё раз!')  # noqa: WPS421
-
-
-def get_json_by_text_qrcode(text):
+def get_json_by_qrcode(request, file):
     """Получить json из сервиса API."""
     url = 'https://proverkacheka.com/api/v1/check/get'
     data = {
         'token': os.getenv('TOKEN', None),
-        'qrraw': text,
     }
-    response = requests.post(url, data=data, timeout=10)
+    files = {'qrfile': file}
+    response = requests.post(url, data=data, files=files, timeout=10)
     json_data = response.json()
     if json_data.get('code') != 1:
+        messages.error(request, json_data['data'])
         return None
+    messages.success(request, 'Receipt successfully added')
     return json_data['data']['json']
 
 
