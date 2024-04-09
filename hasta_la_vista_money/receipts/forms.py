@@ -190,9 +190,10 @@ class FileFieldForm(Form):
     file_field = MultipleFileField()
     account_field = ModelChoiceField(queryset=Account.objects.all())
 
-    def __init__(self, user=None, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         """init."""
+        user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         self.fields['account_field'].queryset = Account.objects.filter(
-            user=user,
+            user=user
         )
