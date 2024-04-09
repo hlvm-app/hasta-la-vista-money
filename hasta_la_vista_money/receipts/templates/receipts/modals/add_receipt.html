@@ -8,12 +8,6 @@
                 <h5 class="modal-title">
                     Добавить чек
                 </h5>
-                <button type="button"
-                        class="btn btn-sm btn-warning ms-5"
-                        data-bs-toggle="modal"
-                        data-bs-target="#add-file-qr-code">
-                    {% translate 'Добавить чек с картинки' %}
-                </button>
                 <button type="button" class="btn-close"
                         data-bs-dismiss="modal"
                         aria-label="Close"></button>
@@ -54,30 +48,6 @@
                     <button id="add-form" type="button" class="add-product-btn btn btn-outline-warning">Добавить ещё один товар</button>
                     <button id="remove-form" type="button" class="remove-product-btn btn btn-outline-danger">Удалить один товар</button>
                     <button type="submit" class="add-receipt-btn mx-auto btn btn-outline-primary">Добавить чек</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div id="add-file-qr-code" class="modal modal-lg fade ajax-modal">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">
-                    Добавить файл
-                </h5>
-
-                <button type="button" class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form method="post" class="ajax-form" action="{% url 'receipts:upload' %}" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ form_file | crispy }}
-                    <button type="submit" class="btn btn-warning">Отправить</button>
                 </form>
             </div>
         </div>

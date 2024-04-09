@@ -1,7 +1,6 @@
 import decimal
 import json
 import os
-import tempfile
 
 import requests
 from django.contrib import messages
@@ -11,7 +10,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import CreateView, DeleteView, DetailView, FormView
+from django.views.generic import CreateView, DeleteView, DetailView
 from django_filters.views import FilterView
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
@@ -22,7 +21,6 @@ from hasta_la_vista_money.commonlogic.views import collect_info_receipt
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.receipts.forms import (
     CustomerForm,
-    FileFieldForm,
     ProductFormSet,
     ReceiptFilter,
     ReceiptForm,
@@ -75,9 +73,9 @@ class ReceiptView(
             )
             receipt_form = ReceiptForm()
             receipt_form.fields['account'].queryset = user.account_users
-            receipt_form.fields[
-                'customer'
-            ].queryset = user.customer_users.distinct('name_seller')
+            receipt_form.fields['customer'].queryset = (
+                user.customer_users.distinct('name_seller')
+            )
 
             product_formset = ProductFormSet()
 
@@ -113,7 +111,6 @@ class ReceiptView(
                 self.paginate_by,
                 'receipts',
             )
-            form_file = FileFieldForm(user=self.request.user)
 
             context = super().get_context_data(**kwargs)
             context['receipts'] = page_receipts
@@ -125,7 +122,6 @@ class ReceiptView(
             context['product_formset'] = product_formset
             context['receipt_info_by_month'] = pages_receipt_table
             context['frequently_purchased_products'] = purchased_products
-            context['form_file'] = form_file
 
             return context
 
@@ -371,53 +367,6 @@ class ReceiptDeleteView(BaseView, DetailView, DeleteView):
             return redirect(self.success_url)
 
 
-class FileFieldFormView(FormView):
-    form_class = FileFieldForm
-    template_name = 'receipts/receipts.html'
-    success_url = reverse_lazy('receipts:list')
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST, request.FILES, user=request.user)
-        print(form)
-        if form.is_valid():
-            files = request.FILES.getlist('file_field')
-            print(files)
-            return self.form_valid(form)
-        return self.form_invalid(form)
-
-    # def form_valid(self, form):
-    #     files = form.cleaned_data["file_field"]
-    #     print(files)
-    #     for file in files:
-    #         with tempfile.TemporaryDirectory() as tmp_dir:
-    #             tmp_file = f'{tmp_dir}/{file}'
-    #             with open(tmp_file, 'wb+') as path_tmp_file:
-    #                 json_data = get_json_by_qrcode(self.request, path_tmp_file)
-    #                 prepare_json(self.request, json_data)
-    #     return redirect(self.success_url)
-
-    # def post(self, request, *args, **kwargs):
-    #     form = self.get_form(request.POST)
-    #     files = self.request.FILES
-    #     print(files)
-    #     print(form.is_valid())
-    #
-    #     if form.is_valid():
-    #         for file in files:
-    #             with tempfile.TemporaryDirectory() as tmp_dir:
-    #                 tmp_file = f'{tmp_dir}/{file}'
-    #                 with open(tmp_file, 'wb+') as path_tmp_file:
-    #                     json_data = get_json_by_qrcode(
-    #                         self.request, path_tmp_file
-    #                     )
-    #                     prepare_json(self.request, json_data)
-    #         return redirect(self.success_url)
-    #     return self.form_invalid(form)
-
-    def form_invalid(self, form):
-        return JsonResponse({'success': False, 'errors': form.errors})
-
-
 def get_json_by_qrcode(request, file):
     """Получить json из сервиса API."""
     url = 'https://proverkacheka.com/api/v1/check/get'
@@ -427,7 +376,6 @@ def get_json_by_qrcode(request, file):
     files = {'qrfile': file}
     response = requests.post(url, data=data, files=files, timeout=10)
     json_data = response.json()
-    print(json_data)
     if json_data.get('code') != 1:
         messages.error(request, json_data['data'])
         return None

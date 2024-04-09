@@ -1,11 +1,7 @@
 import django_filters
 from django.forms import (
     CharField,
-    ClearableFileInput,
     DateTimeInput,
-    FileField,
-    Form,
-    ModelChoiceField,
     NumberInput,
     Select,
     TextInput,
@@ -165,35 +161,3 @@ class ReceiptForm(BaseFieldsForm):
         }
 
     products = ProductFormSet()
-
-
-class MultipleFileInput(ClearableFileInput):
-    allow_multiple_selected = True
-
-
-class MultipleFileField(FileField):
-    def __init__(self, *args, **kwargs):
-        """init."""
-        kwargs.setdefault('widget', MultipleFileInput())
-        super().__init__(*args, **kwargs)
-
-    def clean(self, data, initial=None):
-        single_file_clean = super().clean
-        if isinstance(data, (list, tuple)):
-            result = [single_file_clean(item, initial) for item in data]
-        else:
-            result = single_file_clean(data, initial)
-        return result
-
-
-class FileFieldForm(Form):
-    file_field = MultipleFileField()
-    account_field = ModelChoiceField(queryset=Account.objects.all())
-
-    def __init__(self, *args, **kwargs):
-        """init."""
-        user = kwargs.pop('user', None)
-        super().__init__(*args, **kwargs)
-        self.fields['account_field'].queryset = Account.objects.filter(
-            user=user
-        )
