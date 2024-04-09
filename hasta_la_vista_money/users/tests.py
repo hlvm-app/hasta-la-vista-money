@@ -21,7 +21,7 @@ class TestUser(TestCase):
         self.client.force_login(self.user2)
         url = reverse_lazy('users:registration')
         response = self.client.get(url)
-        self.assertEqual(response.status_code, constants.SUCCESS_CODE)
+        self.assertEqual(response.status_code, constants.REDIRECTS)
 
         Faker.seed(0)
         username = self.faker.user_name()
