@@ -25,19 +25,11 @@ from hasta_la_vista_money.receipts.forms import (
 )
 from hasta_la_vista_money.receipts.json_parser.json_parser import parse_json
 from hasta_la_vista_money.receipts.models import Customer, Receipt
-from hasta_la_vista_money.receipts.serializers import (
-    CustomerSerializer,
-    ReceiptSerializer,
-)
 from hasta_la_vista_money.receipts.services import (
     convert_date_time,
     convert_number,
 )
 from hasta_la_vista_money.users.models import User
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.generics import ListCreateAPIView
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 
 
 class BaseView:
@@ -259,77 +251,3 @@ class ReceiptDeleteView(BaseView, DetailView, DeleteView):
         except ProtectedError:
             messages.error(self.request, 'Чек не может быть удалён!')
             return redirect(self.success_url)
-
-
-def get_json_by_qrcode(request, file):
-    """Получить json из сервиса API."""
-    url = 'https://proverkacheka.com/api/v1/check/get'
-    data = {
-        'token': os.getenv('TOKEN', None),
-    }
-    files = {'qrfile': file}
-    response = requests.post(url, data=data, files=files, timeout=10)
-    json_data = response.json()
-    if json_data.get('code') != 1:
-        messages.error(request, json_data['data'])
-        return None
-    messages.success(request, 'Receipt successfully added')
-    return json_data['data']['json']
-
-
-def prepare_json(request, json_data):
-    """Подготовить json для дальнейшей обработки."""
-    if json_data:
-        selected_account = parse_json(json_data, 'selected_account')
-        name_seller = parse_json(json_data, 'user')
-        retail_place_address = parse_json(json_data, 'retailPlaceAddress')
-        retail_place = parse_json(json_data, 'retailPlace')
-        items = parse_json(json_data, 'items')
-        receipt_date = convert_date_time(parse_json(json_data, 'dateTime'))
-        number_receipt = parse_json(json_data, 'fiscalDocumentNumber')
-        nds10 = convert_number(parse_json(json_data, 'nds10'))
-        nds20 = convert_number(parse_json(json_data, 'nds20'))
-        total_sum = convert_number(parse_json(json_data, 'totalSum'))
-        operation_type = parse_json(json_data, 'operationType')
-
-        products = []
-
-        for item in items:
-            product_name = parse_json(item, 'product_name')
-
-            amount = convert_number(parse_json(item, 'sum'))
-            quantity = parse_json(item, 'quantity')
-            price = convert_number(parse_json(item, 'price'))
-            nds_type = parse_json(item, 'nds')
-            nds_num = convert_number(parse_json(item, 'ndsSum'))
-            products.append(
-                {
-                    'user': request.user.id,
-                    'product_name': product_name,
-                    'amount': amount,
-                    'quantity': quantity,
-                    'price': price,
-                    'nds_type': nds_type,
-                    'nds_sum': nds_num,
-                },
-            )
-
-        customer = {
-            'user': request.user.id,
-            'name_seller': name_seller,
-            'retail_place_address': retail_place_address,
-            'retail_place': retail_place,
-        }
-
-        return {
-            'user': request.user.id,
-            'account': selected_account,
-            'receipt_date': receipt_date,
-            'number_receipt': number_receipt,
-            'nds10': nds10,
-            'nds20': nds20,
-            'operation_type': operation_type,
-            'total_sum': total_sum,
-            'customer': customer,
-            'product': products,
-        }
