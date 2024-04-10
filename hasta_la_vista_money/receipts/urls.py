@@ -1,13 +1,15 @@
 from django.urls import path
-from hasta_la_vista_money.receipts.views import (
+from hasta_la_vista_money.receipts.apis import (
     CustomerCreateAPIView,
-    CustomerCreateView,
     ReceiptCreateAPIView,
+    ReceiptListAPIView,
+    SellerListAPIView,
+)
+from hasta_la_vista_money.receipts.views import (
+    CustomerCreateView,
     ReceiptCreateView,
     ReceiptDeleteView,
-    ReceiptListAPIView,
     ReceiptView,
-    SellerListAPIView,
 )
 
 app_name = 'receipts'
