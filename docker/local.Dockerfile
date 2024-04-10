@@ -1,15 +1,19 @@
-# This docker file is used for local development via docker-compose
+# This docker file is used for production
 # Creating image based on official python3 image
 FROM python:3.11.2
 
-# Fix python printing
-ENV PYTHONUNBUFFERED 1
-
-# Installing all python dependencies
-ADD requirements/ requirements/
-RUN pip install -r requirements/dev.txt
-
 # Get the django project into the docker container
-RUN mkdir /app
+RUN curl -sSL https://install.python-poetry.org | python3 - && /root/.local/bin/poetry --version
+RUN poetry config virtualenvs.create false && poetry install --extras psycopg2-binary --only main
+RUN where poetry
+ENV PATH="/root/.local/bin:$PATH"
+
 WORKDIR /app
-ADD ./ /app/
+COPY . .
+RUN pip install -r requirements/prod.txt
+
+ENV PYTHONFAULTHANDLER=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

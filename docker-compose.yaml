@@ -2,7 +2,7 @@ services:
   db:
     image: postgres:latest
     volumes:
-      - ${UPLOAD_LOCATION}/postgres:/var/lib/postgresql/data
+      - ./postgres:/var/lib/postgresql/data
     env_file:
       - .env
     environment:
@@ -17,7 +17,7 @@ services:
       context: .
       dockerfile: docker/production.Dockerfile
     volumes:
-      - ${UPLOAD_LOCATION}:/app
+      - .:/app
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
