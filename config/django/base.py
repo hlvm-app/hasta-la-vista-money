@@ -55,22 +55,7 @@ CSRF_TRUSTED_ORIGINS = (
 )
 
 # Application definition
-
-INSTALLED_APPS = [
-    'axes',
-    'csp',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.humanize',
-    'django.contrib.messages',
-    'django.contrib.sessions',
-    'django.contrib.staticfiles',
-    'crispy_forms',
-    'crispy_bootstrap5',
-    'django_filters',
-    'rest_framework',
-    'rest_framework.authtoken',
+LOCAL_APPS = [
     'hasta_la_vista_money',
     'hasta_la_vista_money.account',
     'hasta_la_vista_money.bot',
@@ -84,8 +69,31 @@ INSTALLED_APPS = [
     'hasta_la_vista_money.users',
     'hasta_la_vista_money.templatags.thousand_comma',
     'hasta_la_vista_money.templatags.generate_hash',
+]
+
+THIRD_PARTY_APPS = [
+    'axes',
+    'csp',
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'django_filters',
     'locale',
+    'rest_framework',
+    'rest_framework.authtoken',
     'rosetta',
+]
+
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.humanize',
+    'django.contrib.messages',
+    'django.contrib.sessions',
+    'django.contrib.staticfiles',
+    *LOCAL_APPS,
+    *THIRD_PARTY_APPS,
 ]
 
 if DEBUG:
@@ -107,6 +115,10 @@ MIDDLEWARE = [
     'axes.middleware.AxesMiddleware',
     'hasta_la_vista_money.users.middleware.CheckAdminMiddleware',
 ]
+
+
+ROOT_URLCONF = 'config.urls'
+
 
 INTERNAL_IPS = [
     '127.0.0.1',
@@ -154,7 +166,6 @@ CSP_FRAME_SRC = ("'none'",)
 CSP_BASE_URI = ("'none'",)
 CSP_OBJECT_SRC = ("'none'",)
 
-ROOT_URLCONF = 'config.urls'
 
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 
@@ -249,6 +260,15 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.0/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_URL = "/static/"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -278,15 +298,6 @@ LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
 
 FIXTURE_DIRS = (os.path.join(BASE_DIR, 'fixtures'),)
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-STATIC_URL = 'static/'
-
-# Extra places for collectstatic to find static files.
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -318,10 +329,3 @@ ROSETTA_STORAGE_CLASS = 'rosetta.storage.CacheRosettaStorage'
 # Crispy
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
-
-
-# Upload files
-FILE_UPLOAD_HANDLERS = [
-    'django.core.files.uploadhandler.MemoryFileUploadHandler',
-    'django.core.files.uploadhandler.TemporaryFileUploadHandler',
-]
