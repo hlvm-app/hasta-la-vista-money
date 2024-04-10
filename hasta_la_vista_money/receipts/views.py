@@ -1,5 +1,3 @@
-import decimal
-import json
 import os
 
 import requests
@@ -26,7 +24,7 @@ from hasta_la_vista_money.receipts.forms import (
     ReceiptForm,
 )
 from hasta_la_vista_money.receipts.json_parser.json_parser import parse_json
-from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
+from hasta_la_vista_money.receipts.models import Customer, Receipt
 from hasta_la_vista_money.receipts.serializers import (
     CustomerSerializer,
     ReceiptSerializer,
@@ -36,12 +34,10 @@ from hasta_la_vista_money.receipts.services import (
     convert_number,
 )
 from hasta_la_vista_money.users.models import User
-from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 
 class BaseView:
