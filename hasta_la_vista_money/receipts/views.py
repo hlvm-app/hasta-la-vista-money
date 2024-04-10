@@ -1,6 +1,3 @@
-import os
-
-import requests
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count, ProtectedError, Sum
@@ -23,12 +20,7 @@ from hasta_la_vista_money.receipts.forms import (
     ReceiptFilter,
     ReceiptForm,
 )
-from hasta_la_vista_money.receipts.json_parser.json_parser import parse_json
 from hasta_la_vista_money.receipts.models import Customer, Receipt
-from hasta_la_vista_money.receipts.services import (
-    convert_date_time,
-    convert_number,
-)
 from hasta_la_vista_money.users.models import User
 
 
