@@ -16,22 +16,17 @@ from hasta_la_vista_money.account.prepare import (
     collect_info_income,
     sort_expense_income,
 )
-from hasta_la_vista_money.account.serializers import AccountSerializer
 from hasta_la_vista_money.commonlogic.views import collect_info_receipt
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
     DeleteObjectMixin,
 )
 from hasta_la_vista_money.users.models import User
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.generics import ListCreateAPIView
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 
 
 class BaseView:
     template_name = 'account/account.html'
-    success_url = reverse_lazy('applications:list')
+    success_url = reverse_lazy('account:list')
 
 
 class AccountBaseView(BaseView):
@@ -46,7 +41,7 @@ class AccountView(
 ):
     """Отображает список приложений в проекте на сайте."""
 
-    context_object_name = 'applications'
+    context_object_name = 'account'
     no_permission_url = reverse_lazy('login')
 
     def get_context_data(self, **kwargs) -> dict:
@@ -88,21 +83,6 @@ class AccountView(
             context['income_expense'] = income_expense
             context['transfer_money_log'] = transfer_money_log
             return context
-
-
-class AccountListCreateAPIView(ListCreateAPIView):
-    authentication_classes = (TokenAuthentication,)
-    serializer_class = AccountSerializer
-    permission_classes = (IsAuthenticated,)
-
-    @property
-    def queryset(self):
-        return Account.objects.filter(user=self.request.user)
-
-    def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        serializer = AccountSerializer(queryset, many=True)
-        return Response(serializer.data)
 
 
 class AccountCreateView(SuccessMessageMixin, AccountBaseView, CreateView):
