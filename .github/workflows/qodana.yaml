@@ -9,11 +9,6 @@ on:
 
 jobs:
   qodana:
-    exclude:
-      - name: PyPackageRequirementsInspection
-      - name: PyUnusedLocalInspection
-        paths:
-          - hasta_la_vista_money/*/migrations
     runs-on: ubuntu-latest
     permissions:
       contents: write
