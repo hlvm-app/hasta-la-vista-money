@@ -1,17 +1,19 @@
+import decimal
 import json
 
+from hasta_la_vista_money.account.models import Account
+from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
+from hasta_la_vista_money.receipts.serializers import (
+    CustomerSerializer,
+    ReceiptSerializer,
+)
+from hasta_la_vista_money.users.models import User
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from hasta_la_vista_money.receipts.models import Receipt, Product
-from hasta_la_vista_money.receipts.serializers import (
-    ReceiptSerializer,
-    CustomerSerializer,
-)
 
 
 class ReceiptListAPIView(ListCreateAPIView):
