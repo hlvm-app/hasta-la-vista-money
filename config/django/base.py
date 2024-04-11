@@ -31,7 +31,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'true').lower() in {'yes', '1', 'true'}
+DEBUG = bool(os.getenv('DEBUG'))
 
 
 ALLOWED_HOSTS = (
@@ -82,7 +82,6 @@ THIRD_PARTY_APPS = [
     'rosetta',
 ]
 
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -115,9 +114,7 @@ MIDDLEWARE = [
     'hasta_la_vista_money.users.middleware.CheckAdminMiddleware',
 ]
 
-
 ROOT_URLCONF = 'config.urls'
-
 
 INTERNAL_IPS = [
     '127.0.0.1',
@@ -130,7 +127,6 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 
 LOGOUT_REDIRECT_URL = '/login'
-
 
 # Settings CSP
 CSP_INCLUDE_NONCE_IN = ['script-src', 'style-src', 'img-src', 'font-src']
@@ -164,7 +160,6 @@ CSP_CONNECT_SRC = ("'self'", 'https://api.telegram.org')
 CSP_FRAME_SRC = ("'none'",)
 CSP_BASE_URI = ("'none'",)
 CSP_OBJECT_SRC = ("'none'",)
-
 
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 
@@ -259,7 +254,6 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -297,7 +291,6 @@ LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
 
 FIXTURE_DIRS = (os.path.join(BASE_DIR, 'fixtures'),)
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
@@ -316,14 +309,12 @@ sentry_sdk.init(
     environment=os.getenv('SENTRY_ENVIRONMENT'),
 )
 
-
 # Rosetta
 ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True
 ROSETTA_MESSAGES_SOURCE_LANGUAGE_CODE = 'ru'
 ROSETTA_MESSAGES_SOURCE_LANGUAGE_NAME = 'Russian'
 ROSETTA_LANGUAGE_GROUPS = True
 ROSETTA_STORAGE_CLASS = 'rosetta.storage.CacheRosettaStorage'
-
 
 # Crispy
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
