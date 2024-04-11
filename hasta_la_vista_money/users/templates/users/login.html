@@ -20,38 +20,6 @@
                 </div>
             </div>
         </form>
-        <p class='text-light mt-3 mb-0'>{% translate 'Забыли пароль?' %}</p>
-        <button class="btn btn-primary mt-2 text-light" data-bs-toggle="modal" data-bs-target="#reset-password" >{% translate 'Восстановить пароль' %}</button>
-        <div id="reset-password" class="modal fade" >
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">
-                            {% translate 'Сбросить пароль' %}
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form class="m-2" method="POST" action="{% url 'users:forgot-password' %}">
-							{% csrf_token %}
-							{% if reset_password_form %}
-						        {% for field in reset_password_form %}
-						            <div class="form-group {% if field.errors %} has-error{% endif %}">
-						                {{ field | as_crispy_field }}
-						                {% if field.errors %}
-						                    {% for error in field.errors %}
-						                        <p class="help-block">{{ error }}</p>
-						                    {% endfor %}
-						                {% endif %}
-						            </div>
-						        {% endfor %}
-						    {% endif %}
-							<button type="submit" class="btn btn-primary">{% translate 'Выслать ссылку для сброса пароля' %}</button>
-						</form>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
 {% endblock %}
