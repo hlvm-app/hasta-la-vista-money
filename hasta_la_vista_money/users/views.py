@@ -1,26 +1,13 @@
 from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth.views import (
-    LoginView,
-    LogoutView,
-    PasswordChangeView,
-    PasswordResetConfirmView,
-)
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.sites.shortcuts import get_current_site
 from django.http import JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, TemplateView, UpdateView
 from hasta_la_vista_money import constants
-from hasta_la_vista_money.bot.send_message.send_message_tg_user import (
-    SendMessageToTelegramUser,
-)
 from hasta_la_vista_money.commonlogic.generate_dates import generate_date_list
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
@@ -32,7 +19,7 @@ from hasta_la_vista_money.users.forms import (
     UpdateUserForm,
     UserLoginForm,
 )
-from hasta_la_vista_money.users.models import TelegramUser, User
+from hasta_la_vista_money.users.models import User
 
 
 class IndexView(TemplateView):
@@ -148,102 +135,3 @@ class UpdateUserView(
         else:
             response_data = {'success': False, 'errors': user_update.errors}
         return JsonResponse(response_data)
-
-
-class UpdateUserPasswordView(
-    CustomSuccessURLUserMixin,
-    SuccessMessageMixin,
-    PasswordChangeView,
-):
-    model = User
-    template_name = 'users/profile.html'
-    form_class = PasswordChangeForm
-    success_message = constants.SUCCESS_MESSAGE_CHANGED_PASSWORD
-
-    def post(self, request, *args, **kwargs):
-        user_update_pass_form = PasswordChangeForm(
-            data=request.POST,
-            user=request.user,
-        )
-        valid_form = (
-            user_update_pass_form.is_valid()
-            and request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
-        )
-        if valid_form:
-            user_update_pass_form.save()
-            update_session_auth_hash(request, user_update_pass_form.user)
-            messages.success(request, self.success_message)
-            response_data = {'success': True}
-        else:
-            response_data = {
-                'success': False,
-                'errors': user_update_pass_form.errors,
-            }
-        return JsonResponse(response_data)
-
-
-class ForgotPasswordView(
-    SuccessMessageMixin,
-    TemplateView,
-):
-    form_class = ForgotPasswordForm
-    template_name = 'users/login.html'
-    success_url = 'https://t.me/GetReceiptBot'
-
-    def get(self, request, *args, **kwargs):
-        reset_password_form = ForgotPasswordForm()
-        return render(
-            request,
-            self.template_name,
-            {'reset_password_form': reset_password_form},
-        )
-
-    def post(self, request, *args, **kwargs):
-        reset_password_form = ForgotPasswordForm(request.POST)
-        if reset_password_form.is_valid():
-            username = reset_password_form.cleaned_data.get('username')
-            user = User.objects.filter(username=username).first()
-            telegram_user = TelegramUser.objects.filter(user=user).first()
-            if telegram_user:
-                token = default_token_generator.make_token(user)
-                current_site = get_current_site(request)
-                uid = urlsafe_base64_encode(force_bytes(user.pk))
-                reset_link = ''.join(
-                    (
-                        f'https://{current_site.domain}',
-                        f"{reverse_lazy('users:custom-password-reset-confirm', args=[uid, token])}",  # noqa: E501
-                    ),
-                )
-                message = ''.join(
-                    (
-                        f'Привет, {telegram_user.username}!\n',
-                        'Кто-то запросил сброс пароля ',
-                        'для вашей учетной записи.\n',
-                        'Ссылка действует сутки.\n',
-                        'Если это были не вы, просто удалите сообщение.\n',
-                        f'Для сброса пароля перейдите по ссылке: {reset_link}',
-                    ),
-                )
-                SendMessageToTelegramUser.send_message_to_telegram_user(
-                    telegram_user.telegram_id,
-                    message,
-                )
-                return redirect(self.success_url)
-        return render(
-            request,
-            self.template_name,
-            {'reset_password_form': reset_password_form},
-        )
-
-
-class CustomPasswordResetConfirmView(
-    SuccessMessageMixin,
-    PasswordResetConfirmView,
-):
-    template_name = 'users/password_reset_confirm.html'
-    success_url = reverse_lazy('login')
-
-    def form_valid(self, form):
-        form.save()
-        messages.success(self.request, 'Пароль успешно изменён!')
-        return redirect(self.success_url)

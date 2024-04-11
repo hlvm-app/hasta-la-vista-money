@@ -58,7 +58,6 @@ CSRF_TRUSTED_ORIGINS = (
 LOCAL_APPS = [
     'hasta_la_vista_money',
     'hasta_la_vista_money.account',
-    'hasta_la_vista_money.bot',
     'hasta_la_vista_money.budget',
     'hasta_la_vista_money.commonlogic',
     'hasta_la_vista_money.expense',

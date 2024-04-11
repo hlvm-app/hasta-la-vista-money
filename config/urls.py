@@ -59,14 +59,6 @@ urlpatterns = [
         name='expense',
     ),
     path(
-        'bot/',
-        include(
-            'hasta_la_vista_money.bot.urls',
-            namespace='bot',
-        ),
-        name='bot',
-    ),
-    path(
         'account/',
         include(
             'hasta_la_vista_money.account.urls',
