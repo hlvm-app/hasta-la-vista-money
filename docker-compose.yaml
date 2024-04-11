@@ -10,15 +10,16 @@ services:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_DB: ${DB_DATABASE_NAME}
     ports:
-      - "5433:5432"
+      - "5432:5432"
     restart: always
   django:
+    container_name: hastalavistamoney
     build:
       context: .
       dockerfile: docker/production.Dockerfile
     volumes:
       - .:/app
-    command: python manage.py runserver 0.0.0.0:8000
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
     env_file:
