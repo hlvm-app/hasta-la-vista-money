@@ -10,7 +10,7 @@ services:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_DB: ${DB_DATABASE_NAME}
     ports:
-      - "5432:5432"
+      - "5433:5432"
     restart: always
   django:
     container_name: hastalavistamoney
