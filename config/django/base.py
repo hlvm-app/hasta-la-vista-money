@@ -82,6 +82,12 @@ THIRD_PARTY_APPS = [
     'rosetta',
 ]
 
+if DEBUG:
+    THIRD_PARTY_APPS.append('debug_toolbar')
+
+if DEBUG:
+    THIRD_PARTY_APPS.append('django_extensions')
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -94,9 +100,7 @@ INSTALLED_APPS = [
     *THIRD_PARTY_APPS,
 ]
 
-if DEBUG:
-    INSTALLED_APPS.append('debug_toolbar')
-    INSTALLED_APPS.append('django_extensions')
+
 
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
