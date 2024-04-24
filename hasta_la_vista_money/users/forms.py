@@ -31,7 +31,7 @@ class UserLoginForm(AuthenticationForm):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
         user = check_user(username)
-        if username and password and user.check_password(password):
+        if user and user.check_password(password):
             self.user_cache = authenticate(
                 request=self.request,
                 username=user.username,
