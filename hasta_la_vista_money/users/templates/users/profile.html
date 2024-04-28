@@ -3,77 +3,49 @@
 {% load i18n %}
 {% load static %}
 
-{% block title %}{% translate 'Личный кабинет пользователя ' %}{{ user.username }}{% endblock %}
+{% block title %}{% translate 'Личный кабинет пользователя ' %}
+    {{ user.username }}{% endblock %}
 {% block content %}
-	<div class="container">
-		<div class="row mt-5">
-			<div class="col-xl-12">
-				<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#profile">
-					Изменить данные пользователя {{ user.username }}
-				</button>
-			</div>
-			{% include 'error_modal.html' %}
-			<div id="profile" class="ajax-modal modal fade">
-		        <div class="modal-dialog modal-xl modal-sm modal-md modal-dialog-centered">
-		            <div class="modal-content">
-		                <div class="modal-header">
-		                    <h5 class="modal-title">
-		                        Личный кабинет
-		                    </h5>
-		                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-		                </div>
-		                <div class="modal-body">
-		                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-		                      <li class="nav-item" role="presentation">
-					<button class="nav-link active" id="personal-info-tab" data-bs-toggle="tab" data-bs-target="#personal-info" type="button" role="tab" aria-controls="personal-info" aria-selected="true">Персональная информация</button>
-		                      </li>
-		                      <li class="nav-item" role="presentation">
-		                        <button class="nav-link" id="change-password-tab" data-bs-toggle="tab" data-bs-target="#change-password" type="button" role="tab" aria-controls="change-password" aria-selected="false">Изменить пароль</button>
-		                      </li>
-		                    </ul>
-		                    <div class="tab-content" id="myTabContent">
-								<div class="tab-pane fade active show" id="personal-info" role="tabpanel" aria-labelledby="personal-tab">
-									<form class="ajax-form m-2" method="POST" action="{% url 'users:update_user' user.id %}">
-										{% csrf_token %}
-										{% if user_update %}
-									        {% for field in user_update %}
-									            <div class="form-group {% if field.errors %} has-error{% endif %}">
-									                {{ field | as_crispy_field }}
-									                {% if field.errors %}
-									                    {% for error in field.errors %}
-									                        <p class="help-block">{{ error }}</p>
-									                    {% endfor %}
-									                {% endif %}
-									            </div>
-									        {% endfor %}
-									    {% endif %}
-										<button type="submit" class="btn btn-primary">Сохранить</button>
-									</form>
-								</div>
-								<div class="tab-pane fade" id="change-password" role="tabpanel" aria-labelledby="change-password-tab">
-									<form class="ajax-form m-2" method="POST" action="{% url 'users:change_password' user.id %}">
-								        {% csrf_token %}
-										{% if user_update_pass_form %}
-								            {% for field in user_update_pass_form %}
-									            <div class="form-group {% if field.errors %} has-error{% endif %}">
-									                {{ field | as_crispy_field }}
-									                {% if field.errors %}
-									                    {% for error in field.errors %}
-									                        <p class="help-block">{{ error }}</p>
-									                    {% endfor %}
-									                {% endif %}
-									            </div>
-									        {% endfor %}
-										{% endif %}
-								        <button type="submit" class="btn btn-primary">Изменить пароль</button>
-								    </form>
-								</div>
-		                    </div>
-		                </div>
-		            </div>
-		        </div>
-			</div>
-		</div>
-	</div>
-	<!-- /.container -->
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-xl-6">
+                <ul class="nav nav-tabs" id="myTab" role="list">
+                    <li class="nav-item" role="listitem">
+                        <button class="nav-link active" id="personal-info-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#personal-info" type="button"
+                                role="tab" aria-controls="personal-info"
+                                aria-selected="true">Персональная информация
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade active show" id="personal-info"
+                         role="tabpanel" aria-labelledby="personal-tab">
+                        <form class="ajax-form m-2" method="POST"
+                              action="{% url 'users:update_user' user.id %}">
+                            {% csrf_token %}
+                            {% if user_update %}
+                                {% for field in user_update %}
+                                    <div class="form-group {% if field.errors %} has-error{% endif %}">
+                                        {{ field | as_crispy_field }}
+                                        {% if field.errors %}
+                                            {% for error in field.errors %}
+                                                <p class="help-block">{{ error }}</p>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            <button type="submit" class="btn btn-primary">
+                                Сохранить
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% include 'error_modal.html' %}
+        </div>
+    </div>
+    <!-- /.container -->
 {% endblock %}
