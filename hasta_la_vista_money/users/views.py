@@ -14,7 +14,6 @@ from hasta_la_vista_money.custom_mixin import (
     CustomSuccessURLUserMixin,
 )
 from hasta_la_vista_money.users.forms import (
-    ForgotPasswordForm,
     RegisterUserForm,
     UpdateUserForm,
     UserLoginForm,
@@ -58,7 +57,6 @@ class LoginUser(SuccessMessageMixin, LoginView):
         context = super().get_context_data(**kwargs)
         context['button_text'] = _('Войти')
         context['user_login_form'] = UserLoginForm()
-        context['reset_password_form'] = ForgotPasswordForm()
         return context
 
     def form_invalid(self, form):

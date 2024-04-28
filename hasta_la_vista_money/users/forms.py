@@ -4,13 +4,7 @@ from django.contrib.auth.forms import (
     ReadOnlyPasswordHashField,
     UserCreationForm,
 )
-from django.forms import (
-    CharField,
-    Form,
-    ModelForm,
-    PasswordInput,
-    ValidationError,
-)
+from django.forms import CharField, ModelForm, PasswordInput, ValidationError
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.commonlogic.check_user import check_user
 from hasta_la_vista_money.users.models import User
@@ -56,13 +50,6 @@ class RegisterUserForm(UserCreationForm):
             'password1',
             'password2',
         ]
-
-
-class ForgotPasswordForm(Form):
-    username = CharField(
-        label='Имя пользователя',
-        help_text=constants.HELP_TEXT_FORGOT_PASSWORD,
-    )
 
 
 class UpdateUserForm(ModelForm):
