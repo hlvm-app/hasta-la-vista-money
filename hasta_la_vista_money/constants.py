@@ -66,8 +66,10 @@ SUCCESS_MESSAGE_LOGOUT: Final[str] = _(
 HELP_TEXT_PASSWORD: Final[str] = _(
     'Пароли хранятся в зашифрованном виде, '
     'поэтому нет возможности посмотреть ваш пароль, '
-    'но вы можете поменять его на новый перейдя на вкладку<br>'
-    '"Изменить пароль"',
+    'но вы можете сбросить пароль, выполнив команду '
+    '<code>docker exec -it hlvm_server sh -c '
+    '"python manage.py changepassword &lt;username&gt;"</code> '
+    'в консоли сервера.',
 )
 
 
