@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import (
     AuthenticationForm,
@@ -30,6 +31,7 @@ class UserLoginForm(AuthenticationForm):
                 request=self.request,
                 username=user.username,
                 password=password,
+                backend=settings.AUTHENTICATION_BACKENDS[1],
             )
             if self.user_cache is None:
                 raise ValidationError(
