@@ -1,13 +1,10 @@
-from django.conf import settings
-from django.contrib.auth import authenticate
 from django.contrib.auth.forms import (
     AuthenticationForm,
     ReadOnlyPasswordHashField,
     UserCreationForm,
 )
-from django.forms import CharField, ModelForm, PasswordInput, ValidationError
+from django.forms import CharField, ModelForm, PasswordInput
 from hasta_la_vista_money import constants
-from hasta_la_vista_money.commonlogic.check_user import check_user
 from hasta_la_vista_money.users.models import User
 
 
@@ -21,26 +18,6 @@ class UserLoginForm(AuthenticationForm):
         strip=False,
         widget=PasswordInput,
     )
-
-    def clean(self):
-        username = self.cleaned_data.get('username')
-        password = self.cleaned_data.get('password')
-        user = check_user(username)
-        if user and user.check_password(password):
-            self.user_cache = authenticate(
-                request=self.request,
-                username=user.username,
-                password=password,
-                backend=settings.AUTHENTICATION_BACKENDS[1],
-            )
-            if self.user_cache is None:
-                raise ValidationError(
-                    self.error_messages['invalid_login'],
-                    code='invalid_login',
-                    params={'username': self.username_field.verbose_name},
-                )
-
-        return self.cleaned_data
 
 
 class RegisterUserForm(UserCreationForm):
