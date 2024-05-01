@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -52,12 +53,28 @@ class LoginUser(SuccessMessageMixin, LoginView):
     form_class = UserLoginForm
     success_message = constants.SUCCESS_MESSAGE_LOGIN
     next_page = '/hasta-la-vista-money'
+    redirect_authenticated_user = True
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['button_text'] = _('Войти')
         context['user_login_form'] = UserLoginForm()
         return context
+
+    def form_valid(self, form):
+        username = form.cleaned_data['username']
+        password = form.cleaned_data['password']
+        user = authenticate(
+            self.request,
+            username=username,
+            password=password,
+            backend='django.contrib.auth.backends.ModelBackend',
+        )
+        if user is not None:
+            login(self.request, user)
+            return super().form_valid(form)
+        messages.error(self.request, _('Неправильный логин или пароль!'))
+        return self.form_invalid(form)
 
     def form_invalid(self, form):
         messages.error(
