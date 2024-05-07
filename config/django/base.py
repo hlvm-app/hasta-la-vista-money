@@ -33,26 +33,11 @@ SECRET_KEY = os.getenv('SECRET_KEY', None)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.getenv('DEBUG'))
 
+BASE_URL = os.getenv('BASE_URL') if not DEBUG else 'http://127.0.0.1'
 
-ALLOWED_HOSTS = (
-    os.environ.get(
-        'ALLOWED_HOSTS',
-    ).split(',')
-    if os.environ.get(
-        'ALLOWED_HOSTS',
-    )
-    else ['localhost', '127.0.0.1']
-)
+ALLOWED_HOSTS = [BASE_URL]
 
-CSRF_TRUSTED_ORIGINS = (
-    os.environ.get(
-        'CSRF_TRUSTED_ORIGINS',
-    ).split(',')
-    if os.environ.get(
-        'CSRF_TRUSTED_ORIGINS',
-    )
-    else ['https://127.0.0.1']
-)
+CSRF_TRUSTED_ORIGINS = [BASE_URL] if not DEBUG else []
 
 # Application definition
 LOCAL_APPS = [
@@ -137,29 +122,28 @@ CSP_REPORT_URI = [os.getenv('SENTRY_ENDPOINT')]
 
 CSP_DEFAULT_SRC = (
     "'self'",
-    'https://money.pavlovteam.ru',
+    os.getenv('BASE_URL'),
     'https://code.highcharts.com',
 )
 
 CSP_SCRIPT_SRC = (
     "'self'",
     '127.0.0.1',
-    'https://money.pavlovteam.ru',
+    os.getenv('BASE_URL'),
     'https://code.highcharts.com',
 )
 
 CSP_STYLE_SRC = (
     "'self'",
-    'https://money.pavlovteam.ru',
+    os.getenv('BASE_URL'),
     'https://code.highcharts.com',
 )
 
-CSP_IMG_SRC = ("'self'", 'data:', 'https://money.pavlovteam.ru')
+CSP_IMG_SRC = ("'self'", 'data:', os.getenv('BASE_URL'))
 CSP_FONT_SRC = (
     "'self'",
-    'https://money.pavlovteam.ru',
+    os.getenv('BASE_URL'),
 )
-CSP_CONNECT_SRC = ("'self'", 'https://api.telegram.org')
 CSP_FRAME_SRC = ("'none'",)
 CSP_BASE_URI = ("'none'",)
 CSP_OBJECT_SRC = ("'none'",)
