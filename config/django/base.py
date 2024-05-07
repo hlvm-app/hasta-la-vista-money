@@ -33,9 +33,9 @@ SECRET_KEY = os.getenv('SECRET_KEY', None)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.getenv('DEBUG'))
 
-BASE_URL = os.getenv('BASE_URL') if not DEBUG else 'http://127.0.0.1'
+BASE_URL = os.getenv('BASE_URL') if not DEBUG else 'http://127.0.0.1/'
 
-ALLOWED_HOSTS = [BASE_URL]
+ALLOWED_HOSTS = [os.getenv('BASE_URL')] if not DEBUG else ['127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = [BASE_URL] if not DEBUG else []
 
@@ -122,27 +122,27 @@ CSP_REPORT_URI = [os.getenv('SENTRY_ENDPOINT')]
 
 CSP_DEFAULT_SRC = (
     "'self'",
-    os.getenv('BASE_URL'),
+    BASE_URL,
     'https://code.highcharts.com',
 )
 
 CSP_SCRIPT_SRC = (
     "'self'",
     '127.0.0.1',
-    os.getenv('BASE_URL'),
+    BASE_URL,
     'https://code.highcharts.com',
 )
 
 CSP_STYLE_SRC = (
     "'self'",
-    os.getenv('BASE_URL'),
+    BASE_URL,
     'https://code.highcharts.com',
 )
 
-CSP_IMG_SRC = ("'self'", 'data:', os.getenv('BASE_URL'))
+CSP_IMG_SRC = ("'self'", 'data:', BASE_URL)
 CSP_FONT_SRC = (
     "'self'",
-    os.getenv('BASE_URL'),
+    BASE_URL,
 )
 CSP_FRAME_SRC = ("'none'",)
 CSP_BASE_URI = ("'none'",)
