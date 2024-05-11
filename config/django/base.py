@@ -37,7 +37,7 @@ BASE_URL = os.getenv('BASE_URL') or 'http://127.0.0.1:8000/'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split() or []
 
-CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS') or []
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split() or []
 
 # Application definition
 LOCAL_APPS = [
