@@ -31,13 +31,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.getenv('DEBUG'))
+DEBUG = os.getenv('DEBUG', 'false').lower() in {'true', '1', 't'}
 
-BASE_URL = os.getenv('BASE_URL') if not DEBUG else 'http://127.0.0.1/'
+BASE_URL = os.getenv('BASE_URL') or 'http://127.0.0.1:8000/'
 
-ALLOWED_HOSTS = [os.getenv('BASE_URL')] if not DEBUG else ['127.0.0.1']
+ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS').split(',')]
 
-CSRF_TRUSTED_ORIGINS = [BASE_URL] if not DEBUG else []
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS') or []
 
 # Application definition
 LOCAL_APPS = [
