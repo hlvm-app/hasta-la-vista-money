@@ -47,16 +47,6 @@ class Customer(models.Model):
 class Receipt(models.Model):
     """Модель чека."""
 
-    user = models.ForeignKey(
-        User,
-        on_delete=models.PROTECT,
-        related_name='receipt_users',
-    )
-    account = models.ForeignKey(
-        Account,
-        on_delete=models.PROTECT,
-        related_name='receipt_accounts',
-    )
     receipt_date = models.DateTimeField()
     number_receipt = models.IntegerField(default=None, null=True)
     nds10 = models.DecimalField(
@@ -82,13 +72,10 @@ class Receipt(models.Model):
         max_digits=10,
         decimal_places=2,
     )
-    customer = models.ForeignKey(
-        Customer,
-        on_delete=models.CASCADE,
-        verbose_name='customer',
-        related_name='receipt_customers',
+    category = models.CharField(
+        blank=True,
+        max_length=constants.TWO_HUNDRED_FIFTY,
     )
-    product = models.ManyToManyField('Product', related_name='receipt_products')
     manual = models.BooleanField(null=True)
     created_at = models.DateTimeField(
         auto_now_add=True,
@@ -96,6 +83,23 @@ class Receipt(models.Model):
         blank=True,
         verbose_name='Date created',
     )
+    customer = models.ForeignKey(
+        Customer,
+        on_delete=models.CASCADE,
+        verbose_name='customer',
+        related_name='receipt_customers',
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        related_name='receipt_users',
+    )
+    account = models.ForeignKey(
+        Account,
+        on_delete=models.PROTECT,
+        related_name='receipt_accounts',
+    )
+    product = models.ManyToManyField('Product', related_name='receipt_products')
 
     class Meta:
         ordering = ['-receipt_date']
