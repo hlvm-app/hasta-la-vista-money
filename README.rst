@@ -1,12 +1,10 @@
 ######################
 Hasta La Vista, Money!
 ######################
-.. image:: https://img.shields.io/github/actions/workflow/status/TurtleOld/hasta-la-vista-money/hasta_la_vista_money.yaml?label=Hasta%20La%20Vista%2C%20Money%21
-   :alt: GitHub Workflow Status
 
-.. image:: https://github.com/TurtleOld/hasta-la-vista-money/actions/workflows/dokku.yaml/badge.svg
-   :alt: Deploy to Dokku
-   :target: https://github.com/TurtleOld/hasta-la-vista-money/actions/workflows/dokku.yaml
+
+.. image:: https://img.shields.io/github/actions/workflow/status/hlvm-app/hasta-la-vista-money/hasta_la_vista_money.yaml?label=Hasta%20La%20Vista%2C%20Money%21
+   :alt: GitHub Workflow Status
 
 .. image:: https://api.codeclimate.com/v1/badges/cbd04aad36a00366e9ca/maintainability
    :target: https://codeclimate.com/github/TurtleOld/hasta-la-vista-money/maintainability
@@ -19,8 +17,8 @@ Hasta La Vista, Money!
 .. image:: https://img.shields.io/badge/style-wemake-000000.svg
    :target: https://github.com/wemake-services/wemake-python-styleguide
 
-.. image:: https://www.codefactor.io/repository/github/turtleold/hasta-la-vista-money/badge
-   :target: https://www.codefactor.io/repository/github/turtleold/hasta-la-vista-money
+.. image:: https://www.codefactor.io/repository/github/hlvm-app/hasta-la-vista-money/badge
+   :target: https://www.codefactor.io/repository/github/hlvm-app/hasta-la-vista-money
    :alt: CodeFactor
 
 .. image:: https://wakatime.com/badge/github/TurtleOld/hasta-la-vista-money.svg
