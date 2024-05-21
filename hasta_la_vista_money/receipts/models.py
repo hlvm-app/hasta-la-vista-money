@@ -72,10 +72,6 @@ class Receipt(models.Model):
         max_digits=10,
         decimal_places=2,
     )
-    category = models.CharField(
-        blank=True,
-        max_length=constants.TWO_HUNDRED_FIFTY,
-    )
     manual = models.BooleanField(null=True)
     created_at = models.DateTimeField(
         auto_now_add=True,
@@ -125,6 +121,10 @@ class Product(models.Model):
         related_name='product_users',
     )
     product_name = models.CharField(default='', max_length=1000)
+    category = models.CharField(
+        blank=True,
+        max_length=constants.TWO_HUNDRED_FIFTY,
+    )
     price = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     quantity = models.DecimalField(
         default=0,
