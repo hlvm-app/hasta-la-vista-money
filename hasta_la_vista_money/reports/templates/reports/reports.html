@@ -39,12 +39,25 @@
 
 
     <script nonce="{{request.csp_nonce}}" src="https://code.highcharts.com/highcharts.js"></script>
+    <script nonce="{{request.csp_nonce}}" src="http://code.highcharts.com/modules/drilldown.js"></script>
     <script nonce="{{request.csp_nonce}}">
         {% for chart_data in charts_data %}
             Highcharts.chart('pie-chart-{{ forloop.counter }}', {
                 chart: {{ chart_data.chart|safe }},
                 title: {{ chart_data.title|safe }},
                 series: {{ chart_data.series|safe }},
+                drilldown: {{ chart_data.drilldown|safe }},
+                plotOptions: {
+                    series: {
+                        point: {
+                            events: {
+                                click: function () {
+                                    console.log(this); // Здесь можно добавить вашу логику для отображения подкатегорий
+                                }
+                            }
+                        }
+                    }
+                }
             });
         {% endfor %}
     </script>

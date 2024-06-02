@@ -93,6 +93,7 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
     @classmethod
     def pie_expense_category(cls, request):
         expense_data = defaultdict(lambda: defaultdict(float))
+        subcategory_data = defaultdict(list)
 
         for expense in Expense.objects.filter(user=request.user).all():
             parent_category_name = (
@@ -104,22 +105,49 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             expense_amount = float(expense.amount)
             expense_data[parent_category_name][month] += expense_amount
 
+            # Collect subcategory data
+            if expense.category.parent_category:
+                parent_month_key = f'{parent_category_name}_{month}'
+                subcategory_name = expense.category.name
+                subcategory_amount = expense_amount
+                subcategory_data[parent_month_key].append(
+                    {'name': subcategory_name, 'y': subcategory_amount},
+                )
+
         charts_data = []
 
         for parent_category, subcategories in expense_data.items():
             data = [
-                {'name': month, 'y': amount}
+                {
+                    'name': month,
+                    'y': amount,
+                    'drilldown': f'{parent_category}_{month}',
+                }
                 for month, amount in subcategories.items()
             ]
             chart_data = {
                 'chart': {'type': 'pie'},
-                'title': {'text': f'Статистика расходов для {parent_category}'},
+                'title': {
+                    'text': f'Статистика расходов для '
+                    f'категории {parent_category}',
+                },
                 'series': [{'name': f'{parent_category}', 'data': data}],
                 'credits': {
                     'enabled': False,
                 },
                 'exporting': {
                     'enabled': False,
+                },
+                'drilldown': {
+                    'series': [
+                        {
+                            'id': f'{parent_category}_{month}',
+                            'data': subcategory_data[
+                                f'{parent_category}_{month}',
+                            ],
+                        }
+                        for month in subcategories.keys()
+                    ],
                 },
             }
             charts_data.append(chart_data)
