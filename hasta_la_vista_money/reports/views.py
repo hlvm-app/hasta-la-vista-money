@@ -125,32 +125,29 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 }
                 for month, amount in subcategories.items()
             ]
+            drilldown_series = [
+                {
+                    'id': f'{parent_category}_{month}',
+                    'name': f'Subcategories for {parent_category} in {month}',
+                    'data': subcategory_data[f'{parent_category}_{month}'],
+                }
+                for month in subcategories.keys()
+            ]
             chart_data = {
                 'chart': {'type': 'pie'},
                 'title': {
-                    'text': f'Статистика расходов для '
+                    'text': f'Статистика расходов по '
                     f'категории {parent_category}',
                 },
-                'series': [{'name': f'{parent_category}', 'data': data}],
-                'credits': {
-                    'enabled': False,
-                },
-                'exporting': {
-                    'enabled': False,
-                },
+                'series': [{'name': parent_category, 'data': data}],
+                'credits': {'enabled': 'false'},
+                'exporting': {'enabled': 'false'},
                 'drilldown': {
-                    'series': [
-                        {
-                            'id': f'{parent_category}_{month}',
-                            'data': subcategory_data[
-                                f'{parent_category}_{month}',
-                            ],
-                        }
-                        for month in subcategories.keys()
-                    ],
+                    'series': drilldown_series,
                 },
             }
             charts_data.append(chart_data)
+
         return charts_data
 
     def get(self, request, *args, **kwargs):
