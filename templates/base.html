@@ -19,6 +19,7 @@
         <link rel="shortcut icon" href="{% static 'img/favicon/favicon.ico' %}?v={% word_hash %}" type="image/x-icon">
         <link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/bootstrap-icons.min.css' %}?v={% word_hash %}">
         <link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/styles.css' %}?v={% word_hash %}">
+        <script nonce="{{request.csp_nonce}}" src="https://unpkg.com/htmx.org@2.0.2"></script>
         <script nonce="{{request.csp_nonce}}" src="{% static 'js/jquery-3.7.1.min.js' %}?v={% word_hash %}"></script>
     {% endblock %}
 </head>
@@ -54,7 +55,7 @@
     {% block content %}
     {% endblock %}
 
-    <script src="https://unpkg.com/htmx.org@2.0.2"></script>
+
     <script nonce="{{request.csp_nonce}}" src="{% static 'js/script.js' %}?v={% word_hash %}"></script>
     <script nonce="{{request.csp_nonce}}" src="{% static 'js/errors_form.js' %}?v={% word_hash %}"></script>
     <script nonce="{{request.csp_nonce}}" src="{% static 'js/planning.js' %}?v={% word_hash %}"></script>
