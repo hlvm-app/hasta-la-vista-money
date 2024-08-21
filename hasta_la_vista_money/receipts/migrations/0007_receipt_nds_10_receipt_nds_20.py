@@ -13,14 +13,20 @@ class Migration(migrations.Migration):
             model_name="receipt",
             name="nds_10",
             field=models.DecimalField(
-                blank=True, decimal_places=2, max_digits=60, null=True,
+                blank=True,
+                decimal_places=2,
+                max_digits=60,
+                null=True,
             ),
         ),
         migrations.AddField(
             model_name="receipt",
             name="nds_20",
             field=models.DecimalField(
-                blank=True, decimal_places=2, max_digits=60, null=True,
+                blank=True,
+                decimal_places=2,
+                max_digits=60,
+                null=True,
             ),
         ),
     ]

@@ -16,16 +16,27 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='transfermoneylog',
             name='from_account',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='from_account', to='account.account'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name='from_account',
+                to='account.account',
+            ),
         ),
         migrations.AlterField(
             model_name='transfermoneylog',
             name='to_account',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='to_account', to='account.account'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name='to_account',
+                to='account.account',
+            ),
         ),
         migrations.AlterField(
             model_name='transfermoneylog',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

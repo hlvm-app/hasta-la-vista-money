@@ -1,4 +1,5 @@
 """Модуль задач для пакета loan."""
+
 import datetime
 
 from dateutil.relativedelta import relativedelta

@@ -93,9 +93,9 @@ class ExpenseView(
                 depth=depth_limit,
                 category_queryset=categories,
             )
-            add_expense_form.fields[
-                'account'
-            ].queryset = user.account_users.select_related('user').all()
+            add_expense_form.fields['account'].queryset = (
+                user.account_users.select_related('user').all()
+            )
 
             add_category_form = AddCategoryForm(
                 user=self.request.user,

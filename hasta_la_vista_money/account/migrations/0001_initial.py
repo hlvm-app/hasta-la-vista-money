@@ -7,17 +7,35 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
             name='Account',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name_account', models.CharField(default='Основной счёт', max_length=250)),
-                ('balance', models.DecimalField(decimal_places=2, default=0, max_digits=10)),
-                ('currency', models.CharField(choices=[('RU', 'Российский рубль')])),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
+                (
+                    'name_account',
+                    models.CharField(default='Основной счёт', max_length=250),
+                ),
+                (
+                    'balance',
+                    models.DecimalField(
+                        decimal_places=2, default=0, max_digits=10
+                    ),
+                ),
+                (
+                    'currency',
+                    models.CharField(choices=[('RU', 'Российский рубль')]),
+                ),
             ],
         ),
     ]

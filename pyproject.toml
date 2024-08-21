@@ -73,6 +73,7 @@ django_settings_module = 'config.django.base'
 
 [tool.black]
 line-length = 80
+skip-string-normalization = true
 exclude = '''
 (
   /(
@@ -82,11 +83,12 @@ exclude = '''
     | _build
     | build
     | dist
+    | migrations/.*
+    /(
+      | migrations
+    )/
     /(
         | bootstrap
-    )
-    /(
-        | migrations
     )
   )/
 )

@@ -13,11 +13,15 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='customer',
             name='retail_place',
-            field=models.CharField(blank=True, default='Нет данных', max_length=1000, null=True),
+            field=models.CharField(
+                blank=True, default='Нет данных', max_length=1000, null=True
+            ),
         ),
         migrations.AlterField(
             model_name='customer',
             name='retail_place_address',
-            field=models.CharField(blank=True, default='Нет данных', max_length=1000, null=True),
+            field=models.CharField(
+                blank=True, default='Нет данных', max_length=1000, null=True
+            ),
         ),
     ]
