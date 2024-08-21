@@ -16,12 +16,43 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='TransferMoneyLog',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('amount', models.DecimalField(decimal_places=2, max_digits=10)),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
+                (
+                    'amount',
+                    models.DecimalField(decimal_places=2, max_digits=10),
+                ),
                 ('exchange_date', models.DateTimeField(auto_now_add=True)),
-                ('from_account', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='from_account', to='account.account')),
-                ('to_account', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='to_account', to='account.account')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
+                (
+                    'from_account',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name='from_account',
+                        to='account.account',
+                    ),
+                ),
+                (
+                    'to_account',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name='to_account',
+                        to='account.account',
+                    ),
+                ),
+                (
+                    'user',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

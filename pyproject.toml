@@ -83,7 +83,7 @@ exclude = '''
     | _build
     | build
     | dist
-    | ^.*\b(migrations)\b.*$
+    | migrations/.*
     /(
       | migrations
     )/

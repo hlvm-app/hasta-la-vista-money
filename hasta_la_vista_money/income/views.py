@@ -87,9 +87,9 @@ class IncomeView(
                 category_queryset=income_categories,
             )
 
-            income_form.fields[
-                'account'
-            ].queryset = user.account_users.select_related('user').all()
+            income_form.fields['account'].queryset = (
+                user.account_users.select_related('user').all()
+            )
 
             add_category_income_form = AddCategoryIncomeForm(
                 user=self.request.user,

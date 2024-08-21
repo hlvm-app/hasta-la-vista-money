@@ -19,21 +19,33 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='expensetype',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddField(
             model_name='expense',
             name='account',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='account.account'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                to='account.account',
+            ),
         ),
         migrations.AddField(
             model_name='expense',
             name='category',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='expense.expensetype'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                to='expense.expensetype',
+            ),
         ),
         migrations.AddField(
             model_name='expense',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

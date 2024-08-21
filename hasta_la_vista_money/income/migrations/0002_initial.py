@@ -19,21 +19,33 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='incometype',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddField(
             model_name='income',
             name='account',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='account.account'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                to='account.account',
+            ),
         ),
         migrations.AddField(
             model_name='income',
             name='category',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='income.incometype'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                to='income.incometype',
+            ),
         ),
         migrations.AddField(
             model_name='income',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]
