@@ -85,6 +85,9 @@ exclude = '''
     | dist
     | ^.*\b(migrations)\b.*$
     /(
+      | migrations
+    )/
+    /(
         | bootstrap
     )
   )/
