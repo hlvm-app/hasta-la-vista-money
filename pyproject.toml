@@ -64,6 +64,11 @@ build-backend = "poetry.core.masonry.api"
 quote-style = "single"
 indent-style = "tab"
 docstring-code-format = true
+exclude = [
+    "migrations",
+    ".venv",
+    ".git"
+]
 
 [mypy]
 module = 'django.*'
