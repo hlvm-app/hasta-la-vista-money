@@ -1,14 +1,17 @@
 .PHONY: lint
 lint:
-	    @poetry run flake8 hasta_la_vista_money config --exclude=migrations
+		@cd ./hasta_la_vista_money && \
+			echo "Running ruff check..." && \
+			poetry run ruff check . --fix
 
 .PHONY: format
 format:
-	echo "Running black..." && \
-	poetry run black . && \
-	echo "" && \
-	echo "Running ruff..." && \
-	poetry run ruff --fix
+	@cd ./hasta_la_vista_money && \
+			echo "Running black..." && \
+			poetry run black . && \
+			echo "" && \
+			echo "Running ruff..." && \
+			poetry run ruff format
 
 
 .PHONY: transprepare
@@ -75,7 +78,7 @@ secretkey:
 
 .PHONY: test
 test:
-		@poetry run coverage run --source='.' manage.py test
+		DB_USER="postgres" DB_PASSWORD="postgres" poetry run python ./manage.py test -v 2
 
 .PHONY: coverage
 coverage:
