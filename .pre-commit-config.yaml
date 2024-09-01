@@ -35,12 +35,6 @@ repos:
         types: [ python ]
         exclude: 'migrations'
 
-    -   id: flake8
-        name: Check with Flake8
-        entry: flake8
-        language: system
-        types: [ python ]
-
     -   id: yesqa
         name: yesqa
         entry: yesqa
