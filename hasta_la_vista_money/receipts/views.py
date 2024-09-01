@@ -1,11 +1,15 @@
+from decimal import Decimal
+
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import Count, ProtectedError, Sum
+from django.db.models import Count, ProtectedError, Sum, Window
+from django.db.models.expressions import F
+from django.db.models.functions import RowNumber, TruncMonth
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import CreateView, DeleteView, DetailView
+from django.views.generic import CreateView, DeleteView, DetailView, ListView
 from django_filters.views import FilterView
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
@@ -53,14 +57,14 @@ class ReceiptView(
             )
             receipt_form = ReceiptForm()
             receipt_form.fields['account'].queryset = user.account_users
-            receipt_form.fields['customer'].queryset = (
-                user.customer_users.distinct('name_seller')
+            receipt_form.fields['customer',].queryset = user.customer_users.distinct(
+                'name_seller',
             )
 
             product_formset = ProductFormSet()
 
             list_receipts = Receipt.objects.prefetch_related('product').all()
-            purchased_products = (
+            all_purchased_products = (
                 list_receipts.values(
                     'product__product_name',
                 )
@@ -101,7 +105,7 @@ class ReceiptView(
             context['receipt_form'] = receipt_form
             context['product_formset'] = product_formset
             context['receipt_info_by_month'] = pages_receipt_table
-            context['frequently_purchased_products'] = purchased_products
+            context['frequently_purchased_products'] = all_purchased_products
 
             return context
 
@@ -243,3 +247,46 @@ class ReceiptDeleteView(BaseView, DetailView, DeleteView):
         except ProtectedError:
             messages.error(self.request, 'Чек не может быть удалён!')
             return redirect(self.success_url)
+
+
+class ProductByMonthView(ListView):
+    template_name = 'receipts/purchased_products.html'
+    model = Receipt
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        purchased_products_by_month = (
+            self.model.objects.filter(user=self.request.user)
+            .annotate(month=TruncMonth('receipt_date'))
+            .values('month', 'product__product_name')
+            .annotate(total_quantity=Sum('product__quantity'))
+            .annotate(
+                rank=Window(
+                    expression=RowNumber(),
+                    partition_by=[F('month')],
+                    order_by=F('total_quantity').desc(),
+                ),
+            )
+            .filter(rank__lte=10)
+            .order_by('month', 'rank')
+        )
+
+        data = {}
+
+        for item in purchased_products_by_month:
+            product_name = item['product__product_name']
+            month = item['month']
+            total_quantity = item['total_quantity']
+
+            if month not in data:
+                data[month] = {}
+
+            if product_name not in data[month]:
+                data[month][product_name] = 0
+
+            data[month][product_name] += total_quantity or Decimal(0)
+        print(data)
+        context['purchased_products_by_month'] = data
+
+        return context

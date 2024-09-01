@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% translate 'Часто покупаемые товары' %}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                {% for month, products in purchased_products_by_month.items %}
+                    <details>
+                        <summary>{{ month|date:"F Y" }}</summary>
+                        <ul>
+                            {% for product, total_quantity in products.items %}
+                                <li>{{ product }} - {{ total_quantity }}</li>
+                            {% endfor %}
+                        </ul>
+                    </details>
+                {% endfor %}
+            </div>
+            <!-- /.col-12 -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+{% endblock %}
