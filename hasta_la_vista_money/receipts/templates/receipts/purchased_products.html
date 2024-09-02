@@ -4,19 +4,25 @@
 {% block title %}{% translate 'Часто покупаемые товары' %}{% endblock %}
 
 {% block content %}
+
     <div class="container">
-        <div class="row">
-            <div class="col-12">
-                {% for month, products in purchased_products_by_month.items %}
-                    <details>
-                        <summary>{{ month|date:"F Y" }}</summary>
-                        <ul>
-                            {% for product, total_quantity in products.items %}
-                                <li>{{ product }} - {{ total_quantity }}</li>
-                            {% endfor %}
-                        </ul>
-                    </details>
-                {% endfor %}
+        <div class="row mt-5 d-flex justify-content-center">
+            <div class="col-6">
+                <div class="accordion" id="productsAccordion">
+        {% for month, products in purchased_products_by_month.items %}
+            <details class="mb-3">
+                <summary>{{ month|date:"F Y" }}</summary>
+                <ul class="list-group list-group-flush">
+                    {% for product, total_quantity in products.items %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ product }}
+                            <span class="badge bg-primary rounded-pill">{{ total_quantity }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </details>
+        {% endfor %}
+    </div>
             </div>
             <!-- /.col-12 -->
         </div>

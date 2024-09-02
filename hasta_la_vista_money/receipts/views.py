@@ -57,7 +57,7 @@ class ReceiptView(
             )
             receipt_form = ReceiptForm()
             receipt_form.fields['account'].queryset = user.account_users
-            receipt_form.fields['customer',].queryset = user.customer_users.distinct(
+            receipt_form.fields['customer'].queryset = user.customer_users.distinct(
                 'name_seller',
             )
 
