@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% translate 'Часто покупаемые товары' %}{% endblock %}
+
+{% block content %}
+    {% include 'receipts/modals/frequently_purchased_products.html' %}
+    <div class="container">
+        <div class="row d-flex justify-content-end">
+            <div class="col-3">
+                <button type="button"
+                        class="d-flex align-items-center btn btn-sm btn-info m-xl-1 m-1"
+                        data-bs-toggle="modal"
+                        data-bs-target="#frequently-purchased-products">
+                    {% translate 'Расходы за весь период' %}
+                </button>
+            </div>
+        </div>
+        <!-- /.row d-flex justify-content-end -->
+        <div class="row mt-5 d-flex justify-content-center">
+            <div class="col-6">
+                <div class="accordion" id="productsAccordion">
+                    {% for month, products in purchased_products_by_month.items %}
+                        <details class="mb-3">
+                            <summary>{{ month|date:"F Y" }}</summary>
+                            <ul class="list-group list-group-flush">
+                                {% for product, total_quantity in products.items %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ product }}
+                                        <span class="badge bg-primary rounded-pill">{{ total_quantity }}</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </details>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- /.col-12 -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+{% endblock %}

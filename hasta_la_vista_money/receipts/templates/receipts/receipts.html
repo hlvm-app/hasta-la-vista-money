@@ -13,7 +13,6 @@
         {% include 'error_modal.html' %}
         {% include 'receipts/filter.html' %}
         {% include 'receipts/modals/add_receipt.html' %}
-        {% include 'receipts/modals/frequently_purchased_products.html' %}
         {% include 'receipts/modals/add_seller.html' %}
         {% include 'receipts/modals/receipts_statistics.html' %}
     </div>
@@ -38,12 +37,7 @@
                     <span class="text-center">{% translate 'Сумма чеков:' %}</span>
                     <li class="list-group-item rounded-3">{% if total_sum_receipts.total is not None  %}{{ total_sum_receipts.total }}{% else %}0{% endif %}</li>
                 </ul>
-                <button type="button"
-                        class="d-flex align-items-center btn btn-sm btn-primary m-xl-1 m-1"
-                        data-bs-toggle="modal"
-                        data-bs-target="#frequently-purchased-products">
-                    {% translate 'Часто покупаемые товары' %}
-                </button>
+                <a class="d-flex align-items-center btn btn-sm btn-primary m-xl-1 m-1" href="{% url 'receipts:products' %}">Часто покупаемые товары</a>
                 <button type="button"
                         class="d-flex align-items-center btn btn-sm btn-info m-xl-1 m-1"
                         data-bs-toggle="modal" data-bs-target="#add-customer">

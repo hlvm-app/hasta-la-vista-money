@@ -7,6 +7,7 @@ from hasta_la_vista_money.receipts.apis import (
 )
 from hasta_la_vista_money.receipts.views import (
     CustomerCreateView,
+    ProductByMonthView,
     ReceiptCreateView,
     ReceiptDeleteView,
     ReceiptView,
@@ -41,5 +42,10 @@ urlpatterns = [
         'seller/<int:id>',
         SellerListAPIView.as_view(),
         name='seller',
+    ),
+    path(
+        'products',
+        ProductByMonthView.as_view(),
+        name='products',
     ),
 ]
