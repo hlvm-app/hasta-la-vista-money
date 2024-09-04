@@ -63,17 +63,6 @@ class ReceiptView(
 
             product_formset = ProductFormSet()
 
-            list_receipts = Receipt.objects.prefetch_related('product').all()
-            all_purchased_products = (
-                list_receipts.values(
-                    'product__product_name',
-                )
-                .filter(user=self.request.user)
-                .annotate(products=Count('product__product_name'))
-                .order_by('-products')
-                .distinct()[:10]
-            )
-
             total_sum_receipts = receipt_filter.qs.aggregate(
                 total=Sum('total_sum'),
             )
@@ -105,7 +94,6 @@ class ReceiptView(
             context['receipt_form'] = receipt_form
             context['product_formset'] = product_formset
             context['receipt_info_by_month'] = pages_receipt_table
-            context['frequently_purchased_products'] = all_purchased_products
 
             return context
 
@@ -256,6 +244,18 @@ class ProductByMonthView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        list_receipts = Receipt.objects.prefetch_related('product').all()
+
+        all_purchased_products = (
+            list_receipts.values(
+                'product__product_name',
+            )
+            .filter(user=self.request.user)
+            .annotate(products=Count('product__product_name'))
+            .order_by('-products')
+            .distinct()[:10]
+        )
+
         purchased_products_by_month = (
             self.model.objects.filter(user=self.request.user)
             .annotate(month=TruncMonth('receipt_date'))
@@ -286,7 +286,8 @@ class ProductByMonthView(ListView):
                 data[month][product_name] = 0
 
             data[month][product_name] += total_quantity or Decimal(0)
-        print(data)
+
         context['purchased_products_by_month'] = data
+        context['frequently_purchased_products'] = all_purchased_products
 
         return context
