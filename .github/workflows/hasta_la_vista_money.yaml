@@ -39,6 +39,10 @@ jobs:
           python-version: '3.11.2'
           fetch-depth: 0
 
+      - uses: chartboost/ruff-action@v1
+        with:
+          changed-files: 'true'
+
 
       # Runs a single command using the runners shell
       - name: Install dependencies
@@ -47,10 +51,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install poetry
           make install
-      - name: Ruff
-      - uses: chartboost/ruff-action@v1
-        with:
-          changed-files: 'true'
+
       # run makemigrations and migrate
       - name: Run makemigrations
         run: python manage.py makemigrations
