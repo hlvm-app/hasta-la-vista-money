@@ -4,6 +4,10 @@ html, body {
     overflow-x: hidden !important;
 }
 
+body {
+    font-family: Roboto, sans-serif;
+}
+
 .table-buttons {
     display: flex;
     justify-content: center;
@@ -162,6 +166,22 @@ li {
 
 li:last-child {
     border-bottom: none;
+}
+
+th {
+    font-family: Montserrat, sans-serif;
+}
+
+td {
+    font-family: IBM Plex Mono, sans-serif;
+}
+
+.nav-item {
+    width: 10rem;
+}
+
+#dropdownmenu {
+    padding-bottom: .75rem;
 }
 
 @import "account";

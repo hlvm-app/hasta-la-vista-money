@@ -10,7 +10,6 @@
 <head>
     {% block head %}
         <link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}?v={% word_hash %}">
-        <script nonce="{{request.csp_nonce}}" src="{% static 'bootstrap/js/bootstrap.min.js' %}?v={% word_hash %}"></script>
         <script nonce="{{request.csp_nonce}}" src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}?v={% word_hash %}"></script>
         <title>{% block title %}{% endblock %} - Hasta La Vista, Money!</title>
         <meta charset="UTF-8">
@@ -21,6 +20,7 @@
         <link nonce="{{request.csp_nonce}}" rel="stylesheet" href="{% static 'css/styles.css' %}?v={% word_hash %}">
         <script nonce="{{request.csp_nonce}}" src="https://unpkg.com/htmx.org@2.0.2"></script>
         <script nonce="{{request.csp_nonce}}" src="{% static 'js/jquery-3.7.1.min.js' %}?v={% word_hash %}"></script>
+
     {% endblock %}
 </head>
 <body class="bg-success">
