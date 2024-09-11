@@ -21,8 +21,8 @@
             <div class="col-6">
                 <div class="accordion" id="productsAccordion">
                     {% for month, products in purchased_products_by_month.items %}
-                        <details class="mb-3">
-                            <summary>{{ month|date:"F Y" }}</summary>
+                        <details class="mb-3 purchased-products">
+                            <summary class="purchased-products-summary">{{ month|date:"F Y" }}</summary>
                             <ul class="list-group list-group-flush">
                                 {% for product, total_quantity in products.items %}
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
