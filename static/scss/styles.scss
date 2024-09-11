@@ -4,6 +4,10 @@ html, body {
     overflow-x: hidden !important;
 }
 
+body {
+    font-family: Roboto, sans-serif;
+}
+
 .table-buttons {
     display: flex;
     justify-content: center;
@@ -16,7 +20,7 @@ html, body {
     padding-top: 0 !important;
     color: #198754 !important;
     font-family: 'Gloria Hallelujah', sans-serif !important;
-    font-size: 3rem;
+    font-size: 2rem;
 }
 
 .button-exit {
@@ -132,7 +136,7 @@ html, body {
 }
 
 /* Кастомный CSS */
-details {
+.purchased-products {
     border: 1px solid #ccc;
     border-radius: 4px;
     padding: 10px;
@@ -140,29 +144,30 @@ details {
     background-color: #f8f9fa;
 }
 
-details summary {
+.purchased-products-summary {
     font-weight: bold;
     font-size: 1.1rem;
     cursor: pointer;
     color: #343a40;
 }
 
-details[open] summary {
+.purchased-products[open] .purchased-products-summary {
     color: #007bff;
 }
 
-ul {
-    margin-top: 10px;
+th {
+    font-family: Montserrat, sans-serif;
 }
 
-li {
-    padding: 5px 0;
-    border-bottom: 1px solid #e9ecef;
+td {
+    font-family: IBM Plex Mono, sans-serif;
 }
 
-li:last-child {
-    border-bottom: none;
+#dropdownmenu {
+    padding-top: .55rem;
+    padding-bottom: .55rem;
 }
+
 
 @import "account";
 @import "buttons";

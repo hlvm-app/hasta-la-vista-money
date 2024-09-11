@@ -35,9 +35,14 @@
                     <span class="text-center">{% translate 'Количество чеков:' %}</span>
                     <li class="list-group-item rounded-3 me-2">{{ total_receipts.count }}</li>
                     <span class="text-center">{% translate 'Сумма чеков:' %}</span>
-                    <li class="list-group-item rounded-3">{% if total_sum_receipts.total is not None  %}{{ total_sum_receipts.total }}{% else %}0{% endif %}</li>
+                    <li class="list-group-item rounded-3">
+                        {% if total_sum_receipts.total is not None %}
+                            {{ total_sum_receipts.total }}{% else %}
+                            0{% endif %}</li>
                 </ul>
-                <a class="d-flex align-items-center btn btn-sm btn-primary m-xl-1 m-1" href="{% url 'receipts:products' %}">Часто покупаемые товары</a>
+                <a class="d-flex align-items-center btn btn-sm btn-primary m-xl-1 m-1"
+                   href="{% url 'receipts:products' %}">Часто покупаемые
+                    товары</a>
                 <button type="button"
                         class="d-flex align-items-center btn btn-sm btn-info m-xl-1 m-1"
                         data-bs-toggle="modal" data-bs-target="#add-customer">
@@ -64,7 +69,7 @@
             {% for receipt in receipts %}
                 <div class="col-xl-12">
                     <div class="d-grid gap-2">
-                        <button class="button-receipt btn btn-light text-dark  mb-2"
+                        <button class="button-receipt btn btn-outline-secondary text-dark border-secondary mb-2"
                                 data-bs-toggle="modal"
                                 data-bs-target="#receipt-{{ receipt.id }}">{{ receipt.customer.name_seller }}<br>
                             <strong>{% translate 'Дата: ' %}</strong>{{ receipt.receipt_date | date:"d.m.Y H:i" }}
@@ -227,19 +232,20 @@
                         <a href="?
 
                                 {% for key, value in request.GET.items %}{% if key != 'receipts' %}&{{ key }}={{ value }}{% endif %}{% endfor %}{% if request.GET %}&{% endif %}receipts={{ receipts.previous_page_number }}"
-                           class="btn btn-outline-light">&laquo;</a>
+                           class="btn text-danger btn-outline-secondary">&laquo;</a>
                     {% endif %}
 
                     {% for page_number in receipts.paginator.page_range %}
                         {% if receipts.number == page_number %}
-                            <button class="btn btn-outline-light active">
-                                <span>{{ page_number }}<span class="visually-hidden">(current)</span></span>
+                            <button class="btn text-dark btn-outline-secondary active ">
+                                <span>{{ page_number }}<span
+                                        class="visually-hidden">(current)</span></span>
                             </button>
                         {% elif page_number >= receipts.number|add:-2 and page_number <= receipts.number|add:2 %}
                             <a href="?
 
                                     {% for key, value in request.GET.items %}{% if key != 'receipts' %}&{{ key }}={{ value }}{% endif %}{% endfor %}&receipts={{ page_number }}"
-                               class="btn btn-outline-light">
+                               class="btn text-dark btn-outline-secondary">
                                 {{ page_number }}
                             </a>
                         {% endif %}
@@ -249,7 +255,7 @@
                         <a href="?
 
                                 {% for key, value in request.GET.items %}{% if key != 'receipts' %}&{{ key }}={{ value }}{% endif %}{% endfor %}&receipts={{ receipts.next_page_number }}"
-                           class="btn btn-outline-light">&raquo;</a>
+                           class="btn text-danger btn-outline-secondary">&raquo;</a>
                     {% endif %}
                 </div>
             {% endif %}
