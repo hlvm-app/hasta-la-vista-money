@@ -20,7 +20,7 @@ body {
     padding-top: 0 !important;
     color: #198754 !important;
     font-family: 'Gloria Hallelujah', sans-serif !important;
-    font-size: 3rem;
+    font-size: 2rem;
 }
 
 .button-exit {
@@ -155,19 +155,6 @@ details[open] summary {
     color: #007bff;
 }
 
-ul {
-    margin-top: 10px;
-}
-
-li {
-    padding: 5px 0;
-    border-bottom: 1px solid #e9ecef;
-}
-
-li:last-child {
-    border-bottom: none;
-}
-
 th {
     font-family: Montserrat, sans-serif;
 }
@@ -176,13 +163,11 @@ td {
     font-family: IBM Plex Mono, sans-serif;
 }
 
-.nav-item {
-    width: 10rem;
+#dropdownmenu {
+    padding-top: .55rem;
+    padding-bottom: .55rem;
 }
 
-#dropdownmenu {
-    padding-bottom: .75rem;
-}
 
 @import "account";
 @import "buttons";
