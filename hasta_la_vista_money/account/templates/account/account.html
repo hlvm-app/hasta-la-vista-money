@@ -3,7 +3,8 @@
 {% load i18n %}
 {% load comma %}
 
-{% block title %}{% translate 'Управляй финансами семьи грамотно!' %}{% endblock %}
+{% block title %}
+    {% translate 'Управляй финансами семьи грамотно!' %}{% endblock %}
 {% block content %}
     <div class="container-fluid">
         {% include 'account/modals/add_account.html' %}
@@ -23,7 +24,23 @@
                     {% translate 'Общая статистика пользователя ' %}{{ user.username }}
                 </button>
             </div>
-
         </div>
+        <div class="row">
+            <div class="col-10 mt-2">
+                {% if chart_combine %}
+                    <div class="col-xl-6">
+                        <div id="chart_combine"></div>
+                    </div>
+                {% endif %}
+            </div>
+            <!-- /.col-7 -->
+        </div>
+        <!-- /.row -->
     </div>
+    <script nonce="{{ request.csp_nonce }}"
+            src="https://code.highcharts.com/highcharts.js">
+    </script>
+    <script nonce="{{ request.csp_nonce }}">
+        Highcharts.chart('chart_combine', {{ chart_combine|safe }})
+    </script>
 {% endblock %}
