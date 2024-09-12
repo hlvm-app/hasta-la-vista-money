@@ -167,6 +167,8 @@ class AccountView(
                 'type': 'line',
                 'borderColor': '#000000',
                 'borderWidth': 1,
+                'height': 300,
+                'width': 700,
             },
             'title': {'text': 'Аналитика'},
             'xAxis': [
