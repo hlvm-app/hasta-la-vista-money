@@ -6,9 +6,9 @@
 {% block title %}{% translate 'Регистрация нового пользователя' %}{% endblock %}
 {% block content %}
     <title>{{ title }}</title>
-    <div class="container d-flex min-vh-100 flex-column justify-content-center align-items-center">
-        <h1 class="text-white">Регистрация нового пользователя</h1>
-        <form method="post" class="text-light help-text-form">
+    <div class="container bg-secondary-subtle d-flex min-vh-100 flex-column justify-content-center align-items-center">
+        <h1 class="text-dark">Регистрация нового пользователя</h1>
+        <form method="post" class="text-dark help-text-form">
             {% csrf_token %}
             <p class="my-4">
                 {{ form | crispy }}
