@@ -4,12 +4,12 @@
 
 {% block title %}{% translate 'Страница входа' %}{% endblock %}
 {% block content %}
-    <div class="container d-flex min-vh-100 flex-column justify-content-center align-items-center">
+    <div class="container bg-secondary-subtle d-flex min-vh-100 flex-column justify-content-center align-items-center">
         {% include 'error_modal.html' %}
-        <h1 class="text-light text-uppercase">Hasta La Vista, Money!</h1>
-        <p class="text-light text-center">{% translate 'Удобная домашняя бухгалтерия. Управляй финансами семьи грамотно!' %}</p>
-        <h5 class="text-white">Вход в приложение</h5>
-        <form method="post" class="form text-light">
+        <h1 class="text-dark text-uppercase">Hasta La Vista, Money!</h1>
+        <p class="text-dark-emphasis text-center">{% translate 'Удобная домашняя бухгалтерия. Управляй финансами семьи грамотно!' %}</p>
+        <h5 class="text-body-tertiary">Вход в приложение</h5>
+        <form method="post" class="form text-body-secondary">
             {% csrf_token %}
             <p class="my-4">
                 {{ user_login_form | crispy }}
