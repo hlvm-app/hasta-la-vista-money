@@ -136,8 +136,7 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
             chart_data = {
                 'chart': {'type': 'pie'},
                 'title': {
-                    'text': f'Статистика расходов по '
-                    f'категории {parent_category}',
+                    'text': f'Статистика расходов по ' f'категории {parent_category}',
                 },
                 'series': [{'name': parent_category, 'data': data}],
                 'credits': {'enabled': 'false'},
@@ -235,3 +234,8 @@ class ReportView(CustomNoPermissionMixin, SuccessMessageMixin, TemplateView):
                 'charts_data': charts_data,
             },
         )
+
+
+class ReportsAnalyticMixin(TemplateView):
+    def get_context_report(self, request, *args, **kwargs):
+        return
