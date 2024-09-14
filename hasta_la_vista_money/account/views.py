@@ -168,7 +168,6 @@ class AccountView(
                 'borderColor': '#000000',
                 'borderWidth': 1,
                 'height': 300,
-                'width': 700,
             },
             'title': {'text': 'Аналитика'},
             'xAxis': [
@@ -195,6 +194,20 @@ class AccountView(
             },
             'exporting': {
                 'enabled': False,
+            },
+            'responsive': {
+                'rules': [
+                    {
+                        'condition': {'maxWidth': 700},
+                        'chartOptions': {
+                            'legend': {
+                                'layout': 'horizontal',
+                                'align': 'center',
+                                'verticalAlign': 'bottom',
+                            },
+                        },
+                    },
+                ],
             },
         }
 
