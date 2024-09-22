@@ -5,9 +5,9 @@ let removeButton = document.querySelector("#remove-form")
 let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
 
 
-// document.addEventListener('DOMContentLoaded', function() {
-//     onClickRemoveObject();
-// });
+document.addEventListener('DOMContentLoaded', function() {
+    onClickRemoveObject();
+});
 
 window.setTimeout(function() {
     $(".alert").fadeTo(400, 0).slideUp(400, function(){
@@ -86,14 +86,14 @@ function calculateTotalSum() {
 
 document.getElementById('form-create-receipt').addEventListener('input', calculateTotalSum);
 
-// function onClickRemoveObject() {
-//     const removeObjectButton = document.querySelectorAll('.remove-object-button')
-//     removeObjectButton.forEach((button) => {
-//         button.addEventListener('click', (event) => {
-//             const confirmed_button_category = confirm('Вы уверены?')
-//             if (!confirmed_button_category) {
-//                 event.preventDefault()
-//             }
-//         });
-//     });
-// }
+function onClickRemoveObject() {
+    const removeObjectButton = document.querySelectorAll('.remove-object-button')
+    removeObjectButton.forEach((button) => {
+        button.addEventListener('click', (event) => {
+            const confirmed_button_category = confirm('Вы уверены?')
+            if (!confirmed_button_category) {
+                event.preventDefault()
+            }
+        });
+    });
+}
