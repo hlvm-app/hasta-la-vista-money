@@ -60,7 +60,7 @@ jobs:
         run: python manage.py check
 
       - name: Run migrations
-        run: python manage.py migrate --fake
+        run: python manage.py migrate
 
       - name: Test & publish code coverage
         uses: paambaati/codeclimate-action@v5.0.0
