@@ -27,7 +27,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav justify-content-between align-items-center">
                     <li class="nav-item border-0">
-                        <a class="nav-link link-dark {% if request.path == '/receipts/' %} active {% endif %} btn btn-outline-primary  d-flex align-items-center  p-2"
+                        <a class="nav-link {% if request.path == '/receipts/' %} active {% endif %} btn btn-outline-success d-flex align-items-center p-2"
                            href="{% url 'receipts:list' %}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                  height="16" fill="currentColor"
@@ -40,7 +40,7 @@
                     </li>
                     <li class="dropdown border-0">
                         <a href="#"
-                           class="nav-link link-dark btn btn-outline-secondary dropdown-toggle border-0 ms-2"
+                           class="nav-link link-dark btn btn-outline-success dropdown-toggle border-0 ms-2"
                            type="button" id="dropdownmenu"
                            data-bs-toggle="dropdown" aria-expanded="false">
                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -71,7 +71,7 @@
                         <ul class="dropdown-menu"
                             aria-labelledby="dropdownmenu">
                             <li>
-                                <a class="link-dark dropdown-item {% if request.path == '/income/' %} active {% endif %} btn btn-outline-warning d-flex align-items-center  p-2"
+                                <a class="link-dark dropdown-item {% if request.path == '/income/' %} active {% endif %} btn btn-outline-success d-flex align-items-center  p-2"
                                    href="{% url 'income:list' %}">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          width="16" height="16"
@@ -85,7 +85,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="link-dark dropdown-item {% if request.path == '/expense/' %} active {% endif %} btn btn-outline-solid-pink d-flex align-items-center  p-2"
+                                <a class="link-dark dropdown-item {% if request.path == '/expense/' %} active {% endif %} btn btn-outline-success d-flex align-items-center  p-2"
                                    href="{% url 'expense:list' %}">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          width="16" height="16"
@@ -103,7 +103,7 @@
                     </li>
                     {% if user.is_staff %}
                         <li class="nav-item ms-2 border-0">
-                            <a class="nav-link link-dark {% if request.path == '/budget/' %} active {% endif %} btn btn-outline-darkturquoise d-flex align-items-center  p-2"
+                            <a class="nav-link link-dark {% if request.path == '/budget/' %} active {% endif %} btn btn-outline-success d-flex align-items-center  p-2"
                                href="{% url 'budget:list' %}">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      width="16" height="16" fill="currentColor"
@@ -117,7 +117,7 @@
                         </li>
                     {% endif %}
                     <li class="nav-item ms-2 border-0">
-                        <a class="nav-link link-dark {% if request.path == '/loan/' %} active {% endif %} btn btn-outline-salmon d-flex align-items-center  p-2"
+                        <a class="nav-link link-dark {% if request.path == '/loan/' %} active {% endif %} btn btn-outline-success d-flex align-items-center  p-2"
                            href="{% url 'loan:list' %}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                  height="16" fill="currentColor"
@@ -128,7 +128,7 @@
                         </a>
                     </li>
                     <li class="nav-item ms-2 border-0">
-                        <a class="nav-link link-dark {% if request.path == '/reports/' %} active {% endif %} btn btn-outline-info d-flex align-items-center  p-2"
+                        <a class="nav-link link-dark {% if request.path == '/reports/' %} active {% endif %} btn btn-outline-success d-flex align-items-center  p-2"
                            href="{% url 'reports:list' %}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                  height="16" fill="currentColor"
@@ -142,7 +142,7 @@
                 </ul>
                 <ul class="navbar-nav justify-content-between align-items-center">
                     <li class="nav-item d-flex align-items-center">
-                        <a class="btn btn-outline-banana"
+                        <a class="btn btn-outline-success"
                            href="{% url 'users:profile' user.id %}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                  height="16" fill="currentColor"

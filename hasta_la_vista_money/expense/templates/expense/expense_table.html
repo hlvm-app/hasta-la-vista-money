@@ -78,14 +78,14 @@
                                 </svg>
                             </button>
                         </form>
-                        <button class="remove-object-button btn btn-danger border-0 btn-sm"
-                                data-nonce="{{ request.csp_nonce }}"
-                                name="delete_expense_button"
-                                hx-post="{% url 'expense:delete' expense.id %}"
-                                hx-confirm="{% translate 'Вы уверены?' %}"
-                                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                                hx-swap="innerHTML swap:1s"
-                                hx-target="#expense-table">
+                        <button class="btn btn-danger border-0 btn-sm"
+                            data-nonce="{{ request.csp_nonce }}"
+                            name="delete_expense_button"
+                            hx-post="{% url 'expense:delete' expense.id %}"
+                            hx-confirm="{% translate 'Вы уверены?' %}"
+                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                            hx-target="closest tr"
+                            hx-swap="outerHTML">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  width="12"
                                  height="12" fill="currentColor"

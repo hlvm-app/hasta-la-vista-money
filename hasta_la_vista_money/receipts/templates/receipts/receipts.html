@@ -20,7 +20,7 @@
         <div class="row mt-5">
             <div class="d-flex justify-content-start">
                 <button type="button"
-                        class="d-flex align-items-center btn btn-primary me-5"
+                        class="d-flex align-items-center btn btn-outline-success me-5"
                         data-bs-toggle="modal"
                         data-bs-target="#receipts-statistics">
                     {% translate 'Статистика' %}
@@ -40,11 +40,11 @@
                             {{ total_sum_receipts.total }}{% else %}
                             0{% endif %}</li>
                 </ul>
-                <a class="d-flex align-items-center btn btn-sm btn-primary m-xl-1 m-1"
+                <a class="d-flex align-items-center btn btn-sm btn-outline-success m-xl-1 m-1"
                    href="{% url 'receipts:products' %}">Часто покупаемые
                     товары</a>
                 <button type="button"
-                        class="d-flex align-items-center btn btn-sm btn-info m-xl-1 m-1"
+                        class="d-flex align-items-center btn btn-sm btn-outline-success m-xl-1 m-1"
                         data-bs-toggle="modal" data-bs-target="#add-customer">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16"
                          height="16" fill="currentColor" class="bi bi-plus-lg"
@@ -55,7 +55,7 @@
                     {% translate 'Добавить нового продавца' %}
                 </button>
                 <button type="button"
-                        class="d-flex align-items-center add-receipt-button btn btn-sm btn-danger m-xl-1 m-1"
+                        class="d-flex align-items-center add-receipt-button btn btn-sm btn-outline-success m-xl-1 m-1"
                         data-bs-toggle="modal" data-bs-target="#add-receipt">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16"
                          height="16" fill="currentColor" class="bi bi-plus-lg"
