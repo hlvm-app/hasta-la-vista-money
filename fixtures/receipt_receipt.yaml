@@ -9,7 +9,7 @@
         "number_receipt": 40463,
         "operation_type": 1,
         "total_sum": "98.00",
-        "customer": 1,
+        "seller": 1,
         "product": [
             1
         ]

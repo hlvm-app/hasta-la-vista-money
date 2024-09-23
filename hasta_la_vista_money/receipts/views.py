@@ -19,12 +19,12 @@ from hasta_la_vista_money.commonlogic.custom_paginator import (
 from hasta_la_vista_money.commonlogic.views import collect_info_receipt
 from hasta_la_vista_money.custom_mixin import CustomNoPermissionMixin
 from hasta_la_vista_money.receipts.forms import (
-    CustomerForm,
     ProductFormSet,
     ReceiptFilter,
     ReceiptForm,
+    SellerForm,
 )
-from hasta_la_vista_money.receipts.models import Customer, Receipt
+from hasta_la_vista_money.receipts.models import Receipt, Seller
 from hasta_la_vista_money.users.models import User
 
 
@@ -49,7 +49,7 @@ class ReceiptView(
     def get_context_data(self, *args, **kwargs):
         user = get_object_or_404(User, username=self.request.user)
         if user.is_authenticated:
-            seller_form = CustomerForm()
+            seller_form = SellerForm()
             receipt_filter = ReceiptFilter(
                 self.request.GET,
                 queryset=Receipt.objects.all(),
@@ -57,7 +57,7 @@ class ReceiptView(
             )
             receipt_form = ReceiptForm()
             receipt_form.fields['account'].queryset = user.account_users
-            receipt_form.fields['customer'].queryset = user.customer_users.distinct(
+            receipt_form.fields['seller'].queryset = user.customer_users.distinct(
                 'name_seller',
             )
 
@@ -98,19 +98,19 @@ class ReceiptView(
             return context
 
 
-class CustomerCreateView(SuccessMessageMixin, BaseView, CreateView):
-    model = Customer
-    form_class = CustomerForm
+class SellerCreateView(SuccessMessageMixin, BaseView, CreateView):
+    model = Seller
+    form_class = SellerForm
 
     def post(self, request, *args, **kwargs):
-        seller_form = CustomerForm(request.POST)
+        seller_form = SellerForm(request.POST)
         if seller_form.is_valid():
             customer = seller_form.save(commit=False)
             customer.user = request.user
             customer.save()
             messages.success(
                 self.request,
-                constants.SUCCESS_MESSAGE_CREATE_CUSTOMER,
+                constants.SUCCESS_MESSAGE_CREATE_SELLER,
             )
             response_data = {'success': True}
         else:

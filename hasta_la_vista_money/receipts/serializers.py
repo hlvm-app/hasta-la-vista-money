@@ -1,11 +1,11 @@
-from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
+from hasta_la_vista_money.receipts.models import Product, Receipt, Seller
 from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import ModelSerializer
 
 
-class CustomerSerializer(ModelSerializer):
+class SellerSerializer(ModelSerializer):
     class Meta:
-        model = Customer
+        model = Seller
         fields = '__all__'
 
 
@@ -25,7 +25,7 @@ class ReceiptSerializer(ModelSerializer):
     def create(self, validated_data):
         products_data = validated_data.pop('product')
         customer_data = validated_data.pop('customer')
-        customer_serializer = CustomerSerializer(data=customer_data)
+        customer_serializer = SellerSerializer(data=customer_data)
         if not customer_serializer.is_valid():
             raise ValidationError('Invalid customer data')
         customer = customer_serializer.save()

@@ -2,10 +2,10 @@ import decimal
 import json
 
 from hasta_la_vista_money.account.models import Account
-from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
+from hasta_la_vista_money.receipts.models import Product, Receipt, Seller
 from hasta_la_vista_money.receipts.serializers import (
-    CustomerSerializer,
     ReceiptSerializer,
+    SellerSerializer,
 )
 from hasta_la_vista_money.users.models import User
 from rest_framework import status
@@ -37,17 +37,17 @@ class SellerListAPIView(ListCreateAPIView):
     lookup_field = 'id'
 
     def get_queryset(self):
-        return Customer.objects.filter(user=self.request.user)
+        return Seller.objects.filter(user=self.request.user)
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        serializer = CustomerSerializer(queryset, many=True)
+        serializer = SellerSerializer(queryset, many=True)
         return Response(serializer.data)
 
 
-class CustomerCreateAPIView(APIView):
+class SellerCreateAPIView(APIView):
     def post(self, request, *args, **kwargs):
-        serializer = CustomerSerializer(data=request.data)
+        serializer = SellerSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -81,7 +81,7 @@ class ReceiptCreateAPIView(ListCreateAPIView):
                 account.balance -= decimal.Decimal(total_sum)
                 account.save()
                 request_data['account'] = account
-                customer = Customer.objects.create(**customer_data)
+                customer = Seller.objects.create(**customer_data)
                 receipt = Receipt.objects.create(
                     user=user,
                     account=account,

@@ -43,7 +43,7 @@ QR_CODE_NOT_CONSIDERED: Final[tuple[str]] = (
 SUCCESS_MESSAGE_LOGIN: Final[str] = _('Вы успешно авторизовались!')
 SUCCESS_MESSAGE_REGISTRATION: Final[str] = _('Регистрация прошла успешно!')
 SUCCESS_MESSAGE_CREATE_RECEIPT: Final[str] = _('Чек успешно добавлен!')
-SUCCESS_MESSAGE_CREATE_CUSTOMER: Final[str] = _(
+SUCCESS_MESSAGE_CREATE_SELLER: Final[str] = _(
     'Новый продавец успешно добавлен!',
 )
 
@@ -153,8 +153,7 @@ ALREADY_LOGGED: Final[str] = _(
     'Вы уже авторизованы! Повторная авторизация не требуется!',
 )
 ACCESS_DENIED: Final[str] = _(
-    'У вас нет доступа к использованию бота, '
-    'сначала надо авторизоваться - /auth',
+    'У вас нет доступа к использованию бота, ' 'сначала надо авторизоваться - /auth',
 )
 HELP_TEXT_START: Final[str] = _(
     'Описание команд:\n'

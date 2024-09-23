@@ -12,7 +12,7 @@ OPERATION_TYPES = (
 )
 
 
-class Customer(models.Model):
+class Seller(models.Model):
     """Модель продавца."""
 
     user = models.ForeignKey(
@@ -20,7 +20,7 @@ class Customer(models.Model):
         on_delete=models.PROTECT,
         related_name='customer_users',
     )
-    name_seller = models.CharField(max_length=255)  # noqa: WPS432
+    name_seller = models.CharField(max_length=255)
     retail_place_address = models.CharField(
         default='Нет данных',
         blank=True,
@@ -79,8 +79,8 @@ class Receipt(models.Model):
         blank=True,
         verbose_name='Date created',
     )
-    customer = models.ForeignKey(
-        Customer,
+    seller = models.ForeignKey(
+        Seller,
         on_delete=models.CASCADE,
         verbose_name='customer',
         related_name='receipt_customers',

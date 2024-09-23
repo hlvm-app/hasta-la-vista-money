@@ -1,6 +1,6 @@
 [
 {
-    "model": "receipts.customer",
+    "model": "receipts.seller",
     "pk": 1,
     "fields": {
         "user": 1,

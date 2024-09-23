@@ -10,15 +10,15 @@ from django.forms import (
 from django.utils.translation import gettext_lazy as _
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.commonlogic.forms import BaseFieldsForm
-from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
+from hasta_la_vista_money.receipts.models import Product, Receipt, Seller
 
 
 class ReceiptFilter(django_filters.FilterSet):
     """Класс представляющий фильтр чеков на сайте."""
 
     name_seller = django_filters.ModelChoiceFilter(
-        queryset=Customer.objects.all(),
-        field_name='customer__name_seller',
+        queryset=Seller.objects.all(),
+        field_name='seller__name_seller',
         label=_('Продавец'),
         widget=Select(attrs={'class': 'form-control mb-2'}),
     )
@@ -47,7 +47,7 @@ class ReceiptFilter(django_filters.FilterSet):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         self.filters['name_seller'].queryset = (
-            Customer.objects.filter(user=self.user)
+            Seller.objects.filter(user=self.user)
             .distinct('name_seller')
             .order_by('name_seller')
         )
@@ -65,7 +65,7 @@ class ReceiptFilter(django_filters.FilterSet):
         fields = ['name_seller', 'receipt_date', 'account']
 
 
-class CustomerForm(BaseFieldsForm):
+class SellerForm(BaseFieldsForm):
     """Класс формы продавца."""
 
     name_seller = CharField(label='Имя продавца')
@@ -79,7 +79,7 @@ class CustomerForm(BaseFieldsForm):
     )
 
     class Meta:
-        model = Customer
+        model = Seller
         fields = ['name_seller', 'retail_place_address', 'retail_place']
 
     def __init__(self, *args, **kwargs):
@@ -131,7 +131,7 @@ class ReceiptForm(BaseFieldsForm):
     """Форма для внесения данных по чеку."""
 
     labels = {
-        'customer': _('Имя продавца'),
+        'seller': _('Имя продавца'),
         'account': _('Счёт'),
         'receipt_date': _('Дата и время чека'),
         'operation_type': _('Тип операции'),
@@ -144,7 +144,7 @@ class ReceiptForm(BaseFieldsForm):
     class Meta:
         model = Receipt
         fields = [
-            'customer',
+            'seller',
             'account',
             'receipt_date',
             'number_receipt',
