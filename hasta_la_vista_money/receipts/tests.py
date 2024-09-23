@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
 from hasta_la_vista_money.receipts.forms import ReceiptForm
-from hasta_la_vista_money.receipts.models import Customer, Product, Receipt
+from hasta_la_vista_money.receipts.models import Product, Receipt, Seller
 from hasta_la_vista_money.users.models import User
 
 
@@ -12,7 +12,7 @@ class TestReceipt(TestCase):
         'users.yaml',
         'account.yaml',
         'receipt_receipt.yaml',
-        'receipt_customer.yaml',
+        'receipt_seller.yaml',
         'receipt_product.yaml',
     ]
 
@@ -20,7 +20,7 @@ class TestReceipt(TestCase):
         self.user = User.objects.get(pk=1)
         self.account = Account.objects.get(pk=1)
         self.receipt = Receipt.objects.get(pk=1)
-        self.customer = Customer.objects.get(pk=1)
+        self.seller = Seller.objects.get(pk=1)
         self.product = Product.objects.get(pk=1)
 
     def test_receipt_list(self):
@@ -44,12 +44,12 @@ class TestReceipt(TestCase):
 
         new_product = Product.objects.create(**new_product_data)
 
-        new_customer_data = {
+        new_seller_data = {
             'user': self.user,
             'name_seller': 'ООО Рога и Копыта',
         }
 
-        new_customer = Customer.objects.create(**new_customer_data)
+        new_customer = Seller.objects.create(**new_seller_data)
 
         new_receipt_data = {
             'user': self.user,
@@ -58,7 +58,7 @@ class TestReceipt(TestCase):
             'number_receipt': 111,
             'operation_type': 1,
             'total_sum': 10,
-            'customer': new_customer,
+            'seller': new_customer,
         }
         new_receipt = Receipt.objects.create(**new_receipt_data)
         new_receipt.product.add(new_product)
