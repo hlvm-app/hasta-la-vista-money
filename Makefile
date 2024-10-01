@@ -42,7 +42,7 @@ migrate:
 		poetry run python ./manage.py migrate
 
 
-.PHONY: build
+.PHONY: docker-build
 docker-build: .env
 		docker compose build
 

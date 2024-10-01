@@ -63,15 +63,12 @@ sudo apt install make
 make install
 ```
 
-##### Если используете **Docker**
-
-``` bash
-make docker-install
-```
-
 ------------------------------------------------------------------------
 
 #### 1.2 Заполнение значений в .env файле
+```bash
+make .env
+```
 
 SECRET_KEY - Key for a file settings.py. You can to generation the key
 on command - [make secretkey]{.title-ref}
@@ -89,19 +86,8 @@ server\>:\<port\>/\<name database\>
 
 > DATABASE_URL=
 
-ACCESS_TOKEN - Token RollBar a service for tracking and collecting
-errors of web and mobile applications, notifies the developer and
-analyzes them in order to make it easier to debug and fix bugs.
-
-> ACCESS_TOKEN=
-
-ID_GROUP_USER - ID of the group telegram or personal ID for error
-notification
-
-> ID_GROUP_USER=
-
 ALLOWED_HOSTS - List of allowed hosts. Example 'localhost',
-'127.0.0.1'. By default hosts - localhost, 127.0.0.1
+'127.0.0.1'. By default, hosts - localhost, 127.0.0.1
 
 > ALLOWED_HOSTS=
 
@@ -136,5 +122,5 @@ make start
 ##### Если используете **Docker**
 
 ``` bash
-make docker-start
+make docker-up
 ```

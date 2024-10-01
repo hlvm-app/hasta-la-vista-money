@@ -5,7 +5,7 @@ services:
   db:
     image: postgres:latest
     volumes:
-      - ${LOCATION}/postgres:/var/lib/postgresql/data
+      - ${LOCATION:-./app_data}/postgres:/var/lib/postgresql/data
     env_file:
       - .env
     environment:
@@ -21,7 +21,7 @@ services:
     container_name: hlvm_server
     image: ghcr.io/hlvm-app/hasta-la-vista-money:main
     volumes:
-      - ${LOCATION}:/app
+      - ${LOCATION:-./app_data}:/app
     command: sh -c "python manage.py migrate && python manage.py collectstatic && daphne config.asgi:application --port ${PORT} --bind 0.0.0.0 -v2"
     ports:
       - "8001:8001"
