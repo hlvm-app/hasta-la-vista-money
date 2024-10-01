@@ -100,15 +100,6 @@ ALLOWED_HOSTS - List of allowed hosts. Example 'localhost',
 ``` bash
 make setup
 ```
-
-##### Если используете **Docker**
-
-``` bash
-docker compose run django python manage.py migrate
-docker compose run django python manage.py createsuperuser
-docker compose run django python manage.py collectstatic
-```
-
 ------------------------------------------------------------------------
 
 ## 2. Запуск приложения для разработки
