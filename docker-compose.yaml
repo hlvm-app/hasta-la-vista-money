@@ -22,7 +22,7 @@ services:
     image: ghcr.io/hlvm-app/hasta-la-vista-money:main
     volumes:
       - ${LOCATION:-./app_data}:/app
-    command: sh -c "python manage.py migrate && python manage.py collectstatic && daphne config.asgi:application --port ${PORT:-8000} --bind 0.0.0.0 -v2"
+    command: sh -c "python manage.py migrate && python manage.py collectstatic && daphne config.asgi:application --port ${PORT:-8090} --bind 0.0.0.0 -v2"
     ports:
       - "8001:8001"
     expose:
@@ -33,7 +33,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-hlvm}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_HOST: ${POSTGRES_HOST:-localhost}
+      POSTGRES_HOST: ${POSTGRES_HOST:-db}
       POSTGRES_PORT: ${POSTGRES_PORT:-5432}
       SECRET_KEY: ${SECRET_KEY:-}
       ALLOWED_HOSTS: ${ALLOWED_HOSTS:-}
