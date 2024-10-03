@@ -55,7 +55,7 @@ services:
       - ${CONF_PATH:-./nginx}/nginx.conf:/etc/nginx/nginx.conf
       - ${LOCATION:-./app_data}:/app
     depends_on:
-      - app
+      - hlvm-server
     restart: ${RESTART:-always}
 networks:
   default:
