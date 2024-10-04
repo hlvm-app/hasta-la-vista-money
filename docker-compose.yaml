@@ -3,7 +3,7 @@ name: hlvm
 
 services:
   db:
-    image: postgres:latest
+    image: mirror.gcr.io/postgres
     volumes:
       - ${LOCATION:-./app_data}/postgres:/var/lib/postgresql/data
     env_file:
