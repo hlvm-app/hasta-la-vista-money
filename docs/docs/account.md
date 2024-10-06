@@ -1,3 +1,10 @@
-## Account app
-
+## AccountView
 ::: hasta_la_vista_money.account.views.AccountView
+## AccountCreateView
+::: hasta_la_vista_money.account.views.AccountCreateView
+## ChangeAccountView
+::: hasta_la_vista_money.account.views.ChangeAccountView
+## TransferMoneyAccountView
+::: hasta_la_vista_money.account.views.TransferMoneyAccountView
+## DeleteAccountView
+::: hasta_la_vista_money.account.views.DeleteAccountView
