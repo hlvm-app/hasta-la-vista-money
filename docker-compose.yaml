@@ -3,7 +3,8 @@ name: hlvm
 
 services:
   db:
-    image: mirror.gcr.io/postgres
+    container_name: hlvm_db
+    image: postgres:latest
     volumes:
       - ${LOCATION:-./app_data}/postgres:/var/lib/postgresql/data
     env_file:
@@ -30,13 +31,9 @@ services:
     env_file:
       - .env
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-hlvm}
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_HOST: ${POSTGRES_HOST:-db}
-      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+      DATABASE_URL: ${DATABASE_URL:-postgres://postgres:postgres@db:5432/hlvm}
       SECRET_KEY: ${SECRET_KEY:-}
-      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1}
       BASE_URL: ${BASE_URL:-http://127.0.0.1:8090}
       CSRF_TRUSTED_ORIGINS: ${CSRF_TRUSTED_ORIGINS:-}
       SENTRY_DSN: ${SENTRY_DSN:-}
