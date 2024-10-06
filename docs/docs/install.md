@@ -56,9 +56,8 @@ Specify one of three values: true, 1, yes
 
 > DEBUG=
 
-DATABASE_URL - URL of the connect to the database
-postgres://\<username\>:\<password\>@\<name or IP
-server\>:\<port\>/\<name database\>
+DATABASE_URL - URL of to connect to the database
+postgres://username:password@name or IP server:port/name_database
 
 > DATABASE_URL=
 
