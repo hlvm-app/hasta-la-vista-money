@@ -33,14 +33,41 @@ python.org](<https://www.python.org/downloads/>)
 
 ## 1. Установка
 
-#### 1.1 Клонирование репозитория и активация виртуального окружения
+### 1.1 Клонирование репозитория и активация виртуального окружения
 
-##### Клонирование репозитория
+#### Клонирование репозитория
 
 ``` bash
 git clone https://github.com/TurtleOld/hasta-la-vista-money.git
 cd hasta-la-vista-money
 ```
+
+### 1.2 Заполнение значений в .env файле
+```bash
+make .env
+```
+SECRET_KEY - Key for a file settings.py. You can to generation the key
+on command - ```make secretkey```
+
+> SECRET_KEY=
+
+DEBUG - Activation of debugging. Do not activate on a productive server.
+Specify one of three values: true, 1, yes
+
+> DEBUG=
+
+DATABASE_URL - URL of the connect to the database
+postgres://\<username\>:\<password\>@\<name or IP
+server\>:\<port\>/\<name database\>
+
+> DATABASE_URL=
+
+ALLOWED_HOSTS - List of allowed hosts. Example 'localhost',
+'127.0.0.1'. By default, hosts - localhost, 127.0.0.1
+
+> ALLOWED_HOSTS=
+
+------------------------------------------------------------------------
 
 ##### Если используете **Poetry**
 
@@ -65,43 +92,6 @@ make install
 
 ------------------------------------------------------------------------
 
-#### 1.2 Заполнение значений в .env файле
-```bash
-make .env
-```
-
-SECRET_KEY - Key for a file settings.py. You can to generation the key
-on command - [make secretkey]{.title-ref}
-
-> SECRET_KEY=
-
-DEBUG - Activation of debugging. Do not activate on a productive server.
-Specify one of three values: true, 1, yes
-
-> DEBUG=
-
-DATABASE_URL - URL of the connect to the database
-postgres://\<username\>:\<password\>@\<name or IP
-server\>:\<port\>/\<name database\>
-
-> DATABASE_URL=
-
-ALLOWED_HOSTS - List of allowed hosts. Example 'localhost',
-'127.0.0.1'. By default, hosts - localhost, 127.0.0.1
-
-> ALLOWED_HOSTS=
-
-------------------------------------------------------------------------
-
-#### 1.3 Завершение установки
-
-##### Если используете **Poetry**
-
-``` bash
-make setup
-```
-------------------------------------------------------------------------
-
 ## 2. Запуск приложения для разработки
 
 ##### Если используете **Poetry**
@@ -115,3 +105,4 @@ make start
 ``` bash
 make docker-up
 ```
+------------------------------------------------------------------------
