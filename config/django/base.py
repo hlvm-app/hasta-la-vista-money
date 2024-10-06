@@ -35,7 +35,10 @@ DEBUG = os.getenv('DEBUG', 'false').lower() in {'true', '1', 't'}
 
 BASE_URL = os.getenv('BASE_URL') or 'http://127.0.0.1:8000/'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split() or []
+ALLOWED_HOSTS = os.getenv(
+    'ALLOWED_HOSTS',
+    '',
+).split() or ['127.0.0.1', 'localhost']
 
 CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split() or []
 
@@ -175,9 +178,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 ASGI_APPLICATION = 'config.asgi.application'
 
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': (
-        'django_filters.rest_framework.DjangoFilterBackend'
-    ),
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend'),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),
@@ -223,16 +224,13 @@ AUTH_PASSWORD_VALIDATORS = [
         '.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation'
-        '.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation' '.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation'
-        '.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation' '.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation'
-        '.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation' '.NumericPasswordValidator',
     },
 ]
 
