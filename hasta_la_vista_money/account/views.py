@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import Sum
-from django.http import JsonResponse
+from django.http import HttpRequest, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView
@@ -44,13 +44,28 @@ class AccountView(
     AccountBaseView,
     ListView,
 ):
-    """Отображает список приложений в проекте на сайте."""
+    """
+    Представление отображающее список счетов и финансовую аналитику.
+
+    Attributes:
+        context_object_name (str): Имя переменной контекста, передаваемой в шаблон.
+        no_permission_url (str): URL для перенаправления пользователя, если у него нет доступа.
+    """
 
     context_object_name = 'account'
     no_permission_url = reverse_lazy('login')
 
     @classmethod
-    def collect_datasets(cls, request):
+    def collect_datasets(cls, request: HttpRequest) -> tuple:
+        """
+        Собирает данные о расходах и доходах пользователя.
+
+        Parameters:
+            request (HttpRequest): HTTP-запрос с информацией о пользователе.
+
+        Returns:
+            Два набора данных с расходами и доходами, отсортированные по дате.
+        """
         expense_dataset = (
             Expense.objects.filter(
                 user=request.user,
@@ -80,7 +95,16 @@ class AccountView(
         return expense_dataset, income_dataset
 
     @classmethod
-    def transform_data(cls, dataset):
+    def transform_data(cls, dataset) -> tuple:
+        """
+        Преобразует набор данных в списки дат и сумм.
+
+        Parameters:
+            dataset (QuerySet): Набор данных с датами и суммами.
+
+        Returns:
+            Два списка — один с отформатированными датами, другой с суммами.
+        """
         dates = []
         amounts = []
 
@@ -94,14 +118,17 @@ class AccountView(
 
     @classmethod
     def transform_data_expense(cls, expense_dataset):
+        """Преобразует набор данных о расходах в списки дат и сумм."""
         return cls.transform_data(expense_dataset)
 
     @classmethod
     def transform_data_income(cls, income_dataset):
+        """Преобразует набор данных о доходах в списки дат и сумм."""
         return cls.transform_data(income_dataset)
 
     @classmethod
     def unique_data(cls, dates, amounts):
+        """Объединяет дублирующиеся даты и суммы в уникальные списки."""
         unique_dates = []
         unique_amounts = []
 
@@ -117,13 +144,27 @@ class AccountView(
 
     @classmethod
     def unique_expense_data(cls, expense_dates, expense_amounts):
+        """Возвращает уникальные даты и суммы для расходов."""
         return cls.unique_data(expense_dates, expense_amounts)
 
     @classmethod
     def unique_income_data(cls, income_dates, income_amounts):
+        """Возвращает уникальные даты и суммы для доходов."""
         return cls.unique_data(income_dates, income_amounts)
 
     def get_context_data(self, **kwargs) -> dict:
+        """
+        Собирает контекст данных для отображения на странице, включая счета,
+        аналитические данные по доходам и расходам,
+        формы для добавления счетов и перевода средств,
+        а также журнал переводов.
+
+        Parameters:
+            kwargs (dict): Дополнительные параметры контекста.
+
+        Returns:
+            Контекст данных для отображения на странице.
+        """
         expense_dataset, income_dataset = self.collect_datasets(self.request)
 
         expense_dates, expense_amounts = self.transform_data_expense(
@@ -148,16 +189,20 @@ class AccountView(
 
         # Create data points for expense and income that match the combined dates
         expense_series_data = [
-            unique_expense_amounts[unique_expense_dates.index(date)]
-            if date in unique_expense_dates
-            else 0
+            (
+                unique_expense_amounts[unique_expense_dates.index(date)]
+                if date in unique_expense_dates
+                else 0
+            )
             for date in all_dates
         ]
 
         income_series_data = [
-            unique_income_amounts[unique_income_dates.index(date)]
-            if date in unique_income_dates
-            else 0
+            (
+                unique_income_amounts[unique_income_dates.index(date)]
+                if date in unique_income_dates
+                else 0
+            )
             for date in all_dates
         ]
 
@@ -254,10 +299,35 @@ class AccountView(
 
 
 class AccountCreateView(SuccessMessageMixin, AccountBaseView, CreateView):
+    """
+    Представление для создания нового счёта.
+
+    Это представление использует форму для создания нового счета, проверяет её
+    на валидность и сохраняет данные в случае успеха. Возвращает JSON-ответ с
+    результатом операции.
+
+    Attributes:
+        form_class (AddAccountForm): Форма для создания нового счета.
+        no_permission_url (str): URL, на который перенаправляется пользователь, если у него нет прав.
+    """
+
     form_class = AddAccountForm
     no_permission_url = reverse_lazy('login')
 
     def post(self, request: WSGIRequest, *args, **kwargs) -> JsonResponse:
+        """
+        Обрабатывает POST-запрос на создание нового счета.
+
+        Проверяет форму на валидность, сохраняет новый счет и отправляет сообщение
+        об успешном добавлении. В случае ошибки возвращает список ошибок формы.
+
+        Args:
+            request (WSGIRequest): Объект запроса, содержащий данные формы.
+
+        Returns:
+            JsonResponse: JSON-ответ, содержащий информацию об успешности операции или
+            список ошибок.
+        """
         account_form = AddAccountForm(request.POST)
         if account_form.is_valid():
             add_account = account_form.save(commit=False)
@@ -282,11 +352,30 @@ class ChangeAccountView(
     AccountBaseView,
     UpdateView,
 ):
+    """
+    Представление для изменения существующего счета.
+
+    Это представление позволяет пользователю редактировать данные уже созданного
+    счета. После успешного редактирования выводится сообщение об успешной операции.
+
+    Attributes:
+        form_class (AddAccountForm): Форма для редактирования счета.
+        template_name (str): Имя шаблона, используемого для отображения страницы редактирования счета.
+        success_message (str): Сообщение, которое отображается после успешного обновления счета.
+    """
+
     form_class = AddAccountForm
     template_name = 'account/change_account.html'
     success_message = constants.SUCCESS_MESSAGE_CHANGED_ACCOUNT
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> dict:
+        """
+        Добавляет дополнительные данные в контекст шаблона.
+        Включает форму для редактирования счета в контекст.
+
+        Returns:
+            Контекст с добавленной формой редактирования счета.
+        """
         context = super().get_context_data(**kwargs)
         form_class = self.get_form_class()
         form = form_class(**self.get_form_kwargs())
@@ -300,10 +389,36 @@ class TransferMoneyAccountView(
     AccountBaseView,
     UpdateView,
 ):
+    """
+    Представление для перевода средств между счетами.
+
+    Это представление использует форму для перевода средств, проверяет её на валидность
+    и сохраняет данные о переводе в случае успеха. Возвращает JSON-ответ с результатом
+    операции.
+
+    Attributes:
+        form_class (TransferMoneyAccountForm): Форма для перевода средств.
+        success_message (str): Сообщение, отображаемое при успешном переводе.
+    """
+
     form_class = TransferMoneyAccountForm
     success_message = constants.SUCCESS_MESSAGE_TRANSFER_MONEY
 
     def post(self, request: WSGIRequest, *args, **kwargs) -> JsonResponse:
+        """
+        Обрабатывает POST-запрос на перевод средств.
+
+        Проверяет форму на валидность и тип запроса. Если форма валидна и запрос
+        был выполнен с помощью AJAX, сохраняет данные перевода и отправляет сообщение
+        об успешном переводе. В случае ошибки возвращает список ошибок формы.
+
+        Args:
+            request (WSGIRequest): Объект запроса, содержащий данные формы.
+
+        Returns:
+            JsonResponse: JSON-ответ, содержащий информацию об успешности операции
+            или список ошибок.
+        """
         transfer_money_form = TransferMoneyAccountForm(
             user=request.user,
             data=request.POST,
@@ -330,5 +445,16 @@ class TransferMoneyAccountView(
 
 
 class DeleteAccountView(AccountBaseView, DeleteObjectMixin):
+    """
+    Представление для удаления счета.
+
+    Это представление обрабатывает удаление счета и возвращает соответствующее
+    сообщение об успехе или неудаче операции.
+
+    Attributes:
+        success_message (str): Сообщение, отображаемое при успешном удалении счета.
+        error_message (str): Сообщение, отображаемое при неудаче удаления счета.
+    """
+
     success_message = constants.SUCCESS_MESSAGE_DELETE_ACCOUNT[:]
     error_message = constants.UNSUCCESSFULLY_MESSAGE_DELETE_ACCOUNT[:]
