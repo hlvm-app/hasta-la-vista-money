@@ -41,7 +41,6 @@ migrate:
 		echo "Migrating..." && \
 		poetry run python ./manage.py migrate
 
-
 .PHONY: docker-build
 docker-build: .env
 		docker compose build
@@ -55,14 +54,6 @@ docker-up:
 .PHONY: gettext
 gettext:
 		sudo apt install gettext -y
-
-.PHONY: setup
-setup: migrate staticfiles gettext transcompile
-		echo "Creating superuser '${DJANGO_SUPERUSER_USERNAME}' with password '${DJANGO_SUPERUSER_PASSWORD}' and email '${DJANGO_SUPERUSER_EMAIL}'" && \
-		DJANGO_SUPERUSER_USERNAME="${DJANGO_SUPERUSER_USERNAME}" \
-		DJANGO_SUPERUSER_PASSWORD="${DJANGO_SUPERUSER_PASSWORD}" \
-		DJANGO_SUPERUSER_EMAIL="${DJANGO_SUPERUSER_EMAIL}" \
-		poetry run python ./manage.py createsuperuser --noinput
 
 .PHONY: staticfiles
 staticfiles:
