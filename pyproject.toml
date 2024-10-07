@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hastalavistamoney"
-version = "3.1.0"
+version = "1.4.0"
 description = "Home Accounting Project"
 authors = ["Alexander Pavlov <dev@pavlovteam.ru>"]
 packages = [
