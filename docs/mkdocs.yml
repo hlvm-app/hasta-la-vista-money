@@ -2,7 +2,7 @@ site_name: Hasta La Vista, Money!
 repo_url: https://github.com/hlvm-app/hasta-la-vista-money.git
 edit_uri: edit/main/docs/
 nav:
-  - Home: index.md
+  - Главная: index.md
   - Вклад в проект: install.md
   - Раздел со счетами: account.md
 theme:
