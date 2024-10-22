@@ -18,6 +18,14 @@ Hasta La Vista, Money!
    :target: https://www.codefactor.io/repository/github/hlvm-app/hasta-la-vista-money
    :alt: CodeFactor
 
+.. image:: https://sloc.xyz/github/hlvm-app/hasta-la-vista-money/?category=code
+   :target: https://sloc.xyz/github/hlvm-app/hasta-la-vista-money/?category=code
+   :alt: Lines of code
+
+.. image:: https://sloc.xyz/github/hlvm-app/hasta-la-vista-money/?category=blanks
+   :target: https://sloc.xyz/github/hlvm-app/hasta-la-vista-money/?category=blanks
+   :alt: Total blanks
+
 .. image:: https://wakatime.com/badge/github/TurtleOld/hasta-la-vista-money.svg
     :target: https://wakatime.com/badge/github/TurtleOld/hasta-la-vista-money
 
