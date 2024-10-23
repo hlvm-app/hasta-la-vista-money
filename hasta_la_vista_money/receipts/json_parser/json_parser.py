@@ -1,4 +1,10 @@
-def parse_json(json_data: dict, key: str) -> list[dict] | int | str | None:
+from typing import Any
+
+
+def parse_json(
+    json_data: dict[str, Any],
+    key: str,
+) -> list[dict[str, Any]] | int | str | None:
     """
     Модуль разбора json данных.
 
