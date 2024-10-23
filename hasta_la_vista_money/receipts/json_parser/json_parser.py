@@ -20,10 +20,12 @@ def parse_json(
     """
     if isinstance(json_data, dict):
         return _parse_dict(json_data, key)
-    return None
 
 
-def _parse_dict(data: dict, key: str) -> list[dict] | int | str | None:
+def _parse_dict(
+    data: dict[str, Any],
+    key: str,
+) -> list[dict[str, Any]] | int | str | None:
     for value in data.values():
         result = _parse_value(value, key)
         if result is not None:
@@ -31,15 +33,20 @@ def _parse_dict(data: dict, key: str) -> list[dict] | int | str | None:
     return data.get(key) if key in data else None
 
 
-def _parse_value(value, key: str) -> list[dict] | int | str | None:
+def _parse_list(
+    data: list[dict[str, Any]],
+    key: str,
+) -> list[dict[str, Any]] | int | str | None:
+    if data and isinstance(data[0], dict):
+        return _parse_dict(data[0], key)
+    return None
+
+
+def _parse_value(
+    value: dict[str, Any] | list[dict[str, Any]],
+    key: str,
+) -> list[dict[str, Any]] | int | str | None:
     if isinstance(value, dict):
         return _parse_dict(value, key)
     elif isinstance(value, list):
         return _parse_list(value, key)
-    return None
-
-
-def _parse_list(data: list, key: str) -> list[dict] | int | str | None:
-    if data and isinstance(data[0], dict):
-        return _parse_dict(data[0], key)
-    return None
