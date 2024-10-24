@@ -55,9 +55,15 @@ class Loan(models.Model):
             user=self.user,
             loan_id=self.id,
         ).aggregate(models.Sum('monthly_payment'))
-        return monthly_payment.get('monthly_payment__sum') - decimal.Decimal(
-            self.loan_amount,
-        )
+
+        total_monthly_payment = monthly_payment.get(
+            'monthly_payment__sum',
+        ) or decimal.Decimal('0.00')
+
+        if self.loan_amount:
+            return total_monthly_payment - decimal.Decimal(self.loan_amount)
+
+        return total_monthly_payment
 
     @property
     def calculate_total_amount_loan_with_interest(self):
