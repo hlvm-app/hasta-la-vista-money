@@ -4,6 +4,7 @@ from django.contrib.auth.forms import (
     UserCreationForm,
 )
 from django.forms import CharField, ModelForm, PasswordInput
+from django_stubs_ext.db.models import TypedModelMeta
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.users.models import User
 
@@ -20,8 +21,8 @@ class UserLoginForm(AuthenticationForm):
     )
 
 
-class RegisterUserForm(UserCreationForm):
-    class Meta:
+class RegisterUserForm(UserCreationForm[User]):
+    class Meta(TypedModelMeta):
         model = User
         fields = [
             'username',
