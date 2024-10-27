@@ -1,16 +1,17 @@
+from django_stubs_ext.db.models import TypedModelMeta
 from hasta_la_vista_money.receipts.models import Product, Receipt, Seller
 from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import ModelSerializer
 
 
 class SellerSerializer(ModelSerializer):
-    class Meta:
+    class Meta(TypedModelMeta):
         model = Seller
         fields = '__all__'
 
 
 class ProductSerializer(ModelSerializer):
-    class Meta:
+    class Meta(TypedModelMeta):
         model = Product
         fields = '__all__'
 
@@ -18,7 +19,7 @@ class ProductSerializer(ModelSerializer):
 class ReceiptSerializer(ModelSerializer):
     product = ProductSerializer(many=True)
 
-    class Meta:
+    class Meta(TypedModelMeta):
         model = Receipt
         fields = '__all__'
 

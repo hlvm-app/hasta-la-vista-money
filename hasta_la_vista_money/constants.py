@@ -179,51 +179,51 @@ NO_INFORMATION_BY_RECEIPT: Final = _(
 CANCEL_MANUAL_RECEIPT: Final = 'Вы отменили ввод данных чека'
 
 # HTTP Status
-SUCCESS_CODE: Final[int] = 200
-SERVER_ERROR: Final[int] = 500
-NOT_FOUND: Final[int] = 404
-REDIRECTS: Final[int] = 302
+SUCCESS_CODE: Final = 200
+SERVER_ERROR: Final = 500
+NOT_FOUND: Final = 404
+REDIRECTS: Final = 302
 
 
 # Числа
-ONE: Final[int] = 1
-TWO: Final[int] = 2
-TEN: Final[int] = 10
-TWENTY: Final[int] = 20
-THIRTY: Final[int] = 30
-FORTY: Final[int] = 40
-FIFTY: Final[int] = 50
-SIXTY: Final[int] = 60
-SEVENTY: Final[int] = 70
-EIGHTY: Final[int] = 80
-NINTY: Final[int] = 90
-ONE_HUNDRED: Final[int] = 100
-ONE_HUNDRED_FIFTY: Final[int] = 150
-TWO_HUNDRED: Final[int] = 200
-TWO_HUNDRED_FIFTY: Final[int] = 250
-DAY_MINUS_HOUR: Final[int] = 23
-MINUTE_MINUS_ONE: Final[int] = 59
-SECOND_MINUS_ONE: Final[int] = 59
-TODAY_MINUS_FIVE_YEARS: Final[int] = 23
-THREE_HUNDRED_SIXTY_FIVE: Final[int] = 365
+ONE: Final = 1
+TWO: Final = 2
+TEN: Final = 10
+TWENTY: Final = 20
+THIRTY: Final = 30
+FORTY: Final = 40
+FIFTY: Final = 50
+SIXTY: Final = 60
+SEVENTY: Final = 70
+EIGHTY: Final = 80
+NINTY: Final = 90
+ONE_HUNDRED: Final = 100
+ONE_HUNDRED_FIFTY: Final = 150
+TWO_HUNDRED: Final = 200
+TWO_HUNDRED_FIFTY: Final = 250
+DAY_MINUS_HOUR: Final = 23
+MINUTE_MINUS_ONE: Final = 59
+SECOND_MINUS_ONE: Final = 59
+TODAY_MINUS_FIVE_YEARS: Final = 23
+THREE_HUNDRED_SIXTY_FIVE: Final = 365
 
 
 # Порядковые номера месяцев
-NUMBER_FIRST_MONTH_YEAR: Final[int] = 1
-NUMBER_SECOND_MONTH_YEAR: Final[int] = 2
-NUMBER_THIRD_MONTH_YEAR: Final[int] = 3
-NUMBER_FOURTH_MONTH_YEAR: Final[int] = 4
-NUMBER_FIFTH_MONTH_YEAR: Final[int] = 5
-NUMBER_SIXTH_MONTH_YEAR: Final[int] = 6
-NUMBER_SEVENTH_MONTH_YEAR: Final[int] = 7
-NUMBER_EIGHTH_MONTH_YEAR: Final[int] = 8
-NUMBER_NINTH_MONTH_YEAR: Final[int] = 9
-NUMBER_TENTH_MONTH_YEAR: Final[int] = 10
-NUMBER_ELEVENTH_MONTH_YEAR: Final[int] = 11
-NUMBER_TWELFTH_MONTH_YEAR: Final[int] = 12
+NUMBER_FIRST_MONTH_YEAR: Final = 1
+NUMBER_SECOND_MONTH_YEAR: Final = 2
+NUMBER_THIRD_MONTH_YEAR: Final = 3
+NUMBER_FOURTH_MONTH_YEAR: Final = 4
+NUMBER_FIFTH_MONTH_YEAR: Final = 5
+NUMBER_SIXTH_MONTH_YEAR: Final = 6
+NUMBER_SEVENTH_MONTH_YEAR: Final = 7
+NUMBER_EIGHTH_MONTH_YEAR: Final = 8
+NUMBER_NINTH_MONTH_YEAR: Final = 9
+NUMBER_TENTH_MONTH_YEAR: Final = 10
+NUMBER_ELEVENTH_MONTH_YEAR: Final = 11
+NUMBER_TWELFTH_MONTH_YEAR: Final = 12
 
 # Настройки Cookies
-SESSION_COOKIE_AGE: Final[int] = 31536000
+SESSION_COOKIE_AGE: Final = 31536000
 
 # Текст для ответов запросов
 SUCCESS_WEBHOOKS: Final = 'Webhook processed successfully'
