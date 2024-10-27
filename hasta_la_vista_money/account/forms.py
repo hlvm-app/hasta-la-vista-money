@@ -1,3 +1,5 @@
+from typing import Any, Dict
+
 from django.forms import (
     CharField,
     DateTimeInput,
@@ -11,7 +13,7 @@ from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account, TransferMoneyLog
 
 
-class AddAccountForm(ModelForm):
+class AddAccountForm(ModelForm[Account]):
     class Meta:
         model = Account
         fields = ['name_account', 'balance', 'currency']
@@ -22,26 +24,7 @@ class AddAccountForm(ModelForm):
         }
 
 
-class TransferMoneyAccountForm(ModelForm):
-    from_account = ModelChoiceField(label=_('Со счёта:'), queryset=None)
-    to_account = ModelChoiceField(label=_('На счёт:'), queryset=None)
-    amount = DecimalField(
-        label=_('Сумма перевода:'),
-        max_digits=constants.TWENTY,
-        decimal_places=constants.TWO,
-    )
-    notes = CharField(
-        label=_('Заметка'),
-        required=False,
-        widget=Textarea(
-            attrs={
-                'rows': 3,
-                'maxlength': constants.TWO_HUNDRED_FIFTY,
-                'placeholder': constants.ACCOUNT_FORM_NOTES,
-            },
-        ),
-    )
-
+class TransferMoneyAccountForm(ModelForm[Account]):
     def __init__(self, user, *args, **kwargs):
         """
         Конструктов класса инициализирующий две поля формы.
@@ -51,10 +34,32 @@ class TransferMoneyAccountForm(ModelForm):
         :param kwargs:
         """
         super().__init__(*args, **kwargs)
-        self.fields['from_account'].queryset = Account.objects.filter(user=user)
-        self.fields['to_account'].queryset = Account.objects.filter(user=user)
+        self.fields['from_account'] = ModelChoiceField(
+            label=_('Со счёта:'),
+            queryset=Account.objects.filter(user=user),
+        )
+        self.fields['to_account'] = ModelChoiceField(
+            label=_('На счёт:'),
+            queryset=Account.objects.filter(user=user),
+        )
+        self.fields['amount'] = DecimalField(
+            label=_('Сумма перевода:'),
+            max_digits=constants.TWENTY,
+            decimal_places=constants.TWO,
+        )
+        self.fields['notes'] = CharField(
+            label=_('Заметка'),
+            required=False,
+            widget=Textarea(
+                attrs={
+                    'rows': 3,
+                    'maxlength': constants.TWO_HUNDRED_FIFTY,
+                    'placeholder': constants.ACCOUNT_FORM_NOTES,
+                },
+            ),
+        )
 
-    def clean(self):
+    def clean(self) -> Dict[str, Any]:
         cleaned_data = super().clean()
         from_account = cleaned_data.get('from_account')
         to_account = cleaned_data.get('to_account')
@@ -65,11 +70,13 @@ class TransferMoneyAccountForm(ModelForm):
                 'to_account',
                 constants.ANOTHER_ACCRUAL_ACCOUNT,
             )
-        if from_account and amount and amount > from_account.balance:
-            self.add_error(
-                'from_account',
-                constants.SUCCESS_MESSAGE_INSUFFICIENT_FUNDS,
-            )
+
+        if from_account and amount:
+            if amount > from_account.balance:
+                self.add_error(
+                    'from_account',
+                    constants.SUCCESS_MESSAGE_INSUFFICIENT_FUNDS,
+                )
 
         return cleaned_data
 
