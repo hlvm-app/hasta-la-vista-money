@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.test import TestCase
 from django.urls import reverse_lazy
 from hasta_la_vista_money import constants
@@ -129,11 +131,13 @@ class TestAccount(TestCase):
         account1 = Account.objects.get(pk=self.account1.pk)
         account2 = Account.objects.get(pk=self.account2.pk)
 
+        transfer_money_amount = Decimal(transfer_money['amount'])  # type: ignore[arg-type]
+
         self.assertEqual(
             account1.balance,
-            initial_balance_account1 - transfer_money['amount'],
+            initial_balance_account1 - transfer_money_amount,
         )
         self.assertEqual(
             account2.balance,
-            initial_balance_account2 + transfer_money['amount'],
+            initial_balance_account2 + transfer_money_amount,
         )
