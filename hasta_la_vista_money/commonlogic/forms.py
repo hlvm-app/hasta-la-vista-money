@@ -1,7 +1,15 @@
-from django.forms import ModelForm
+from typing import Any
+
+from django.db.models import QuerySet
+from django.forms import Field, ModelForm
 
 
-def get_category_choices(queryset, parent=None, level=0, max_level=2):
+def get_category_choices(
+    queryset: QuerySet[Any],
+    parent=None,
+    level=0,
+    max_level=2,
+):
     """Формируем выбор категории в форме."""
     choices = []
     prefix = '   >' * level
@@ -21,7 +29,7 @@ def get_category_choices(queryset, parent=None, level=0, max_level=2):
     return choices
 
 
-class BaseFieldsForm(ModelForm):
+class BaseFieldsForm(ModelForm):  # type: ignore
     r"""
     Базовая модель формы Django для создания форм на основе модели.
 
@@ -38,8 +46,8 @@ class BaseFieldsForm(ModelForm):
         который вызывается при создании экземпляра формы.
     """
 
-    fields = []
-    labels = {}
+    fields: dict[str, Field]
+    labels: dict[str, Any]
 
     class Meta:  # : 306
         """Метакласс для базовой модели формы Django."""
@@ -49,7 +57,7 @@ class BaseFieldsForm(ModelForm):
     def __init__(self, *args, **kwargs):
         """Конструктор класса."""
         super().__init__(*args, **kwargs)
-        for field in self.fields:  # noqa: 528
+        for field in self.fields:  # : 528
             self.fields[field].label = self.labels.get(
                 field,
                 self.fields[field].label,
@@ -57,7 +65,7 @@ class BaseFieldsForm(ModelForm):
 
 
 class BaseForm(BaseFieldsForm):
-    field = None
+    field: str
 
     def __init__(
         self,
@@ -79,7 +87,7 @@ class BaseForm(BaseFieldsForm):
         :type kwargs: dict
         """
         self.user = user
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)  # type: ignore[no-untyped-call]
         if category_queryset:
             category_choices = get_category_choices(
                 queryset=category_queryset,
@@ -88,6 +96,9 @@ class BaseForm(BaseFieldsForm):
             category_choices.insert(0, ('', '----------'))
             self.configure_category_choices(category_choices)
 
-    def configure_category_choices(self, category_choices):
+    def configure_category_choices(
+        self,
+        category_choices: list[tuple[Any, str]],
+    ):
         """Configure category choices for the form."""
-        self.fields[self.field].choices = category_choices
+        self.fields[self.field].choices = category_choices  # type: ignore[attr-defined]
