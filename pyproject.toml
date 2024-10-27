@@ -52,6 +52,7 @@ mkdocs = "^1.6.1"
 mkdocstrings = {extras = ["python"], version = "^0.26.1"}
 mkdocs-material = "^9.5.39"
 django-stubs = {extras = ["compatible-mypy"], version = "^5.1.0"}
+types-python-dateutil = "^2.9.0.20241003"
 
 [build-system]
 requires = ["poetry-core>=1.4.0"]
