@@ -53,7 +53,6 @@ class Account(models.Model):
         return reverse('account:change', args=[self.id])
 
     def transfer_money(self, to_account: 'Account', amount: Decimal) -> bool:
-        print(type(to_account))
         if amount <= self.balance:
             self.balance -= amount
             to_account.balance += amount

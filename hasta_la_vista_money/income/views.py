@@ -1,11 +1,11 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.http import JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import DeleteView, UpdateView
-from django.views.generic.edit import DeletionMixin
+from django.views.generic.edit import CreateView, DeletionMixin
 from django_filters.views import FilterView
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
@@ -22,7 +22,6 @@ from hasta_la_vista_money.commonlogic.views import (
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
     DeleteObjectMixin,
-    ExpenseIncomeCategoryCreateViewMixin,
     UpdateViewMixin,
 )
 from hasta_la_vista_money.income.filters import IncomeFilter
@@ -34,6 +33,10 @@ from hasta_la_vista_money.users.models import User
 class BaseView:
     template_name = 'income/income.html'
     success_url = reverse_lazy('income:list')
+
+
+class IncomeCategoryBaseView(BaseView):
+    model = IncomeCategory
 
 
 class IncomeView(
@@ -87,14 +90,9 @@ class IncomeView(
                 category_queryset=income_categories,
             )
 
-            income_form.fields['account'].queryset = (
-                user.account_users.select_related('user').all()
-            )
-
-            add_category_income_form = AddCategoryIncomeForm(
-                user=self.request.user,
-                depth=depth_limit,
-            )
+            income_form.fields['account'].queryset = user.account_users.select_related(
+                'user',
+            ).all()
 
             income_by_month = income_filter.qs
 
@@ -106,7 +104,6 @@ class IncomeView(
             )
 
             context = super().get_context_data(**kwargs)
-            context['add_category_income_form'] = add_category_income_form
             context['categories'] = categories
             context['income_filter'] = income_filter
             context['income_by_month'] = pages_income
@@ -247,10 +244,53 @@ class IncomeDeleteView(BaseView, DeleteView, DeletionMixin):
             return super().form_valid(form)
 
 
-class IncomeCategoryCreateView(BaseView, ExpenseIncomeCategoryCreateViewMixin):
+class IncomeCategoryCreateView(CreateView):
     model = IncomeCategory
+    template_name = 'income/add_category_income.html'
     form_class = AddCategoryIncomeForm
+    success_url = reverse_lazy('income:list')
     depth = 3
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        add_category_income_form = AddCategoryIncomeForm(
+            user=self.request.user,
+            depth=self.depth,
+        )
+        context['add_category_income_form'] = add_category_income_form
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        kwargs['depth'] = self.depth
+        return kwargs
+
+    def form_valid(self, form):
+        print('Form is valid:', form.errors)
+        category_name = self.request.POST.get('name')
+        category_form = form.save(commit=False)
+        category_form.user = self.request.user
+        category_form.save()
+        messages.success(
+            self.request,
+            f'Категория "{category_name}" была успешно добавлена!',
+        )
+
+        return redirect(self.success_url)
+
+    def form_invalid(self, form):
+        error_message = ''
+        if 'name' in form.errors:
+            error_message = 'Такая категория уже была добавлена!'
+            print(error_message)
+        else:
+            error_message = (
+                'Ошибка при добавлении категории. Проверьте введенные данные.'
+            )
+        messages.error(self.request, error_message)
+
+        return HttpResponseRedirect(reverse_lazy('income:create_category'))
 
 
 class IncomeCategoryDeleteView(BaseView, DeleteObjectMixin):
