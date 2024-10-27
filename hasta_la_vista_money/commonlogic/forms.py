@@ -1,7 +1,7 @@
 from typing import Any
 
 from django.db.models import QuerySet
-from django.forms import Field, ModelForm
+from django.forms import ModelForm
 
 
 def get_category_choices(
@@ -46,7 +46,7 @@ class BaseFieldsForm(ModelForm):  # type: ignore
         который вызывается при создании экземпляра формы.
     """
 
-    fields: dict[str, Field]
+    fields: dict[str, Any]
     labels: dict[str, Any]
 
     class Meta:  # : 306
@@ -101,4 +101,4 @@ class BaseForm(BaseFieldsForm):
         category_choices: list[tuple[Any, str]],
     ):
         """Configure category choices for the form."""
-        self.fields[self.field].choices = category_choices  # type: ignore[attr-defined]
+        self.fields[self.field].choices = category_choices
