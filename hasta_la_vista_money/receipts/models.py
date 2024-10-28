@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.utils.translation import gettext as _
 from hasta_la_vista_money import constants
@@ -40,8 +42,47 @@ class Seller(models.Model):
         verbose_name='Date created',
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name_seller
+
+
+class Product(models.Model):
+    """Модель продуктов."""
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        related_name='product_users',
+    )
+    product_name = models.CharField(default='', max_length=1000)
+    category = models.CharField(
+        blank=True,
+        max_length=constants.TWO_HUNDRED_FIFTY,
+    )
+    price = models.DecimalField(default=0, max_digits=10, decimal_places=2)
+    quantity = models.DecimalField(
+        default=0,
+        max_digits=10,
+        decimal_places=2,
+        verbose_name='Количество',
+    )
+    amount = models.DecimalField(default=0, max_digits=10, decimal_places=2)
+    nds_type = models.IntegerField(default=None, null=True, blank=True)
+    nds_sum = models.DecimalField(
+        default=0,
+        null=True,
+        max_digits=10,
+        decimal_places=2,
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        null=True,
+        blank=True,
+        verbose_name='Date created',
+    )
+
+    def __str__(self):
+        return self.product_name
 
 
 class Receipt(models.Model):
@@ -95,7 +136,7 @@ class Receipt(models.Model):
         on_delete=models.PROTECT,
         related_name='receipt_accounts',
     )
-    product = models.ManyToManyField('Product', related_name='receipt_products')
+    product = models.ManyToManyField(Product, related_name='receipt_products')
 
     class Meta:
         ordering = ['-receipt_date']
@@ -108,44 +149,5 @@ class Receipt(models.Model):
             models.Index(fields=['total_sum']),
         ]
 
-    def datetime(self):
+    def datetime(self) -> datetime:
         return self.receipt_date
-
-
-class Product(models.Model):
-    """Модель продуктов."""
-
-    user = models.ForeignKey(
-        User,
-        on_delete=models.PROTECT,
-        related_name='product_users',
-    )
-    product_name = models.CharField(default='', max_length=1000)
-    category = models.CharField(
-        blank=True,
-        max_length=constants.TWO_HUNDRED_FIFTY,
-    )
-    price = models.DecimalField(default=0, max_digits=10, decimal_places=2)
-    quantity = models.DecimalField(
-        default=0,
-        max_digits=10,
-        decimal_places=2,
-        verbose_name='Количество',
-    )
-    amount = models.DecimalField(default=0, max_digits=10, decimal_places=2)
-    nds_type = models.IntegerField(default=None, null=True, blank=True)
-    nds_sum = models.DecimalField(
-        default=0,
-        null=True,
-        max_digits=10,
-        decimal_places=2,
-    )
-    created_at = models.DateTimeField(
-        auto_now_add=True,
-        null=True,
-        blank=True,
-        verbose_name='Date created',
-    )
-
-    def __str__(self):
-        return self.product_name

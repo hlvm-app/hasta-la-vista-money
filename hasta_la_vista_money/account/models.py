@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext as _
@@ -44,15 +46,15 @@ class Account(models.Model):
         ordering = ['name_account']
         indexes = [models.Index(fields=['name_account'])]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'{self.name_account}'
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return reverse('account:change', args=[self.id])
 
-    def transfer_money(self, to_account, amount):
+    def transfer_money(self, to_account: 'Account', amount: Decimal) -> bool:
         if amount <= self.balance:
-            self.balance -= amount  # noqa: WPS601
+            self.balance -= amount
             to_account.balance += amount
             self.save()
             to_account.save()
@@ -92,7 +94,7 @@ class TransferMoneyLog(models.Model):
     class Meta:
         ordering = ['-exchange_date']
 
-    def __str__(self):
+    def __str__(self) -> str:
         return _(
             ''.join(
                 (

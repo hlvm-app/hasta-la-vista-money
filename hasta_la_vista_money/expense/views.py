@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import DeleteView, DetailView, UpdateView
+from django.views.generic import CreateView, DeleteView, DetailView, UpdateView
 from django_filters.views import FilterView
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
@@ -21,7 +21,6 @@ from hasta_la_vista_money.commonlogic.views import (
 from hasta_la_vista_money.custom_mixin import (
     CustomNoPermissionMixin,
     DeleteObjectMixin,
-    ExpenseIncomeCategoryCreateViewMixin,
     UpdateViewMixin,
 )
 from hasta_la_vista_money.expense.filters import ExpenseFilter
@@ -93,9 +92,9 @@ class ExpenseView(
                 depth=depth_limit,
                 category_queryset=categories,
             )
-            add_expense_form.fields['account'].queryset = (
-                user.account_users.select_related('user').all()
-            )
+            add_expense_form.fields[
+                'account'
+            ].queryset = user.account_users.select_related('user').all()
 
             add_category_form = AddCategoryForm(
                 user=self.request.user,
@@ -253,12 +252,34 @@ class ExpenseDeleteView(ExpenseBaseView, DetailView, DeleteView):
             return super().form_valid(form)
 
 
-class ExpenseCategoryCreateView(
-    ExpenseCategoryBaseView,
-    ExpenseIncomeCategoryCreateViewMixin,
-):
+class ExpenseCategoryCreateView(ExpenseCategoryBaseView, CreateView):
     form_class = AddCategoryForm
     depth = 3
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        kwargs['depth'] = self.depth
+        return kwargs
+
+    def form_valid(self, form):
+        category_name = self.request.POST.get('name')
+        category_form = form.save(commit=False)
+        category_form.user = self.request.user
+        category_form.save()
+        messages.success(
+            self.request,
+            f'Категория "{category_name}" была успешно добавлена!',
+        )
+
+        return redirect(self.success_url)
+
+    def form_invalid(self, form):
+        messages.error(
+            self.request,
+            'Ошибка при добавлении категории. Проверьте введенные данные.',
+        )
+        return redirect(self.success_url)
 
 
 class ExpenseCategoryDeleteView(
@@ -267,3 +288,6 @@ class ExpenseCategoryDeleteView(
 ):
     success_message = constants.SUCCESS_CATEGORY_EXPENSE_DELETED
     error_message = constants.ACCESS_DENIED_DELETE_EXPENSE_CATEGORY
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

@@ -1,4 +1,5 @@
 import json
+from typing import Any, Optional
 
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
@@ -13,7 +14,7 @@ from hasta_la_vista_money.account.forms import (
     AddAccountForm,
     TransferMoneyAccountForm,
 )
-from hasta_la_vista_money.account.models import Account
+from hasta_la_vista_money.account.models import Account, TransferMoneyLog
 from hasta_la_vista_money.account.prepare import (
     collect_info_expense,
     collect_info_income,
@@ -429,22 +430,25 @@ class TransferMoneyAccountView(
             and request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
         )
         if valid_form:
-            transfer_log = transfer_money_form.save(commit=False)
+            transfer_log: Optional[TransferMoneyLog] = transfer_money_form.save(
+                commit=False,
+            )
 
-            if transfer_log is not None:
+            if transfer_log is not None and request.user.is_authenticated:
                 transfer_log.user = request.user
                 transfer_log.save()
                 messages.success(request, self.success_message)
-            response_data = {'success': True}
+            response_data: dict[str, Any] = {'success': True}
+            return JsonResponse(response_data)
         else:
-            response_data = {
+            error_data: dict[str, Any] = {
                 'success': False,
                 'errors': transfer_money_form.errors,
             }
-        return JsonResponse(response_data)
+            return JsonResponse(error_data)
 
 
-class DeleteAccountView(AccountBaseView, DeleteObjectMixin):
+class DeleteAccountView(DeleteObjectMixin):
     """
     Представление для удаления счета.
 
@@ -456,5 +460,8 @@ class DeleteAccountView(AccountBaseView, DeleteObjectMixin):
         error_message (str): Сообщение, отображаемое при неудаче удаления счета.
     """
 
+    model = Account
+    template_name = 'account/account.html'
+    success_url = reverse_lazy('account:list')
     success_message = constants.SUCCESS_MESSAGE_DELETE_ACCOUNT[:]
     error_message = constants.UNSUCCESSFULLY_MESSAGE_DELETE_ACCOUNT[:]

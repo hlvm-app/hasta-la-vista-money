@@ -14,10 +14,13 @@ import os
 from pathlib import Path
 
 import dj_database_url
+import django_stubs_ext
 import sentry_sdk
 from config.django.sessions import *  # NOQA
 from dotenv import load_dotenv
 from sentry_sdk.integrations.django import DjangoIntegration
+
+django_stubs_ext.monkeypatch()
 
 load_dotenv()
 

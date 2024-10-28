@@ -38,9 +38,9 @@ class AddCategoryIncomeForm(BaseForm):
     }
     field = 'parent_category'
 
-    def configure_category_choices(self, category_choices):
-        self.fields[self.field].choices = category_choices
-
     class Meta:
         model = IncomeCategory
         fields = ['name', 'parent_category']
+
+    def configure_category_choices(self, category_choices):
+        self.fields[self.field].choices = category_choices
