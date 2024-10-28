@@ -2,13 +2,13 @@ from django.urls import path
 from hasta_la_vista_money.income.views import (
     IncomeCategoryCreateView,
     IncomeCategoryDeleteView,
+    IncomeCategoryView,
     IncomeCopyView,
     IncomeCreateView,
     IncomeDeleteView,
     IncomeUpdateView,
     IncomeView,
 )
-from income.views import IncomeCategoryView
 
 app_name = 'income'
 urlpatterns = [

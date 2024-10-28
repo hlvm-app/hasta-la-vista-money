@@ -7,19 +7,20 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title">
                         {% translate 'Добавить категорию дохода' %}
                     </h5>
-                </div>
-                <div class="card-body">
-                    <a class="btn btn-primary btn-sm"
+                    <a class="btn btn-success btn-sm"
                        href="{% url 'income:create_category' %}">
                        {% translate 'Добавить категорию' %}
                     </a>
+                </div>
+                <div class="card-body">
                     {% include "income/income_cat_list.html" %}
                 </div>
             </div>
+            <a class="btn btn-outline-success mt-1" href="{% url 'income:list' %}">Назад</a>
         </div>
     </div>
 </div>
