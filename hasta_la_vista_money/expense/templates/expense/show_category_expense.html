@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h5 class="card-title">
+                        {% translate 'Добавить категорию расхода' %}
+                    </h5>
+                    <a class="btn btn-success btn-sm"
+                       href="{% url 'expense:create_category' %}">
+                       {% translate 'Добавить категорию' %}
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% include "expense/expense_cat_list.html" %}
+                </div>
+            </div>
+            <a class="btn btn-outline-success mt-1" href="{% url 'expense:list' %}">Назад</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
