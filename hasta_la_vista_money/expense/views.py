@@ -1,3 +1,5 @@
+from typing import Any
+
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse
@@ -5,6 +7,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, DeleteView, DetailView, UpdateView
+from django.views.generic.list import ListView
 from django_filters.views import FilterView
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
@@ -96,11 +99,6 @@ class ExpenseView(
                 'account'
             ].queryset = user.account_users.select_related('user').all()
 
-            add_category_form = AddCategoryForm(
-                user=self.request.user,
-                depth=depth_limit,
-            )
-
             expenses = expense_filter.qs
 
             # Paginator expense table
@@ -112,7 +110,7 @@ class ExpenseView(
             )
 
             context = super().get_context_data(**kwargs)
-            context['add_category_form'] = add_category_form
+
             context['expense_filter'] = expense_filter
             context['categories'] = expense_categories
             context['expenses'] = pages_expense
@@ -252,9 +250,52 @@ class ExpenseDeleteView(ExpenseBaseView, DetailView, DeleteView):
             return super().form_valid(form)
 
 
-class ExpenseCategoryCreateView(ExpenseCategoryBaseView, CreateView):
+class ExpenseCategoryView(ListView):
+    template_name = 'expense/show_category_expense.html'
+    model = ExpenseCategory
+    depth = 3
+
+    def get_context_data(self, **kwargs: reverse_lazy) -> dict[str, Any]:
+        user = get_object_or_404(User, username=self.request.user)
+        expense_categories = (
+            user.category_expense_users.select_related('user')
+            .values(
+                'id',
+                'name',
+                'parent_category',
+                'parent_category__name',
+            )
+            .order_by('name', 'parent_category')
+            .all()
+        )
+        flattened_categories = build_category_tree(
+            expense_categories,
+            depth=self.depth,
+        )
+        context = super().get_context_data(**kwargs)
+
+        context['flattened_categories'] = flattened_categories
+
+        return context
+
+
+class ExpenseCategoryCreateView(CreateView):
+    model = ExpenseCategory
+    template_name = 'expense/add_category_expense.html'
     form_class = AddCategoryForm
     depth = 3
+    success_url = reverse_lazy('expense:category_list')
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+
+        add_category_form = AddCategoryForm(
+            user=self.request.user,
+            depth=self.depth,
+        )
+        context['add_category_form'] = add_category_form
+
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
