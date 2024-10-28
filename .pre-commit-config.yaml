@@ -34,7 +34,3 @@ repos:
     hooks:
 
     -   id: yesqa
-        name: yesqa
-        entry: yesqa
-        language: system
-        types: [ python ]
