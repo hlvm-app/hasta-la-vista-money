@@ -2,6 +2,7 @@ import django_filters
 from django.forms import (
     CharField,
     DateTimeInput,
+    ModelForm,
     NumberInput,
     Select,
     TextInput,
@@ -65,7 +66,7 @@ class ReceiptFilter(django_filters.FilterSet):
         fields = ['name_seller', 'receipt_date', 'account']
 
 
-class SellerForm(BaseFieldsForm):
+class SellerForm(ModelForm):
     """Класс формы продавца."""
 
     name_seller = CharField(label='Имя продавца')

@@ -4,27 +4,27 @@ from typing import Final
 from django.utils.translation import gettext_lazy as _
 
 # Константы для парсинга json чека
-NAME_SELLER: Final[str] = 'user'
-RETAIL_PLACE_ADDRESS: Final[str] = 'retailPlaceAddress'
-RETAIL_PLACE: Final[str] = 'retailPlace'
-RECEIPT_DATE_TIME: Final[str] = 'dateTime'
-NUMBER_RECEIPT: Final[str] = 'fiscalDocumentNumber'
-NUMBER_RECEIPT_ID: Final[str] = 'documentId'
-OPERATION_TYPE: Final[str] = 'operationType'
-TOTAL_SUM: Final[str] = 'totalSum'
-PRODUCT_NAME: Final[str] = 'name'
-PRICE: Final[str] = 'price'
-QUANTITY: Final[str] = 'quantity'
-AMOUNT: Final[str] = 'sum'
-NDS_TYPE: Final[str] = 'nds'
-NDS_SUM: Final[str] = 'ndsSum'
-NDS10: Final[str] = 'nds10'
-NDS20: Final[str] = 'nds18'
-ITEMS_PRODUCT: Final[str] = 'items'
+NAME_SELLER: Final = 'user'
+RETAIL_PLACE_ADDRESS: Final = 'retailPlaceAddress'
+RETAIL_PLACE: Final = 'retailPlace'
+RECEIPT_DATE_TIME: Final = 'dateTime'
+NUMBER_RECEIPT: Final = 'fiscalDocumentNumber'
+NUMBER_RECEIPT_ID: Final = 'documentId'
+OPERATION_TYPE: Final = 'operationType'
+TOTAL_SUM: Final = 'totalSum'
+PRODUCT_NAME: Final = 'name'
+PRICE: Final = 'price'
+QUANTITY: Final = 'quantity'
+AMOUNT: Final = 'sum'
+NDS_TYPE: Final = 'nds'
+NDS_SUM: Final = 'ndsSum'
+NDS10: Final = 'nds10'
+NDS20: Final = 'nds18'
+ITEMS_PRODUCT: Final = 'items'
 
 # Константы строк для парсинга чека
-RECEIPT_ALREADY_EXISTS: Final[str] = 'Такой чек уже существует!'
-RECEIPT_BE_ADDED: Final[str] = 'Чек успешно добавлен!'
+RECEIPT_ALREADY_EXISTS: Final = 'Такой чек уже существует!'
+RECEIPT_BE_ADDED: Final = 'Чек успешно добавлен!'
 RECEIPT_CANNOT_BE_ADDED: Final[tuple[str]] = (
     'Чек не корректен, перепроверьте в приложении налоговой!',
 )
@@ -40,30 +40,30 @@ QR_CODE_NOT_CONSIDERED: Final[tuple[str]] = (
 )
 
 # Сообщения для сайта
-SUCCESS_MESSAGE_LOGIN: Final[str] = _('Вы успешно авторизовались!')
-SUCCESS_MESSAGE_REGISTRATION: Final[str] = _('Регистрация прошла успешно!')
-SUCCESS_MESSAGE_CREATE_RECEIPT: Final[str] = _('Чек успешно добавлен!')
-SUCCESS_MESSAGE_CREATE_SELLER: Final[str] = _(
+SUCCESS_MESSAGE_LOGIN: Final = _('Вы успешно авторизовались!')
+SUCCESS_MESSAGE_REGISTRATION: Final = _('Регистрация прошла успешно!')
+SUCCESS_MESSAGE_CREATE_RECEIPT: Final = _('Чек успешно добавлен!')
+SUCCESS_MESSAGE_CREATE_SELLER: Final = _(
     'Новый продавец успешно добавлен!',
 )
 
-ANOTHER_ACCRUAL_ACCOUNT: Final[str] = _(
+ANOTHER_ACCRUAL_ACCOUNT: Final = _(
     'Нельзя выбирать одинаковые счета для перевода.',
 )
-SUCCESS_MESSAGE_ADDED_ACCOUNT: Final[str] = _('Счёт успешно создан!')
-SUCCESS_MESSAGE_CHANGED_ACCOUNT: Final[str] = _('Счёт успешно изменён!')
-SUCCESS_MESSAGE_DELETE_ACCOUNT: Final[str] = _('Счёт успешно удалён!')
-UNSUCCESSFULLY_MESSAGE_DELETE_ACCOUNT: Final[str] = _(
+SUCCESS_MESSAGE_ADDED_ACCOUNT: Final = _('Счёт успешно создан!')
+SUCCESS_MESSAGE_CHANGED_ACCOUNT: Final = _('Счёт успешно изменён!')
+SUCCESS_MESSAGE_DELETE_ACCOUNT: Final = _('Счёт успешно удалён!')
+UNSUCCESSFULLY_MESSAGE_DELETE_ACCOUNT: Final = _(
     'Счёт не может быть удалён!',
 )
-SUCCESS_MESSAGE_CHANGED_PROFILE: Final[str] = _('Профиль успешно обновлён!')
-SUCCESS_MESSAGE_CHANGED_PASSWORD: Final[str] = _(
+SUCCESS_MESSAGE_CHANGED_PROFILE: Final = _('Профиль успешно обновлён!')
+SUCCESS_MESSAGE_CHANGED_PASSWORD: Final = _(
     'Новый пароль успешно установлен!',
 )
-SUCCESS_MESSAGE_LOGOUT: Final[str] = _(
+SUCCESS_MESSAGE_LOGOUT: Final = _(
     'Вы успешно вышли из своей учётной записи!',
 )
-HELP_TEXT_PASSWORD: Final[str] = _(
+HELP_TEXT_PASSWORD: Final = _(
     'Пароли хранятся в зашифрованном виде, '
     'поэтому нет возможности посмотреть ваш пароль, '
     'но вы можете сбросить пароль, выполнив команду '
@@ -73,89 +73,89 @@ HELP_TEXT_PASSWORD: Final[str] = _(
 )
 
 
-HELP_TEXT_FORGOT_PASSWORD: Final[str] = _(
+HELP_TEXT_FORGOT_PASSWORD: Final = _(
     'Укажите логин, который указывали при регистрации.<br>'
     'Ссылка для восстановления пароля будет выслана в чат с ботом.<br>'
     'После нажатия на кнопку ниже, '
     'произойдёт переадресация в телеграм.',
 )
-SUCCESS_CATEGORY_ADDED: Final[str] = _('Категория добавлена!')
-SUCCESS_EXPENSE_ADDED: Final[str] = _('Операция расхода успешно добавлена!')
-SUCCESS_INCOME_ADDED: Final[str] = _('Операция дохода успешно добавлена!')
-SUCCESS_INCOME_UPDATE: Final[str] = _('Операция дохода успешно обновлена!')
-SUCCESS_EXPENSE_UPDATE: Final[str] = _('Операция расхода успешно обновлена!')
-SUCCESS_EXPENSE_DELETED: Final[str] = _('Операция расхода успешно удалена!')
-SUCCESS_INCOME_DELETED: Final[str] = _('Операция дохода успешно удалена!')
-SUCCESS_CATEGORY_EXPENSE_DELETED: Final[str] = _(
+SUCCESS_CATEGORY_ADDED: Final = _('Категория добавлена!')
+SUCCESS_EXPENSE_ADDED: Final = _('Операция расхода успешно добавлена!')
+SUCCESS_INCOME_ADDED: Final = _('Операция дохода успешно добавлена!')
+SUCCESS_INCOME_UPDATE: Final = _('Операция дохода успешно обновлена!')
+SUCCESS_EXPENSE_UPDATE: Final = _('Операция расхода успешно обновлена!')
+SUCCESS_EXPENSE_DELETED: Final = _('Операция расхода успешно удалена!')
+SUCCESS_INCOME_DELETED: Final = _('Операция дохода успешно удалена!')
+SUCCESS_CATEGORY_EXPENSE_DELETED: Final = _(
     'Категория расхода успешно удалена!',
 )
-SUCCESS_CATEGORY_INCOME_DELETED: Final[str] = _(
+SUCCESS_CATEGORY_INCOME_DELETED: Final = _(
     'Категория дохода успешно удалена!',
 )
-ACCESS_DENIED_DELETE_EXPENSE_CATEGORY: Final[str] = _(
+ACCESS_DENIED_DELETE_EXPENSE_CATEGORY: Final = _(
     'Категория не может быть удалена, так как связана с расходом',
 )
-ACCESS_DENIED_DELETE_INCOME_CATEGORY: Final[str] = _(
+ACCESS_DENIED_DELETE_INCOME_CATEGORY: Final = _(
     'Категория не может быть удалена, так как связана с доходом',
 )
-SUCCESS_MESSAGE_TRANSFER_MONEY: Final[str] = _('Средства успешно переведены')
-SUCCESS_MESSAGE_INSUFFICIENT_FUNDS: Final[str] = _('Недостаточно средств')
-SUCCESS_MESSAGE_LOAN_CREATE: Final[str] = _('Кредит успешно добавлен')
-SUCCESS_MESSAGE_LOAN_DELETE: Final[str] = _('Кредит успешно удалён')
-SUCCESS_MESSAGE_PAYMENT_MAKE: Final[str] = _('Платеж успешно внесён')
-ACCOUNT_FORM_NOTES: Final[str] = _(
+SUCCESS_MESSAGE_TRANSFER_MONEY: Final = _('Средства успешно переведены')
+SUCCESS_MESSAGE_INSUFFICIENT_FUNDS: Final = _('Недостаточно средств')
+SUCCESS_MESSAGE_LOAN_CREATE: Final = _('Кредит успешно добавлен')
+SUCCESS_MESSAGE_LOAN_DELETE: Final = _('Кредит успешно удалён')
+SUCCESS_MESSAGE_PAYMENT_MAKE: Final = _('Платеж успешно внесён')
+ACCOUNT_FORM_NOTES: Final = _(
     'Введите заметку не более 250 символов. Поле необязательное!',
 )
 
 # Сообщения для телеграма
-SAFE_LOGIN_PASSWORD: Final[str] = _(
+SAFE_LOGIN_PASSWORD: Final = _(
     'Ваш логин и пароль был удалены для обеспечения сохранности'
     ' конфиденциальных данных!',
 )
-ALREADY_LOGGING_LINK_ACCOUNT: Final[tuple] = (
+ALREADY_LOGGING_LINK_ACCOUNT: Final = (
     _('Вы уже авторизованы и связаны с этим аккаунтом.\n'),
     SAFE_LOGIN_PASSWORD,
 )
 
-ALREADY_LINK_ANOTHER_ACCOUNT: Final[tuple] = (
+ALREADY_LINK_ANOTHER_ACCOUNT: Final = (
     _('Ваш аккаунт уже связан с другим Telegram аккаунтом.\n'),
     SAFE_LOGIN_PASSWORD,
 )
 
-AUTHORIZATION_SUCCESSFUL: Final[tuple] = (
+AUTHORIZATION_SUCCESSFUL: Final = (
     _('Авторизация прошла успешно. Вы привязаны к своему аккаунту.\n'),
     SAFE_LOGIN_PASSWORD,
 )
 
-INVALID_USERNAME_PASSWORD: Final[tuple] = (
+INVALID_USERNAME_PASSWORD: Final = (
     _('Неверный логин или пароль. Попробуйте ещё раз.\n'),
     SAFE_LOGIN_PASSWORD,
 )
 
-INCORRECT_FORMAT: Final[tuple] = (
+INCORRECT_FORMAT: Final = (
     _('Некорректный формат. Повторите ввод логина и пароля.\n'),
     SAFE_LOGIN_PASSWORD,
 )
 
-REQUIRED_AUTHORIZATION: Final[str] = _(
+REQUIRED_AUTHORIZATION: Final = _(
     'Требуется авторизация.\nВведите логин и пароль в формате: логин:пароль',
 )
 
-ACCEPTED_FORMAT_JSON: Final[str] = _(
+ACCEPTED_FORMAT_JSON: Final = _(
     'Принимаются файлы JSON, текст по формату и фотографии QR-кодов',
 )
 
-NOT_CREATE_ACCOUNT: Final[str] = _(
+NOT_CREATE_ACCOUNT: Final = _(
     'Не выбран счёт! Сначала выберите его используя команду /select_account',
 )
-ERROR_DATABASE_RECORD: Final[str] = _('Ошибка записи в базу данных!')
-ALREADY_LOGGED: Final[str] = _(
+ERROR_DATABASE_RECORD: Final = _('Ошибка записи в базу данных!')
+ALREADY_LOGGED: Final = _(
     'Вы уже авторизованы! Повторная авторизация не требуется!',
 )
-ACCESS_DENIED: Final[str] = _(
+ACCESS_DENIED: Final = _(
     'У вас нет доступа к использованию бота, ' 'сначала надо авторизоваться - /auth',
 )
-HELP_TEXT_START: Final[str] = _(
+HELP_TEXT_START: Final = _(
     'Описание команд:\n'
     '/start и /help выводят этот текст;\n'
     '/auth - позволяет авторизоваться в боте для доступа к '
@@ -166,75 +166,75 @@ HELP_TEXT_START: Final[str] = _(
     'самого чека, если, например, QR-код не считывается;\n'
     '/deauthorize - отвязывает телеграм аккаунт от бота.',
 )
-START_MANUAL_HANDLER_RECEIPT: Final[str] = _(
+START_MANUAL_HANDLER_RECEIPT: Final = _(
     'Чтобы добавить чек используя данные с чека, '
     'введите поочередно - Дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС, '
     'сумму чека, ФН, ФД, ФП.\n'
     'Ввод можно отменить командой /cancel\n'
     'Сначала введите дату в формате ГГГГ-ММ-ДД ЧЧ:ММ:СС',
 )
-NO_INFORMATION_BY_RECEIPT: Final[str] = _(
+NO_INFORMATION_BY_RECEIPT: Final = _(
     'Нет информации по чеку.\nПопробуйте позже или внесите данные на сайте',
 )
-CANCEL_MANUAL_RECEIPT: Final[str] = 'Вы отменили ввод данных чека'
+CANCEL_MANUAL_RECEIPT: Final = 'Вы отменили ввод данных чека'
 
 # HTTP Status
-SUCCESS_CODE: Final[int] = 200
-SERVER_ERROR: Final[int] = 500
-NOT_FOUND: Final[int] = 404
-REDIRECTS: Final[int] = 302
+SUCCESS_CODE: Final = 200
+SERVER_ERROR: Final = 500
+NOT_FOUND: Final = 404
+REDIRECTS: Final = 302
 
 
 # Числа
-ONE: Final[int] = 1
-TWO: Final[int] = 2
-TEN: Final[int] = 10
-TWENTY: Final[int] = 20
-THIRTY: Final[int] = 30
-FORTY: Final[int] = 40
-FIFTY: Final[int] = 50
-SIXTY: Final[int] = 60
-SEVENTY: Final[int] = 70
-EIGHTY: Final[int] = 80
-NINTY: Final[int] = 90
-ONE_HUNDRED: Final[int] = 100
-ONE_HUNDRED_FIFTY: Final[int] = 150
-TWO_HUNDRED: Final[int] = 200
-TWO_HUNDRED_FIFTY: Final[int] = 250
-DAY_MINUS_HOUR: Final[int] = 23
-MINUTE_MINUS_ONE: Final[int] = 59
-SECOND_MINUS_ONE: Final[int] = 59
-TODAY_MINUS_FIVE_YEARS: Final[int] = 23
-THREE_HUNDRED_SIXTY_FIVE: Final[int] = 365
+ONE: Final = 1
+TWO: Final = 2
+TEN: Final = 10
+TWENTY: Final = 20
+THIRTY: Final = 30
+FORTY: Final = 40
+FIFTY: Final = 50
+SIXTY: Final = 60
+SEVENTY: Final = 70
+EIGHTY: Final = 80
+NINTY: Final = 90
+ONE_HUNDRED: Final = 100
+ONE_HUNDRED_FIFTY: Final = 150
+TWO_HUNDRED: Final = 200
+TWO_HUNDRED_FIFTY: Final = 250
+DAY_MINUS_HOUR: Final = 23
+MINUTE_MINUS_ONE: Final = 59
+SECOND_MINUS_ONE: Final = 59
+TODAY_MINUS_FIVE_YEARS: Final = 23
+THREE_HUNDRED_SIXTY_FIVE: Final = 365
 
 
 # Порядковые номера месяцев
-NUMBER_FIRST_MONTH_YEAR: Final[int] = 1
-NUMBER_SECOND_MONTH_YEAR: Final[int] = 2
-NUMBER_THIRD_MONTH_YEAR: Final[int] = 3
-NUMBER_FOURTH_MONTH_YEAR: Final[int] = 4
-NUMBER_FIFTH_MONTH_YEAR: Final[int] = 5
-NUMBER_SIXTH_MONTH_YEAR: Final[int] = 6
-NUMBER_SEVENTH_MONTH_YEAR: Final[int] = 7
-NUMBER_EIGHTH_MONTH_YEAR: Final[int] = 8
-NUMBER_NINTH_MONTH_YEAR: Final[int] = 9
-NUMBER_TENTH_MONTH_YEAR: Final[int] = 10
-NUMBER_ELEVENTH_MONTH_YEAR: Final[int] = 11
-NUMBER_TWELFTH_MONTH_YEAR: Final[int] = 12
+NUMBER_FIRST_MONTH_YEAR: Final = 1
+NUMBER_SECOND_MONTH_YEAR: Final = 2
+NUMBER_THIRD_MONTH_YEAR: Final = 3
+NUMBER_FOURTH_MONTH_YEAR: Final = 4
+NUMBER_FIFTH_MONTH_YEAR: Final = 5
+NUMBER_SIXTH_MONTH_YEAR: Final = 6
+NUMBER_SEVENTH_MONTH_YEAR: Final = 7
+NUMBER_EIGHTH_MONTH_YEAR: Final = 8
+NUMBER_NINTH_MONTH_YEAR: Final = 9
+NUMBER_TENTH_MONTH_YEAR: Final = 10
+NUMBER_ELEVENTH_MONTH_YEAR: Final = 11
+NUMBER_TWELFTH_MONTH_YEAR: Final = 12
 
 # Настройки Cookies
-SESSION_COOKIE_AGE: Final[int] = 31536000
+SESSION_COOKIE_AGE: Final = 31536000
 
 # Текст для ответов запросов
-SUCCESS_WEBHOOKS: Final[str] = 'Webhook processed successfully'
-WEBHOOKS_TELEGRAM: Final[str] = 'This page for Webhooks Telegram!'
+SUCCESS_WEBHOOKS: Final = 'Webhook processed successfully'
+WEBHOOKS_TELEGRAM: Final = 'This page for Webhooks Telegram!'
 
 # Параметры дат
 TODAY = datetime.datetime.today()
 CURRENT_YEAR = datetime.date.today().year
 
 
-MONTH_NUMBERS: Final[dict] = {
+MONTH_NUMBERS: Final = {
     'Январь': 1,
     'Февраль': 2,
     'Март': 3,
@@ -249,7 +249,7 @@ MONTH_NUMBERS: Final[dict] = {
     'Декабрь': 12,
 }
 
-MONTH_NAMES: Final[dict] = {
+MONTH_NAMES: Final = {
     1: 'Январь',
     2: 'Февраль',
     3: 'Март',

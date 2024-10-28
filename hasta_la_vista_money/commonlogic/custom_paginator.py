@@ -1,7 +1,17 @@
+from typing import Any, Sequence, TypeVar
+
 from django.core.paginator import Page, Paginator
+from django.db.models import QuerySet
+
+T = TypeVar('T')
 
 
-def paginator_custom_view(request, queryset, paginate_by, page_name) -> Page:
+def paginator_custom_view(
+    request,
+    queryset: QuerySet[Any],
+    paginate_by: int,
+    page_name: str,
+) -> Page[Sequence[T]]:
     """
     Кастомный пагинатор для данных.
 
