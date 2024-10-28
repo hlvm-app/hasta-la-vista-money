@@ -8,11 +8,17 @@ from hasta_la_vista_money.income.views import (
     IncomeUpdateView,
     IncomeView,
 )
+from income.views import IncomeCategoryView
 
 app_name = 'income'
 urlpatterns = [
     path('', IncomeView.as_view(), name='list'),
     path('create/', IncomeCreateView.as_view(), name='create'),
+    path(
+        'category/list',
+        IncomeCategoryView.as_view(),
+        name='category_list',
+    ),
     path(
         'create/category',
         IncomeCategoryCreateView.as_view(),

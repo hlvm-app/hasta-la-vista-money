@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import DeleteView, UpdateView
 from django.views.generic.edit import CreateView, DeletionMixin
+from django.views.generic.list import ListView
 from django_filters.views import FilterView
 from hasta_la_vista_money import constants
 from hasta_la_vista_money.account.models import Account
@@ -244,11 +245,40 @@ class IncomeDeleteView(BaseView, DeleteView, DeletionMixin):
             return super().form_valid(form)
 
 
+class IncomeCategoryView(ListView):
+    template_name = 'income/show_category_income.html'
+    model = IncomeCategory
+    depth = 3
+
+    def get_context_data(self, *, object_list=..., **kwargs):
+        user = get_object_or_404(User, username=self.request.user)
+        categories = (
+            user.category_income_users.select_related('user')
+            .values(
+                'id',
+                'name',
+                'parent_category',
+                'parent_category__name',
+            )
+            .order_by('parent_category_id')
+            .all()
+        )
+        flattened_categories = build_category_tree(
+            categories,
+            depth=self.depth,
+        )
+        context = super().get_context_data(**kwargs)
+        context['categories'] = categories
+        context['flattened_categories'] = flattened_categories
+
+        return context
+
+
 class IncomeCategoryCreateView(CreateView):
     model = IncomeCategory
     template_name = 'income/add_category_income.html'
     form_class = AddCategoryIncomeForm
-    success_url = reverse_lazy('income:list')
+    success_url = reverse_lazy('income:category_list')
     depth = 3
 
     def get_context_data(self, **kwargs):
