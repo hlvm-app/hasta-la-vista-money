@@ -29,7 +29,8 @@ repos:
         - id: ruff-format
           exclude: 'migrations'
 
--   repo: local
+-   repo: https://github.com/asottile/yesqa
+    rev: v1.5.0
     hooks:
 
     -   id: yesqa
