@@ -1,6 +1,5 @@
 from django.contrib.messages.views import SuccessMessageMixin
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView
 from hasta_la_vista_money import constants
@@ -42,59 +41,55 @@ class LoanView(CustomNoPermissionMixin, SuccessMessageMixin, ListView):
 
 
 class LoanCreateView(CustomNoPermissionMixin, SuccessMessageMixin, CreateView):
-    template_name = 'loan/loan.html'
+    template_name = 'loan/add_loan.html'
     model = Loan
     form_class = LoanForm
     success_url = reverse_lazy('loan:list')
     success_message = constants.SUCCESS_MESSAGE_LOAN_CREATE
 
-    def post(self, request, *args, **kwargs):
-        loan_form = LoanForm(
-            request.POST,
-            user=request.user,
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['loan_form'] = self.form_class
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        type_loan = form.cleaned_data.get('type_loan')
+        date = form.cleaned_data.get('date')
+        loan_amount = form.cleaned_data.get('loan_amount')
+        annual_interest_rate = form.cleaned_data.get(
+            'annual_interest_rate',
         )
+        period_loan = form.cleaned_data.get('period_loan')
+        form.save()
+        loan = Loan.objects.filter(
+            date=date,
+            loan_amount=loan_amount,
+        ).first()
 
-        if loan_form.is_valid():
-            loan_form.save()
-            type_loan = loan_form.cleaned_data.get('type_loan')
-            date = loan_form.cleaned_data.get('date')
-            loan_amount = loan_form.cleaned_data.get('loan_amount')
-            annual_interest_rate = loan_form.cleaned_data.get(
-                'annual_interest_rate',
-            )
-            period_loan = loan_form.cleaned_data.get('period_loan')
-
-            loan = Loan.objects.filter(
-                date=date,
+        if type_loan == 'Annuity':
+            calculate_annuity_loan(
+                user_id=self.request.user.pk,
+                loan_id=loan.pk,
+                start_date=date,
                 loan_amount=loan_amount,
-            ).first()
-
-            if type_loan == 'Annuity':
-                calculate_annuity_loan(
-                    user_id=self.request.user.pk,
-                    loan_id=loan.pk,
-                    start_date=date,
-                    loan_amount=loan_amount,
-                    annual_interest_rate=annual_interest_rate,
-                    period_loan=period_loan,
-                )
-            elif type_loan == 'Differentiated':
-                calculate_differentiated_loan(
-                    user_id=self.request.user.pk,
-                    loan_id=loan.pk,
-                    start_date=date,
-                    loan_amount=loan_amount,
-                    annual_interest_rate=annual_interest_rate,
-                    period_loan=period_loan,
-                )
-
-            response_data = {'success': True}
-        else:
-            response_data = {
-                'success': False,
-                'errors': loan_form.errors,
-            }
-        return JsonResponse(response_data)
+                annual_interest_rate=annual_interest_rate,
+                period_loan=period_loan,
+            )
+        elif type_loan == 'Differentiated':
+            calculate_differentiated_loan(
+                user_id=self.request.user.pk,
+                loan_id=loan.pk,
+                start_date=date,
+                loan_amount=loan_amount,
+                annual_interest_rate=annual_interest_rate,
+                period_loan=period_loan,
+            )
+        return redirect(self.success_url)
 
 
 class LoanDeleteView(CustomNoPermissionMixin, SuccessMessageMixin, DeleteView):

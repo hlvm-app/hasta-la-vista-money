@@ -9,41 +9,6 @@
 {% block title %}{% translate 'Кредиты' %}{% endblock %}
 {% block content %}
 	<div class="container-fluid">
-		{% include 'error_modal.html' %}
-		<div id="add-loan" class="ajax-modal modal fade">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">
-							{% translate 'Добавить кредит' %}
-						</h5>
-						<button type="button" class="btn-close"
-						        data-bs-dismiss="modal"
-						        aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						{{ loan_form.media }}
-						<form class="ajax-form m-2" method="POST"
-						      action="{% url 'loan:create' %}">
-							{% csrf_token %}
-							{% if loan_form %}
-								{% for field in loan_form %}
-									<div class="form-group {% if field.errors %} has-error{% endif %}">
-										{{ field | as_crispy_field }}
-										{% if field.errors %}
-											{% for error in field.errors %}
-												<p class="help-block">{{ error }}</p>
-											{% endfor %}
-										{% endif %}
-									</div>
-								{% endfor %}
-							{% endif %}
-							<button type="submit" class="btn btn-primary">{% translate 'Добавить кредит' %}</button>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
 		<div class="row mt-4">
 			<div class="col-xl-12">
 				<details class="ms-5 text-dark">
@@ -63,15 +28,15 @@
 						Суммы рассчитываются согласно общепринятой
 						формуле:<br><br>
 						Расчёт ежемесячной процентной ставки:<br>
-						<code class="text-light"><i>Ежемесячная ставка =
+						<code class="text-dark"><i>Ежемесячная ставка =
 							Ежегодная ставка / 12 месяцев</i></code><br><br>
 						Расчёт коэффициента:<br>
-						<code class="text-light"><i>Коэффициент = Ежемесячная
+						<code class="text-dark"><i>Коэффициент = Ежемесячная
 							ставка * (1 + Ежемесячная ставка) ^ Срок кредита в
 							месяцах / ((1 + Ежемесячная ставка) ^ Срок кредита в
 							месяцах) - 1)</i></code><br><br>
 						Расчёт ежемесячного платежа:<br>
-						<code class="text-light"><i>Ежемесячный платёж = Сумма
+						<code class="text-dark"><i>Ежемесячный платёж = Сумма
 							кредита * Коэффициент</i></code><br><br>
 						<small>Примечание: / - деление, * умножение, ^ -
 							возведение в степень</small>
@@ -83,11 +48,9 @@
 		<!-- /.row -->
 		<div class="row">
 			<div class="col-xl-12">
-				<button type="button" class="btn btn-outline-success ms-5"
-				        data-bs-toggle="modal" data-bs-target="#add-loan"
-				        title="Добавить кредит">
+				<a href="{% url 'loan:create' %}" class="btn btn-outline-success ms-5">
 					{% translate 'Добавить кредит' %}
-				</button>
+				</a>
 			</div>
 		</div>
 		<!-- /.row -->
