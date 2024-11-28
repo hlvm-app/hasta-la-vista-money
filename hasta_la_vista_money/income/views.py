@@ -297,7 +297,6 @@ class IncomeCategoryCreateView(CreateView):
         return kwargs
 
     def form_valid(self, form):
-        print('Form is valid:', form.errors)
         category_name = self.request.POST.get('name')
         category_form = form.save(commit=False)
         category_form.user = self.request.user
@@ -313,7 +312,6 @@ class IncomeCategoryCreateView(CreateView):
         error_message = ''
         if 'name' in form.errors:
             error_message = 'Такая категория уже была добавлена!'
-            print(error_message)
         else:
             error_message = (
                 'Ошибка при добавлении категории. Проверьте введенные данные.'

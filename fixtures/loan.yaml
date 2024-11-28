@@ -1,0 +1,260 @@
+-   model: loan.loan
+    pk: 2
+    fields:
+        user: 1
+        account: 1
+        date: 2024-11-26 20:00:00
+        loan_amount: 100000.0
+        annual_interest_rate: '13.50'
+        period_loan: 12
+        type_loan: Annuity
+-   model: loan.loan
+    pk: 3
+    fields:
+        user: 1
+        account: 2
+        date: 2024-11-29 20:00:00
+        loan_amount: 250000.0
+        annual_interest_rate: '35.00'
+        period_loan: 12
+        type_loan: Annuity
+-   model: loan.paymentschedule
+    pk: 25
+    fields:
+        user: 1
+        loan: 2
+        date: 2024-12-26 00:00:00
+        balance: '92169.80'
+        monthly_payment: '8955.20'
+        interest: '1125.00'
+        principal_payment: '7830.20'
+-   model: loan.paymentschedule
+    pk: 26
+    fields:
+        user: 1
+        loan: 2
+        date: 2025-01-26 00:00:00
+        balance: '84251.50'
+        monthly_payment: '8955.20'
+        interest: '1036.91'
+        principal_payment: '7918.29'
+-   model: loan.paymentschedule
+    pk: 27
+    fields:
+        user: 1
+        loan: 2
+        date: 2025-02-26 00:00:00
+        balance: '76244.13'
+        monthly_payment: '8955.20'
+        interest: '947.83'
+        principal_payment: '8007.37'
+-   model: loan.paymentschedule
+    pk: 28
+    fields:
+        user: 1
+        loan: 2
+        date: 2025-03-26 00:00:00
+        balance: '68146.68'
+        monthly_payment: '8955.20'
+        interest: '857.75'
+        principal_payment: '8097.46'
+-   model: loan.paymentschedule
+    pk: 29
+    fields:
+        user: 1
+        loan: 2
+        date: 2025-04-26 00:00:00
+        balance: '59958.12'
+        monthly_payment: '8955.20'
+        interest: '766.65'
+        principal_payment: '8188.55'
+-   model: loan.paymentschedule
+    pk: 30
+    fields:
+        user: 1
+        loan: 2
+        date: 2025-05-26 00:00:00
+        balance: '51677.45'
+        monthly_payment: '8955.20'
+        interest: '674.53'
+        principal_payment: '8280.67'
+-   model: loan.paymentschedule
+    pk: 31
+    fields:
+        user: 1
+        loan: 2
+        date: 2025-06-26 00:00:00
+        balance: '43303.62'
+        monthly_payment: '8955.20'
+        interest: '581.37'
+        principal_payment: '8373.83'
+-   model: loan.paymentschedule
+    pk: 32
+    fields:
+        user: 1
+        loan: 2
+        date: 2025-07-26 00:00:00
+        balance: '34835.58'
+        monthly_payment: '8955.20'
+        interest: '487.17'
+        principal_payment: '8468.04'
+-   model: loan.paymentschedule
+    pk: 33
+    fields:
+        user: 1
+        loan: 2
+        date: 2025-08-26 00:00:00
+        balance: '26272.28'
+        monthly_payment: '8955.20'
+        interest: '391.90'
+        principal_payment: '8563.30'
+-   model: loan.paymentschedule
+    pk: 34
+    fields:
+        user: 1
+        loan: 2
+        date: 2025-09-26 00:00:00
+        balance: '17612.64'
+        monthly_payment: '8955.20'
+        interest: '295.56'
+        principal_payment: '8659.64'
+-   model: loan.paymentschedule
+    pk: 35
+    fields:
+        user: 1
+        loan: 2
+        date: 2025-10-26 00:00:00
+        balance: '8855.58'
+        monthly_payment: '8955.20'
+        interest: '198.14'
+        principal_payment: '8757.06'
+-   model: loan.paymentschedule
+    pk: 36
+    fields:
+        user: 1
+        loan: 2
+        date: 2025-11-26 00:00:00
+        balance: '0.00'
+        monthly_payment: '8955.20'
+        interest: '99.63'
+        principal_payment: '8855.58'
+-   model: loan.paymentschedule
+    pk: 37
+    fields:
+        user: 1
+        loan: 3
+        date: 2024-12-29 00:00:00
+        balance: '232300.92'
+        monthly_payment: '24990.75'
+        interest: '7291.67'
+        principal_payment: '17699.08'
+-   model: loan.paymentschedule
+    pk: 38
+    fields:
+        user: 1
+        loan: 3
+        date: 2025-01-29 00:00:00
+        balance: '214085.62'
+        monthly_payment: '24990.75'
+        interest: '6775.44'
+        principal_payment: '18215.30'
+-   model: loan.paymentschedule
+    pk: 39
+    fields:
+        user: 1
+        loan: 3
+        date: 2025-02-28 00:00:00
+        balance: '195339.03'
+        monthly_payment: '24990.75'
+        interest: '6244.16'
+        principal_payment: '18746.58'
+-   model: loan.paymentschedule
+    pk: 40
+    fields:
+        user: 1
+        loan: 3
+        date: 2025-03-28 00:00:00
+        balance: '176045.68'
+        monthly_payment: '24990.75'
+        interest: '5697.39'
+        principal_payment: '19293.36'
+-   model: loan.paymentschedule
+    pk: 41
+    fields:
+        user: 1
+        loan: 3
+        date: 2025-04-28 00:00:00
+        balance: '156189.59'
+        monthly_payment: '24990.75'
+        interest: '5134.67'
+        principal_payment: '19856.08'
+-   model: loan.paymentschedule
+    pk: 42
+    fields:
+        user: 1
+        loan: 3
+        date: 2025-05-28 00:00:00
+        balance: '135754.38'
+        monthly_payment: '24990.75'
+        interest: '4555.53'
+        principal_payment: '20435.22'
+-   model: loan.paymentschedule
+    pk: 43
+    fields:
+        user: 1
+        loan: 3
+        date: 2025-06-28 00:00:00
+        balance: '114723.13'
+        monthly_payment: '24990.75'
+        interest: '3959.50'
+        principal_payment: '21031.24'
+-   model: loan.paymentschedule
+    pk: 44
+    fields:
+        user: 1
+        loan: 3
+        date: 2025-07-28 00:00:00
+        balance: '93078.48'
+        monthly_payment: '24990.75'
+        interest: '3346.09'
+        principal_payment: '21644.66'
+-   model: loan.paymentschedule
+    pk: 45
+    fields:
+        user: 1
+        loan: 3
+        date: 2025-08-28 00:00:00
+        balance: '70802.52'
+        monthly_payment: '24990.75'
+        interest: '2714.79'
+        principal_payment: '22275.96'
+-   model: loan.paymentschedule
+    pk: 46
+    fields:
+        user: 1
+        loan: 3
+        date: 2025-09-28 00:00:00
+        balance: '47876.85'
+        monthly_payment: '24990.75'
+        interest: '2065.07'
+        principal_payment: '22925.67'
+-   model: loan.paymentschedule
+    pk: 47
+    fields:
+        user: 1
+        loan: 3
+        date: 2025-10-28 00:00:00
+        balance: '24282.51'
+        monthly_payment: '24990.75'
+        interest: '1396.41'
+        principal_payment: '23594.34'
+-   model: loan.paymentschedule
+    pk: 48
+    fields:
+        user: 1
+        loan: 3
+        date: 2025-11-28 00:00:00
+        balance: '0.00'
+        monthly_payment: '24990.75'
+        interest: '708.24'
+        principal_payment: '24282.51'
